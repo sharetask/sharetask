@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
+						http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+	<changeSet id="create: user" author="mbocek">
+		<createTable tableName="USER" remarks="User information">
+			<column autoIncrement="true" name="ID" type="BIGINT" remarks="Primary key">
+				<constraints nullable="false" primaryKey="true" primaryKeyName="PK_USER" />
+			</column>
+		</createTable>
+	</changeSet>
+
+	<changeSet id="create: task_tag" author="mbocek">
+		<createTable tableName="TASK_TAG" remarks="Tags for task">
+			<column name="TASK_ID" type="BIGINT" remarks="Reference to task id">
+				<constraints nullable="false" />
+			</column>
+			<column name="TAG" type="VARCHAR(50)" remarks="Tag for task">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+	</changeSet> 
+	
+	<changeSet id="create: event_value" author="mbocek">
+		<createTable tableName="EVENT_VALUE" remarks="Values for event">
+			<column name="EVENT_ID" type="BIGINT" remarks="Reference to event id">
+				<constraints nullable="false" />
+			</column>
+			<column name="VALUE" type="VARCHAR(50)" remarks="Value for event">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+	</changeSet> 
+
+	<changeSet id="create: comment" author="mbocek">
+		<createTable tableName="COMMENT" remarks="Comments for task">
+			<column autoIncrement="true" name="ID" type="BIGINT" remarks="Primary key">
+				<constraints nullable="false" primaryKey="true" primaryKeyName="PK_COMMENT" />
+			</column>
+			<column name="CREATED_BY" type="VARCHAR(50)" remarks="User indentifiert who created record">
+				<constraints nullable="false" />
+			</column>
+			<column name="CREATED_ON" type="DATE" remarks="Date when record was creaded">
+				<constraints nullable="false" />
+			</column>
+			<column name="TASK_ID" type="BIGINT" remarks="Reference to task id">
+				<constraints nullable="false" />
+			</column>
+			<column name="MESSAGE" type="VARCHAR(255)" remarks="Comment">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+	</changeSet>
+
+	<changeSet id="create: event" author="mbocek">
+		<createTable tableName="EVENT" remarks="Events for task">
+			<column autoIncrement="true" name="ID" type="BIGINT" remarks="Primary key">
+				<constraints nullable="false" primaryKey="true" primaryKeyName="PK_EVENT" />
+			</column>
+			<column name="CREATED_BY" type="VARCHAR(50)" remarks="User indentifiert who created record">
+				<constraints nullable="false" />
+			</column>
+			<column name="CREATED_ON" type="DATE" remarks="Date when record was creaded">
+				<constraints nullable="false" />
+			</column>
+			<column name="TYPE" type="VARCHAR(50)" remarks="Event type">
+				<constraints nullable="false"/>
+			</column>
+			<column name="TASK_ID" type="BIGINT" remarks="Reference to task id">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		
+		<addForeignKeyConstraint constraintName="FK_EVENT_VALUE"
+			baseTableName="EVENT_VALUE" baseColumnNames="EVENT_ID"
+			referencedTableName="EVENT" referencedColumnNames="ID" />
+	</changeSet>
+
+
+	<changeSet id="create: task" author="mbocek">
+		<createTable tableName="TASK" remarks="Table for storing tasks">
+			<column autoIncrement="true" name="ID" type="BIGINT" remarks="Primary key">
+				<constraints nullable="false" primaryKey="true" primaryKeyName="PK_TASK" />
+			</column>
+			<column name="CREATED_BY" type="VARCHAR(50)" remarks="User indentifiert who created record">
+				<constraints nullable="false" />
+			</column>
+			<column name="CREATED_ON" type="DATE" remarks="Date when record was creaded">
+				<constraints nullable="false" />
+			</column>
+			<column name="UPDATED_BY" type="VARCHAR(50)" remarks="User indentifiert who updated record">
+				<constraints nullable="false" />
+			</column>
+			<column name="UPDATED_ON" type="DATE" remarks="Date when record was updated">
+				<constraints nullable="false" />
+			</column>
+			<column name="TITLE" type="VARCHAR(100)" remarks="Title">
+				<constraints nullable="false" />
+			</column>
+			<column name="DESCRIPTION" type="VARCHAR(2000)" remarks="Title" />
+			<column name="DUE_DATE" type="DATE" remarks="Expiration date">
+				<constraints nullable="false" />
+			</column>
+			<column name="PRIORITY" type="VARCHAR(50)" remarks="Task priority">
+				<constraints nullable="false" />
+			</column>
+			<column name="STATE" type="VARCHAR(50)" remarks="Task state">
+				<constraints nullable="false" />
+			</column>
+			<column name="WORKSPACE_ID" type="BIGINT" remarks="Reference to workspace">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+
+		<addForeignKeyConstraint constraintName="FK_TASK_EVENT"
+			baseTableName="EVENT" baseColumnNames="TASK_ID"
+			referencedTableName="TASK" referencedColumnNames="ID" />
+
+		<addForeignKeyConstraint constraintName="FK_TASK_COMMENT"
+			baseTableName="COMMENT" baseColumnNames="TASK_ID"
+			referencedTableName="TASK" referencedColumnNames="ID" />
+	</changeSet>
+		
+	<changeSet id="create: workspace" author="mbocek">
+		<createTable tableName="WORKSPACE" remarks="Table for storing information about workspace">
+			<column autoIncrement="true" name="ID" type="BIGINT" remarks="Primary key">
+				<constraints nullable="false" primaryKey="true" primaryKeyName="PK_WORKSPACE" />
+			</column>
+			<column name="CREATED_BY" type="VARCHAR(50)" remarks="User indentifiert who created record">
+				<constraints nullable="false" />
+			</column>
+			<column name="CREATED_ON" type="DATE" remarks="Date when record was creaded">
+				<constraints nullable="false" />
+			</column>
+			<column name="UPDATED_BY" type="VARCHAR(50)" remarks="User indentifiert who updated record">
+				<constraints nullable="false" />
+			</column>
+			<column name="UPDATED_ON" type="DATE" remarks="Date when record was updated">
+				<constraints nullable="false" />
+			</column>
+			<column name="TITLE" type="VARCHAR(100)" remarks="Title">
+				<constraints nullable="false" />
+			</column>
+			<column name="DESCRIPTION" type="VARCHAR(2000)" remarks="Title" />
+			<column name="OWNER_ID" type="BIGINT" remarks="Reference to user">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		
+		<addForeignKeyConstraint constraintName="FK_WORKSPACE_USER"
+			baseTableName="WORKSPACE" baseColumnNames="OWNER_ID"
+			referencedTableName="USER" referencedColumnNames="ID" />
+	</changeSet>
+	
+	<changeSet id="create: workspace_member" author="mbocek" >
+		<createTable tableName="WORKSPACE_MEMBER" remarks="Table for storing refences between workspace and users">
+			<column name="WORKSPACE_ID" type="BIGINT" remarks="Reference to workspace">
+				<constraints nullable="false" />
+			</column>
+			<column name="USER_ID" type="BIGINT" remarks="Reference to user">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		
+		<addForeignKeyConstraint constraintName="FK_WORKSPACE_MEMBER_WORKSPACE"
+			baseTableName="WORKSPACE_MEMBER" baseColumnNames="WORKSPACE_ID"
+			referencedTableName="WORKSPACE" referencedColumnNames="ID" />
+		<addForeignKeyConstraint constraintName="FK_WORKSPACE_MEMBER_USER"
+			baseTableName="WORKSPACE_MEMBER" baseColumnNames="USER_ID"
+			referencedTableName="USER" referencedColumnNames="ID" />
+
+		<addPrimaryKey tableName="WORKSPACE_MEMBER" columnNames="WORKSPACE_ID,USER_ID"
+			constraintName="PK_WORKSPACE_MEMBER" />
+	</changeSet>
+
+	<changeSet id="create: task_owner" author="mbocek" >
+		<createTable tableName="TASK_OWNER" remarks="Table for storing references between task and user">
+			<column name="TASK_ID" type="BIGINT" remarks="Reference to task">
+				<constraints nullable="false" />
+			</column>
+			<column name="USER_ID" type="BIGINT" remarks="Reference to user">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		
+		<addForeignKeyConstraint constraintName="FK_TASK_OWNER_TASK"
+			baseTableName="TASK_OWNER" baseColumnNames="TASK_ID"
+			referencedTableName="TASK" referencedColumnNames="ID" />
+		<addForeignKeyConstraint constraintName="FK_TASK_OWNER_USER"
+			baseTableName="TASK_OWNER" baseColumnNames="USER_ID"
+			referencedTableName="USER" referencedColumnNames="ID" />
+
+		<addPrimaryKey tableName="TASK_OWNER" columnNames="TASK_ID,USER_ID"
+			constraintName="PK_TASK_OWNER" />
+	</changeSet>
+</databaseChangeLog>

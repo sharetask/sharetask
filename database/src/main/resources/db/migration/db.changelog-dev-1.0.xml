@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
+						http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+	<changeSet id="load: users" author="mbocek" context="development,integration">
+		<comment>Load initial data</comment>
+		<loadData tableName="USER" file="db/migration/dev/user.csv">
+			<column name="ID" type="NUMERIC"/>
+		</loadData>
+		<rollback>
+			<delete tableName="USER"/>
+		</rollback>
+	</changeSet>
+
+	<changeSet id="load: workspace" author="mbocek" context="development,integration">
+		<comment>Load initial data</comment>
+		<loadData tableName="WORKSPACE" file="db/migration/dev/workspace.csv">
+			<column name="ID" type="NUMERIC"/>
+			<column name="TITLE" type="STRING"/>
+			<column name="DESCRIPTION" type="STRING"/>
+			<column name="OWNER_ID" type="NUMERIC"/>
+			<column name="CREATED_BY" type="STRING"/>
+			<column name="CREATED_ON" type="DATE"/>
+			<column name="UPDATED_BY" type="STRING"/>
+			<column name="UPDATED_ON" type="DATE"/>
+		</loadData>
+		<rollback>
+			<delete tableName="WORKSPACE"/>
+		</rollback>
+	</changeSet>
+	
+	<changeSet id="load: task" author="mbocek" context="development,integration">
+		<comment>Load initial data</comment>
+		<loadData tableName="TASK" file="db/migration/dev/task.csv">
+			<column name="ID" type="NUMERIC"/>
+			<column name="CREATED_BY" type="STRING"/>
+			<column name="CREATED_ON" type="DATE"/>
+			<column name="UPDATED_BY" type="STRING"/>
+			<column name="UPDATED_ON" type="DATE"/>
+			<column name="TITLE" type="STRING"/>
+			<column name="DESCRIPTION" type="STRING"/>
+			<column name="DUE_DATE" type="DATE"/>
+			<column name="PRIORITY" type="STRING"/>
+			<column name="STATE" type="STRING"/>
+			<column name="WORKSPACE_ID" type="NUMERIC"/>
+		</loadData>
+		<rollback>
+			<delete tableName="COMMENT"/>
+		</rollback>
+	</changeSet>
+	
+	<changeSet id="load: comment" author="mbocek" context="development,integration">
+		<comment>Load initial data</comment>
+		<loadData tableName="COMMENT" file="db/migration/dev/comment.csv">
+			<column name="ID" type="NUMERIC"/>
+			<column name="CREATED_BY" type="STRING"/>
+			<column name="CREATED_ON" type="DATE"/>
+			<column name="MESSAGE" type="STRING"/>
+			<column name="TASK_ID" type="NUMERIC"/>
+		</loadData>
+		<rollback>
+			<delete tableName="COMMENT"/>
+		</rollback>
+	</changeSet>
+
+	<changeSet id="load: event" author="mbocek" context="development,integration">
+		<comment>Load initial data</comment>
+		<loadData tableName="EVENT" file="db/migration/dev/event.csv">
+			<column name="ID" type="NUMERIC"/>
+			<column name="CREATED_BY" type="STRING"/>
+			<column name="CREATED_ON" type="DATE"/>
+			<column name="TYPE" type="STRING"/>
+			<column name="TASK_ID" type="NUMERIC"/>
+		</loadData>
+		<rollback>
+			<delete tableName="EVENT"/>
+		</rollback>
+	</changeSet>
+
+	<changeSet id="load: workspace_member" author="mbocek" context="development,integration">
+		<comment>Load initial data</comment>
+		<loadData tableName="WORKSPACE_MEMBER" file="db/migration/dev/workspace_member.csv">
+			<column name="WORKSPACE_ID" type="NUMERIC"/>
+			<column name="USER_ID" type="NUMERIC"/>
+		</loadData>
+		<rollback>
+			<delete tableName="WORKSPACE_MEMEBER"/>
+		</rollback>
+	</changeSet>
+</databaseChangeLog>

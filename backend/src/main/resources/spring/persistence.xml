@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+ 	xmlns:jpa="http://www.springframework.org/schema/data/jpa"	
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+						http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.3.xsd">
+
+	<import resource="classpath:/spring/applicationConfig.xml"/>
+	
+	<jpa:repositories base-package="org.sharetask.repository"/>
+
+	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="persistenceUnitName" value="${persistence-unit}" />
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" >
+				<property name="generateDdl" value="false" />
+				<property name="showSql" value="false" />
+			</bean>
+		</property>
+		<property name="loadTimeWeaver">
+			<bean class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver" />
+		</property>
+		<property name="jpaProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>
+				<prop key="hibernate.format_sql">false</prop>
+				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.jdbc.batch_size">0</prop>
+				<prop key="hbm2ddl.auto">validate</prop>
+			</props> 
+		</property>
+	</bean>
+
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="${database.jdbc.driver}" />
+		<property name="jdbcUrl" value="${database.jdbc.url}" />
+		<property name="user" value="${database.jdbc.user}" />
+		<property name="password" value="${database.jdbc.password}" />
+
+		<property name="minPoolSize" value="${pool.minPoolSize}" />
+		<property name="initialPoolSize" value="${pool.initialPoolSize}" />
+		<property name="maxPoolSize" value="${pool.maxPoolSize}" />
+		<property name="acquireIncrement" value="${pool.acquireIncrement}" />
+		<property name="maxIdleTime" value="${pool.maxIdleTime}" />
+		<property name="maxStatements" value="${pool.maxStatements}" />
+	</bean>
+</beans>
