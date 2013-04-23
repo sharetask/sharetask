@@ -11,10 +11,6 @@
 	<packaging>pom</packaging>
 	<name>ShareTask: database</name>
 
-	<scm>
-		<url>https://github.com/mbocek/sharetask/tree/master/database</url>
-	</scm>
-
 	<build>
 		<resources>
 			<resource>

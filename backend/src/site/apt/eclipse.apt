@@ -1,0 +1,44 @@
+ -----
+ Eclipse project setup
+ -----
+ Michal Bocek
+ -----
+ 2012-08-10
+ -----
+
+Eclipse
+
+	Usually i'm using for developing java project Eclipse with plugin enhancements. I'm preferring STS 
+	{{{http://www.springsource.com/developer/sts}Spring tools suite}}. This bundle contains lot of useful plugins.
+	
+	For this project I found some interesting plugins and here is the list:      
+
+	* {{{http://vrapper.sourceforge.net/home/}Vrapper}} Vim extension to eclipse {{{http://vrapper.sourceforge.net/update-site/stable}update site}}.
+	
+	* {{{https://github.com/chookapp/Bracketeer#readme}Bracketeer}} Brackets extension {{{http://chookapp.github.com/ChookappUpdateSite/}update site}}.
+
+	* {{{http://www.eclipse.org/egit/}EGit}} Git DCVS {{{http://download.eclipse.org/egit/updates}update site}}.
+
+	Optional plugins
+	
+	* {{{http://andrei.gmxhome.de/findbugs/index.html}FindBugs}} find bugs plugin {{{http://findbugs.cs.umd.edu/eclipse}update site}}.
+	
+	* {{{http://pmd.sourceforge.net/pmd-5.0.0/}PMD}} static analyzes for code {{{http://pmd.sourceforge.net/eclipse}update site}}.
+
+	* {{{http://eclipse-cs.sourceforge.net/}Checkstyle}} code formatting checks {{{http://sevntu-checkstyle.github.com/sevntu.checkstyle/update-site/}update site}}.
+
++-----+
+You should create new configuration for checkstyle in: Window > Preferences > Checkstyle\
+Set rule location to: external\checkstyle\rules.xml
+Set properties:
+	checkstyle.cache.file=target
+	checkstyle.header.file=${basedir}/external/checkstyle/header.txt
++-----+
+
+
+	When aspectj support is enabled in ide don't forget to remove it from pproject configuration.
+
++-----+
+Right click on project > AspectJ Tools > Remove ApectJ Capabilities
++-----+
+	

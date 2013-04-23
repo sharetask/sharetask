@@ -1,0 +1,18 @@
+ -----
+ Welcome
+ -----
+ Michal Bocek
+ -----
+ 2013-04-23
+ -----
+
+Welcome to ShareTask!
+
+	ShareTask is simple application for managing tasks. 
+
+
+* Checkout
+
++-----+
+git clone git://github.com/sharetask/sharetask.git
++-----+

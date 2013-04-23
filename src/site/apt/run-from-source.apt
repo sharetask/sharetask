@@ -1,0 +1,18 @@
+ -----
+ Run project from source
+ -----
+ Michal Bocek
+ -----
+ 2013-04-23
+ -----
+
+Run project from source
+
+* Chekout project 
+  
++-----+
+  git clone git://github.com/sharetask/sharetask.git
++-----+
+
+* mvn clean install; mvn -pl backend jetty:run
+
