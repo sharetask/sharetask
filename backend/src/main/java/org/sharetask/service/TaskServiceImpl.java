@@ -153,7 +153,7 @@ public class TaskServiceImpl implements TaskService {
 	}
 	
 	@Override
-	public void forwardTask(Long taskId, List<Long> owners) {
+	public void forwardTask(Long taskId, List<String> owners) {
 		Task task = taskRepository.findOne(taskId);
 		if (task == null) {
 			log.error("Task with id: {} doesn't exists.", taskId);
@@ -164,7 +164,7 @@ public class TaskServiceImpl implements TaskService {
 		Iterable<User> ownerList = userRepository.findAll(owners);
 		for (User user : ownerList) {
 			if (task.getWorkspace().getMemebers().contains(user)) {
-				log.debug("Added user {} is member of workspace.", user.getId());
+				log.debug("Added user {} is member of workspace.", user.getUsername());
 				task.getOwners().add(user);
 			}
 		}

@@ -167,13 +167,13 @@ public class TaskServiceTest extends DbUnitTest {
 	 */
 	@Test
 	public void testForwardTask() {
-		taskService.forwardTask(100L, Arrays.asList(new Long[]{102L}));
+		taskService.forwardTask(100L, Arrays.asList(new String[] { "test3@test.com" }));
 		Task task = taskRepository.findOne(100L);
 		Collection<Event> events = task.getEvents();
-		assertThat(events.toArray(new Event[events.size()])[events.size()-1].getType(), 
+		assertThat(events.toArray(new Event[events.size()])[events.size() - 1].getType(),
 				equalTo(EventType.TASK_FORWARDED));
 		List<User> owners = task.getOwners();
 		assertThat(owners.size(), equalTo(1));
-		assertThat(owners.get(0).getId(), equalTo(102L));
+		assertThat(owners.get(0).getUsername(), equalTo("test3@test.com"));
 	}
 }

@@ -19,12 +19,13 @@
 package org.sharetask.api;
 
 import org.sharetask.api.dto.UserDTO;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 /**
  * @author Michal Bocek
  * @since 1.0.0
  */
-public interface UserService {
+public interface UserService extends UserDetailsService {
 
-	UserDTO addUser(UserDTO user);
+	UserDTO create(final UserDTO userDTO) throws UserAlreadyExists;
 }

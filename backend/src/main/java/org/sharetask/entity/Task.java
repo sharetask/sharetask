@@ -104,7 +104,7 @@ public class Task extends BaseEntity implements Serializable {
 	@OneToMany
 	@JoinTable(name = "TASK_OWNER", 
     	joinColumns = { @JoinColumn(name = "TASK_ID", referencedColumnName = "ID") }, 
-    	inverseJoinColumns = { @JoinColumn(name = "USER_ID", referencedColumnName = "ID", unique = true) })
+    	inverseJoinColumns = { @JoinColumn(name = "USER_NAME", referencedColumnName = "USER_NAME", unique = true) })
 	private List<User> owners;
 	
 	@Getter @Setter

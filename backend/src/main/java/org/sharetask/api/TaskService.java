@@ -76,5 +76,5 @@ public interface TaskService {
 	 * @param taskId
 	 * @param owners
 	 */
-	void forwardTask(@NotNull Long taskId, @NotNull List<Long> owners);
+	void forwardTask(@NotNull Long taskId, @NotNull List<String> owners);
 }

@@ -57,11 +57,11 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 
 	@Override
 	@Transactional
-	public void addMemeber(final Long workspaceId, final Long userId) {
+	public void addMemeber(final Long workspaceId, final String username) {
 		// sanity check if exist specified user
-		final User user = userRepository.findOne(userId);
+		final User user = userRepository.findOne(username);
 		if (user == null) {
-			throw new EntityNotFoundException("User entity doesn't exists for id: " + userId);
+			throw new EntityNotFoundException("User entity doesn't exists for id: " + username);
 		}
 		
 		// sanity check if exist workspace
@@ -79,11 +79,11 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 
 	@Override
 	@Transactional
-	public void removeMemeber(final Long workspaceId, final Long userId) {
+	public void removeMemeber(final Long workspaceId, final String username) {
 		// sanity check if exist specified user
-		final User user = userRepository.findOne(userId);
+		final User user = userRepository.findOne(username);
 		if (user == null) {
-			throw new EntityNotFoundException("User entity doesn't exists for id: " + userId);
+			throw new EntityNotFoundException("User entity doesn't exists for id: " + username);
 		}
 		
 		// sanity check if exist workspace
@@ -100,8 +100,8 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 	}
 
 	@Override
-	public List<WorkspaceDTO> findWorkspaceByOwner(final Long ownerId) {
-		final List<Workspace> workspaces = workspaceRepository.findByOwnerId(ownerId);
+	public List<WorkspaceDTO> findWorkspaceByOwner(final String username) {
+		final List<Workspace> workspaces = workspaceRepository.findByOwnerUsername(username);
 		return DTOConverter.convertList(workspaces, WorkspaceDTO.class);
 	}	
 }

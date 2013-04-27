@@ -19,6 +19,10 @@
 				<class-a>org.sharetask.entity.Comment</class-a>
 				<class-b>org.sharetask.api.dto.CommentDTO</class-b>
 			</converter>
+			<converter type="org.sharetask.utility.converter.UserConverter">
+				<class-a>org.sharetask.entity.User</class-a>
+				<class-b>org.sharetask.api.dto.UserDTO</class-b>
+			</converter>
 		</custom-converters>
 	</configuration>
 </mappings> 

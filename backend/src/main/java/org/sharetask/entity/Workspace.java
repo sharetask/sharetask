@@ -33,6 +33,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -49,9 +51,15 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name = "WORKSPACE")
+@NamedQueries(value = { 
+		@NamedQuery(name = Workspace.QUERY_NAME_FIND_BY_OWNER_USERNAME, query = Workspace.QUERY_FIND_BY_OWNER_USERNAME)  
+	})
 public class Workspace extends BaseEntity implements Serializable {
 
 	private static final long serialVersionUID = Constants.VERSION;
+
+	public static final String QUERY_NAME_FIND_BY_OWNER_USERNAME = "Workspace.findByOwnerId";
+	public static final String QUERY_FIND_BY_OWNER_USERNAME = "SELECT w FROM Workspace w WHERE w.owner.username = :ownerUserName";
 
 	@Getter
 	@Id	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -67,7 +75,7 @@ public class Workspace extends BaseEntity implements Serializable {
 
 	@Getter	@Setter
 	@ManyToOne(cascade = { CascadeType.REFRESH }, optional = false)
-	@JoinColumn(name = "OWNER_ID")
+	@JoinColumn(name = "OWNER_USER_NAME")
 	private User owner;
 
 	@OneToMany(mappedBy = "workspace")
@@ -76,7 +84,7 @@ public class Workspace extends BaseEntity implements Serializable {
 	@OneToMany
 	@JoinTable(name = "WORKSPACE_MEMBER", 
 	           joinColumns = { @JoinColumn(name = "WORKSPACE_ID", referencedColumnName = "ID") }, 
-	           inverseJoinColumns = { @JoinColumn(name = "USER_ID", referencedColumnName = "ID", unique = true) })
+	           inverseJoinColumns = { @JoinColumn(name = "USER_NAME", referencedColumnName = "USER_NAME", unique = true) })
 	private List<User> members = new ArrayList<User>();
 	
 	public Workspace() {

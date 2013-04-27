@@ -30,5 +30,5 @@ import lombok.ToString;
 public class User {
 	
 	@Getter @Setter
-	private Long userId;
+	private String username;
 }

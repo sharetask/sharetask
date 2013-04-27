@@ -58,17 +58,17 @@ public class WorkspaceServiceTest extends DbUnitTest {
 		WorkspaceDTO workspace = new WorkspaceDTO();
 		workspace.setTitle("Test");
 		UserDTO userDTO = new UserDTO();
-		userDTO.setId(100L);
+		userDTO.setUsername("test1@test.com");
 		workspace.setOwner(userDTO);
 		Collection<UserDTO> members = new ArrayList<UserDTO>();
 		userDTO = new UserDTO();
-		userDTO.setId(101L);
+		userDTO.setUsername("test1@test.com");
 		members.add(userDTO);
 		workspace.setMembers(members);
 		WorkspaceDTO dto = workspaceService.createWorkspace(workspace);
 		Assert.assertThat(dto.getTitle(), CoreMatchers.is("Test"));
 		Assert.assertThat(dto.getDescription(), CoreMatchers.nullValue());
-		Assert.assertThat(dto.getOwner().getId(), CoreMatchers.is(100L));
+		Assert.assertThat(dto.getOwner().getUsername(), CoreMatchers.is("test1@test.com"));
 		Assert.assertThat(dto.getMembers().size(), CoreMatchers.is(1));
 	}
 	
@@ -77,7 +77,7 @@ public class WorkspaceServiceTest extends DbUnitTest {
 	 */
 	@Test
 	public void testAddMemeber() {
-		workspaceService.addMemeber(100L, 101L);
+		workspaceService.addMemeber(100L, "test2@test.com");
 		Workspace workspace = workspaceRepository.findOne(100L);
 		Assert.assertThat(workspace.getMemebers().size(), CoreMatchers.is(3));
 	}
@@ -87,7 +87,7 @@ public class WorkspaceServiceTest extends DbUnitTest {
 	 */
 	@Test
 	public void testRemoveMemeber() {
-		workspaceService.removeMemeber(100L, 102L);
+		workspaceService.removeMemeber(100L, "test3@test.com");
 		Workspace workspace = workspaceRepository.findOne(100L);
 		Assert.assertThat(workspace.getMemebers().size(), CoreMatchers.is(1));
 	}
@@ -97,7 +97,7 @@ public class WorkspaceServiceTest extends DbUnitTest {
 	 */
 	@Test
 	public void testFindWorkspaceByOwner() {
-		List<WorkspaceDTO> workspaces = workspaceService.findWorkspaceByOwner(100L);
+		List<WorkspaceDTO> workspaces = workspaceService.findWorkspaceByOwner("test1@test.com");
 		Assert.assertThat(workspaces.size(), CoreMatchers.is(1));
 		Assert.assertThat(workspaces.get(0).getId(), CoreMatchers.is(100L));
 	}

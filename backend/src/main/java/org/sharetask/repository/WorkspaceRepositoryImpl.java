@@ -16,49 +16,30 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.sharetask.api.dto;
+package org.sharetask.repository;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
-import javax.validation.constraints.Size;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
-import org.sharetask.entity.Role;
+import org.sharetask.entity.Workspace;
 
 /**
  * @author Michal Bocek
  * @since 1.0.0
  */
-@ToString(exclude = "password")
-public class UserDTO {
+public class WorkspaceRepositoryImpl implements WorkspaceRepositoryCustom {
 
-	@Size(min = 6, max = 255)
-	@Getter @Setter
-	private String username;
+	@PersistenceContext
+	private EntityManager entityManager;
 	
-	@Size(min = 8, max = 255)
-	@Getter @Setter
-	private String password;
-	
-	@Getter @Setter
-	private Boolean enabled = Boolean.FALSE;
-
-	@Size(min = 1, max = 255)
-	@Getter @Setter
-	private String name;
-	
-	@Size(min = 1, max = 255)
-	@Getter @Setter
-	private String surName;
-	
-	@Getter
-	private final Collection<Role> roles = new ArrayList<Role>();
-	
-	public void addRole(final Role role) {
-		roles.add(role);
+	@Override
+	public List<Workspace> findByOwnerUsername(final String username) {
+		final TypedQuery<Workspace> query = entityManager.createNamedQuery(Workspace.QUERY_NAME_FIND_BY_OWNER_USERNAME, Workspace.class);
+		query.setParameter("ownerUserName", username);
+		return query.getResultList();
 	}
+
 }

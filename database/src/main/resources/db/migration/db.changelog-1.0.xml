@@ -4,12 +4,44 @@
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 						http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
 
-	<changeSet id="create: user" author="mbocek">
-		<createTable tableName="USER" remarks="User information">
-			<column autoIncrement="true" name="ID" type="BIGINT" remarks="Primary key">
-				<constraints nullable="false" primaryKey="true" primaryKeyName="PK_USER" />
+	<changeSet id="create: roles" author="mbocek">
+		<createTable tableName="USER_ROLE" remarks="Users and roles associateted entity">
+			<column name="USER_NAME" type="VARCHAR(255)" remarks="User identifierd">
+				<constraints nullable="false"/>
+			</column>
+			<column name="ROLE" type="VARCHAR(255)" remarks="Role identifiert">
+				<constraints nullable="false"/>
 			</column>
 		</createTable>
+	</changeSet>
+	
+	<changeSet id="create: user" author="mbocek">
+		<createTable tableName="USER" remarks="Table for storing user information">
+			<column name="USER_NAME" type="VARCHAR(255)" remarks="User identifiert">
+				<constraints nullable="false" primaryKey="true" primaryKeyName="PK_USER_ENTITY" />
+			</column>
+			<column name="EMAIL" type="VARCHAR(255)" remarks="Email">
+				<constraints nullable="false" />
+			</column>
+			<column name="ENABLED" type="BOOLEAN" remarks="Enabled flag" >
+				<constraints nullable="false" />
+			</column>
+			<column name="NAME" type="VARCHAR(255)" remarks="User name">
+				<constraints nullable="false" />
+			</column>
+			<column name="SURNAME" type="VARCHAR(255)" remarks="Surname">
+				<constraints nullable="false" />
+			</column>
+			<column name="PASSWORD" type="VARCHAR(128)" remarks="Encoded password">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		
+		<addForeignKeyConstraint baseColumnNames="USER_NAME" baseTableName="USER_ROLE"
+			constraintName="FK_ROLE_USER" deferrable="false" initiallyDeferred="false"
+			onDelete="NO ACTION" onUpdate="NO ACTION" 
+			referencedColumnNames="USER_NAME" referencedTableName="USER"
+			referencesUniqueColumn="false" />
 	</changeSet>
 
 	<changeSet id="create: task_tag" author="mbocek">
@@ -39,7 +71,7 @@
 			<column autoIncrement="true" name="ID" type="BIGINT" remarks="Primary key">
 				<constraints nullable="false" primaryKey="true" primaryKeyName="PK_COMMENT" />
 			</column>
-			<column name="CREATED_BY" type="VARCHAR(50)" remarks="User indentifiert who created record">
+			<column name="CREATED_BY" type="VARCHAR(255)" remarks="User indentifiert who created record">
 				<constraints nullable="false" />
 			</column>
 			<column name="CREATED_ON" type="DATE" remarks="Date when record was creaded">
@@ -59,7 +91,7 @@
 			<column autoIncrement="true" name="ID" type="BIGINT" remarks="Primary key">
 				<constraints nullable="false" primaryKey="true" primaryKeyName="PK_EVENT" />
 			</column>
-			<column name="CREATED_BY" type="VARCHAR(50)" remarks="User indentifiert who created record">
+			<column name="CREATED_BY" type="VARCHAR(255)" remarks="User indentifiert who created record">
 				<constraints nullable="false" />
 			</column>
 			<column name="CREATED_ON" type="DATE" remarks="Date when record was creaded">
@@ -84,13 +116,13 @@
 			<column autoIncrement="true" name="ID" type="BIGINT" remarks="Primary key">
 				<constraints nullable="false" primaryKey="true" primaryKeyName="PK_TASK" />
 			</column>
-			<column name="CREATED_BY" type="VARCHAR(50)" remarks="User indentifiert who created record">
+			<column name="CREATED_BY" type="VARCHAR(255)" remarks="User indentifiert who created record">
 				<constraints nullable="false" />
 			</column>
 			<column name="CREATED_ON" type="DATE" remarks="Date when record was creaded">
 				<constraints nullable="false" />
 			</column>
-			<column name="UPDATED_BY" type="VARCHAR(50)" remarks="User indentifiert who updated record">
+			<column name="UPDATED_BY" type="VARCHAR(255)" remarks="User indentifiert who updated record">
 				<constraints nullable="false" />
 			</column>
 			<column name="UPDATED_ON" type="DATE" remarks="Date when record was updated">
@@ -128,13 +160,13 @@
 			<column autoIncrement="true" name="ID" type="BIGINT" remarks="Primary key">
 				<constraints nullable="false" primaryKey="true" primaryKeyName="PK_WORKSPACE" />
 			</column>
-			<column name="CREATED_BY" type="VARCHAR(50)" remarks="User indentifiert who created record">
+			<column name="CREATED_BY" type="VARCHAR(255)" remarks="User indentifiert who created record">
 				<constraints nullable="false" />
 			</column>
 			<column name="CREATED_ON" type="DATE" remarks="Date when record was creaded">
 				<constraints nullable="false" />
 			</column>
-			<column name="UPDATED_BY" type="VARCHAR(50)" remarks="User indentifiert who updated record">
+			<column name="UPDATED_BY" type="VARCHAR(255)" remarks="User indentifiert who updated record">
 				<constraints nullable="false" />
 			</column>
 			<column name="UPDATED_ON" type="DATE" remarks="Date when record was updated">
@@ -144,14 +176,14 @@
 				<constraints nullable="false" />
 			</column>
 			<column name="DESCRIPTION" type="VARCHAR(2000)" remarks="Title" />
-			<column name="OWNER_ID" type="BIGINT" remarks="Reference to user">
+			<column name="OWNER_USER_NAME" type="VARCHAR(255)" remarks="Reference to user">
 				<constraints nullable="false" />
 			</column>
 		</createTable>
 		
 		<addForeignKeyConstraint constraintName="FK_WORKSPACE_USER"
-			baseTableName="WORKSPACE" baseColumnNames="OWNER_ID"
-			referencedTableName="USER" referencedColumnNames="ID" />
+			baseTableName="WORKSPACE" baseColumnNames="OWNER_USER_NAME"
+			referencedTableName="USER" referencedColumnNames="USER_NAME" />
 	</changeSet>
 	
 	<changeSet id="create: workspace_member" author="mbocek" >
@@ -159,7 +191,7 @@
 			<column name="WORKSPACE_ID" type="BIGINT" remarks="Reference to workspace">
 				<constraints nullable="false" />
 			</column>
-			<column name="USER_ID" type="BIGINT" remarks="Reference to user">
+			<column name="USER_NAME" type="VARCHAR(255)" remarks="Reference to user">
 				<constraints nullable="false" />
 			</column>
 		</createTable>
@@ -168,10 +200,10 @@
 			baseTableName="WORKSPACE_MEMBER" baseColumnNames="WORKSPACE_ID"
 			referencedTableName="WORKSPACE" referencedColumnNames="ID" />
 		<addForeignKeyConstraint constraintName="FK_WORKSPACE_MEMBER_USER"
-			baseTableName="WORKSPACE_MEMBER" baseColumnNames="USER_ID"
-			referencedTableName="USER" referencedColumnNames="ID" />
+			baseTableName="WORKSPACE_MEMBER" baseColumnNames="USER_NAME"
+			referencedTableName="USER" referencedColumnNames="USER_NAME" />
 
-		<addPrimaryKey tableName="WORKSPACE_MEMBER" columnNames="WORKSPACE_ID,USER_ID"
+		<addPrimaryKey tableName="WORKSPACE_MEMBER" columnNames="WORKSPACE_ID,USER_NAME"
 			constraintName="PK_WORKSPACE_MEMBER" />
 	</changeSet>
 
@@ -180,7 +212,7 @@
 			<column name="TASK_ID" type="BIGINT" remarks="Reference to task">
 				<constraints nullable="false" />
 			</column>
-			<column name="USER_ID" type="BIGINT" remarks="Reference to user">
+			<column name="USER_NAME" type="VARCHAR(255)" remarks="Reference to user">
 				<constraints nullable="false" />
 			</column>
 		</createTable>
@@ -189,10 +221,10 @@
 			baseTableName="TASK_OWNER" baseColumnNames="TASK_ID"
 			referencedTableName="TASK" referencedColumnNames="ID" />
 		<addForeignKeyConstraint constraintName="FK_TASK_OWNER_USER"
-			baseTableName="TASK_OWNER" baseColumnNames="USER_ID"
-			referencedTableName="USER" referencedColumnNames="ID" />
+			baseTableName="TASK_OWNER" baseColumnNames="USER_NAME"
+			referencedTableName="USER" referencedColumnNames="USER_NAME" />
 
-		<addPrimaryKey tableName="TASK_OWNER" columnNames="TASK_ID,USER_ID"
+		<addPrimaryKey tableName="TASK_OWNER" columnNames="TASK_ID,USER_NAME"
 			constraintName="PK_TASK_OWNER" />
 	</changeSet>
 </databaseChangeLog>

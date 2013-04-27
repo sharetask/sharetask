@@ -55,19 +55,19 @@ public class WorkspaceController {
 	@ResponseStatus(value = HttpStatus.OK)
 	public void addMemeber(@PathVariable("workspaceId") final Long workspaceId, 
 	                       @RequestBody final User user) {
- 		workspaceService.addMemeber(workspaceId, user.getUserId());
+ 		workspaceService.addMemeber(workspaceId, user.getUsername());
 	}
 	
 	@RequestMapping(value = "/{workspaceId}/member/{userId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
 	public void removeMemeber(@PathVariable("workspaceId") final Long workspaceId, 
-	                          @PathVariable("userId") final Long userId) {
- 		workspaceService.removeMemeber(workspaceId, userId);
+	                          @PathVariable("username") final String username) {
+ 		workspaceService.removeMemeber(workspaceId, username);
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody List<WorkspaceDTO> findWorkspaceByOwner() {
 		// TODO: change to something like this SecurtyContextHolder.getPrincipal()...
- 		return workspaceService.findWorkspaceByOwner(1L);
+ 		return workspaceService.findWorkspaceByOwner("admin@shareta.sk");
 	}
 }

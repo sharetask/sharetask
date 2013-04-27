@@ -16,49 +16,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.sharetask.api.dto;
-
-import java.util.ArrayList;
-import java.util.Collection;
-
-import javax.validation.constraints.Size;
-
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
-import org.sharetask.entity.Role;
+package org.sharetask.entity;
 
 /**
  * @author Michal Bocek
  * @since 1.0.0
  */
-@ToString(exclude = "password")
-public class UserDTO {
+public enum Role {
 
-	@Size(min = 6, max = 255)
-	@Getter @Setter
-	private String username;
+	ROLE_USER, ROLE_ADMINISTRATOR;
 	
-	@Size(min = 8, max = 255)
-	@Getter @Setter
-	private String password;
-	
-	@Getter @Setter
-	private Boolean enabled = Boolean.FALSE;
-
-	@Size(min = 1, max = 255)
-	@Getter @Setter
-	private String name;
-	
-	@Size(min = 1, max = 255)
-	@Getter @Setter
-	private String surName;
-	
-	@Getter
-	private final Collection<Role> roles = new ArrayList<Role>();
-	
-	public void addRole(final Role role) {
-		roles.add(role);
-	}
+	public static String key = "role";
 }

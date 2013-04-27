@@ -18,8 +18,6 @@
  */
 package org.sharetask.repository;
 
-import java.util.List;
-
 import org.sharetask.entity.Workspace;
 import org.springframework.data.repository.CrudRepository;
 
@@ -27,7 +25,5 @@ import org.springframework.data.repository.CrudRepository;
  * @author Michal Bocek
  * @since 1.0.0
  */
-public interface WorkspaceRepository extends CrudRepository<Workspace, Long> {
-	
-	List<Workspace> findByOwnerId(Long ownerId);
+public interface WorkspaceRepository extends CrudRepository<Workspace, Long>, WorkspaceRepositoryCustom {
 }

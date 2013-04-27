@@ -19,15 +19,23 @@
 package org.sharetask.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Table;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 import org.sharetask.api.Constants;
@@ -44,11 +52,44 @@ public class User implements Serializable {
 
 	private static final long serialVersionUID = Constants.VERSION;
 
-	@Getter
-	@Id	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	// should be email
+	@Id
+	@Getter @Setter
+	@Column(name = "USER_NAME", nullable = false, length = 255)
+	private String username;
 	
-	public User(final Long id) {
-		this.id = id;
-	}	
+	@Getter @Setter
+	@Column(name = "PASSWORD", nullable = false, length = 64)
+	private String password;
+	
+	@Getter @Setter
+	@Column(name = "ENABLED", nullable = false)
+	private boolean enabled;
+	
+	@Getter @Setter
+	@Column(name = "NAME", nullable = false, length = 255)
+	private String name;
+	
+	@Getter @Setter
+	@Column(name = "SURNAME", nullable = false, length = 255)
+	private String surName;
+	
+	@Getter @Setter
+	@Column(name = "EMAIL", nullable = false, length = 255)
+	private String email;
+
+	@Setter
+	@ElementCollection(targetClass = Role.class)
+	@JoinTable(name = "USER_ROLE", joinColumns = @JoinColumn(name = "USER_NAME"))
+	@Column(name = "ROLE", nullable = false)
+	@Enumerated(EnumType.STRING)
+	private Collection<Role> roles = new ArrayList<Role>();;
+	
+	public User(String username) {
+		this.username = username;
+	}
+
+	public Collection<Role> getRoles() {
+		return Collections.unmodifiableCollection(this.roles);
+	}
 }
