@@ -23,6 +23,7 @@ import java.net.MalformedURLException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -39,6 +40,9 @@ import org.hibernate.internal.SessionImpl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -55,9 +59,20 @@ public class DbUnitTest {
 
 	@PersistenceContext(name = "entityManagerFactory")
 	private EntityManager entityManager;
+
+	@Inject
+	private AuthenticationManager authenticationManager;
+	
+	protected boolean enableSecurity = true;
 	
 	@Before
 	public void init() throws DatabaseUnitException, SQLException, MalformedURLException {
+		// login
+		if (enableSecurity) {
+		    Authentication authentication = new UsernamePasswordAuthenticationToken("admin@shareta.sk", "password");
+	    	Authentication authenticate = authenticationManager.authenticate(authentication);
+	    	SecurityContextHolder.getContext().setAuthentication(authenticate);
+		}
 		// insert data into database
 		DatabaseOperation.DELETE.execute(getConnection(), getDataSet());
 		DatabaseOperation.INSERT.execute(getConnection(), getDataSet());

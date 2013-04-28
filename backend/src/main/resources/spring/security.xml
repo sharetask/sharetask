@@ -47,6 +47,7 @@
 	<beans:bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder">
 		<beans:constructor-arg name="strength" value="512" />
 	</beans:bean>
+	
 	<beans:bean id="saltSource" class="org.springframework.security.authentication.dao.ReflectionSaltSource" p:userPropertyToUse="username" />
 
 	<global-method-security pre-post-annotations="enabled" />

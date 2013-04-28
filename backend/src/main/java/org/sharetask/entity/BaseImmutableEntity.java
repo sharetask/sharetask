@@ -26,6 +26,8 @@ import javax.persistence.PrePersist;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import lombok.Getter;
 
 /**
@@ -47,7 +49,6 @@ public abstract class BaseImmutableEntity {
 	@PrePersist
 	private void onCreate() {
 		this.createdOn = new Date();
-		// TODO fix user name 
-		this.createdBy = "TODO";
+		this.createdBy = SecurityContextHolder.getContext().getAuthentication().getName();
 	}
 }

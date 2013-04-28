@@ -27,6 +27,7 @@ import org.sharetask.api.dto.WorkspaceDTO;
 import org.sharetask.controller.json.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -67,7 +68,7 @@ public class WorkspaceController {
 	
 	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody List<WorkspaceDTO> findWorkspaceByOwner() {
-		// TODO: change to something like this SecurtyContextHolder.getPrincipal()...
- 		return workspaceService.findWorkspaceByOwner("admin@shareta.sk");
+		String name = SecurityContextHolder.getContext().getAuthentication().getName();
+ 		return workspaceService.findWorkspaceByOwner(name);
 	}
 }

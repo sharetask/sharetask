@@ -27,6 +27,8 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import lombok.Getter;
 
 /**
@@ -58,13 +60,13 @@ public abstract class BaseEntity {
 	private void onCreate() {
 		this.updatedOn = this.createdOn = new Date();
 		// TODO fix user name 
-		this.updatedBy = this.createdBy = "TODO";
+		this.updatedBy = this.createdBy =  SecurityContextHolder.getContext().getAuthentication().getName();
 	}
 
 	@PreUpdate
 	private void onUpdate() {
 		this.updatedOn = new Date();
 		// TODO fix user name 
-		this.updatedBy = "TODO";
+		this.updatedBy = SecurityContextHolder.getContext().getAuthentication().getName();;
 	}
 }
