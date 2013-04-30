@@ -18,15 +18,67 @@
  */
 package org.sharetask.data;
 
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.cookie.Cookie;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.cookie.BasicClientCookie;
+import org.apache.http.message.BasicHeader;
+import org.apache.http.util.EntityUtils;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.springframework.http.HttpStatus;
+
 
 /**
  * @author Michal Bocek
  * @since 1.0.0
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({"classpath:spring/transaction.xml", "classpath:spring/applicationConfig.xml"})
 public class IntegrationTest {
+	
+	public static final String BASE_URL = "http://localhost:8088/sharetask/api";
+	
+	private static String SESSIONID;
+	private static String DOMAIN;
+	
+	private DefaultHttpClient client;
+
+	@BeforeClass
+	public static void login() throws Exception {
+		DefaultHttpClient client = new DefaultHttpClient();
+        HttpPost httpPost = new HttpPost(BASE_URL + "/user/login");
+        httpPost.addHeader(new BasicHeader("Content-Type", "application/json"));
+        StringEntity httpEntity = new StringEntity("{\"username\":\"admin@shareta.sk\"," +
+        		"\"password\":\"password\"}");
+        System.out.println(EntityUtils.toString(httpEntity));
+        httpPost.setEntity(httpEntity);
+        
+        //when
+        HttpResponse response = client.execute(httpPost);
+
+        //then
+        Assert.assertEquals(HttpStatus.OK.value(), response.getStatusLine().getStatusCode());
+        client.getCookieStore().getCookies();
+        for (Cookie cookie : client.getCookieStore().getCookies()) {
+			if (cookie.getName().equals("JSESSIONID")) {
+				DOMAIN = cookie.getDomain();
+				SESSIONID = cookie.getValue();
+			}
+		}
+	}
+	
+	@Before
+	public void setCookie() {
+		this.client = new DefaultHttpClient();
+		BasicClientCookie basicClientCookie = new BasicClientCookie("JSESSIONID", SESSIONID);
+		basicClientCookie.setDomain(DOMAIN);
+		client.getCookieStore().addCookie(basicClientCookie);
+	}
+	
+	public HttpClient getClient() {
+		return this.client;
+	}
 }

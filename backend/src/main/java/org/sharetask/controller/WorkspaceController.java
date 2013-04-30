@@ -59,7 +59,7 @@ public class WorkspaceController {
  		workspaceService.addMemeber(workspaceId, user.getUsername());
 	}
 	
-	@RequestMapping(value = "/{workspaceId}/member/{userId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/{workspaceId}/member/{username:.*}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
 	public void removeMemeber(@PathVariable("workspaceId") final Long workspaceId, 
 	                          @PathVariable("username") final String username) {

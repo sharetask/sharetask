@@ -36,7 +36,7 @@ import org.springframework.http.HttpStatus;
  */
 public class DummyControllerIT {
 
-    private static final String URL = "http://localhost:8088/sharetask/api/info/";
+    private static final String URL = "http://localhost:8088/sharetask/api/info";
     
     @Test
     public void testIfAppIsUp() throws IOException {

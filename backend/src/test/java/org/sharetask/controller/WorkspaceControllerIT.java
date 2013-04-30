@@ -21,69 +21,67 @@ package org.sharetask.controller;
 import java.io.IOException;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.util.EntityUtils;
 import org.junit.Assert;
 import org.junit.Test;
+import org.sharetask.data.IntegrationTest;
 import org.springframework.http.HttpStatus;
 
 /**
  * @author Michal Bocek
  * @since 1.0.0
  */
-public class WorkspaceControllerIT {
+public class WorkspaceControllerIT extends IntegrationTest {
 
-    private static final String URL_WORKSPACE = "http://localhost:8088/sharetask/api/workspace";
+    private static final String URL_WORKSPACE = BASE_URL + "/workspace";
     
     @Test
     public void testFindWorkspaceByOwner() throws IOException {
         //given
-        HttpClient client = new DefaultHttpClient();
         HttpGet httpGet = new HttpGet(URL_WORKSPACE);
 		
         //when
-        HttpResponse response = client.execute(httpGet);
+        HttpResponse response = getClient().execute(httpGet);
  
         //then
         Assert.assertEquals(HttpStatus.OK.value(), response.getStatusLine().getStatusCode());
         String responseData = EntityUtils.toString(response.getEntity());
         Assert.assertTrue(responseData.contains("\"title\":\"Workspace\""));
+        EntityUtils.consume(response.getEntity());
     }
 
     @Test
     public void testAddMemeber() throws IOException {
         //given
-        HttpClient client = new DefaultHttpClient();
         HttpPost httpPost = new HttpPost(URL_WORKSPACE + "/1/member");
         httpPost.addHeader(new BasicHeader("Content-Type", "application/json"));
-        StringEntity httpEntity = new StringEntity("{\"userId\":2}");
-        System.out.println(EntityUtils.toString(httpEntity));
+        StringEntity httpEntity = new StringEntity("{\"username\":\"test2@test.com\"}");
         httpPost.setEntity(httpEntity);
         
         //when
-        HttpResponse response = client.execute(httpPost);
- 
+        HttpResponse response = getClient().execute(httpPost);
+
         //then
         Assert.assertEquals(HttpStatus.OK.value(), response.getStatusLine().getStatusCode());
+        EntityUtils.consume(response.getEntity());
     }
     
     @Test
     public void testRemoveMemeber() throws IOException {
         //given
-        HttpClient client = new DefaultHttpClient();
-        HttpDelete httpDelete = new HttpDelete(URL_WORKSPACE + "/1/member/1");
+        HttpDelete httpDelete = new HttpDelete(URL_WORKSPACE + "/1/member/test2@test.com");
         httpDelete.addHeader(new BasicHeader("Content-Type", "application/json"));
         
         //when
-        HttpResponse response = client.execute(httpDelete);
+        HttpResponse response = getClient().execute(httpDelete);
  
         //then
         Assert.assertEquals(HttpStatus.OK.value(), response.getStatusLine().getStatusCode());
+        EntityUtils.consume(response.getEntity());
     }
 }
