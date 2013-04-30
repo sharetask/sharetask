@@ -21,6 +21,9 @@ package org.sharetask.controller;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import lombok.extern.slf4j.Slf4j;
 
 import org.sharetask.controller.json.UserPassword;
 import org.springframework.http.HttpStatus;
@@ -29,6 +32,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.context.SecurityContextRepository;
@@ -42,6 +46,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author Michal Bocek
  * @since 1.0.0
  */
+@Slf4j
 @Controller
 @RequestMapping("/api/user")
 public class UserController {
@@ -55,12 +60,21 @@ public class UserController {
 	@Inject
 	private RememberMeServices rememberMeServices;
 
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public void login() {
+	@RequestMapping(value = "/login/status", method = RequestMethod.GET)
+	public void login(HttpServletRequest request, HttpServletResponse response) {
+		int resultCode = HttpStatus.UNAUTHORIZED.value();
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		log.info("authetication: {}", authentication);
+		if (authentication != null & authentication.isAuthenticated()) {
+			if (!authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ANONYMOUS"))) {
+				resultCode = HttpStatus.OK.value();
+			} 
+		}
+		response.setStatus(resultCode);
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody void performLogin(@RequestBody final UserPassword login, HttpServletRequest request, HttpServletResponse response) {
+	public void performLogin(@RequestBody final UserPassword login, HttpServletRequest request, HttpServletResponse response) {
 		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword());
 		try {
 			Authentication auth = authenticationManager.authenticate(token);
@@ -70,6 +84,16 @@ public class UserController {
 			response.setStatus(HttpStatus.OK.value());
 		} catch (BadCredentialsException ex) {
 			response.setStatus(HttpStatus.UNAUTHORIZED.value());
+		}
+	}
+	
+
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public void performLogout(HttpServletRequest request, HttpServletResponse response) {
+		SecurityContextHolder.clearContext();
+		HttpSession session = request.getSession(false);
+		if (session != null) {
+			session.invalidate();
 		}
 	}
 }
