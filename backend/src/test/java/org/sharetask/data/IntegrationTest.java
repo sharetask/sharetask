@@ -51,7 +51,7 @@ public class IntegrationTest {
 		DefaultHttpClient client = new DefaultHttpClient();
         HttpPost httpPost = new HttpPost(BASE_URL + "/user/login");
         httpPost.addHeader(new BasicHeader("Content-Type", "application/json"));
-        StringEntity httpEntity = new StringEntity("{\"username\":\"admin@shareta.sk\"," +
+        StringEntity httpEntity = new StringEntity("{\"username\":\"dev1@shareta.sk\"," +
         		"\"password\":\"password\"}");
         System.out.println(EntityUtils.toString(httpEntity));
         httpPost.setEntity(httpEntity);

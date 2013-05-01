@@ -60,7 +60,7 @@ public class WorkspaceControllerIT extends IntegrationTest {
         //given
         HttpPost httpPost = new HttpPost(URL_WORKSPACE + "/1/member");
         httpPost.addHeader(new BasicHeader("Content-Type", "application/json"));
-        StringEntity httpEntity = new StringEntity("{\"username\":\"test2@test.com\"}");
+        StringEntity httpEntity = new StringEntity("{\"username\":\"dev3@shareta.sk\"}");
         httpPost.setEntity(httpEntity);
         
         //when
@@ -74,7 +74,7 @@ public class WorkspaceControllerIT extends IntegrationTest {
     @Test
     public void testRemoveMemeber() throws IOException {
         //given
-        HttpDelete httpDelete = new HttpDelete(URL_WORKSPACE + "/1/member/test2@test.com");
+        HttpDelete httpDelete = new HttpDelete(URL_WORKSPACE + "/1/member/dev2@shareta.sk");
         httpDelete.addHeader(new BasicHeader("Content-Type", "application/json"));
         
         //when

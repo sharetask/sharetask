@@ -69,7 +69,7 @@ public class DbUnitTest {
 	public void init() throws DatabaseUnitException, SQLException, MalformedURLException {
 		// login
 		if (enableSecurity) {
-		    Authentication authentication = new UsernamePasswordAuthenticationToken("admin@shareta.sk", "password");
+		    Authentication authentication = new UsernamePasswordAuthenticationToken("dev1@shareta.sk", "password");
 	    	Authentication authenticate = authenticationManager.authenticate(authentication);
 	    	SecurityContextHolder.getContext().setAuthentication(authenticate);
 		}

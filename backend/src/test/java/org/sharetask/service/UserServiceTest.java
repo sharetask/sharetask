@@ -35,11 +35,8 @@ import org.sharetask.data.DbUnitTest;
 import org.sharetask.entity.Role;
 import org.sharetask.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.SaltSource;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -71,7 +68,7 @@ public class UserServiceTest extends DbUnitTest {
 	 */
 	@Test
 	public void testLoadUserByUsername() {
-		UserDetails user = userService.loadUserByUsername("admin@shareta.sk");
+		UserDetails user = userService.loadUserByUsername("dev1@shareta.sk");
 		assertNotNull(user);
 		assertTrue(user.getAuthorities().size() == 1);
 		ArrayList<GrantedAuthority> list = new ArrayList<GrantedAuthority>();

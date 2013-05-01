@@ -70,11 +70,11 @@ public class AuthenticationServiceTest extends DbUnitTest {
 		ArrayList<GrantedAuthority> list = new ArrayList<GrantedAuthority>();
 		list.add(new SimpleGrantedAuthority(Role.ROLE_USER.name()));
 		list.add(new SimpleGrantedAuthority(Role.ROLE_ADMINISTRATOR.name()));
-		User u = new User("admin@shareta.sk", "password", list);
+		User u = new User("dev1@shareta.sk", "password", list);
 		String password = passwordEncoder.encodePassword("password", saltSource.getSalt(u));
 		org.sharetask.entity.User user = userRepository.findOne(u.getUsername());
 		assertEquals(password, user.getPassword());
-	    Authentication authentication = new UsernamePasswordAuthenticationToken("admin@shareta.sk", "password");
+	    Authentication authentication = new UsernamePasswordAuthenticationToken("dev1@shareta.sk", "password");
 	    try {
 	    	authenticationManager.authenticate(authentication);
 	    } catch (BadCredentialsException e) {
