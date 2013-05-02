@@ -12,16 +12,33 @@
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 
 	<!-- ================================================================= -->
-	<!-- Sets up standard HandlerMapping and HanderAdapter for use with -->
-	<!-- annotations. Allows customization of various MVC-related aspects -->
-	<!-- like binding and validation. -->
+	<!-- Sets up standard HandlerMapping and HanderAdapter for use with    -->
+	<!-- annotations. Allows customization of various MVC-related aspects  -->
+	<!-- like binding and validation.                                      -->
 	<!-- ================================================================= -->
 	<mvc:annotation-driven />
 
 	<!-- ================================================================= -->
-	<!-- Scans within the base package of the application for @Components -->
-	<!-- to configure as beans -->
+	<!-- Scans within the base package of the application for @Components  -->
+	<!-- to configure as beans                                             -->
 	<!-- ================================================================= -->
 	<context:component-scan base-package="org.sharetask.controller" />
 	
+	<!-- ================================================================= -->
+	<!-- JSP resolver                                                      -->
+	<!-- ================================================================= -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
+		<property name="exposeContextBeansAsAttributes" value="true" />
+	</bean>
+	
+	<util:properties id="applicationProps" location="classpath:application.properties"/>
+	<!-- ================================================================= -->
+	<!-- Resource resolve                                                  -->
+	<!-- ================================================================= -->
+	<mvc:resources mapping="/resources-#{applicationProps['application.version']}/**" location="/WEB-INF/resources/" />
+	
+	<!-- 	<mvc:default-servlet-handler /> -->
+	<mvc:view-controller path="/" view-name="index"/>
 </beans>

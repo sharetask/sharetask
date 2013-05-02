@@ -2,20 +2,27 @@
 	xmlns:beans="http://www.springframework.org/schema/beans" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util"  
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd 
+						http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd
 						http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
-	<http auto-config="false" use-expressions="true" entry-point-ref="loginUrlAuthenticationEntryPoint">
+	<util:properties id="applicationProps" location="classpath:application.properties"/>
+
+	<http auto-config="false" use-expressions="true" entry-point-ref="loginUrlAuthenticationEntryPoint" 
+		  disable-url-rewriting="true">
 		<!-- <form-login /> login will be done programmatically -->
 		<access-denied-handler error-page="/denied" />
 		<!-- <logout invalidate-session="true" logout-url="/api/user/logout" /> login will be done programmatically -->
 		<remember-me />
 
+		<intercept-url pattern="/" access="permitAll" />
+		<intercept-url pattern="/resources-#{applicationProps['application.version']}/**" access="permitAll" />
 		<intercept-url pattern="/api/info" access="permitAll" />
 		<intercept-url pattern="/api/user/login/status" access="permitAll" />
 		<intercept-url pattern="/api/user/login" access="permitAll" />
 		<intercept-url pattern="/api/user/logout" access="permitAll" />
-		<intercept-url pattern="/api/**" access="isAuthenticated()" />
+		<intercept-url pattern="/**" access="isAuthenticated()" />
 	</http>
 
 	<beans:bean id="loginUrlAuthenticationEntryPoint" class="org.springframework.security.web.authentication.Http403ForbiddenEntryPoint" />
