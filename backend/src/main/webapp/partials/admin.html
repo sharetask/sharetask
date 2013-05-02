@@ -1,0 +1,52 @@
+		<!-----------------------------------
+		  -- ADMINISTRATION
+		  ----------------------------------->
+		<div ng-controller="AdminCtrl">
+			<div id="adminLeftPane" class="adminLeftPane">
+				<div class="adminLeftPaneContent">
+					<div style="padding:5px">
+						<a id="addWorkspaceSubmit" class="btn btn-inverse" href="#"><span id="save"><i class="icon-plus icon-white"></i> Add</span></a>
+						<br /><br />
+						<div id="workspaceListItems"></div>
+					</div>
+				</div>
+			</div>
+			<div id="adminMainPane" class="adminMainPane">
+				<div class="adminMainPaneContent">
+					<div style="padding:10px 20px">
+						<ul class="nav nav-tabs">
+							<li class="active"><a href="#workspaceData" data-toggle="tab">Workspace</a></li>
+							<li><a href="#workspaceMembers" data-toggle="tab">Members</a></li>
+						</ul>
+						<div class="tabbable">
+							<div class="tab-content">
+								<div class="tab-pane active" id="workspaceData">
+									<legend>Workspace - ABX Agency</legend>
+									<label>Name</label>
+									<input id="workspaceName" type="text" placeholder="type workspace name..." />
+									<label>Description</label>
+									<textarea id="workspaceDescription" rows="3" placeholder="type workspace description..."></textarea>
+									<label>Owner</label>
+									<input id="workspaceOwner" type="text" placeholder="type owner name..." />
+									<br />
+									<a id="saveWorkspaceSubmit" class="btn btn-inverse" href="#"><span id="save">Save</span></a>
+								</div>
+								<div class="tab-pane" id="workspaceMembers">
+									<legend>Members</legend>
+									<a id="adminWorkspaceAddMember" class="btn btn-inverse" href="#"><i class="icon-plus icon-white"></i> Add a member</a>
+									<div id="adminWorkspaceAddMemberForm" class="" style="margin:20px;padding:20px;border:1px solid #000;">
+										<legend>Add new member</legend>
+										<label>Name</label>
+										<input id="memberName" class="span4" type="text" placeholder="type member name..." />
+										<label>e-mail</label>
+										<input id="memberEmail" class="span4" type="text" placeholder="type member e-mail..." /><br />
+										<a id="addNewMemberSubmit" class="btn btn-inverse" href="#"><span id="add">Add</span></a>
+									</div>
+									<div id="adminWorkspaceMembers"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>

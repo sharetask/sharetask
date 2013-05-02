@@ -1,0 +1,112 @@
+[
+	{
+		"id" : "1",
+		"title" : "ABX Agency",
+		"description" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras feugiat libero purus, quis venenatis purus.",
+		"owner" : {
+			"id" : "mmoravek",
+			"name" : "Michal Morávek",
+			"email" : "michal.moravek.cz@gmail.com"
+		},
+		"members" : [
+			{
+				"id" : "mbocek",
+				"name" : "Michal Bocek",
+				"email" : "michal.bocek@gmail.com"
+			},
+			{
+				"id" : "mmoravek",
+				"name" : "Michal Morávek",
+				"email" : "michal.moravek.cz@gmail.com"
+			}
+		]
+	},
+	{
+		"id" : "2",
+		"title" : "Trask solutions",
+		"description" : "Cras feugiat libero purus, quis venenatis purus. Nulla facilisi.",
+		"owner" : {
+			"id" : "mbocek",
+			"name" : "Michal Bocek",
+			"email" : "michal.bocek@gmail.com"
+		},
+		"members" : [
+			{
+				"id" : "mbocek",
+				"name" : "Michal Bocek",
+				"email" : "michal.bocek@gmail.com"
+			},
+			{
+				"id" : "mmoravek",
+				"name" : "Michal Morávek",
+				"email" : "michal.moravek.cz@gmail.com"
+			}
+		]
+	},
+	{
+		"id" : "3",
+		"title" : "WMT Projekt",
+		"description" : "Cras feugiat libero purus, quis venenatis purus.",
+		"owner" : {
+			"id" : "mmoravek",
+			"name" : "Michal Morávek",
+			"email" : "michal.moravek.cz@gmail.com"
+		},
+		"members" : [
+			{
+				"id" : "mbocek",
+				"name" : "Michal Bocek",
+				"email" : "michal.bocek@gmail.com"
+			},
+			{
+				"id" : "mmoravek",
+				"name" : "Michal Morávek",
+				"email" : "michal.moravek.cz@gmail.com"
+			}
+		]
+	},
+	{
+		"id" : "4",
+		"title" : "Lorem ipsum",
+		"description" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+		"owner" : {
+			"id" : "mmoravek",
+			"name" : "Michal Morávek",
+			"email" : "michal.moravek.cz@gmail.com"
+		},
+		"members" : [
+			{
+				"id" : "mbocek",
+				"name" : "Michal Bocek",
+				"email" : "michal.bocek@gmail.com"
+			},
+			{
+				"id" : "mmoravek",
+				"name" : "Michal Morávek",
+				"email" : "michal.moravek.cz@gmail.com"
+			}
+		]
+	},
+	{
+		"id" : "5",
+		"title" : "Cras feugiat",
+		"description" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras feugiat libero purus, quis venenatis purus.",
+		"owner" : {
+			"id" : "mmoravek",
+			"name" : "Michal Morávek",
+			"email" : "michal.moravek.cz@gmail.com"
+		},
+		"members" : [
+			{
+				"id" : "mbocek",
+				"name" : "Michal Bocek",
+				"email" : "michal.bocek@gmail.com"
+			},
+			{
+				"id" : "mmoravek",
+				"name" : "Michal Morávek",
+				"email" : "michal.moravek.cz@gmail.com"
+			}
+		]
+	}
+]

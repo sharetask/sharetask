@@ -1,0 +1,18 @@
+{
+	"id" : "7",
+	"title" : "Book a room for the event",
+	"description" : "Nulla facilisi. Suspendisse potenti. Phasellus luctus pharetra justo, a facilisis dui facilisis dignissim. Sed eu mauris suscipit enim convallis sollicitudin.",
+	"createdBy" : {
+		"id" : "mmoravek",
+		"name" : "Michal Morávek",
+		"email" : "michal.moravek.cz@gmail.com"
+	},
+	"createdOn" : "2013-02-25T19:16:56",
+	"dueDate" : "2013-04-01T00:00:00",
+	"owners" : "",
+	"state" : "ASSIGNED",
+	"tags" : [
+		"private"
+	],
+	"priority" : "LOW"
+}
