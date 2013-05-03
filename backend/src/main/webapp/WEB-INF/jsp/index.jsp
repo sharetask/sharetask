@@ -3,17 +3,16 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <spring:eval expression="@applicationProps['application.version']" var="applicationVersion"/>
-<c:url value="/resources-${applicationVersion}" var="resourceUrl" />
 
 <!doctype html>
 <html lang="en" ng-app="shareTaskApp">
 	<head>
 		<meta charset="utf-8">
 		<title>ShareTa.sk</title>
-		<link rel="stylesheet" type="text/css" href="${resourceUrl}/css/bootswatch.min.css">
-		<link rel="stylesheet" type="text/css" href="${resourceUrl}/css/datepicker.css">
-		<link rel="stylesheet" type="text/css" href="${resourceUrl}/css/bootstrap-timepicker.css">
-		<link rel="stylesheet" type="text/css" href="${resourceUrl}/css/sharetask.css">
+		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-${applicationVersion}/css/bootswatch.min.css" />">
+		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-${applicationVersion}/css/datepicker.css" />">
+		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-${applicationVersion}/css/bootstrap-timepicker.css" />">
+		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-${applicationVersion}/css/sharetask.css" />">
 	</head>
 	<body>
 		<!-----------------------------------
@@ -47,16 +46,16 @@
 		<!-- In production use:
 		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
 		-->
-		<script type="text/javascript" src="${resourceUrl}/scripts/vendor/jquery/jquery-1.9.1.min.js"></script>
-		<script type="text/javascript" src="${resourceUrl}/scripts/vendor/jquery/jquery-ui.min.js"></script>
-		<script type="text/javascript" src="${resourceUrl}/scripts/vendor/bootstrap/bootstrap.min.js"></script>
-		<script type="text/javascript" src="${resourceUrl}/scripts/vendor/angular/angular.min.js"></script>
-		<script type="text/javascript" src="${resourceUrl}/scripts/vendor/angular/angular-resource.min.js"></script>
-		<script type="text/javascript" src="${resourceUrl}/scripts/vendor/angular/angular-ui.min.js"></script>
-		<script type="text/javascript" src="${resourceUrl}/scripts/app.js"></script>
-		<script type="text/javascript" src="${resourceUrl}/scripts/services/services.js"></script>
-		<script type="text/javascript" src="${resourceUrl}/scripts/controllers/controllers.js"></script>
-		<script type="text/javascript" src="${resourceUrl}/scripts/filters/filters.js"></script>
-		<script type="text/javascript" src="${resourceUrl}/scripts/directives/directives.js"></script>
+		<script type="text/javascript" src="<c:url value="/resources-${applicationVersion}/scripts/vendor/jquery/jquery-1.9.1.min.js" />"></script>
+		<script type="text/javascript" src="<c:url value="/resources-${applicationVersion}/scripts/vendor/jquery/jquery-ui.min.js" />"></script>
+		<script type="text/javascript" src="<c:url value="/resources-${applicationVersion}/scripts/vendor/bootstrap/bootstrap.min.js" />"></script>
+		<script type="text/javascript" src="<c:url value="/resources-${applicationVersion}/scripts/vendor/angular/angular.min.js" />"></script>
+		<script type="text/javascript" src="<c:url value="/resources-${applicationVersion}/scripts/vendor/angular/angular-resource.min.js" />"></script>
+		<script type="text/javascript" src="<c:url value="/resources-${applicationVersion}/scripts/vendor/angular/angular-ui.min.js" />"></script>
+		<script type="text/javascript" src="<c:url value="/resources-${applicationVersion}/scripts/app.js" />"></script>
+		<script type="text/javascript" src="<c:url value="/resources-${applicationVersion}/scripts/services/services.js" />"></script>
+		<script type="text/javascript" src="<c:url value="/resources-${applicationVersion}/scripts/controllers/controllers.js" />"></script>
+		<script type="text/javascript" src="<c:url value="/resources-${applicationVersion}/scripts/filters/filters.js" />"></script>
+		<script type="text/javascript" src="<c:url value="/resources-${applicationVersion}/scripts/directives/directives.js" />"></script>
 	</body>
 </html>
