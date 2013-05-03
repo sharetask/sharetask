@@ -47,16 +47,16 @@
 		<!-- In production use:
 		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
 		-->
-		<script type="text/javascript" src="${resourceUrl}/lib/jquery/jquery-1.9.1.min.js"></script>
-		<script type="text/javascript" src="${resourceUrl}/lib/jquery/jquery-ui.min.js"></script>
-		<script type="text/javascript" src="${resourceUrl}/lib/bootstrap/bootstrap.min.js"></script>
-		<script type="text/javascript" src="${resourceUrl}/lib/angular/angular.min.js"></script>
-		<script type="text/javascript" src="${resourceUrl}/lib/angular/angular-resource.min.js"></script>
-		<script type="text/javascript" src="${resourceUrl}/lib/angular/angular-ui.min.js"></script>
-		<script type="text/javascript" src="${resourceUrl}/js/app.js"></script>
-		<script type="text/javascript" src="${resourceUrl}/js/services.js"></script>
-		<script type="text/javascript" src="${resourceUrl}/js/controllers.js"></script>
-		<script type="text/javascript" src="${resourceUrl}/js/filters.js"></script>
-		<script type="text/javascript" src="${resourceUrl}/js/directives.js"></script>
+		<script type="text/javascript" src="${resourceUrl}/scripts/vendor/jquery/jquery-1.9.1.min.js"></script>
+		<script type="text/javascript" src="${resourceUrl}/scripts/vendor/jquery/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="${resourceUrl}/scripts/vendor/bootstrap/bootstrap.min.js"></script>
+		<script type="text/javascript" src="${resourceUrl}/scripts/vendor/angular/angular.min.js"></script>
+		<script type="text/javascript" src="${resourceUrl}/scripts/vendor/angular/angular-resource.min.js"></script>
+		<script type="text/javascript" src="${resourceUrl}/scripts/vendor/angular/angular-ui.min.js"></script>
+		<script type="text/javascript" src="${resourceUrl}/scripts/app.js"></script>
+		<script type="text/javascript" src="${resourceUrl}/scripts/services/services.js"></script>
+		<script type="text/javascript" src="${resourceUrl}/scripts/controllers/controllers.js"></script>
+		<script type="text/javascript" src="${resourceUrl}/scripts/filters/filters.js"></script>
+		<script type="text/javascript" src="${resourceUrl}/scripts/directives/directives.js"></script>
 	</body>
 </html>
