@@ -34,7 +34,7 @@
 		</property>
 	</bean>
 
-	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"  destroy-method="close">
 		<property name="driverClass" value="${database.jdbc.driver}" />
 		<property name="jdbcUrl" value="${database.jdbc.url}" />
 		<property name="user" value="${database.jdbc.user}" />
@@ -46,5 +46,5 @@
 		<property name="acquireIncrement" value="${pool.acquireIncrement}" />
 		<property name="maxIdleTime" value="${pool.maxIdleTime}" />
 		<property name="maxStatements" value="${pool.maxStatements}" />
-	</bean>
+	</bean> 
 </beans>
