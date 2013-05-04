@@ -156,6 +156,20 @@ angular.module('shareTaskApp.controllers', ['ui']).
 		 * @param {number} taskId - Task ID.
 		 * @param {string} tag - Tag name.
 		 */
+		$scope.addTaskTag = function() {
+			console.log("Add new tag to task, id: %s, tag: %s", $scope.activeTask.id, $scope.newTag);
+			$scope.activeTask.tags.push($scope.newTag);
+			$scope.updateTask($scope.activeTask);
+			$scope.taskEditMode = '';
+			$scope.newTag = '';
+		};
+		
+		/**
+		 * Removing tag from the task.
+		 * Task is stored to server.
+		 * @param {number} taskId - Task ID.
+		 * @param {string} tag - Tag name.
+		 */
 		$scope.removeTag = function(taskId, tag) {
 			console.log("Remove task tag, id: %s, tag: %s", taskId, tag);
 		};
@@ -201,6 +215,8 @@ angular.module('shareTaskApp.controllers', ['ui']).
 				return e.id == task.id;
 			});
 			result[0].title = task.title;
+			result[0].description = task.description;
+			result[0].tags = task.tags;
 			//console.log("tasks, %o", this.tasks);
 			// TODO - call REST API update
 			

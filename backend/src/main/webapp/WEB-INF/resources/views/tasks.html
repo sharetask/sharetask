@@ -31,13 +31,12 @@
 						<div class="tile" ng-class="{'active':'MY_HIGH_PRIORITY'==filter.queue}" ng-click="setTaskFilterQueue('MY_HIGH_PRIORITY')"><div>High Priority</div><div class="pull-right">{{allTasks | queueTasksCount: "MY_HIGH_PRIORITY"}}</div></div>
 						<div class="tile" ng-class="{'active':'MY_COMPLETED'==filter.queue}" ng-click="setTaskFilterQueue('MY_COMPLETED')"><div>Completed</div><div class="pull-right">{{allTasks | queueTasksCount: "MY_COMPLETED"}}</div></div>
 						<br />
-						<span class="badge cursor-pointer" ng-repeat="tag in tags" ng-class="{'badge-warning':tag == filter.tag}" ng-click="setTaskFilterTag(tag)">{{tag}}</span>
+						<div class="tag cursor-pointer" ng-repeat="tag in tags"><span class="text" ng-class="{'warning':tag == filter.tag}" ng-click="setTaskFilterTag(tag)">{{tag}}</span></div>
 					</div>
 				</div>
 			</div>
 			<div class="panel-task-divider" ng-class="{'left':!viewPanelTaskFilter}" ng-click="setView('PANEL-TASK-FILTER')">
-				<div class="panel-task-divider-inner">
-				</div>
+				<div class="panel-task-divider-inner cursor-pointer" title="show / hide left panel"></div>
 			</div>
 			<!-- task list panel -->
 			<div class="panel-task-list" ng-class="{'large':!viewPanelTaskFilter}">
@@ -91,10 +90,10 @@
 									</div>
 									<div class="row-full">
 										<div class="span8">
-											<span class="badge" ng-repeat="tag in task.tags" ng-class="{'label-light':task.id == activeTask.id, 'label-warning':tag == filter.tag}">{{tag}} <i class="icon-remove cursor-pointer" ng-click="removeTag(task.id, tag)" stop-event="click"></i></span>
+											<div class="tag" ng-repeat="tag in task.tags"><span class="text" ng-class="{'selected':tag == filter.tag}">{{tag}}</span><span class="remove cursor-pointer" ng-click="removeTag(task.id, tag)" stop-event="click">x</span></div>
 										</div>
 										<div class="span4" style="text-align:right;">
-											<span class="badge badge-inverse"><i class="icon-comment icon-white"></i> {{task.comments}}</span>
+											<div class="tag"><span class="text"><i class="icon-comment icon-white"></i> {{task.comments}}</span></div>
 										</div>
 									</div>
 								</div>
@@ -136,14 +135,21 @@
 									</div>
 								</div>
 								<div class="span4" style="text-align:right;">
-									<span class="badge cursor-pointer" ng-class="{'hidden':taskEditMode == 'PRIORITY','badge-info':activeTask.priority == 'LOW','badge-inverse':activeTask.priority == 'STANDARD','badge-important':activeTask.priority == 'HIGH'}" ng-click="changeTaskPriority()"><strong>{{activeTask.priority}}</strong></span>
+									<div class="tag cursor-pointer"><span class="text" ng-class="{'hidden':taskEditMode == 'PRIORITY','priority-low':activeTask.priority == 'LOW','priority-standard':activeTask.priority == 'STANDARD','priority-high':activeTask.priority == 'HIGH'}" ng-click="changeTaskPriority()"><strong>{{activeTask.priority}}</strong></span></div>
 								</div>
 							</div>
 						</div>
 						
 						<div style="margin-top:5px;">
-							<span class="badge" ng-repeat="tag in activeTask.tags">{{tag}} <i class="icon-remove cursor-pointer" ng-click="removeTag(activeTask.id, tag)"></i></span>
-							<span class="badge cursor-pointer" ng-click=""><i class="icon-plus"></i></span>
+							<div class="tag" ng-repeat="tag in activeTask.tags"><span class="text">{{tag}}</span><span class="remove cursor-pointer" ng-click="removeTag(activeTask.id, tag)">x</span></div>
+							<span class="tag cursor-pointer" ng-click="setTaskEditMode('ADD-TAG')"><span class="remove cursor-pointer"><i class="icon-plus icon-white"></i></span></span>
+							<div ng-class="{'hidden':taskEditMode != 'ADD-TAG'}">
+								<div class="input-append">
+									<input type="text" placeholder="type new label name..." ng-model="newTag" ui-keypress="{enter:'addTaskTag()', esc:'setTaskEditMode(\'\')'}" focus="editing" />
+									<button class="btn btn-inverse" ng-click="addTaskTag()">OK</button>
+								</div>
+							</div>
+							
 							<div id="taskDetailAddLabelForm" class="hidden"><input id="taskDetailAddLabelInput" class="span3" type="text" placeholder="" /> <a href="#" id="taskDetailAddLabelClose"><i class="icon-remove"></i></a></div>
 						</div>
 						
