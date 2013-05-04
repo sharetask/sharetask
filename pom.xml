@@ -16,7 +16,7 @@
 	</modules>
 
 	<issueManagement>
-		<url>https://github.com/mbocek/sharetask/issues</url>
+		<url>https://github.com/sharetask/sharetask/issues</url>
 		<system>GitHub Issues</system>
 	</issueManagement>
 
@@ -29,15 +29,15 @@
 	</licenses>
 
 	<scm>
-		<url>https://github.com/mbocek/sharetask</url>
-		<connection>scm:git:git://github.com/mbocek/sharetask.git</connection>
-		<developerConnection>scm:git:git@github.com:mbocek/sharetask.git</developerConnection>
+		<url>https://github.com/sharetask/sharetask</url>
+		<connection>scm:git:git://github.com/sharetask/sharetask.git</connection>
+		<developerConnection>scm:git:git@github.com:sharetask/sharetask.git</developerConnection>
 	</scm>
 
 	<distributionManagement>
 		<site>
 			<id>github.sharetask</id>
-			<url>gitsite:git@github.com/mbocek/sharetask.git</url>
+			<url>gitsite:git@github.com/sharetask/sharetask.git</url>
 		</site>
 	</distributionManagement>
 
