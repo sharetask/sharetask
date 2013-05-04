@@ -7,13 +7,13 @@ shareTaskApp.service('Workspace', function($resource) {
 	
 	this.findAll = function(callback) {
 		console.log("Getting all workspaces from server");
-		return $resource("js/data/workspaces.json", {}, {query: {method: "GET", isArray: true}}).query(callback);
+		return $resource("/sharetask/resources-1.0.0/scripts/data/workspaces.json", {}, {query: {method: "GET", isArray: true}}).query(callback);
 	};
 	
 	this.getTasks = function(input, callback) {
 		console.log("Getting tasks for workspace (id: %s) from server", input.workspaceId);
 		console.log("Get JSON file js/data/workspace-"+input.workspaceId+"-tasks.json");
-		return $resource("js/data/workspace-"+input.workspaceId+"-tasks.json", {}, {query: {method: "GET", isArray: true}}).query(callback);
+		return $resource("/sharetask/resources-1.0.0/scripts/data/workspace-"+input.workspaceId+"-tasks.json", {}, {query: {method: "GET", isArray: true}}).query(callback);
 	};
 });
 
@@ -22,7 +22,7 @@ shareTaskApp.service('Task', function($resource) {
 	this.findById = function(input, callback) {
 		console.log("Getting task (id: %s) from server", input.id);
 		console.log("Get JSON file js/data/task-"+input.id+".json");
-		return $resource("js/data/task-"+input.id+".json", {}, {query: {method: "GET", isArray: false}}).query(callback);
+		return $resource("/sharetask/resources-1.0.0/scripts/data/task-"+input.id+".json", {}, {query: {method: "GET", isArray: false}}).query(callback);
 	};
 });
 

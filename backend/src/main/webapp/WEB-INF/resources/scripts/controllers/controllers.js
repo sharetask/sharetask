@@ -156,6 +156,20 @@ angular.module('shareTaskApp.controllers', ['ui']).
 		 * @param {number} taskId - Task ID.
 		 * @param {string} tag - Tag name.
 		 */
+		$scope.addTaskTag = function() {
+			console.log("Add new tag to task, id: %s, tag: %s", $scope.activeTask.id, $scope.newTag);
+			$scope.activeTask.tags.push($scope.newTag);
+			$scope.updateTask($scope.activeTask);
+			$scope.taskEditMode = '';
+			$scope.newTag = '';
+		};
+		
+		/**
+		 * Removing tag from the task.
+		 * Task is stored to server.
+		 * @param {number} taskId - Task ID.
+		 * @param {string} tag - Tag name.
+		 */
 		$scope.removeTag = function(taskId, tag) {
 			console.log("Remove task tag, id: %s, tag: %s", taskId, tag);
 		};
@@ -201,6 +215,8 @@ angular.module('shareTaskApp.controllers', ['ui']).
 				return e.id == task.id;
 			});
 			result[0].title = task.title;
+			result[0].description = task.description;
+			result[0].tags = task.tags;
 			//console.log("tasks, %o", this.tasks);
 			// TODO - call REST API update
 			
@@ -248,21 +264,11 @@ angular.module('shareTaskApp.controllers', ['ui']).
 		};
 		
 		/**
-		 * Assign active task.
-		 * Task data are stored to server.
-		 */
-		$scope.assignTask = function() {
-			console.log("Assign task (id: %s)", $scope.activeTask.id);
-			$scope.activeTask.state = 'ASSIGNED';
-			$scope.updateTask($scope.activeTask);
-		};
-		
-		/**
 		 * Forward active task to another workspace member.
 		 * Task data are stored to server.
 		 */
-		$scope.forwardTask = function(userId) {
-			console.log("Forward task (userId: %s)", userId);
+		$scope.forwardTask = function(user) {
+			console.log("Forward task (id: %s) to user (user: %s)", $scope.activeTask.id, user);
 			$scope.updateTask($scope.activeTask);
 		};
 		
@@ -289,8 +295,8 @@ angular.module('shareTaskApp.controllers', ['ui']).
 		 * Move active task to another workspace.
 		 * Task data are stored to server.
 		 */
-		$scope.moveTask = function() {
-			console.log("move task (id: %s)", $scope.activeTask.id);
+		$scope.moveTask = function(workspace) {
+			console.log("move task (id: %s) to workspace (%s)", $scope.activeTask.id, workspace);
 		};
 	}])
 	.controller('AdminCtrl', ['$scope', 'Workspace', function($scope, Workspace) {
