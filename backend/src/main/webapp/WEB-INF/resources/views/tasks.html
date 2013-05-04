@@ -107,12 +107,39 @@
 				<div class="panel-task-detail-inner">
 					<div class="panel-task-detail-content">
 						
-						<div style="padding:5px 0;border-bottom:1px solid #ddd;">
-							<button class="btn btn-inverse" ng-click="completeTask()">Complete</button>
-							<button class="btn" ng-click="assignTask()">Assign</button>
-							<button class="btn" ng-click="forwardTask()">Forward</button>
-							<button class="btn" ng-click="moveTask()">Move</button>
-							<button class="btn" ng-click="deleteTask()">Delete</button>
+						<div class="task-detail-action">
+							<button class="btn btn-inverse" ng-click="setTaskEditMode('COMPLETE-TASK')">Complete</button>
+							<button class="btn" ng-click="setTaskEditMode('FORWARD-TASK')">Forward</button>
+							<button class="btn" ng-click="setTaskEditMode('MOVE-TASK')">Move</button>
+							<button class="btn" ng-click="setTaskEditMode('DELETE-TASK')">Delete</button>
+						</div>
+						
+						<div class="task-detail-action-confirm" ng-class="{'hidden':taskEditMode != 'COMPLETE-TASK'}">
+							<p>Do you really want to complete task?</p>
+							<button class="btn btn-inverse" ng-click="completeTask()">Yes</button>
+							<button class="btn" ng-click="setTaskEditMode('')">No</button>
+						</div>
+						
+						<div class="task-detail-action-confirm" ng-class="{'hidden':taskEditMode != 'FORWARD-TASK'}">
+							<p>Forward task to another workspace member.</p>
+							<div class="input-append">
+								<input type="text" placeholder="search member..." ng-model="forwardUser" ui-keypress="{enter:'forwardTask()', esc:'setTaskEditMode(\'\')'}" focus="editing" />
+								<button class="btn btn-inverse" ng-click="forwardTask(forwardUser)">Forward</button>
+							</div>
+						</div>
+						
+						<div class="task-detail-action-confirm" ng-class="{'hidden':taskEditMode != 'MOVE-TASK'}">
+							<p>Move task to another workspace.</p>
+							<div class="input-append">
+								<input type="text" placeholder="search workspace..." ng-model="moveWorkspace" ui-keypress="{enter:'moveTask()', esc:'setTaskEditMode(\'\')'}" focus="editing" />
+								<button class="btn btn-inverse" ng-click="moveTask(moveWorkspace)">Move</button>
+							</div>
+						</div>
+						
+						<div class="task-detail-action-confirm" ng-class="{'hidden':taskEditMode != 'DELETE-TASK'}">
+							<p>Do you really want to delete task?</p>
+							<button class="btn btn-inverse" ng-click="deleteTask()">Yes</button>
+							<button class="btn" ng-click="setTaskEditMode('')">No</button>
 						</div>
 						
 						<div style="margin-top:5px;padding:5px;background:#bbb;color:#fff;font-weight:bold;">

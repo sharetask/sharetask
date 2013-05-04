@@ -173,6 +173,9 @@ body {margin:0;padding:0;-webkit-text-size-adjust:100%;}
 .panel-task-detail-inner {height:100%;border-left:3px solid #ddd;overflow-y:auto;-webkit-overflow-scrolling:touch;}
 .panel-task-detail-content {padding:0 5px;}
 
+.task-detail-action {padding:5px 0;border-bottom:1px solid #ddd;}
+.task-detail-action-confirm {margin:5px 0;padding:5px;border:1px solid #ddd;background:#fff;}
+
 .task-list {width:100%;top:80px;bottom:0;overflow:visible;position:absolute;}
 .task-list.small {top:125px;}
 .task-list-inner {height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;}

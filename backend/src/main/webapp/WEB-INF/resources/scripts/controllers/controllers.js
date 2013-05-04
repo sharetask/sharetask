@@ -264,21 +264,11 @@ angular.module('shareTaskApp.controllers', ['ui']).
 		};
 		
 		/**
-		 * Assign active task.
-		 * Task data are stored to server.
-		 */
-		$scope.assignTask = function() {
-			console.log("Assign task (id: %s)", $scope.activeTask.id);
-			$scope.activeTask.state = 'ASSIGNED';
-			$scope.updateTask($scope.activeTask);
-		};
-		
-		/**
 		 * Forward active task to another workspace member.
 		 * Task data are stored to server.
 		 */
-		$scope.forwardTask = function(userId) {
-			console.log("Forward task (userId: %s)", userId);
+		$scope.forwardTask = function(user) {
+			console.log("Forward task (id: %s) to user (user: %s)", $scope.activeTask.id, user);
 			$scope.updateTask($scope.activeTask);
 		};
 		
@@ -305,8 +295,8 @@ angular.module('shareTaskApp.controllers', ['ui']).
 		 * Move active task to another workspace.
 		 * Task data are stored to server.
 		 */
-		$scope.moveTask = function() {
-			console.log("move task (id: %s)", $scope.activeTask.id);
+		$scope.moveTask = function(workspace) {
+			console.log("move task (id: %s) to workspace (%s)", $scope.activeTask.id, workspace);
 		};
 	}])
 	.controller('AdminCtrl', ['$scope', 'Workspace', function($scope, Workspace) {
