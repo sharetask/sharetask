@@ -1,0 +1,19 @@
+		<!-----------------------------------
+		  -- LOGIN PAGE
+		  ----------------------------------->
+		<div ng-controller="AuthCtrl">
+			<div style="margin-top:10%;">
+				<div class="row">
+					<div class="span4 offset4">
+						<h3>ShareTa.sk</h3><br />
+						<div class="alert alert-error" ng-class="{'hidden':errorStatus < 400}">
+							<a class="close">&times;</a>
+							<strong>Error</strong> Bad user name or password.
+						</div>
+						<input class="span4" type="text" placeholder="username" ng-model="user.username" /><br />
+						<input class="span4" type="password" placeholder="password" ng-model="user.password" /><br />
+						<button class="btn btn-inverse" ng-click="login()">Login</button>
+					</div>
+				</div>
+			</div>
+		</div>

@@ -1,26 +1,53 @@
-		<!-----------------------------------
-		  -- WORKSPACE MENU
-		  ----------------------------------->
-		<div id="workspace-menu" ng-cloak>
-			<div class="navbar">
-				<div class="navbar-inner">
-					<div class="container" style="width:auto;">
-						<span class="brand">My Workspaces</span>
-						<ul id="workspaceList" class="nav">
-							<li class="cursor-pointer" ng-repeat="workspace in workspaces"><a ng-click="setActiveWorkspace(workspace.id)">{{workspace.title}}</a></li>
-						</ul>
-						<ul class="nav pull-right">
-							<li class="cursor-pointer"><a ng-click=""><i class="icon-plus icon-white"></i> Add Workspace</a></li>
-						</ul>
+		<div ng-controller="AppCtrl" ng-cloak>
+			<!-----------------------------------
+			  -- APPLICATION MENU
+			  ----------------------------------->
+			<div id="app-menu">
+				<div class="navbar navbar-inverse">
+					<div class="navbar-inner">
+						<div class="container" style="width:auto;">
+							<span class="brand">ShareTa.sk</span>
+							<ul class="nav">
+								<li class="active"><a id="menuItemTasks" href="#/tasks"><i class="icon-tasks icon-white"></i> <span id="textTasks">Tasks</span></a></li>
+							</ul>
+							<ul class="nav pull-right">
+								<li><a id="menuItemAdministration" href="#/admin"><i class="icon-wrench icon-white"></i> <span id="textAdministration">Administration</span></a></li>
+								<li id="fat-menu" class="dropdown">
+									<a id="dropUser" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user icon-white"></i> <span id="userName"></span> <b class="caret"></b></a>
+									<ul class="dropdown-menu" role="menu" aria-labelledby="dropUser">
+										<li><a role="menuitem" tabindex="-1" href="#/user"><span id="textMySettings">My settings</span></a></li>
+										<li class="divider"></li>
+										<li><a role="menuitem" tabindex="-1" ng-click="logout()"><i class="icon-off"></i> Logout</a></li>
+									</ul>
+								</li>
+							</ul>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+			
+			<!-----------------------------------
+			  -- WORKSPACE MENU
+			  ----------------------------------->
+			<div id="workspace-menu">
+				<div class="navbar">
+					<div class="navbar-inner">
+						<div class="container" style="width:auto;">
+							<span class="brand">My Workspaces</span>
+							<ul id="workspaceList" class="nav">
+								<li class="cursor-pointer" ng-repeat="workspace in workspaces"><a ng-click="setActiveWorkspace(workspace.id)">{{workspace.title}}</a></li>
+							</ul>
+							<ul class="nav pull-right">
+								<li class="cursor-pointer"><a ng-click=""><i class="icon-plus icon-white"></i> Add Workspace</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
 
-		<!-----------------------------------
-		  -- PAGE TASKS
-		  ----------------------------------->
-		<div ng-controller="WorkspaceCtrl" ng-cloak>
+			<!-----------------------------------
+			  -- PAGE TASKS
+			  ----------------------------------->
 			<!-- task filter panel -->
 			<div class="panel-task-filter" ng-class="{'hide2':!viewPanelTaskFilter}">
 				<div class="panel-task-filter-inner">
@@ -103,7 +130,7 @@
 				</div>
 			</div>
 			
-			<div class="panel-task-detail" ng-cloak>
+			<div class="panel-task-detail">
 				<div class="panel-task-detail-inner">
 					<div class="panel-task-detail-content">
 						

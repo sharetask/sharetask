@@ -3,6 +3,15 @@
 /* Services */
 var shareTaskApp = angular.module('shareTaskApp.services', ['ngResource']);
 
+shareTaskApp.service('User', function($resource, $http) {
+	
+	this.authenticate = function(user, success, error) {
+		console.log("Login user (user: %o)", user);
+		//return $http.post('/sharetask/api/user/login', {username: 'dev1@shareta.sk', password: 'password'}).success(success).error(error);
+		return $http.post('/sharetask/api/user/login', {username: user.username, password: user.password}).success(success).error(error);
+	};
+});
+
 shareTaskApp.service('Workspace', function($resource) {
 	
 	this.findAll = function(callback) {

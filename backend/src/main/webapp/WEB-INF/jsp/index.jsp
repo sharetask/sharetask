@@ -15,33 +15,6 @@
 		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-${applicationVersion}/css/sharetask.css" />">
 	</head>
 	<body>
-		<!-----------------------------------
-		  -- APPLICATION MENU
-		  ----------------------------------->
-		<div id="app-menu">
-			<div class="navbar navbar-inverse">
-				<div class="navbar-inner">
-					<div class="container" style="width:auto;">
-						<span class="brand">ShareTa.sk</span>
-						<ul class="nav">
-							<li class="active"><a id="menuItemTasks" href="#/tasks"><i class="icon-tasks icon-white"></i> <span id="textTasks">Tasks</span></a></li>
-						</ul>
-						<ul class="nav pull-right">
-							<li><a id="menuItemAdministration" href="#/admin"><i class="icon-wrench icon-white"></i> <span id="textAdministration">Administration</span></a></li>
-							<li id="fat-menu" class="dropdown">
-								<a href="#" id="dropUser" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user icon-white"></i> <span id="userName"></span> <b class="caret"></b></a>
-								<ul class="dropdown-menu" role="menu" aria-labelledby="dropUser">
-									<li><a id="menuItemUserSettings" role="menuitem" tabindex="-1" href="#/user"><span id="textMySettings">My settings</span></a></li>
-									<li class="divider"></li>
-									<li><a id="menuItemUserLogout" role="menuitem" tabindex="-1" href="#"><i class="icon-off"></i> <span id="textLogout">Logout</span></a></li>
-								</ul>
-							</li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-		
 		<div ng-view></div>
 		<!-- In production use:
 		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
@@ -60,7 +33,8 @@
 			// Declare app level module which depends on filters, and services
 			angular.module('shareTaskApp', ['shareTaskApp.filters', 'shareTaskApp.services', 'shareTaskApp.directives', 'shareTaskApp.controllers']).
 				config(['$routeProvider', function($routeProvider) {
-					$routeProvider.when('/tasks', {templateUrl: '<c:url value="/resources-${applicationVersion}/views/tasks.html" />', controller: 'AppCtrl'});
+					$routeProvider.when('/', {templateUrl: '<c:url value="/resources-${applicationVersion}/views/index.html" />'/*, controller: 'AppCtrl'*/});
+					$routeProvider.when('/tasks', {templateUrl: '<c:url value="/resources-${applicationVersion}/views/tasks.html" />'/*, controller: 'AppCtrl'*/});
 					$routeProvider.when('/admin', {templateUrl: '<c:url value="/resources-${applicationVersion}/views/admin.html" />', controller: 'AdminCtrl'});
 					$routeProvider.when('/user', {templateUrl: '<c:url value="/resources-${applicationVersion}/views/user.html" />', controller: 'UserCtrl'});
 					$routeProvider.otherwise({redirectTo: '/'});

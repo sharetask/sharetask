@@ -2,7 +2,55 @@
 
 /* Controllers */
 angular.module('shareTaskApp.controllers', ['ui']).
-	controller('AppCtrl', ['$scope', 'Workspace', function($scope, Workspace) {
+	controller('AuthCtrl', ['$scope', '$location', '$rootScope', 'User', function($scope, $location, $rootScope, User) {
+		
+		$scope.errorStatus = 0;
+		
+		console.log("Logged user: %o", $rootScope.loggedUser);
+		
+		// redirect to tasks if user is already logged in
+		if (!jQuery.isEmptyObject($rootScope.loggedUser)) {
+			console.log("User (user: %o) is already logged in. Redirect into tasks.", $rootScope.loggedUser);
+			$location.path("/tasks");
+		}
+		
+		/**
+		 * Login user.
+		 * User is redirected to tasks page.
+		 */
+		$scope.login = function() {
+			console.log("Login user (username: %s) with password (password: %s)", $scope.user.username, $scope.user.password);
+			User.authenticate({username: $scope.user.username, password: $scope.user.password}, function(data, status) {
+					console.log("Auth success! data: %o, status: %o", data, status);
+					$rootScope.loggedUser = {username: $scope.user.username};
+					$location.path("/tasks");
+				}, function(data, status) {
+					console.log("Auth error! data: %o, status: %o", data, status);
+					$rootScope.loggedUser = {};
+					$scope.errorStatus = status;
+			});
+		}
+		
+	}])
+	.controller('AppCtrl', ['$scope', '$location', '$rootScope', '$filter', 'Workspace', 'Task', 'User', 'LocalStorage', function($scope, $location, $rootScope, $filter, Workspace, Task, User, LocalStorage) {
+		
+		$scope.viewPanelTaskFilter = true;
+		$scope.activeWorkspaceId;
+		$scope.activeTask;
+		$scope.taskEditMode = '';
+		$scope.filter = {'queue': 'MY_PENDING', 'tag': '', 'searchString': '', 'orderBy': 'TASK_DUE_DATE'};
+		$scope.tags = [];
+		var taskFilter = $filter('filterTasks');
+		
+		/**
+		 * Logout user.
+		 * User is redirected to root (login) page.
+		 */
+		$scope.logout = function() {
+			console.log("Logout user: %s", $rootScope.loggedUser.username);
+			$rootScope.loggedUser = {};
+			$location.path("/");
+		};
 		
 		/**
 		 * Loading all workspaces from server.
@@ -10,7 +58,9 @@ angular.module('shareTaskApp.controllers', ['ui']).
 		$scope.workspaces = Workspace.findAll(function(workspaces) {
 				console.log("Loaded workspaces from server: %o", workspaces);
 				if (workspaces.length) {
-					$scope.setActiveWorkspace(workspaces[0].id);
+					$scope.activeWorkspaceId = workspaces[0].id;
+					$scope.loadTasks();
+					//$scope.setActiveWorkspace(workspaces[0].id);
 				}
 			}, function(response) {
 				console.log("response: %o", response);
@@ -25,16 +75,6 @@ angular.module('shareTaskApp.controllers', ['ui']).
 			console.log("Setting active workspace (id: %s)", id);
 			$scope.$broadcast('EVENT_SET_ACTIVE_WORKSPACE', {workspaceId: id});
 		};
-	}])
-	.controller('WorkspaceCtrl', ['$scope', '$filter', 'Workspace', 'Task', 'LocalStorage', function($scope, $filter, Workspace, Task, LocalStorage) {
-		
-		$scope.viewPanelTaskFilter = true;
-		$scope.activeWorkspaceId;
-		$scope.activeTask;
-		$scope.taskEditMode = '';
-		$scope.filter = {'queue': 'MY_PENDING', 'tag': '', 'searchString': '', 'orderBy': 'TASK_DUE_DATE'};
-		$scope.tags = [];
-		var taskFilter = $filter('filterTasks');
 		
 		/**
 		 * Receive event 'EVENT_SET_ACTIVE_WORKSPACE' for setting active workspace.
