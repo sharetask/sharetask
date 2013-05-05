@@ -52,11 +52,26 @@
 			<div class="panel-task-filter" ng-class="{'hide2':!viewPanelTaskFilter}">
 				<div class="panel-task-filter-inner">
 					<div class="panel-task-filter-content">
-						<div class="tile" ng-class="{'active':'MY_PENDING'==filter.queue}" ng-click="setTaskFilterQueue('MY_PENDING')"><div>Pending</div><div class="pull-right">{{allTasks | queueTasksCount: "MY_PENDING"}}</div></div>
-						<div class="tile" ng-class="{'active':'MY_TODAY'==filter.queue}" ng-click="setTaskFilterQueue('MY_TODAY')"><div>Today</div><div class="pull-right">{{allTasks | queueTasksCount: "MY_TODAY"}}</div></div>
-						<div class="tile" ng-class="{'active':'MY_OVERDUE'==filter.queue}" ng-click="setTaskFilterQueue('MY_OVERDUE')"><div>Overdue</div><div class="pull-right">{{allTasks | queueTasksCount: "MY_OVERDUE"}}</div></div>
-						<div class="tile" ng-class="{'active':'MY_HIGH_PRIORITY'==filter.queue}" ng-click="setTaskFilterQueue('MY_HIGH_PRIORITY')"><div>High Priority</div><div class="pull-right">{{allTasks | queueTasksCount: "MY_HIGH_PRIORITY"}}</div></div>
-						<div class="tile" ng-class="{'active':'MY_COMPLETED'==filter.queue}" ng-click="setTaskFilterQueue('MY_COMPLETED')"><div>Completed</div><div class="pull-right">{{allTasks | queueTasksCount: "MY_COMPLETED"}}</div></div>
+						<div class="tile" ng-class="{'active':'MY_PENDING'==filter.queue}" ng-click="setTaskFilterQueue('MY_PENDING')">
+							<div class="header"></div>
+							<div class="footer">Pending<span class="pull-right">{{allTasks | queueTasksCount: 'MY_PENDING'}}</span></div>
+						</div>
+						<div class="tile" ng-class="{'active':'MY_TODAY'==filter.queue}" ng-click="setTaskFilterQueue('MY_TODAY')">
+							<div class="header"></div>
+							<div class="footer">Today<span class="pull-right">{{allTasks | queueTasksCount: 'MY_TODAY'}}</span></div>
+						</div>
+						<div class="tile" ng-class="{'active':'MY_OVERDUE'==filter.queue}" ng-click="setTaskFilterQueue('MY_OVERDUE')">
+							<div class="header"></div>
+							<div class="footer">Overdue<span class="pull-right">{{allTasks | queueTasksCount: 'MY_OVERDUE'}}</span></div>
+						</div>
+						<div class="tile" ng-class="{'active':'MY_HIGH_PRIORITY'==filter.queue}" ng-click="setTaskFilterQueue('MY_HIGH_PRIORITY')">
+							<div class="header"></div>
+							<div class="footer">High priority<span class="pull-right">{{allTasks | queueTasksCount: 'MY_HIGH_PRIORITY'}}</span></div>
+						</div>
+						<div class="tile" ng-class="{'active':'MY_COMPLETED'==filter.queue}" ng-click="setTaskFilterQueue('MY_COMPLETED')">
+							<div class="header"></div>
+							<div class="footer">Completed<span class="pull-right">{{allTasks | queueTasksCount: 'MY_COMPLETED'}}</span></div>
+						</div>
 						<br />
 						<div class="tag cursor-pointer" ng-repeat="tag in tags"><span class="text" ng-class="{'warning':tag == filter.tag}" ng-click="setTaskFilterTag(tag)">{{tag}}</span></div>
 					</div>
@@ -105,14 +120,14 @@
 					<!-- tasks -->
 					<div class="task-list" ng-class="{'small':taskEditMode == 'NEW'}">
 						<div class="task-list-inner">
-							<div id="taskList" class="navbar">
+							<div class="navbar">
 								<div class="navbar-inner thick light inline" ng-repeat="task in tasks | orderBy:orderTasks" ng-class="{'selected':task.id == activeTask.id}" ng-click="setActiveTask(task.id)">
 									<div class="row-full">
 										<div class="span8">
 											<strong>{{task.title}}</strong>
 										</div>
 										<div class="span4" style="text-align:right;">
-											{{task.dueDate | date:'mediumDate'}}
+											<small>{{task.dueDate | date:'mediumDate'}}</small>
 										</div>
 									</div>
 									<div class="row-full">
@@ -120,7 +135,7 @@
 											<div class="tag" ng-repeat="tag in task.tags"><span class="text" ng-class="{'selected':tag == filter.tag}">{{tag}}</span><span class="remove cursor-pointer" ng-click="removeTag(task.id, tag)" stop-event="click">x</span></div>
 										</div>
 										<div class="span4" style="text-align:right;">
-											<div class="tag"><span class="text"><i class="icon-comment icon-white"></i> {{task.comments}}</span></div>
+											<i class="icon-comment"></i> {{task.comments}}
 										</div>
 									</div>
 								</div>
@@ -169,7 +184,7 @@
 							<button class="btn" ng-click="setTaskEditMode('')">No</button>
 						</div>
 						
-						<div style="margin-top:5px;padding:5px;background:#bbb;color:#fff;font-weight:bold;">
+						<div style="margin-top:5px;padding:5px;background:#0079F2;color:#fff;font-weight:bold;">
 							<div class="row-full">
 								<div class="span8">
 									{{activeTask.createdBy.name}}

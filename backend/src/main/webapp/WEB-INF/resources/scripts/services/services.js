@@ -35,6 +35,13 @@ shareTaskApp.service('Task', function($resource) {
 	};
 });
 
+shareTaskApp.service('Logger', function($log) {
+	
+	this.debug = function() {
+		
+	};
+});
+
 shareTaskApp.service('Utils', function($resource) {
 	
 	this.isCookieEnabled = function() {
