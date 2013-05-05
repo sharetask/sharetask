@@ -10,8 +10,8 @@
 							<a class="close">&times;</a>
 							<strong>Error</strong> Bad user name or password.
 						</div>
-						<input class="span4" type="text" placeholder="username" ng-model="user.username" /><br />
-						<input class="span4" type="password" placeholder="password" ng-model="user.password" /><br />
+						<input class="span4" type="text" placeholder="username" ng-model="user.username" ui-keypress="{enter:'login()'}" /><br />
+						<input class="span4" type="password" placeholder="password" ng-model="user.password" ui-keypress="{enter:'login()'}" /><br />
 						<button class="btn btn-inverse" ng-click="login()">Login</button>
 					</div>
 				</div>

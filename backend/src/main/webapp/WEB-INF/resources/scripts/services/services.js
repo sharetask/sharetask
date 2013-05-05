@@ -50,14 +50,19 @@ shareTaskApp.service('Utils', function($resource) {
 
 shareTaskApp.service('LocalStorage', function($resource) {
 	
-	var storageIdPrefix = 'sharetask-storage-';
+	var keyPrefix = 'sharetask-storage-';
 	
-	this.load = function(workspaceId) {
-		return JSON.parse(localStorage.getItem(storageIdPrefix + workspaceId) || '[]');
+	this.get = function(key) {
+		return JSON.parse(localStorage.getItem(keyPrefix + key) || '[]');
 	};
 	
-	this.store = function(workspaceId, data) {
-		console.log("Store data (data: %o) for workspace (id: %s) to local storage (id: %s)", data, workspaceId, storageIdPrefix + workspaceId);
-		localStorage.setItem(storageIdPrefix + workspaceId, JSON.stringify(data));
+	this.store = function(key, data) {
+		console.log("Store data (data: %o) to local storage (key: %s)", data, keyPrefix + key);
+		localStorage.setItem(keyPrefix + key, JSON.stringify(data));
+	};
+	
+	this.remove = function(key) {
+		console.log("Remove from local storage (key: %s)", keyPrefix + key);
+		localStorage.removeItem(keyPrefix + key);
 	};
 });

@@ -35,8 +35,8 @@
 				config(['$routeProvider', function($routeProvider) {
 					$routeProvider.when('/', {templateUrl: '<c:url value="/resources-${applicationVersion}/views/index.html" />'/*, controller: 'AppCtrl'*/});
 					$routeProvider.when('/tasks', {templateUrl: '<c:url value="/resources-${applicationVersion}/views/tasks.html" />'/*, controller: 'AppCtrl'*/});
-					$routeProvider.when('/admin', {templateUrl: '<c:url value="/resources-${applicationVersion}/views/admin.html" />', controller: 'AdminCtrl'});
-					$routeProvider.when('/user', {templateUrl: '<c:url value="/resources-${applicationVersion}/views/user.html" />', controller: 'UserCtrl'});
+					$routeProvider.when('/admin', {templateUrl: '<c:url value="/resources-${applicationVersion}/views/admin.html" />'/*, controller: 'AdminCtrl'*/});
+					$routeProvider.when('/user', {templateUrl: '<c:url value="/resources-${applicationVersion}/views/user.html" />'/*, controller: 'UserCtrl'*/});
 					$routeProvider.otherwise({redirectTo: '/'});
 				}]);
 		</script>

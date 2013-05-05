@@ -2,15 +2,17 @@
 
 /* Controllers */
 angular.module('shareTaskApp.controllers', ['ui']).
-	controller('AuthCtrl', ['$scope', '$location', '$rootScope', 'User', function($scope, $location, $rootScope, User) {
+	controller('AuthCtrl', ['$scope', '$location', '$rootScope', 'User', 'LocalStorage', function($scope, $location, $rootScope, User, LocalStorage) {
 		
 		$scope.errorStatus = 0;
 		
+		// get logged user from local storage
+		$rootScope.loggedUser = LocalStorage.get('logged-user');
 		console.log("Logged user: %o", $rootScope.loggedUser);
 		
-		// redirect to tasks if user is already logged in
+		// redirect to tasks page if user is already logged in
 		if (!jQuery.isEmptyObject($rootScope.loggedUser)) {
-			console.log("User (user: %o) is already logged in. Redirect into tasks.", $rootScope.loggedUser);
+			console.log("User (user: %o) is already logged in. Redirect to tasks page.", $rootScope.loggedUser);
 			$location.path("/tasks");
 		}
 		
@@ -23,10 +25,12 @@ angular.module('shareTaskApp.controllers', ['ui']).
 			User.authenticate({username: $scope.user.username, password: $scope.user.password}, function(data, status) {
 					console.log("Auth success! data: %o, status: %o", data, status);
 					$rootScope.loggedUser = {username: $scope.user.username};
+					LocalStorage.store('logged-user', $rootScope.loggedUser);
 					$location.path("/tasks");
 				}, function(data, status) {
 					console.log("Auth error! data: %o, status: %o", data, status);
 					$rootScope.loggedUser = {};
+					LocalStorage.remove('logged-user');
 					$scope.errorStatus = status;
 			});
 		}
@@ -42,6 +46,30 @@ angular.module('shareTaskApp.controllers', ['ui']).
 		$scope.tags = [];
 		var taskFilter = $filter('filterTasks');
 		
+		// get logged user from local storage
+		$rootScope.loggedUser = LocalStorage.get('logged-user');
+		console.log("Logged user: %o", $rootScope.loggedUser);
+		
+		// redirect to login page if user is not logged in
+		if (jQuery.isEmptyObject($rootScope.loggedUser) || jQuery.isEmptyObject($rootScope.loggedUser.username)) {
+			console.log("Unauthenticated access. Redirect to login page.");
+			$location.path("/");
+		}
+		else {
+			/**
+			 * Loading all workspaces from server.
+			 */
+			$scope.workspaces = Workspace.findAll(function(workspaces) {
+					console.log("Loaded workspaces from server: %o", workspaces);
+					if (workspaces.length) {
+						$scope.activeWorkspaceId = workspaces[0].id;
+						$scope.loadTasks();
+					}
+				}, function(response) {
+					console.log("response: %o", response);
+				});
+		}
+		
 		/**
 		 * Logout user.
 		 * User is redirected to root (login) page.
@@ -49,22 +77,9 @@ angular.module('shareTaskApp.controllers', ['ui']).
 		$scope.logout = function() {
 			console.log("Logout user: %s", $rootScope.loggedUser.username);
 			$rootScope.loggedUser = {};
+			LocalStorage.remove('logged-user');
 			$location.path("/");
 		};
-		
-		/**
-		 * Loading all workspaces from server.
-		 */
-		$scope.workspaces = Workspace.findAll(function(workspaces) {
-				console.log("Loaded workspaces from server: %o", workspaces);
-				if (workspaces.length) {
-					$scope.activeWorkspaceId = workspaces[0].id;
-					$scope.loadTasks();
-					//$scope.setActiveWorkspace(workspaces[0].id);
-				}
-			}, function(response) {
-				console.log("response: %o", response);
-			});
 		
 		/**
 		 * Setting active workspace.
@@ -260,7 +275,7 @@ angular.module('shareTaskApp.controllers', ['ui']).
 			//console.log("tasks, %o", this.tasks);
 			// TODO - call REST API update
 			
-			LocalStorage.store($scope.activeWorkspaceId, $scope.allTasks);
+			LocalStorage.store('workspace-' + $scope.activeWorkspaceId, $scope.allTasks);
 		};
 		
 		/**
@@ -339,12 +354,36 @@ angular.module('shareTaskApp.controllers', ['ui']).
 			console.log("move task (id: %s) to workspace (%s)", $scope.activeTask.id, workspace);
 		};
 	}])
-	.controller('AdminCtrl', ['$scope', 'Workspace', function($scope, Workspace) {
+	.controller('AdminCtrl', ['$scope', '$location', '$rootScope', 'Workspace', 'LocalStorage', function($scope, $location, $rootScope, Workspace, LocalStorage) {
 		
+		// get logged user from local storage
+		$rootScope.loggedUser = LocalStorage.get('logged-user');
+		console.log("Logged user: %o", $rootScope.loggedUser);
+		
+		// redirect to login page if user is not logged in
+		if (jQuery.isEmptyObject($rootScope.loggedUser) || jQuery.isEmptyObject($rootScope.loggedUser.username)) {
+			console.log("Unauthenticated access. Redirect to login page.");
+			$location.path("/");
+		}
+		else {
+			
+		}
 		
 	}])
-	.controller('UserCtrl', ['$scope', 'Workspace', function($scope, Workspace) {
+	.controller('UserCtrl', ['$scope', '$location', '$rootScope', 'Workspace', 'LocalStorage', function($scope, $location, $rootScope, Workspace, LocalStorage) {
 		
+		// get logged user from local storage
+		$rootScope.loggedUser = LocalStorage.get('logged-user');
+		console.log("Logged user: %o", $rootScope.loggedUser);
+		
+		// redirect to login page if user is not logged in
+		if (jQuery.isEmptyObject($rootScope.loggedUser) || jQuery.isEmptyObject($rootScope.loggedUser.username)) {
+			console.log("Unauthenticated access. Redirect to login page.");
+			$location.path("/");
+		}
+		else {
+			
+		}
 		
 	}])
 	;
