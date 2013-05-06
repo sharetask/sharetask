@@ -39,40 +39,16 @@ angular.module('shareTaskApp.controllers', ['ui']).
 	.controller('AppCtrl', ['$scope', '$location', '$rootScope', '$filter', 'Workspace', 'Task', 'User', 'LocalStorage', function($scope, $location, $rootScope, $filter, Workspace, Task, User, LocalStorage) {
 		
 		$scope.viewPanelTaskFilter = true;
-		$scope.activeWorkspaceId;
-		$scope.activeTask;
+		$scope.selectedWorkspaceId;
+		$scope.selectedTask;
 		$scope.taskEditMode = '';
 		$scope.filter = {'queue': 'MY_PENDING', 'tag': '', 'searchString': '', 'orderBy': 'TASK_DUE_DATE'};
 		$scope.tags = [];
 		var taskFilter = $filter('filterTasks');
 		
-		// get logged user from local storage
-		$rootScope.loggedUser = LocalStorage.get('logged-user');
-		console.log("Logged user: %o", $rootScope.loggedUser);
-		
-		// redirect to login page if user is not logged in
-		if (jQuery.isEmptyObject($rootScope.loggedUser) || jQuery.isEmptyObject($rootScope.loggedUser.username)) {
-			console.log("Unauthenticated access. Redirect to login page.");
-			$location.path("/");
-		}
-		else {
-			/**
-			 * Loading all workspaces from server.
-			 */
-			$scope.workspaces = Workspace.findAll(function(workspaces) {
-					console.log("Loaded workspaces from server: %o", workspaces);
-					if (workspaces.length) {
-						$scope.activeWorkspaceId = workspaces[0].id;
-						$scope.loadTasks();
-					}
-				}, function(response) {
-					console.log("response: %o", response);
-				});
-		}
-		
 		/**
 		 * Logout user.
-		 * User is redirected to root (login) page.
+		 * User is redirected to login page.
 		 */
 		$scope.logout = function() {
 			console.log("Logout user: %s", $rootScope.loggedUser.username);
@@ -86,31 +62,58 @@ angular.module('shareTaskApp.controllers', ['ui']).
 		 * Event is propagated into Workspace controller for loading workspace tasks from server.
 		 * @param {number} id - Workspace ID.
 		 */
+		/*
 		$scope.setActiveWorkspace = function(id) {
 			console.log("Setting active workspace (id: %s)", id);
 			$scope.$broadcast('EVENT_SET_ACTIVE_WORKSPACE', {workspaceId: id});
 		};
-		
+		*/
 		/**
 		 * Receive event 'EVENT_SET_ACTIVE_WORKSPACE' for setting active workspace.
 		 * After receiving of event all workspace tasks are loaded from server.
 		 */
+		/*
 		$scope.$on('EVENT_SET_ACTIVE_WORKSPACE', function(event, data) {
 			console.log("Received broadcast message 'EVENT_SET_ACTIVE_WORKSPACE' (data: %o)", data);
-			$scope.activeWorkspaceId = data.workspaceId;
+			$scope.selectedWorkspaceId = data.workspaceId;
 			$scope.loadTasks();
 		});
+		*/
 		
 		/**
-		 * Load all tasks for active workspace.
+		 * Loading all workspaces from server.
+		 */
+		$scope.loadWorkspaces = function() {
+			console.log("Load all workspaces");
+			Workspace.findAll(function(workspaces) {
+				console.log("Loaded workspaces from server: %o", workspaces);
+				if (workspaces.length) {
+					$scope.workspaces = workspaces;
+					$scope.selectedWorkspaceId = workspaces[0].id;
+					$scope.loadTasks();
+				}
+			}, function(response) {
+				console.log("error response: %o", response);
+				if (response.status == 403) {
+					$scope.logout();
+				}
+			});
+		};
+		
+		/**
+		 * Load all active tasks for selected workspace.
 		 */
 		$scope.loadTasks = function() {
-			console.log("Load all tasks for active workspace (id: %s)", $scope.activeWorkspaceId);
-			$scope.allTasks = Workspace.getTasks({workspaceId: $scope.activeWorkspaceId}, function(tasks) {
+			console.log("Load all active tasks for workspace (id: %s)", $scope.selectedWorkspaceId);
+			Workspace.getActiveTasks({workspaceId: $scope.selectedWorkspaceId}, function(tasks) {
 					console.log("Loaded workspace tasks from server: %o", tasks);
+					$scope.allTasks = tasks;
 					$scope.setTaskFilterQueue($scope.filter.queue);
 				}, function(response) {
-					console.log("Workspace tasks error: %o", response);
+					console.log("Error getting all active tasks for workspace(id: %s): %o", $scope.selectedWorkspaceId, response);
+					if (response.status == 403) {
+						$scope.logout();
+					}
 			});
 		};
 		
@@ -123,12 +126,12 @@ angular.module('shareTaskApp.controllers', ['ui']).
 			console.log("Set filter queue: %s", queue);
 			$scope.filter.queue = queue;
 			$scope.filterTasks();
-			if (!jQuery.isEmptyObject(this.tasks)) {
-				// set active task
-				this.setActiveTask(this.tasks[0].id);
+			if (!jQuery.isEmptyObject($scope.tasks)) {
+				// set selected task
+				$scope.setSelectedTask($scope.tasks[0].id);
 				// parse tags
 				var taskTags = new Array();
-				angular.forEach(this.tasks, function(task) {
+				angular.forEach($scope.tasks, function(task) {
 					if (task.tags.length) {
 						angular.forEach(task.tags, function(tag) {
 							if (taskTags.indexOf(tag) == -1) {
@@ -181,18 +184,24 @@ angular.module('shareTaskApp.controllers', ['ui']).
 		};
 		
 		/**
-		 * Setting active task.
-		 * Active task data is loaded from server.
+		 * Setting selected task.
 		 * @param {number} taskId - Task ID.
 		 */
-		$scope.setActiveTask = function(taskId) {
-			console.log("Set active task (id: %s)", taskId);
-			$scope.activeTask = Task.findById({id: taskId}, function(data) {
+		$scope.setSelectedTask = function(taskId) {
+			console.log("Set selected task (id: %s)", taskId);
+			var tasks = $.grep($scope.tasks, function(e) {
+				return e.id == taskId;
+			});
+			$scope.selectedTask = tasks[0];
+			console.log("Selected task: %o", $scope.selectedTask);
+			/*
+			$scope.selectedTask = Task.findById({id: taskId}, function(data) {
 					console.log("Task.findById: %o", data);
 			}, function(response) {
 					console.log("response: %o", response);
 			});
-			console.log("Active task: %o", this.activeTask);
+			*/
+			console.log("Selected task: %o", $scope.selectedTask);
 		};
 		
 		/**
@@ -212,9 +221,9 @@ angular.module('shareTaskApp.controllers', ['ui']).
 		 * @param {string} tag - Tag name.
 		 */
 		$scope.addTaskTag = function() {
-			console.log("Add new tag to task, id: %s, tag: %s", $scope.activeTask.id, $scope.newTag);
-			$scope.activeTask.tags.push($scope.newTag);
-			$scope.updateTask($scope.activeTask);
+			console.log("Add new tag to task, id: %s, tag: %s", $scope.selectedTask.id, $scope.newTag);
+			$scope.selectedTask.tags.push($scope.newTag);
+			$scope.updateTask($scope.selectedTask);
 			$scope.taskEditMode = '';
 			$scope.newTag = '';
 		};
@@ -265,7 +274,7 @@ angular.module('shareTaskApp.controllers', ['ui']).
 		$scope.updateTask = function(task) {
 			console.log("Update task data (task: %o)", task);
 			$scope.taskEditMode = '';
-			$scope.activeTask = task;
+			$scope.selectedTask = task;
 			var result = $.grep(this.tasks, function(e) {
 				return e.id == task.id;
 			});
@@ -274,8 +283,13 @@ angular.module('shareTaskApp.controllers', ['ui']).
 			result[0].tags = task.tags;
 			//console.log("tasks, %o", this.tasks);
 			// TODO - call REST API update
+			Task.update({workspaceId: $scope.selectedWorkspaceId, task: $scope.selectedTask}, function(data, status) {
+					console.log("Task update success! data: %o, status: %o", data, status);
+				}, function(data, status) {
+					console.log("Task update error! data: %o, status: %o", data, status);
+			});
 			
-			LocalStorage.store('workspace-' + $scope.activeWorkspaceId, $scope.allTasks);
+			LocalStorage.store('workspace-' + $scope.selectedWorkspaceId, $scope.allTasks);
 		};
 		
 		/**
@@ -295,11 +309,11 @@ angular.module('shareTaskApp.controllers', ['ui']).
 		 * Task data are stored to server.
 		 */
 		$scope.changeTaskPriority = function() {
-			console.log("Change task priority (id: %s, priority: %s)", $scope.activeTask.id, $scope.activeTask.priority);
-			if ($scope.activeTask.priority == 'LOW') { $scope.activeTask.priority = 'STANDARD'; }
-			else if ($scope.activeTask.priority == 'STANDARD') { $scope.activeTask.priority = 'HIGH'; }
-			else if ($scope.activeTask.priority == 'HIGH') { $scope.activeTask.priority = 'LOW'; }
-			$scope.updateTask($scope.activeTask);
+			console.log("Change task priority (id: %s, priority: %s)", $scope.selectedTask.id, $scope.selectedTask.priority);
+			if ($scope.selectedTask.priority == 'LOW') { $scope.selectedTask.priority = 'MEDIUM'; }
+			else if ($scope.selectedTask.priority == 'MEDIUM') { $scope.selectedTask.priority = 'HIGH'; }
+			else if ($scope.selectedTask.priority == 'HIGH') { $scope.selectedTask.priority = 'LOW'; }
+			$scope.updateTask($scope.selectedTask);
 		};
 		
 		/**
@@ -309,7 +323,7 @@ angular.module('shareTaskApp.controllers', ['ui']).
 		 */
 		$scope.addTask = function() {
 			console.log("Add new task (taskTitle: %s)", $scope.newTaskTitle);
-			var task = {title: $scope.newTaskTitle, createdBy: 'mmoravek', createdOn: new Date(), priority: 'STANDARD', comments: 0};
+			var task = {title: $scope.newTaskTitle, createdBy: 'mmoravek', createdOn: new Date(), priority: 'MEDIUM', comments: 0};
 			console.log("Task: %o", task);
 			// TODO Store new task to server
 			
@@ -323,8 +337,8 @@ angular.module('shareTaskApp.controllers', ['ui']).
 		 * Task data are stored to server.
 		 */
 		$scope.forwardTask = function(user) {
-			console.log("Forward task (id: %s) to user (user: %s)", $scope.activeTask.id, user);
-			$scope.updateTask($scope.activeTask);
+			console.log("Forward task (id: %s) to user (user: %s)", $scope.selectedTask.id, user);
+			$scope.updateTask($scope.selectedTask);
 		};
 		
 		/**
@@ -332,8 +346,8 @@ angular.module('shareTaskApp.controllers', ['ui']).
 		 * Task data are stored to server.
 		 */
 		$scope.deleteTask = function() {
-			console.log("Delete task (id: %s)", $scope.activeTask.id);
-			$scope.updateTask($scope.activeTask);
+			console.log("Delete task (id: %s)", $scope.selectedTask.id);
+			$scope.updateTask($scope.selectedTask);
 		};
 		
 		/**
@@ -341,9 +355,9 @@ angular.module('shareTaskApp.controllers', ['ui']).
 		 * Task data are stored to server.
 		 */
 		$scope.completeTask = function() {
-			console.log("Complete task (id: %s)", $scope.activeTask.id);
-			$scope.activeTask.state = 'FINISHED';
-			$scope.updateTask($scope.activeTask);
+			console.log("Complete task (id: %s)", $scope.selectedTask.id);
+			$scope.selectedTask.state = 'FINISHED';
+			$scope.updateTask($scope.selectedTask);
 		};
 		
 		/**
@@ -351,8 +365,22 @@ angular.module('shareTaskApp.controllers', ['ui']).
 		 * Task data are stored to server.
 		 */
 		$scope.moveTask = function(workspace) {
-			console.log("move task (id: %s) to workspace (%s)", $scope.activeTask.id, workspace);
+			console.log("move task (id: %s) to workspace (%s)", $scope.selectedTask.id, workspace);
 		};
+		
+		// get logged user from local storage
+		$rootScope.loggedUser = LocalStorage.get('logged-user');
+		console.log("Logged user: %o", $rootScope.loggedUser);
+		
+		// redirect to login page if user is not logged in
+		if (jQuery.isEmptyObject($rootScope.loggedUser) || jQuery.isEmptyObject($rootScope.loggedUser.username)) {
+			console.log("Unauthenticated access. Redirect to login page.");
+			$location.path("/");
+		}
+		else {
+			// Loading all workspaces from server.
+			$scope.loadWorkspaces();
+		}
 	}])
 	.controller('AdminCtrl', ['$scope', '$location', '$rootScope', 'Workspace', 'LocalStorage', function($scope, $location, $rootScope, Workspace, LocalStorage) {
 		
@@ -368,7 +396,6 @@ angular.module('shareTaskApp.controllers', ['ui']).
 		else {
 			
 		}
-		
 	}])
 	.controller('UserCtrl', ['$scope', '$location', '$rootScope', 'Workspace', 'LocalStorage', function($scope, $location, $rootScope, Workspace, LocalStorage) {
 		
@@ -384,6 +411,5 @@ angular.module('shareTaskApp.controllers', ['ui']).
 		else {
 			
 		}
-		
 	}])
 	;

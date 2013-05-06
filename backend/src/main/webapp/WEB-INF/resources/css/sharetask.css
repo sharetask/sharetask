@@ -104,7 +104,7 @@ h1,h2,h3,h4,h5,h6 {margin:5px 0;line-height:0;}
 .tag .remove {background:#ccc;border:1px solid #ccc;display:inline-block;padding:0 5px;line-height:20px;font-size:11px;}
 .tag .selected {background:#0079F2;border:1px solid #0079F2;color:#fff;}
 .tag .priority-low {background:gray;}
-.tag .priority-standard {background:#0079F2;}
+.tag .priority-medium {background:#0079F2;}
 .tag .priority-high {background:red;}
 
 .hidden {display:none;}
