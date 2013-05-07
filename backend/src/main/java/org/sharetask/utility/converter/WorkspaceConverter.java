@@ -63,8 +63,8 @@ public class WorkspaceConverter implements CustomConverter {
 		if (source.getOwner() != null) {
 			workspaceDTO.setOwner(DTOConverter.convert(source.getOwner(), UserDTO.class));
 		}
-		if (source.getMemebers() != null) {
-			final Collection<User> members = source.getMemebers();
+		if (source.getMembers() != null) {
+			final Collection<User> members = source.getMembers();
 			workspaceDTO.setMembers(DTOConverter.convertList(new ArrayList<User>(members), UserDTO.class));
 		}
 		return workspaceDTO;

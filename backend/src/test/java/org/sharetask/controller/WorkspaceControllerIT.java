@@ -56,7 +56,7 @@ public class WorkspaceControllerIT extends IntegrationTest {
     }
 
     @Test
-    public void testAddMemeber() throws IOException {
+    public void testAddMember() throws IOException {
         //given
         HttpPost httpPost = new HttpPost(URL_WORKSPACE + "/1/member");
         httpPost.addHeader(new BasicHeader("Content-Type", "application/json"));
@@ -72,7 +72,7 @@ public class WorkspaceControllerIT extends IntegrationTest {
     }
     
     @Test
-    public void testRemoveMemeber() throws IOException {
+    public void testRemoveMember() throws IOException {
         //given
         HttpDelete httpDelete = new HttpDelete(URL_WORKSPACE + "/1/member/dev2@shareta.sk");
         httpDelete.addHeader(new BasicHeader("Content-Type", "application/json"));

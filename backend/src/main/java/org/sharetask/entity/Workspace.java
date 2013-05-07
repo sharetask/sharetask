@@ -95,7 +95,7 @@ public class Workspace extends BaseEntity implements Serializable {
 		return Collections.unmodifiableCollection(this.tasks);
 	}
 
-	public Collection<User> getMemebers() {
+	public Collection<User> getMembers() {
 		return Collections.unmodifiableCollection(this.members);
 	}
 

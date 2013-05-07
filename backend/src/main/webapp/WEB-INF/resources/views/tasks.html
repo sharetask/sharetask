@@ -33,12 +33,22 @@
 				<div class="navbar">
 					<div class="navbar-inner">
 						<div class="container" style="width:auto;">
-							<span class="brand">My Workspaces</span>
+							<span class="brand">Workspaces</span>
 							<ul id="workspaceList" class="nav">
-								<li class="cursor-pointer" ng-repeat="workspace in workspaces"><a ng-click="setActiveWorkspace(workspace.id)">{{workspace.title}}</a></li>
+								<li class="cursor-pointer"><a ng-click="setEditMode('NEW-WORKSPACE')"><i class="icon-plus icon-white"></i></a></li>
+								<li ng-class="{'hidden':taskEditMode != 'NEW-WORKSPACE'}">
+									<div class="input-append" style="padding-top:2px;">
+										<input class="span3" type="text" placeholder="type new workspace name..." ng-model="newWorkspaceTitle" />
+										<button class="btn btn-inverse" ng-click="addWorkspace()">Add</button>
+									</div>
+								</li>
+								<li class="cursor-pointer" ng-repeat="workspace in workspaces" ng-class="{'hidden':taskEditMode == 'NEW-WORKSPACE'}"><a ng-click="setSelectedWorkspace(workspace.id)">{{workspace.title}}</a></li>
 							</ul>
 							<ul class="nav pull-right">
-								<li class="cursor-pointer"><a ng-click=""><i class="icon-plus icon-white"></i> Add Workspace</a></li>
+								<div class="input-append" style="padding-top:2px;">
+									<input class="span2" type="text" placeholder="type search phrase..." ng-model="filter.searchString" />
+									<button class="btn btn-inverse" ng-click="filterTasks()"><i class="icon-search icon-white"></i></button>
+								</div>
 							</ul>
 						</div>
 					</div>
@@ -88,10 +98,10 @@
 						<div class="queue-name">
 							<div class="queue-name-inner">
 								<div class="title pull-left cursor-pointer" ng-click="changeTaskQueue()">{{filter.queue | taskQueueName}} <small>/ {{allTasks | queueTasksCount:filter.queue}}</small></div>
-								<div class="input-append pull-right">
+								<!--<div class="input-append pull-right">
 									<input class="span2" type="text" placeholder="type search phrase..." ng-model="filter.searchString" />
 									<button class="btn btn-inverse" ng-click="filterTasks()"><i class="icon-search icon-white"></i></button>
-								</div>
+								</div>-->
 							</div>
 						</div>
 						<div class="queue-controls">
@@ -104,7 +114,7 @@
 										<li ng-click="setTaskOrdering('TASK_AUTHOR')"><a>Author</a></li>
 									</ul>
 								</div>
-								<button class="btn btn-inverse pull-right" style="margin-left:5px;" ng-click="setTaskEditMode('NEW')"><i class="icon-plus icon-white"></i></button>
+								<button class="btn btn-inverse pull-right" style="margin-left:5px;" ng-click="setEditMode('NEW')"><i class="icon-plus icon-white"></i></button>
 								<button class="btn pull-right" ng-click="loadTasks()"><i class="icon-refresh"></i></button>
 							</div>
 						</div>
@@ -147,25 +157,25 @@
 			
 			<div class="panel-task-detail">
 				<div class="panel-task-detail-inner">
-					<div class="panel-task-detail-content">
+					<div class="panel-task-detail-content" ng-class="{'hidden':selectedTask == null}">
 						
 						<div class="task-detail-action">
-							<button class="btn btn-inverse" ng-click="setTaskEditMode('COMPLETE-TASK')">Complete</button>
-							<button class="btn" ng-click="setTaskEditMode('FORWARD-TASK')">Forward</button>
-							<button class="btn" ng-click="setTaskEditMode('MOVE-TASK')">Move</button>
-							<button class="btn" ng-click="setTaskEditMode('DELETE-TASK')">Delete</button>
+							<button class="btn btn-inverse" ng-click="setEditMode('COMPLETE-TASK')">Complete</button>
+							<button class="btn" ng-click="setEditMode('FORWARD-TASK')">Forward</button>
+							<button class="btn" ng-click="setEditMode('MOVE-TASK')">Move</button>
+							<button class="btn" ng-click="setEditMode('DELETE-TASK')">Delete</button>
 						</div>
 						
 						<div class="task-detail-action-confirm" ng-class="{'hidden':taskEditMode != 'COMPLETE-TASK'}">
 							<p>Do you really want to complete task?</p>
 							<button class="btn btn-inverse" ng-click="completeTask()">Yes</button>
-							<button class="btn" ng-click="setTaskEditMode('')">No</button>
+							<button class="btn" ng-click="setEditMode('')">No</button>
 						</div>
 						
 						<div class="task-detail-action-confirm" ng-class="{'hidden':taskEditMode != 'FORWARD-TASK'}">
 							<p>Forward task to another workspace member.</p>
 							<div class="input-append">
-								<input type="text" placeholder="search member..." ng-model="forwardUser" ui-keypress="{enter:'forwardTask()', esc:'setTaskEditMode(\'\')'}" focus="editing" />
+								<input type="text" placeholder="search member..." ng-model="forwardUser" ui-keypress="{enter:'forwardTask()', esc:'setEditMode(\'\')'}" focus="editing" />
 								<button class="btn btn-inverse" ng-click="forwardTask(forwardUser)">Forward</button>
 							</div>
 						</div>
@@ -173,7 +183,7 @@
 						<div class="task-detail-action-confirm" ng-class="{'hidden':taskEditMode != 'MOVE-TASK'}">
 							<p>Move task to another workspace.</p>
 							<div class="input-append">
-								<input type="text" placeholder="search workspace..." ng-model="moveWorkspace" ui-keypress="{enter:'moveTask()', esc:'setTaskEditMode(\'\')'}" focus="editing" />
+								<input type="text" placeholder="search workspace..." ng-model="moveWorkspace" ui-keypress="{enter:'moveTask()', esc:'setEditMode(\'\')'}" focus="editing" />
 								<button class="btn btn-inverse" ng-click="moveTask(moveWorkspace)">Move</button>
 							</div>
 						</div>
@@ -181,7 +191,7 @@
 						<div class="task-detail-action-confirm" ng-class="{'hidden':taskEditMode != 'DELETE-TASK'}">
 							<p>Do you really want to delete task?</p>
 							<button class="btn btn-inverse" ng-click="deleteTask()">Yes</button>
-							<button class="btn" ng-click="setTaskEditMode('')">No</button>
+							<button class="btn" ng-click="setEditMode('')">No</button>
 						</div>
 						
 						<div style="margin-top:5px;padding:5px;background:#0079F2;color:#fff;font-weight:bold;">
@@ -195,10 +205,10 @@
 							</div>
 							<div class="row-full">
 								<div class="span8">
-									<div class="cursor-pointer" style="font-size:18px;" ng-class="{'hidden':taskEditMode == 'TITLE'}" ng-click="setTaskEditMode('TITLE')">{{selectedTask.title}}</div>
+									<div class="cursor-pointer" style="font-size:18px;" ng-class="{'hidden':taskEditMode == 'TITLE'}" ng-click="setEditMode('TITLE')">{{selectedTask.title}}</div>
 									<div ng-class="{'hidden':taskEditMode != 'TITLE'}">
 										<div class="input-append">
-											<input type="text" ng-model="selectedTask.title" ui-keypress="{enter:'updateTask(selectedTask)', esc:'setTaskEditMode(\'\')'}" focus="editing" />
+											<input type="text" ng-model="selectedTask.title" ui-keypress="{enter:'updateTask(selectedTask)', esc:'setEditMode(\'\')'}" focus="editing" />
 											<button class="btn btn-inverse" ng-click="updateTask(selectedTask)">OK</button>
 										</div>
 									</div>
@@ -211,10 +221,10 @@
 						
 						<div style="margin-top:5px;">
 							<div class="tag" ng-repeat="tag in selectedTask.tags"><span class="text">{{tag}}</span><span class="remove cursor-pointer" ng-click="removeTag(selectedTask.id, tag)">x</span></div>
-							<span class="tag cursor-pointer" ng-click="setTaskEditMode('ADD-TAG')"><span class="remove cursor-pointer"><i class="icon-plus icon-white"></i></span></span>
+							<span class="tag cursor-pointer" ng-click="setEditMode('ADD-TAG')"><span class="remove cursor-pointer"><i class="icon-plus icon-white"></i></span></span>
 							<div ng-class="{'hidden':taskEditMode != 'ADD-TAG'}">
 								<div class="input-append">
-									<input type="text" placeholder="type new label name..." ng-model="newTag" ui-keypress="{enter:'addTaskTag()', esc:'setTaskEditMode(\'\')'}" focus="editing" />
+									<input type="text" placeholder="type new label name..." ng-model="newTag" ui-keypress="{enter:'addTaskTag()', esc:'setEditMode(\'\')'}" focus="editing" />
 									<button class="btn btn-inverse" ng-click="addTaskTag()">OK</button>
 								</div>
 							</div>
@@ -224,9 +234,9 @@
 						
 						<div style="margin-top:5px;padding:5px;background:#fff;border:1px solid #ddd;">
 							<div class="row-full">
-								<div class="cursor-pointer" ng-class="{'hidden':taskEditMode == 'DESCRIPTION'}" ng-click="setTaskEditMode('DESCRIPTION')">{{selectedTask.description}}</div>
+								<div class="cursor-pointer" ng-class="{'hidden':taskEditMode == 'DESCRIPTION'}" ng-click="setEditMode('DESCRIPTION')">{{selectedTask.description}}</div>
 								<div ng-class="{'hidden':taskEditMode != 'DESCRIPTION'}">
-									<textarea class="span12" style="height:80px;margin-bottom:1px;" ng-model="selectedTask.description" ui-keypress="{esc:'setTaskEditMode(\'\')'}">{{selectedTask.description}}</textarea><br />
+									<textarea class="span12" style="height:80px;margin-bottom:1px;" ng-model="selectedTask.description" ui-keypress="{esc:'setEditMode(\'\')'}">{{selectedTask.description}}</textarea><br />
 									<button class="btn btn-inverse" ng-click="updateTask(selectedTask)">Save changes</button>
 								</div>
 							</div>

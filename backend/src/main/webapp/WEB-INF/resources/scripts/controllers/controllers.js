@@ -33,7 +33,7 @@ angular.module('shareTaskApp.controllers', ['ui']).
 					LocalStorage.remove('logged-user');
 					$scope.errorStatus = status;
 			});
-		}
+		};
 		
 	}])
 	.controller('AppCtrl', ['$scope', '$location', '$rootScope', '$filter', 'Workspace', 'Task', 'User', 'LocalStorage', function($scope, $location, $rootScope, $filter, Workspace, Task, User, LocalStorage) {
@@ -101,6 +101,35 @@ angular.module('shareTaskApp.controllers', ['ui']).
 		};
 		
 		/**
+		 * Add new workspace.
+		 * User adds workspace title only. All others attributes are set to default values.
+		 * Workspace data are stored to server.
+		 */
+		$scope.addWorkspace = function() {
+			console.log("Add new workspace (workspaceTitle: %s)", $scope.newWorkspaceTitle);
+			var workspace = {title: $scope.newWorkspaceTitle, owner: {username: $rootScope.loggedUser.username}};
+			console.log("Workspace: %o", workspace);
+			Workspace.create({workspace: workspace}, function(data, status) {
+					console.log("Workspace create success! data: %o, status: %o", data, status);
+					$scope.workspaces.push(data);
+					$scope.newWorkspaceTitle = '';
+					$scope.setEditMode('');
+				}, function(data, status) {
+					console.log("Workspace create error! data: %o, status: %o", data, status);
+				});
+		};
+		
+		/**
+		 * Setting selected workspace.
+		 * @param {number} id - Workspace ID.
+		 */
+		$scope.setSelectedWorkspace = function(id) {
+			console.log("Set selected workspace (id: %s)", id);
+			$scope.selectedWorkspaceId = id;
+			$scope.loadTasks();
+		};
+		
+		/**
 		 * Load all active tasks for selected workspace.
 		 */
 		$scope.loadTasks = function() {
@@ -132,7 +161,7 @@ angular.module('shareTaskApp.controllers', ['ui']).
 				// parse tags
 				var taskTags = new Array();
 				angular.forEach($scope.tasks, function(task) {
-					if (task.tags.length) {
+					if (!jQuery.isEmptyObject(task.tags)) {
 						angular.forEach(task.tags, function(tag) {
 							if (taskTags.indexOf(tag) == -1) {
 								taskTags.push(tag);
@@ -142,6 +171,9 @@ angular.module('shareTaskApp.controllers', ['ui']).
 				});
 				$scope.tags = taskTags;
 				console.log("Tags parsed for queue: %o", $scope.tags);
+			}
+			else {
+				$scope.selectedTask = null;
 			}
 		};
 		
@@ -201,7 +233,7 @@ angular.module('shareTaskApp.controllers', ['ui']).
 					console.log("response: %o", response);
 			});
 			*/
-			console.log("Selected task: %o", $scope.selectedTask);
+			//console.log("Selected task: %o", $scope.selectedTask);
 		};
 		
 		/**
@@ -239,12 +271,12 @@ angular.module('shareTaskApp.controllers', ['ui']).
 		};
 		
 		/**
-		 * Setting task edit mode.
-		 * Represents task attribute which is currently in editing mode.
+		 * Setting edit mode.
+		 * Represents attribute which is currently in editing mode.
 		 * @param {string} mode - Edit mode.
 		 */
-		$scope.setTaskEditMode = function(mode) {
-			console.log("Switch task edit mode to: %s", mode);
+		$scope.setEditMode = function(mode) {
+			console.log("Switch edit mode to: %s", mode);
 			if (mode == this.taskEditMode) {
 				$scope.taskEditMode = "";
 			}
@@ -281,14 +313,11 @@ angular.module('shareTaskApp.controllers', ['ui']).
 			result[0].title = task.title;
 			result[0].description = task.description;
 			result[0].tags = task.tags;
-			//console.log("tasks, %o", this.tasks);
-			// TODO - call REST API update
 			Task.update({workspaceId: $scope.selectedWorkspaceId, task: $scope.selectedTask}, function(data, status) {
 					console.log("Task update success! data: %o, status: %o", data, status);
 				}, function(data, status) {
 					console.log("Task update error! data: %o, status: %o", data, status);
-			});
-			
+				});
 			LocalStorage.store('workspace-' + $scope.selectedWorkspaceId, $scope.allTasks);
 		};
 		
@@ -323,13 +352,20 @@ angular.module('shareTaskApp.controllers', ['ui']).
 		 */
 		$scope.addTask = function() {
 			console.log("Add new task (taskTitle: %s)", $scope.newTaskTitle);
-			var task = {title: $scope.newTaskTitle, createdBy: 'mmoravek', createdOn: new Date(), priority: 'MEDIUM', comments: 0};
+			// FIXME Remove setting dueDate after solving issue #7
+			// FIXME Remove setting comments after solving issue #2
+			var task = {title: $scope.newTaskTitle, createdBy: $rootScope.loggedUser.username, createdOn: new Date(), dueDate: new Date(), priority: 'MEDIUM', comments: []};
 			console.log("Task: %o", task);
-			// TODO Store new task to server
-			
-			$scope.allTasks.push(task);
-			$scope.filterTasks();
-			$scope.newTaskTitle = '';
+			Task.create({workspaceId: $scope.selectedWorkspaceId, task: task}, function(data, status) {
+					console.log("Task create success! data: %o, status: %o", data, status);
+					$scope.allTasks.push(data);
+					LocalStorage.store('workspace-' + $scope.selectedWorkspaceId, $scope.allTasks);
+					$scope.filterTasks();
+					$scope.newTaskTitle = '';
+					$scope.setEditMode('');
+				}, function(data, status) {
+					console.log("Task create error! data: %o, status: %o", data, status);
+				});
 		};
 		
 		/**
@@ -356,8 +392,20 @@ angular.module('shareTaskApp.controllers', ['ui']).
 		 */
 		$scope.completeTask = function() {
 			console.log("Complete task (id: %s)", $scope.selectedTask.id);
-			$scope.selectedTask.state = 'FINISHED';
-			$scope.updateTask($scope.selectedTask);
+			Task.complete({workspaceId: $scope.selectedWorkspaceId, taskId: $scope.selectedTask.id}, function(data, status) {
+					console.log("Task complete success! data: %o, status: %o", data, status);
+					var task = $.grep($scope.tasks, function(e) {
+						return e.id == $scope.selectedTask.id;
+					});
+					task[0].state = 'FINISHED';
+					$scope.selectedTask.state = 'FINISHED';
+					$scope.taskEditMode = '';
+					LocalStorage.store('workspace-' + $scope.selectedWorkspaceId, $scope.allTasks);
+					$scope.filterTasks();
+					$scope.setEditMode('');
+				}, function(data, status) {
+					console.log("Task complete error! data: %o, status: %o", data, status);
+				});
 		};
 		
 		/**

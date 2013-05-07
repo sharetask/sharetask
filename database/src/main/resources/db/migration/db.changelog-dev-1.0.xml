@@ -97,7 +97,18 @@
 			<column name="USER_ID" type="NUMERIC"/>
 		</loadData>
 		<rollback>
-			<delete tableName="WORKSPACE_MEMEBER"/>
+			<delete tableName="WORKSPACE_MEMBER"/>
+		</rollback>
+	</changeSet>
+	
+	<changeSet id="load: task_tag" author="mbocek" context="development,integration">
+		<comment>Load initial data</comment>
+		<loadData tableName="TASK_TAG" file="db/migration/dev/task_tag.csv">
+			<column name="TASK_ID" type="NUMERIC"/>
+			<column name="TAG" type="STRING"/>
+		</loadData>
+		<rollback>
+			<delete tableName="TASK_TAG"/>
 		</rollback>
 	</changeSet>
 </databaseChangeLog>

@@ -12,7 +12,7 @@ angular.module('shareTaskApp.filters', []).
 						if (filter.tag == '') {
 							newTasks.push(task);
 						}
-						else if (task.tags.indexOf(filter.tag) != -1) {
+						else if (!jQuery.isEmptyObject(task.tags) && task.tags.indexOf(filter.tag) != -1) {
 							newTasks.push(task);
 						}
 					}
@@ -22,7 +22,7 @@ angular.module('shareTaskApp.filters', []).
 						if (filter.tag == '') {
 							newTasks.push(task);
 						}
-						else if (task.tags.indexOf(filter.tag) != -1) {
+						else if (!jQuery.isEmptyObject(task.tags) && task.tags.indexOf(filter.tag) != -1) {
 							newTasks.push(task);
 						}
 					}
@@ -32,7 +32,7 @@ angular.module('shareTaskApp.filters', []).
 						if (filter.tag == '') {
 							newTasks.push(task);
 						}
-						else if (task.tags.indexOf(filter.tag) != -1) {
+						else if (!jQuery.isEmptyObject(task.tags) && task.tags.indexOf(filter.tag) != -1) {
 							newTasks.push(task);
 						}
 					}
@@ -42,7 +42,7 @@ angular.module('shareTaskApp.filters', []).
 						if (filter.tag == '') {
 							newTasks.push(task);
 						}
-						else if (task.tags.indexOf(filter.tag) != -1) {
+						else if (!jQuery.isEmptyObject(task.tags) && task.tags.indexOf(filter.tag) != -1) {
 							newTasks.push(task);
 						}
 					}
@@ -52,7 +52,7 @@ angular.module('shareTaskApp.filters', []).
 						if (filter.tag == '') {
 							newTasks.push(task);
 						}
-						else if (task.tags.indexOf(filter.tag) != -1) {
+						else if (!jQuery.isEmptyObject(task.tags) && task.tags.indexOf(filter.tag) != -1) {
 							newTasks.push(task);
 						}
 					}

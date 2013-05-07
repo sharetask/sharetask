@@ -73,23 +73,23 @@ public class WorkspaceServiceTest extends DbUnitTest {
 	}
 	
 	/**
-	 * Test method for {@link org.sharetask.api.WorkspaceService#addMemeber(Long, Long)}.
+	 * Test method for {@link org.sharetask.api.WorkspaceService#addMember(Long, Long)}.
 	 */
 	@Test
-	public void testAddMemeber() {
-		workspaceService.addMemeber(100L, "test2@test.com");
+	public void testAddMember() {
+		workspaceService.addMember(100L, "test2@test.com");
 		Workspace workspace = workspaceRepository.findOne(100L);
-		Assert.assertThat(workspace.getMemebers().size(), CoreMatchers.is(3));
+		Assert.assertThat(workspace.getMembers().size(), CoreMatchers.is(3));
 	}
 	
 	/**
-	 * Test method for {@link org.sharetask.api.WorkspaceService#removeMemeber(Long, Long)}.
+	 * Test method for {@link org.sharetask.api.WorkspaceService#removeMember(Long, Long)}.
 	 */
 	@Test
-	public void testRemoveMemeber() {
-		workspaceService.removeMemeber(100L, "test3@test.com");
+	public void testRemoveMember() {
+		workspaceService.removeMember(100L, "test3@test.com");
 		Workspace workspace = workspaceRepository.findOne(100L);
-		Assert.assertThat(workspace.getMemebers().size(), CoreMatchers.is(1));
+		Assert.assertThat(workspace.getMembers().size(), CoreMatchers.is(1));
 	}
 	
 	/**

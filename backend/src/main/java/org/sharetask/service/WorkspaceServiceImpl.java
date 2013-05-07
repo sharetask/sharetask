@@ -57,7 +57,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 
 	@Override
 	@Transactional
-	public void addMemeber(final Long workspaceId, final String username) {
+	public void addMember(final Long workspaceId, final String username) {
 		// sanity check if exist specified user
 		final User user = userRepository.findOne(username);
 		if (user == null) {
@@ -71,7 +71,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 		}
 		
 		// add member to workspace
-		if (!workspace.getMemebers().contains(user)) {
+		if (!workspace.getMembers().contains(user)) {
 			workspace.addMember(user);
 			workspaceRepository.save(workspace);
 		}		
@@ -79,7 +79,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 
 	@Override
 	@Transactional
-	public void removeMemeber(final Long workspaceId, final String username) {
+	public void removeMember(final Long workspaceId, final String username) {
 		// sanity check if exist specified user
 		final User user = userRepository.findOne(username);
 		if (user == null) {
@@ -93,7 +93,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 		}
 		
 		// add member to workspace
-		if (workspace.getMemebers().contains(user)) {
+		if (workspace.getMembers().contains(user)) {
 			workspace.removeMember(user);
 			workspaceRepository.save(workspace);
 		}		
