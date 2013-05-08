@@ -83,6 +83,30 @@ public class TaskServiceTest extends DbUnitTest {
 	}
 
 	/**
+	 * Test method for {@link org.sharetask.api.TaskService#createTask(org.sharetask.api.dto.TaskDTO)}.
+	 */
+	@Test
+	public void testCreateTaskWithoutDueDate() {
+		TaskDTO task = new TaskDTO();
+		task.setTitle("title");
+		task.setDescription("description");
+		task.setPriority("MEDIUM");
+		TaskDTO result = taskService.createTask(100L, task);
+		assertNotNull(result);
+		assertNotNull(result.getId());
+		assertThat(result.getTitle(), equalTo("title"));
+		assertThat(result.getDescription(), equalTo("description"));
+		assertNotNull(result.getCreatedBy());
+		assertNotNull(result.getCreatedOn());
+		assertNotNull(result.getUpdatedBy());
+		assertNotNull(result.getUpdatedOn());
+		assertThat(result.getPriority(), equalTo("MEDIUM"));
+		assertThat(result.getEvents().size(), equalTo(1));
+		assertThat(result.getState(), equalTo("NEW"));
+		assertTrue(result.getTags() == null);
+	}
+
+	/**
 	 * Test method for {@link org.sharetask.api.TaskService#addComment(Long, String)}.
 	 */
 	@Test
