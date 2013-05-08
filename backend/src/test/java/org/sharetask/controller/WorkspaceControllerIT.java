@@ -51,7 +51,7 @@ public class WorkspaceControllerIT extends IntegrationTest {
         //then
         Assert.assertEquals(HttpStatus.OK.value(), response.getStatusLine().getStatusCode());
         String responseData = EntityUtils.toString(response.getEntity());
-        Assert.assertTrue(responseData.contains("\"title\":\"Workspace\""));
+        Assert.assertTrue(responseData.contains("\"title\":\"ABX Agency\""));
         EntityUtils.consume(response.getEntity());
     }
 
