@@ -55,7 +55,7 @@
 										<button class="btn btn-inverse" ng-click="addWorkspace()">Add</button>
 									</div>
 								</li>
-								<li class="cursor-pointer" ng-repeat="workspace in workspaces" ng-class="{'hidden':taskEditMode == 'NEW-WORKSPACE'}"><a ng-click="setSelectedWorkspace(workspace.id)">{{workspace.title}}</a></li>
+								<li class="cursor-pointer" ng-repeat="workspace in workspaces" ng-class="{'hidden':taskEditMode == 'NEW-WORKSPACE'}" data-drop="true" jqyoui-droppable="{onDrop:'moveTaskDragDrop'}"><a ng-click="setSelectedWorkspace(workspace.id)">{{workspace.title}}</a></li>
 							</ul>
 							<ul class="nav pull-right">
 								<div class="input-append" style="padding-top:2px;">
@@ -92,7 +92,7 @@
 							<div class="footer">Completed<span class="pull-right">{{allTasks | queueTasksCount: 'MY_COMPLETED'}}</span></div>
 						</div>
 						<br />
-						<div class="tag cursor-pointer" ng-repeat="tag in tags"><span class="text" ng-class="{'warning':tag == filter.tag}" ng-click="setTaskFilterTag(tag)">{{tag}}</span></div>
+						<div class="tag cursor-pointer" ng-repeat="tag in tags" data-drag="true" data-jqyoui-options="{appendTo:'body', revert:'invalid', helper:'clone'}" ng-model="tag" jqyoui-draggable=""><span class="text" ng-class="{'warning':tag == filter.tag}" ng-click="setTaskFilterTag(tag)">{{tag}}</span></div>
 					</div>
 				</div>
 			</div>
@@ -140,9 +140,9 @@
 					<div class="task-list" ng-class="{'small':taskEditMode == 'NEW'}">
 						<div class="task-list-inner">
 							<div class="navbar">
-								<div class="navbar-inner thick light inline" ng-repeat="task in tasks | orderBy:orderTasks" ng-class="{'selected':task.id == selectedTask.id}" ng-click="setSelectedTask(task.id)">
+								<div class="navbar-inner thick light inline" ng-repeat="task in tasks | orderBy:orderTasks" ng-class="{'selected':task.id == selectedTask.id}" ng-click="setSelectedTask(task.id)" data-drop="true" jqyoui-droppable="{onDrop:'addTaskTagDragDrop'}">
 									<div class="row-full">
-										<div class="span8">
+										<div class="span8" data-drag="true" ng-model="task" data-jqyoui-options="{revert:'invalid', helper:'clone', opacity:0.9}" jqyoui-draggable="">
 											<strong>{{task.title}}</strong>
 										</div>
 										<div class="span4" style="text-align:right;">
@@ -244,6 +244,7 @@
 						<div style="margin-top:5px;padding:5px;background:#fff;border:1px solid #ddd;">
 							<div class="row-full">
 								<div class="cursor-pointer" ng-class="{'hidden':taskEditMode == 'DESCRIPTION'}" ng-click="setEditMode('DESCRIPTION')">{{selectedTask.description}}</div>
+								<button class="btn" ng-class="{'hidden':selectedTask.description != '' && selectedTask.description != null}" ng-click="setEditMode('DESCRIPTION')">Add description</button>
 								<div ng-class="{'hidden':taskEditMode != 'DESCRIPTION'}">
 									<textarea class="span12" style="height:80px;margin-bottom:1px;" ng-model="selectedTask.description" ui-keypress="{esc:'setEditMode(\'\')'}">{{selectedTask.description}}</textarea><br />
 									<button class="btn btn-inverse" ng-click="updateTask(selectedTask)">Save changes</button>

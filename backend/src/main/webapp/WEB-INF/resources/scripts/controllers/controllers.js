@@ -19,7 +19,7 @@
 'use strict';
 
 /* Controllers */
-angular.module('shareTaskApp.controllers', ['ui']).
+angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 	controller('AuthCtrl', ['$scope', '$location', '$rootScope', 'User', 'LocalStorage', function($scope, $location, $rootScope, User, LocalStorage) {
 		
 		$scope.errorStatus = 0;
@@ -265,10 +265,8 @@ angular.module('shareTaskApp.controllers', ['ui']).
 		};
 		
 		/**
-		 * Removing tag from the task.
+		 * Adding tag to the task.
 		 * Task is stored to server.
-		 * @param {number} taskId - Task ID.
-		 * @param {string} tag - Tag name.
 		 */
 		$scope.addTaskTag = function() {
 			console.log("Add new tag to task, id: %s, tag: %s", $scope.selectedTask.id, $scope.newTag);
@@ -276,6 +274,21 @@ angular.module('shareTaskApp.controllers', ['ui']).
 			$scope.updateTask($scope.selectedTask);
 			$scope.taskEditMode = '';
 			$scope.newTag = '';
+		};
+		
+		/**
+		 * Adding tag to the task via drag&drop.
+		 * Task is stored to server.
+		 */
+		$scope.addTaskTagDragDrop = function(event, ui) {
+			console.log("Add new tag to task, id: %s, tag: %s", this.task.id, ui.draggable.context.textContent);
+			console.log("onDropFunc (event: %o, ui: %o)", event, ui);
+			console.log("onDropFunc (draggable context: %o)", ui.draggable.context.textContent);
+			console.log("onDropFunc (task.tags: %o)", this.task);
+			// add tag
+			this.task.tags.push(ui.draggable.context.textContent);
+			// update task
+			$scope.updateTask(this.task);
 		};
 		
 		/**
@@ -370,9 +383,8 @@ angular.module('shareTaskApp.controllers', ['ui']).
 		 */
 		$scope.addTask = function() {
 			console.log("Add new task (taskTitle: %s)", $scope.newTaskTitle);
-			// FIXME Remove setting dueDate after solving issue #7
 			// FIXME Remove setting comments after solving issue #2
-			var task = {title: $scope.newTaskTitle, createdBy: $rootScope.loggedUser.username, createdOn: new Date(), dueDate: new Date(), priority: 'MEDIUM', comments: []};
+			var task = {title: $scope.newTaskTitle, createdBy: $rootScope.loggedUser.username, createdOn: new Date(), priority: 'MEDIUM', comments: []};
 			console.log("Task: %o", task);
 			Task.create({workspaceId: $scope.selectedWorkspaceId, task: task}, function(data, status) {
 					console.log("Task create success! data: %o, status: %o", data, status);
@@ -420,6 +432,7 @@ angular.module('shareTaskApp.controllers', ['ui']).
 					$scope.taskEditMode = '';
 					LocalStorage.store('workspace-' + $scope.selectedWorkspaceId, $scope.allTasks);
 					$scope.filterTasks();
+					$scope.setSelectedTask($scope.tasks[0].id);
 					$scope.setEditMode('');
 				}, function(data, status) {
 					console.log("Task complete error! data: %o, status: %o", data, status);
@@ -432,6 +445,21 @@ angular.module('shareTaskApp.controllers', ['ui']).
 		 */
 		$scope.moveTask = function(workspace) {
 			console.log("move task (id: %s) to workspace (%s)", $scope.selectedTask.id, workspace);
+		};
+		
+		/**
+		 * Adding tag to the task via drag&drop.
+		 * Task is stored to server.
+		 */
+		$scope.moveTaskDragDrop = function(event, ui) {
+			//console.log("Add new tag to task, id: %s, tag: %s", this.task.id, ui.draggable.context.textContent);
+			console.log("moveTaskDragDrop (event: %o, ui: %o)", event, ui);
+			console.log("moveTaskDragDrop (draggable context: %o)", ui.draggable.context);
+			console.log("moveTaskDragDrop (this: %o)", this);
+			// add tag
+			//this.task.tags.push(ui.draggable.context.textContent);
+			// update task
+			//$scope.updateTask(this.task);
 		};
 		
 		// get logged user from local storage

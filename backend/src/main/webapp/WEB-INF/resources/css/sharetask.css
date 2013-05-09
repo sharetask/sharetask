@@ -115,7 +115,7 @@ h1,h2,h3,h4,h5,h6 {margin:5px 0;line-height:0;}
 .label-light,.badge-light {background-color:#fff;color:#000;}
 .label a {text-decoration:none;color:#fff;text-shadow:none;}
 
-.tag {color:#000;display:inline-block;margin-right:5px;margin-bottom:5px;}
+.tag {color:#000;display:inline-block;margin-right:5px;margin-bottom:5px;z-index:10;}
 .tag .text {background:#fff;border:1px solid #ccc;display:inline-block;padding:0 7px;line-height:20px;font-size:11px;}
 .tag .remove {background:#ccc;border:1px solid #ccc;display:inline-block;padding:0 5px;line-height:20px;font-size:11px;}
 .tag .selected {background:#0079F2;border:1px solid #0079F2;color:#fff;}
