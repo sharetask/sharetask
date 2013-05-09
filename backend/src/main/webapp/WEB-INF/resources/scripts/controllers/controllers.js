@@ -417,26 +417,60 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 		};
 		
 		/**
-		 * Complete active task.
+		 * Complete task.
+		 * @param {boolean} bulk - If true then all checked tasks are completed. Else only selected task is completed.
 		 * Task data are stored to server.
 		 */
-		$scope.completeTask = function() {
-			console.log("Complete task (id: %s)", $scope.selectedTask.id);
-			Task.complete({workspaceId: $scope.selectedWorkspaceId, taskId: $scope.selectedTask.id}, function(data, status) {
-					console.log("Task complete success! data: %o, status: %o", data, status);
-					var task = $.grep($scope.tasks, function(e) {
-						return e.id == $scope.selectedTask.id;
+		$scope.completeTask = function(bulk) {
+			console.log("Complete task (bulk: %s)", bulk);
+			if (!bulk) {
+				// complete selected task
+				console.log("Complete task (id: %s)", $scope.selectedTask.id);
+				Task.complete({workspaceId: $scope.selectedWorkspaceId, taskId: $scope.selectedTask.id}, function(data, status) {
+						console.log("Task complete success! data: %o, status: %o", data, status);
+						var task = $.grep($scope.tasks, function(e) {
+							return e.id == $scope.selectedTask.id;
+						});
+						task[0].state = 'FINISHED';
+						$scope.selectedTask.state = 'FINISHED';
+						$scope.taskEditMode = '';
+						LocalStorage.store('workspace-' + $scope.selectedWorkspaceId, $scope.allTasks);
+						$scope.filterTasks();
+						$scope.setSelectedTask($scope.tasks[0].id);
+						$scope.setEditMode('');
+					}, function(data, status) {
+						console.log("Task complete error! data: %o, status: %o", data, status);
 					});
-					task[0].state = 'FINISHED';
-					$scope.selectedTask.state = 'FINISHED';
-					$scope.taskEditMode = '';
-					LocalStorage.store('workspace-' + $scope.selectedWorkspaceId, $scope.allTasks);
-					$scope.filterTasks();
-					$scope.setSelectedTask($scope.tasks[0].id);
-					$scope.setEditMode('');
-				}, function(data, status) {
-					console.log("Task complete error! data: %o, status: %o", data, status);
+			}
+			else {
+				// complete all checked tasks
+				var checkedTasks = $.grep($scope.tasks, function(e) {
+					return e.checked == true;
 				});
+				angular.forEach(checkedTasks, function(value, key) {
+					if (value.state != 'FINISHED') {
+						console.log("Complete task (id: %s)", value.id);
+						Task.complete({workspaceId: $scope.selectedWorkspaceId, taskId: value.id}, function(data, status) {
+								console.log("Task complete success! data: %o, status: %o", data, status);
+								var task = $.grep($scope.tasks, function(e) {
+									return e.id == value.id;
+								});
+								task[0].state = 'FINISHED';
+								$scope.selectedTask.state = 'FINISHED';
+								$scope.taskEditMode = '';
+								LocalStorage.store('workspace-' + $scope.selectedWorkspaceId, $scope.allTasks);
+								$scope.filterTasks();
+								if (!jQuery.isEmptyObject($scope.tasks)) {
+									$scope.setSelectedTask($scope.tasks[0].id);
+								}
+								$scope.setEditMode('');
+							}, function(data, status) {
+								console.log("Task complete error! data: %o, status: %o", data, status);
+							});
+					}
+					value.checked = false;
+				});
+			}
 		};
 		
 		/**

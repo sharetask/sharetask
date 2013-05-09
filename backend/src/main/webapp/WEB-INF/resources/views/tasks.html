@@ -123,6 +123,15 @@
 										<li ng-click="setTaskOrdering('TASK_AUTHOR')"><a>Author</a></li>
 									</ul>
 								</div>
+								<div class="btn-group">
+									<button class="btn dropdown-toggle" data-toggle="dropdown">A <span class="caret"></span></button>
+									<ul class="dropdown-menu">
+										<li ng-click="completeTask(true)"><a>Complete</a></li>
+										<li ng-click=""><a>Forward</a></li>
+										<li ng-click=""><a>Move</a></li>
+										<li ng-click=""><a>Delete</a></li>
+									</ul>
+								</div>
 								<button class="btn btn-inverse pull-right" style="margin-left:5px;" ng-click="setEditMode('NEW')"><i class="icon-plus icon-white"></i></button>
 								<button class="btn pull-right" ng-click="loadTasks()"><i class="icon-refresh"></i></button>
 							</div>
@@ -142,19 +151,22 @@
 							<div class="navbar">
 								<div class="navbar-inner thick light inline" ng-repeat="task in tasks | orderBy:orderTasks" ng-class="{'selected':task.id == selectedTask.id}" ng-click="setSelectedTask(task.id)" data-drop="true" jqyoui-droppable="{onDrop:'addTaskTagDragDrop'}">
 									<div class="row-full">
-										<div class="span8" data-drag="true" ng-model="task" data-jqyoui-options="{revert:'invalid', helper:'clone', opacity:0.9}" jqyoui-draggable="">
-											<strong>{{task.title}}</strong>
+										<div class="span1">
+											<div class="st-checkbox" ng-click="task.checked = !task.checked" ng-class="{'btn-primary':task.checked}" stop-event="click"><i class="icon-ok" ng-class="{'icon-white':task.checked}"></i></div>
 										</div>
-										<div class="span4" style="text-align:right;">
-											<small>{{task.dueDate | date:'mediumDate'}}</small>
-										</div>
-									</div>
-									<div class="row-full">
-										<div class="span8">
-											<div class="tag" ng-repeat="tag in task.tags"><span class="text" ng-class="{'selected':tag == filter.tag}">{{tag}}</span><span class="remove cursor-pointer" ng-click="removeTag(task.id, tag)" stop-event="click">x</span></div>
-										</div>
-										<div class="span4" style="text-align:right;">
-											<i class="icon-comment"></i> {{task.comments}}
+										<div class="span11">
+											<div class="row-full">
+												<div class="span8" data-drag="true" ng-model="task" data-jqyoui-options="{revert:'invalid', helper:'clone', opacity:0.9}" jqyoui-draggable="">
+													<strong>{{task.title}}</strong>
+												</div>
+												<div class="span4" style="text-align:right;"><small>{{task.dueDate | date:'mediumDate'}}</small></div>
+											</div>
+											<div class="row-full">
+												<div class="span8">
+													<div class="tag" ng-repeat="tag in task.tags"><span class="text" ng-class="{'selected':tag == filter.tag}">{{tag}}</span><span class="remove cursor-pointer" ng-click="removeTag(task.id, tag)" stop-event="click">x</span></div>
+												</div>
+												<div class="span4" style="text-align:right;"><i class="icon-comment"></i> {{task.comments.length}}</div>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -177,7 +189,7 @@
 						
 						<div class="task-detail-action-confirm" ng-class="{'hidden':taskEditMode != 'COMPLETE-TASK'}">
 							<p>Do you really want to complete task?</p>
-							<button class="btn btn-inverse" ng-click="completeTask()">Yes</button>
+							<button class="btn btn-inverse" ng-click="completeTask(false)">Yes</button>
 							<button class="btn" ng-click="setEditMode('')">No</button>
 						</div>
 						

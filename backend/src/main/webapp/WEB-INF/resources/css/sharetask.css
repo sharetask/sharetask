@@ -103,12 +103,13 @@ h1,h2,h3,h4,h5,h6 {margin:5px 0;line-height:0;}
 .navbar-inner.thick {min-height:0px;padding:5px;}
 .navbar-inner.thick strong {font-size:15px;}
 /*.navbar-inner.inline {border:none;border-bottom:1px solid #ccc;}*/
-.navbar-inner.inline {border:none;margin-bottom:5px;color:#000;}
+.navbar-inner.inline {border:none;margin-bottom:3px;color:#000;}
 .navbar-inner.inline strong {font-size:15px;font-weight:normal;}
+.navbar-inner.inline:hover {background:#eee;color:#000;}
 .navbar-inner.transparent {background:none;}
-.navbar-inner.light {background-color:#ffffff;}
-.navbar-inner.dark {background-color:#f5f5f5;}
-.navbar-inner.selected {background-color:#eee;color:#000;}
+.navbar-inner.light {background:#ffffff;}
+.navbar-inner.dark {background:#f5f5f5;}
+.navbar-inner.selected {background:#eee;color:#000;}
 
 .label {text-shadow:none;min-width:1px;min-height:1px;padding:3px;margin-right:5px;/*background-color:#aaa;*/}
 .badge {margin-right:5px;margin-bottom:5px;padding:0 5px;}
@@ -192,6 +193,8 @@ body {margin:0;padding:0;-webkit-text-size-adjust:100%;}
 .task-list {width:100%;top:80px;bottom:0;overflow:visible;position:absolute;}
 .task-list.small {top:125px;}
 .task-list-inner {height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+
+.st-checkbox {border:solid 2px #bbb;width:25px;height:25px;text-align:center;line-height:25px;}
 
 
 
