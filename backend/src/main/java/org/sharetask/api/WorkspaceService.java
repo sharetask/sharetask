@@ -46,14 +46,14 @@ public interface WorkspaceService {
 	 * @param workspaceId
 	 * @param userId
 	 */
-	void addMemeber(@NotNull Long workspaceId, @NotNull String username);
+	void addMember(@NotNull Long workspaceId, @NotNull String username);
 	
 	/**
 	 * Remove member from specified workspace.
 	 * @param workspaceId
 	 * @param userId
 	 */
-	void removeMemeber(@NotNull Long workspaceId, @NotNull String username);
+	void removeMember(@NotNull Long workspaceId, @NotNull String username);
 	
 	/**
 	 * Find all workspaces for specified owner.

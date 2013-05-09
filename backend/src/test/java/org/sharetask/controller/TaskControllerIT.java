@@ -71,4 +71,17 @@ public class TaskControllerIT extends IntegrationTest {
         //then
         Assert.assertEquals(HttpStatus.OK.value(), response.getStatusLine().getStatusCode());
     }
+    
+    @Test
+    public void testCompleteTask() throws IOException {
+        //given
+        HttpPost httpPost = new HttpPost(URL_WORKSPACE + "/1/complete");
+        httpPost.addHeader(new BasicHeader("Content-Type", "application/json"));
+        
+        //when
+        HttpResponse response = getClient().execute(httpPost);
+ 
+        //then
+        Assert.assertEquals(HttpStatus.OK.value(), response.getStatusLine().getStatusCode());
+    }
 }

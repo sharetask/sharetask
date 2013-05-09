@@ -163,7 +163,7 @@ public class TaskServiceImpl implements TaskService {
 		task.getOwners().clear();
 		Iterable<User> ownerList = userRepository.findAll(owners);
 		for (User user : ownerList) {
-			if (task.getWorkspace().getMemebers().contains(user)) {
+			if (task.getWorkspace().getMembers().contains(user)) {
 				log.debug("Added user {} is member of workspace.", user.getUsername());
 				task.getOwners().add(user);
 			}

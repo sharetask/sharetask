@@ -133,7 +133,7 @@
 			</column>
 			<column name="DESCRIPTION" type="VARCHAR(2000)" remarks="Title" />
 			<column name="DUE_DATE" type="DATE" remarks="Expiration date">
-				<constraints nullable="false" />
+				<constraints nullable="true" />
 			</column>
 			<column name="PRIORITY" type="VARCHAR(50)" remarks="Task priority">
 				<constraints nullable="false" />

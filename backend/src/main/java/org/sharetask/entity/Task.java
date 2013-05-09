@@ -97,7 +97,7 @@ public class Task extends BaseEntity implements Serializable {
 	
 	@Getter @Setter
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "DUE_DATE", nullable = false)
+	@Column(name = "DUE_DATE")
 	private Date dueDate;
 	
 	@Getter @Setter

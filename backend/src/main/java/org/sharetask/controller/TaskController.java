@@ -75,6 +75,7 @@ public class TaskController {
 	}
 
 	@RequestMapping(value = "/{taskId}/complete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseStatus(value = HttpStatus.OK)
 	public void complete(@PathVariable("taskId") final Long taskId) {
  		taskService.completeTask(taskId);
 	}	

@@ -8,7 +8,7 @@
 	<packaging>pom</packaging>
 
 	<name>ShareTask</name>
-	<url>http://mbocek.github.com/sharetask/</url>
+	<url>http://sharetask.github.com/sharetask/</url>
 
 	<modules>
 		<module>database</module>
