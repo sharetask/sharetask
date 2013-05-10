@@ -93,11 +93,21 @@ public class WorkspaceServiceTest extends DbUnitTest {
 	}
 	
 	/**
-	 * Test method for {@link org.sharetask.api.WorkspaceService#findWorkspaceByOwner(Long)}.
+	 * Test method for {@link org.sharetask.api.WorkspaceService#findWorkspaceByOwner(String)}.
 	 */
 	@Test
 	public void testFindWorkspaceByOwner() {
 		List<WorkspaceDTO> workspaces = workspaceService.findWorkspaceByOwner("test1@test.com");
+		Assert.assertThat(workspaces.size(), CoreMatchers.is(1));
+		Assert.assertThat(workspaces.get(0).getId(), CoreMatchers.is(100L));
+	}
+
+	/**
+	 * Test method for {@link org.sharetask.api.WorkspaceService#findWorkspaceByMember(String)}.
+	 */
+	@Test
+	public void testFindWorkspaceByMember() {
+		List<WorkspaceDTO> workspaces = workspaceService.findWorkspaceByMember("test3@test.com");
 		Assert.assertThat(workspaces.size(), CoreMatchers.is(1));
 		Assert.assertThat(workspaces.get(0).getId(), CoreMatchers.is(100L));
 	}

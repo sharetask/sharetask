@@ -52,14 +52,18 @@ import lombok.ToString;
 @Entity
 @Table(name = "WORKSPACE")
 @NamedQueries(value = { 
-		@NamedQuery(name = Workspace.QUERY_NAME_FIND_BY_OWNER_USERNAME, query = Workspace.QUERY_FIND_BY_OWNER_USERNAME)  
+		@NamedQuery(name = Workspace.QUERY_NAME_FIND_BY_OWNER_USERNAME, query = Workspace.QUERY_FIND_BY_OWNER_USERNAME),   
+		@NamedQuery(name = Workspace.QUERY_NAME_FIND_BY_MEMBER_USERNAME, query = Workspace.QUERY_FIND_BY_MEMBER_USERNAME)  
 	})
 public class Workspace extends BaseEntity implements Serializable {
 
 	private static final long serialVersionUID = Constants.VERSION;
 
-	public static final String QUERY_NAME_FIND_BY_OWNER_USERNAME = "Workspace.findByOwnerId";
+	public static final String QUERY_NAME_FIND_BY_OWNER_USERNAME = "Workspace.findByOwnerUsername";
 	public static final String QUERY_FIND_BY_OWNER_USERNAME = "SELECT w FROM Workspace w WHERE w.owner.username = :ownerUserName";
+
+	public static final String QUERY_NAME_FIND_BY_MEMBER_USERNAME = "Workspace.findByMemberUsername";
+	public static final String QUERY_FIND_BY_MEMBER_USERNAME = "SELECT w FROM Workspace w, IN(w.members) as m WHERE m.username = :memberUsername";
 
 	@Getter
 	@Id	@GeneratedValue(strategy = GenerationType.AUTO)

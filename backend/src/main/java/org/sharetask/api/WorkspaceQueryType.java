@@ -16,19 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.sharetask.repository;
-
-import java.util.List;
-
-import org.sharetask.entity.Workspace;
+package org.sharetask.api;
 
 /**
  * @author Michal Bocek
  * @since 1.0.0
  */
-public interface WorkspaceRepositoryCustom {
-	
-	List<Workspace> findByOwnerUsername(String username);
-
-	List<Workspace> findByMemberUsername(String username);
+public enum WorkspaceQueryType {
+	OWNER, MEMBER; 
 }

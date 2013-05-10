@@ -19,11 +19,13 @@
 package org.sharetask.controller;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.util.EntityUtils;
@@ -38,12 +40,17 @@ import org.springframework.http.HttpStatus;
  */
 public class WorkspaceControllerIT extends IntegrationTest {
 
-    private static final String URL_WORKSPACE = BASE_URL + "/workspace";
+    private static final String WORKSPACE_PATH = "/workspace";
+    private static final String URL_WORKSPACE = BASE_URL + WORKSPACE_PATH;
     
     @Test
-    public void testFindWorkspaceByOwner() throws IOException {
+    public void testFindWorkspaceByOwner() throws IOException, URISyntaxException {
+    	URIBuilder builder = new URIBuilder();
+    	builder.setScheme(SCHEMA).setHost(HOST).setPath(BASE_PATH + WORKSPACE_PATH)
+    	    .setParameter("type", "OWNER");
+    	URI uri = builder.build();
         //given
-        HttpGet httpGet = new HttpGet(URL_WORKSPACE);
+        HttpGet httpGet = new HttpGet(uri);
 		
         //when
         HttpResponse response = getClient().execute(httpGet);
@@ -66,20 +73,6 @@ public class WorkspaceControllerIT extends IntegrationTest {
         //when
         HttpResponse response = getClient().execute(httpPost);
 
-        //then
-        Assert.assertEquals(HttpStatus.OK.value(), response.getStatusLine().getStatusCode());
-        EntityUtils.consume(response.getEntity());
-    }
-    
-    @Test
-    public void testRemoveMember() throws IOException {
-        //given
-        HttpDelete httpDelete = new HttpDelete(URL_WORKSPACE + "/1/member/dev2@shareta.sk");
-        httpDelete.addHeader(new BasicHeader("Content-Type", "application/json"));
-        
-        //when
-        HttpResponse response = getClient().execute(httpDelete);
- 
         //then
         Assert.assertEquals(HttpStatus.OK.value(), response.getStatusLine().getStatusCode());
         EntityUtils.consume(response.getEntity());

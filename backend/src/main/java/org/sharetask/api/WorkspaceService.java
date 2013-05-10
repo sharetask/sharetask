@@ -61,4 +61,20 @@ public interface WorkspaceService {
 	 * @return
 	 */
 	List<WorkspaceDTO> findWorkspaceByOwner(@NotNull String username);
+	
+	/**
+	 * Find all workspaces for member.
+	 * @param username
+	 * @return
+	 */
+	List<WorkspaceDTO> findWorkspaceByMember(@NotNull String username);
+	
+	/**
+	 * Find workspace by type.
+	 * Expected type is OWNER, MEMBER.
+	 * @param type
+	 * @return
+	 */
+	List<WorkspaceDTO> findWorkspaceByType(@NotNull WorkspaceQueryType queryType);
+	
 }

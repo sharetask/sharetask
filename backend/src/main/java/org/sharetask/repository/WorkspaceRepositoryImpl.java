@@ -42,4 +42,10 @@ public class WorkspaceRepositoryImpl implements WorkspaceRepositoryCustom {
 		return query.getResultList();
 	}
 
+	@Override
+	public List<Workspace> findByMemberUsername(final String username) {
+		final TypedQuery<Workspace> query = entityManager.createNamedQuery(Workspace.QUERY_NAME_FIND_BY_MEMBER_USERNAME, Workspace.class);
+		query.setParameter("memberUsername", username);
+		return query.getResultList();
+	}
 }

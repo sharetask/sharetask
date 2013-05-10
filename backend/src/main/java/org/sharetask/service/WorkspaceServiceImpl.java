@@ -18,11 +18,14 @@
  */
 package org.sharetask.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
+import javax.validation.constraints.NotNull;
 
+import org.sharetask.api.WorkspaceQueryType;
 import org.sharetask.api.WorkspaceService;
 import org.sharetask.api.dto.WorkspaceDTO;
 import org.sharetask.entity.User;
@@ -30,6 +33,7 @@ import org.sharetask.entity.Workspace;
 import org.sharetask.repository.UserRepository;
 import org.sharetask.repository.WorkspaceRepository;
 import org.sharetask.utility.DTOConverter;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -104,4 +108,27 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 		final List<Workspace> workspaces = workspaceRepository.findByOwnerUsername(username);
 		return DTOConverter.convertList(workspaces, WorkspaceDTO.class);
 	}	
+	
+	@Override
+	public List<WorkspaceDTO> findWorkspaceByMember(final String username) {
+		final List<Workspace> workspaces = workspaceRepository.findByMemberUsername(username);
+		return DTOConverter.convertList(workspaces, WorkspaceDTO.class);
+	}
+
+	@Override
+	public List<WorkspaceDTO> findWorkspaceByType(final WorkspaceQueryType queryType) {
+		List<Workspace> workspaces ;
+		final String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		switch (queryType) {
+			case OWNER:
+				workspaces = workspaceRepository.findByOwnerUsername(username);
+				break;
+			case MEMBER:
+				workspaces = workspaceRepository.findByMemberUsername(username);
+				break;
+			default:
+				workspaces = new ArrayList<Workspace>();
+		}
+		return DTOConverter.convertList(workspaces, WorkspaceDTO.class);
+	}
 }

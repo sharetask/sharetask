@@ -38,8 +38,12 @@ import org.springframework.http.HttpStatus;
  * @since 1.0.0
  */
 public class IntegrationTest {
+
+	public static final String SCHEMA = "http";
+	public static final String HOST = "localhost:8088";
+	public static final String BASE_PATH = "/sharetask/api";
 	
-	public static final String BASE_URL = "http://localhost:8088/sharetask/api";
+	public static final String BASE_URL = SCHEMA + "://" + HOST + BASE_PATH;
 	
 	private static String SESSIONID;
 	private static String DOMAIN;

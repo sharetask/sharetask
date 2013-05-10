@@ -22,17 +22,18 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.sharetask.api.WorkspaceQueryType;
 import org.sharetask.api.WorkspaceService;
 import org.sharetask.api.dto.WorkspaceDTO;
 import org.sharetask.controller.json.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -55,20 +56,20 @@ public class WorkspaceController {
 	@RequestMapping(value = "/{workspaceId}/member", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
 	public void addMember(@PathVariable("workspaceId") final Long workspaceId, 
-	                       @RequestBody final User user) {
+	                      @RequestBody final User user) {
  		workspaceService.addMember(workspaceId, user.getUsername());
 	}
 	
 	@RequestMapping(value = "/{workspaceId}/member/{username:.*}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
 	public void removeMember(@PathVariable("workspaceId") final Long workspaceId, 
-	                          @PathVariable("username") final String username) {
+	                         @PathVariable("username") final String username) {
  		workspaceService.removeMember(workspaceId, username);
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody List<WorkspaceDTO> findWorkspaceByOwner() {
-		String name = SecurityContextHolder.getContext().getAuthentication().getName();
- 		return workspaceService.findWorkspaceByOwner(name);
+	public @ResponseBody List<WorkspaceDTO> findWorkspace(@RequestParam("type") final String type) {
+		final WorkspaceQueryType queryType = WorkspaceQueryType.valueOf(type);
+ 		return workspaceService.findWorkspaceByType(queryType);
 	}
 }
