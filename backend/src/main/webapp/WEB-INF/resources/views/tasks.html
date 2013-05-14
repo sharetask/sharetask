@@ -55,7 +55,7 @@
 										<button class="btn btn-inverse" ng-click="addWorkspace()">Add</button>
 									</div>
 								</li>
-								<li class="cursor-pointer" ng-repeat="workspace in workspaces" ng-class="{'hidden':taskEditMode == 'NEW-WORKSPACE'}"><a ng-click="setSelectedWorkspace(workspace.id)">{{workspace.title}}</a></li>
+								<li class="cursor-pointer" ng-repeat="workspace in workspaces" ng-class="{'hidden':taskEditMode == 'NEW-WORKSPACE'}"><a ng-click="setSelectedWorkspace(workspace)">{{workspace.title}}</a></li>
 							</ul>
 							<ul class="nav pull-right">
 								<div class="input-append" style="padding-top:2px;">
@@ -152,7 +152,7 @@
 								<div class="navbar-inner thick light inline" ng-repeat="task in tasks | orderBy:orderTasks" ng-class="{'selected':task.id == selectedTask.id}" ng-click="setSelectedTask(task.id)" data-drop="true" jqyoui-droppable="{onDrop:'addTaskTagDragDrop'}">
 									<div class="row-full">
 										<div class="span1">
-											<div class="st-checkbox" ng-click="task.checked = !task.checked" ng-class="{'btn-primary':task.checked}" stop-event="click"><i class="icon-ok" ng-class="{'icon-white':task.checked}"></i></div>
+											<div class="st-checkbox" ng-click="task.checked = !task.checked" ng-class="{'checked':task.checked}" stop-event="click"><i class="icon-ok" ng-class="{'icon-white':task.checked}"></i></div>
 										</div>
 										<div class="span11">
 											<div class="row-full">
@@ -183,7 +183,6 @@
 						<div class="task-detail-action">
 							<button class="btn btn-inverse" ng-click="setEditMode('COMPLETE-TASK')">Complete</button>
 							<button class="btn" ng-click="setEditMode('FORWARD-TASK')">Forward</button>
-							<button class="btn" ng-click="setEditMode('MOVE-TASK')">Move</button>
 							<button class="btn" ng-click="setEditMode('DELETE-TASK')">Delete</button>
 						</div>
 						
@@ -196,8 +195,14 @@
 						<div class="task-detail-action-confirm" ng-class="{'hidden':taskEditMode != 'FORWARD-TASK'}">
 							<p>Forward task to another workspace member.</p>
 							<div class="input-append">
-								<input type="text" placeholder="search member..." ng-model="forwardUser" ui-keypress="{enter:'forwardTask()', esc:'setEditMode(\'\')'}" focus="editing" />
-								<button class="btn btn-inverse" ng-click="forwardTask(forwardUser)">Forward</button>
+								<input type="text" placeholder="search member..." ng-model="search.$" ui-keypress="{enter:'forwardTask()', esc:'setEditMode(\'\')'}" focus="editing" />
+								<!--<button class="btn btn-inverse" ng-click="forwardTask(forwardUser)">Forward</button>-->
+							</div>
+							<div class="user-panels">
+								<div class="user-panel cursor-pointer" ng-repeat="member in selectedWorkspace.members | filter:search | limitTo:6" ng-click="forwardTask(member)">
+									<p><strong>{{member.name}} {{member.surName}}</strong></p>
+									{{member.username}}
+								</div>
 							</div>
 						</div>
 						
@@ -207,31 +212,22 @@
 							<button class="btn" ng-click="setEditMode('')">No</button>
 						</div>
 						
-						<div style="margin-top:5px;padding:5px;background:#0079F2;color:#fff;font-weight:bold;">
-							<div class="row-full">
-								<div class="span8">
-									{{selectedTask.createdBy.name}}
-								</div>
-								<div class="span4" style="text-align:right;">
-									{{selectedTask.createdOn | date:'mediumDate'}}<br />
-								</div>
-							</div>
-							<div class="row-full">
-								<div class="span12">
-									<div class="cursor-pointer" style="font-size:18px;" ng-class="{'hidden':taskEditMode == 'TITLE'}" ng-click="setEditMode('TITLE')">{{selectedTask.title}}</div>
-									<div ng-class="{'hidden':taskEditMode != 'TITLE'}">
-										<div class="input-append">
-											<input type="text" ng-model="selectedTask.title" ui-keypress="{enter:'updateTask(selectedTask)', esc:'setEditMode(\'\')'}" focus="editing" />
-											<button class="btn btn-inverse" ng-click="updateTask(selectedTask)">OK</button>
-										</div>
-									</div>
+						<div style="margin-top:5px;padding:5px;background:#2B6266;color:#fff;">
+							<p>by {{selectedTask.createdBy.name}}</p>
+							<div class="cursor-pointer" style="font-weight:bold;font-size:18px;" ng-class="{'hidden':taskEditMode == 'TITLE'}" ng-click="setEditMode('TITLE')">{{selectedTask.title}}</div>
+							<div ng-class="{'hidden':taskEditMode != 'TITLE'}">
+								<div class="input-append">
+									<input type="text" ng-model="selectedTask.title" ui-keypress="{enter:'updateTask(selectedTask)', esc:'setEditMode(\'\')'}" focus="editing" />
+									<button class="btn btn-inverse" ng-click="updateTask(selectedTask)">OK</button>
 								</div>
 							</div>
 						</div>
 						
 						<div style="margin-top:5px;">
-							<span class="label label-success cursor-pointer" b-datepicker="{{dateOptions}}" ng-model="selectedTask.dueDate" data-date-format="MMM d, y" data-date="{{selectedTask.dueDate}}">Due date<br /><br /><strong>{{selectedTask.dueDate | date:'mediumDate'}}</strong></span>
+							<span class="label label-success" style="background:#A7A119;">Created on<br /><br /><strong>{{selectedTask.createdOn | date:'mediumDate'}}</strong></span>
 							<span class="label cursor-pointer" ng-class="{'priority-low':selectedTask.priority == 'LOW','priority-medium':selectedTask.priority == 'MEDIUM','priority-high':selectedTask.priority == 'HIGH'}" ng-click="changeTaskPriority()">Priority<br /><br /><strong>{{selectedTask.priority}}</strong></span>
+							<span class="label label-warning cursor-pointer" style="background:#A7A119;" b-datepicker="{{dateOptions}}" ng-model="selectedTask.dueDate" data-date-format="MMM d, y" data-date="{{selectedTask.dueDate}}">Due date<br /><br /><strong>{{selectedTask.dueDate | date:'mediumDate'}}</strong></span>
+							
 						</div>
 						
 						<div style="margin-top:5px;">

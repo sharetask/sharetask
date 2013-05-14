@@ -57,7 +57,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 	.controller('AppCtrl', ['$scope', '$location', '$rootScope', '$filter', 'Workspace', 'Task', 'User', 'LocalStorage', function($scope, $location, $rootScope, $filter, Workspace, Task, User, LocalStorage) {
 		
 		$scope.viewPanelTaskFilter = true;
-		$scope.selectedWorkspaceId;
+		$scope.selectedWorkspace;
 		$scope.selectedTask;
 		$scope.taskEditMode = '';
 		$scope.filter = {'queue': 'MY_PENDING', 'tag': '', 'searchString': '', 'orderBy': 'TASK_DUE_DATE'};
@@ -108,7 +108,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 				console.log("Loaded workspaces from server: %o", workspaces);
 				if (workspaces.length) {
 					$scope.workspaces = workspaces;
-					$scope.selectedWorkspaceId = workspaces[0].id;
+					$scope.selectedWorkspace = workspaces[0];
 					$scope.loadTasks();
 				}
 			}, function(response) {
@@ -140,11 +140,11 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 		
 		/**
 		 * Setting selected workspace.
-		 * @param {number} id - Workspace ID.
+		 * @param {object} workspace - Workspace.
 		 */
-		$scope.setSelectedWorkspace = function(id) {
-			console.log("Set selected workspace (id: %s)", id);
-			$scope.selectedWorkspaceId = id;
+		$scope.setSelectedWorkspace = function(workspace) {
+			console.log("Set selected workspace (workspace: %o)", workspace);
+			$scope.selectedWorkspace = workspace;
 			$scope.loadTasks();
 		};
 		
@@ -152,13 +152,13 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 		 * Load all active tasks for selected workspace.
 		 */
 		$scope.loadTasks = function() {
-			console.log("Load all active tasks for workspace (id: %s)", $scope.selectedWorkspaceId);
-			Workspace.getActiveTasks({workspaceId: $scope.selectedWorkspaceId}, function(tasks) {
+			console.log("Load all active tasks for workspace (id: %s)", $scope.selectedWorkspace.id);
+			Workspace.getActiveTasks({workspaceId: $scope.selectedWorkspace.id}, function(tasks) {
 					console.log("Loaded workspace tasks from server: %o", tasks);
 					$scope.allTasks = tasks;
 					$scope.setTaskFilterQueue($scope.filter.queue);
 				}, function(response) {
-					console.log("Error getting all active tasks for workspace(id: %s): %o", $scope.selectedWorkspaceId, response);
+					console.log("Error getting all active tasks for workspace(id: %s): %o", $scope.selectedWorkspace.id, response);
 					if (response.status == 403) {
 						$scope.logout();
 					}
@@ -345,12 +345,12 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 			result[0].title = task.title;
 			result[0].description = task.description;
 			result[0].tags = task.tags;
-			Task.update({workspaceId: $scope.selectedWorkspaceId, task: $scope.selectedTask}, function(data, status) {
+			Task.update({workspaceId: $scope.selectedWorkspace.id, task: $scope.selectedTask}, function(data, status) {
 					console.log("Task update success! data: %o, status: %o", data, status);
 				}, function(data, status) {
 					console.log("Task update error! data: %o, status: %o", data, status);
 				});
-			LocalStorage.store('workspace-' + $scope.selectedWorkspaceId, $scope.allTasks);
+			LocalStorage.store('workspace-' + $scope.selectedWorkspace.id, $scope.allTasks);
 		};
 		
 		/**
@@ -387,10 +387,10 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 			// FIXME Remove setting comments after solving issue #2
 			var task = {title: $scope.newTaskTitle, createdBy: $rootScope.loggedUser.username, createdOn: new Date(), priority: 'MEDIUM', comments: []};
 			console.log("Task: %o", task);
-			Task.create({workspaceId: $scope.selectedWorkspaceId, task: task}, function(data, status) {
+			Task.create({workspaceId: $scope.selectedWorkspace.id, task: task}, function(data, status) {
 					console.log("Task create success! data: %o, status: %o", data, status);
 					$scope.allTasks.push(data);
-					LocalStorage.store('workspace-' + $scope.selectedWorkspaceId, $scope.allTasks);
+					LocalStorage.store('workspace-' + $scope.selectedWorkspace.id, $scope.allTasks);
 					$scope.filterTasks();
 					$scope.newTaskTitle = '';
 					$scope.setEditMode('');
@@ -404,7 +404,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 		 * Task data are stored to server.
 		 */
 		$scope.forwardTask = function(user) {
-			console.log("Forward task (id: %s) to user (user: %s)", $scope.selectedTask.id, user);
+			console.log("Forward task (id: %s) to user (user: %o)", $scope.selectedTask.id, user);
 			$scope.updateTask($scope.selectedTask);
 		};
 		
@@ -427,7 +427,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 			if (!bulk) {
 				// complete selected task
 				console.log("Complete task (id: %s)", $scope.selectedTask.id);
-				Task.complete({workspaceId: $scope.selectedWorkspaceId, taskId: $scope.selectedTask.id}, function(data, status) {
+				Task.complete({workspaceId: $scope.selectedWorkspace.id, taskId: $scope.selectedTask.id}, function(data, status) {
 						console.log("Task complete success! data: %o, status: %o", data, status);
 						var task = $.grep($scope.tasks, function(e) {
 							return e.id == $scope.selectedTask.id;
@@ -435,7 +435,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 						task[0].state = 'FINISHED';
 						$scope.selectedTask.state = 'FINISHED';
 						$scope.taskEditMode = '';
-						LocalStorage.store('workspace-' + $scope.selectedWorkspaceId, $scope.allTasks);
+						LocalStorage.store('workspace-' + $scope.selectedWorkspace.id, $scope.allTasks);
 						$scope.filterTasks();
 						$scope.setSelectedTask($scope.tasks[0].id);
 						$scope.setEditMode('');
@@ -451,7 +451,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 				angular.forEach(checkedTasks, function(value, key) {
 					if (value.state != 'FINISHED') {
 						console.log("Complete task (id: %s)", value.id);
-						Task.complete({workspaceId: $scope.selectedWorkspaceId, taskId: value.id}, function(data, status) {
+						Task.complete({workspaceId: $scope.selectedWorkspace.id, taskId: value.id}, function(data, status) {
 								console.log("Task complete success! data: %o, status: %o", data, status);
 								var task = $.grep($scope.tasks, function(e) {
 									return e.id == value.id;
@@ -459,7 +459,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 								task[0].state = 'FINISHED';
 								$scope.selectedTask.state = 'FINISHED';
 								$scope.taskEditMode = '';
-								LocalStorage.store('workspace-' + $scope.selectedWorkspaceId, $scope.allTasks);
+								LocalStorage.store('workspace-' + $scope.selectedWorkspace.id, $scope.allTasks);
 								$scope.filterTasks();
 								if (!jQuery.isEmptyObject($scope.tasks)) {
 									$scope.setSelectedTask($scope.tasks[0].id);
