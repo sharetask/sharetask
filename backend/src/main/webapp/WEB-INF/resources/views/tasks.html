@@ -55,7 +55,7 @@
 										<button class="btn btn-inverse" ng-click="addWorkspace()">Add</button>
 									</div>
 								</li>
-								<li class="cursor-pointer" ng-repeat="workspace in workspaces" ng-class="{'hidden':taskEditMode == 'NEW-WORKSPACE'}" data-drop="true" jqyoui-droppable="{onDrop:'moveTaskDragDrop'}"><a ng-click="setSelectedWorkspace(workspace.id)">{{workspace.title}}</a></li>
+								<li class="cursor-pointer" ng-repeat="workspace in workspaces" ng-class="{'hidden':taskEditMode == 'NEW-WORKSPACE'}"><a ng-click="setSelectedWorkspace(workspace.id)">{{workspace.title}}</a></li>
 							</ul>
 							<ul class="nav pull-right">
 								<div class="input-append" style="padding-top:2px;">
@@ -156,7 +156,7 @@
 										</div>
 										<div class="span11">
 											<div class="row-full">
-												<div class="span8" data-drag="true" ng-model="task" data-jqyoui-options="{revert:'invalid', helper:'clone', opacity:0.9}" jqyoui-draggable="">
+												<div class="span8">
 													<strong>{{task.title}}</strong>
 												</div>
 												<div class="span4" style="text-align:right;"><small>{{task.dueDate | date:'mediumDate'}}</small></div>
@@ -198,14 +198,6 @@
 							<div class="input-append">
 								<input type="text" placeholder="search member..." ng-model="forwardUser" ui-keypress="{enter:'forwardTask()', esc:'setEditMode(\'\')'}" focus="editing" />
 								<button class="btn btn-inverse" ng-click="forwardTask(forwardUser)">Forward</button>
-							</div>
-						</div>
-						
-						<div class="task-detail-action-confirm" ng-class="{'hidden':taskEditMode != 'MOVE-TASK'}">
-							<p>Move task to another workspace.</p>
-							<div class="input-append">
-								<input type="text" placeholder="search workspace..." ng-model="moveWorkspace" ui-keypress="{enter:'moveTask()', esc:'setEditMode(\'\')'}" focus="editing" />
-								<button class="btn btn-inverse" ng-click="moveTask(moveWorkspace)">Move</button>
 							</div>
 						</div>
 						

@@ -473,29 +473,6 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 			}
 		};
 		
-		/**
-		 * Move active task to another workspace.
-		 * Task data are stored to server.
-		 */
-		$scope.moveTask = function(workspace) {
-			console.log("move task (id: %s) to workspace (%s)", $scope.selectedTask.id, workspace);
-		};
-		
-		/**
-		 * Adding tag to the task via drag&drop.
-		 * Task is stored to server.
-		 */
-		$scope.moveTaskDragDrop = function(event, ui) {
-			//console.log("Add new tag to task, id: %s, tag: %s", this.task.id, ui.draggable.context.textContent);
-			console.log("moveTaskDragDrop (event: %o, ui: %o)", event, ui);
-			console.log("moveTaskDragDrop (draggable context: %o)", ui.draggable.context);
-			console.log("moveTaskDragDrop (this: %o)", this);
-			// add tag
-			//this.task.tags.push(ui.draggable.context.textContent);
-			// update task
-			//$scope.updateTask(this.task);
-		};
-		
 		// get logged user from local storage
 		$rootScope.loggedUser = LocalStorage.get('logged-user');
 		console.log("Logged user: %o", $rootScope.loggedUser);
@@ -541,7 +518,28 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 				return e.id == id;
 			});
 			$scope.selectedWorkspace = workspace[0];
+			$scope.setEditMode('');
 			console.log("Selected workspace: %o", $scope.selectedWorkspace);
+		};
+		
+		/**
+		 * Add new workspace.
+		 * Workspace data are stored to server.
+		 */
+		$scope.addWorkspace = function() {
+			console.log("Add new workspace (workspace: %o)", $scope.newWorkspace);
+			$scope.newWorkspace.owner = {username: $rootScope.loggedUser.username};
+			//var workspace = {title: $scope.newWorkspaceTitle, owner: {username: $rootScope.loggedUser.username}};
+			console.log("Workspace: %o", $scope.newWorkspace);
+			Workspace.create({workspace: $scope.newWorkspace}, function(data, status) {
+					console.log("Workspace create success! data: %o, status: %o", data, status);
+					$scope.workspaces.push(data);
+					$scope.setSelectedWorkspace(data.id);
+					$scope.newWorkspace = null;
+					$scope.setEditMode('');
+				}, function(data, status) {
+					console.log("Workspace create error! data: %o, status: %o", data, status);
+				});
 		};
 		
 		/**
@@ -560,23 +558,41 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 		};
 		
 		/**
-		 * Add new member.
+		 * Invite new member to workspace.
 		 * New member data are stored to server.
 		 */
-		$scope.addMember = function() {
-			console.log("Add new member (member: %o)", $scope.newMember);
-			Workspace.addMember({workspaceId: $scope.selectedWorkspace.id, user: $scope.newMember}, function(data, status) {
-					console.log("Workspace addMember success! data: %o, status: %o", data, status);
-					$scope.selectedWorkspace.members.push(data);
-					
+		$scope.inviteMember = function() {
+			console.log("Invite new member (member: %o) to workspace (id: %s)", $scope.newMember, $scope.selectedWorkspace.id);
+			// FIXME Change call after implementation of back-end operation.
+			/*
+			Workspace.inviteMember({workspaceId: $scope.selectedWorkspace.id, user: $scope.newMember}, function(data, status) {
+					console.log("Workspace inviteMember success! data: %o, status: %o", data, status);
 					$scope.newMember = '';
 					$scope.setEditMode('');
 				}, function(data, status) {
-					console.log("Workspace addMember error! data: %o, status: %o", data, status);
+					console.log("Workspace inviteMember error! data: %o, status: %o", data, status);
 				});
+			*/
 		};
 		
-		
+		/**
+		 * Remove member from workspace.
+		 * Workspace member data are stored to server.
+		 */
+		$scope.removeMember = function(username) {
+			console.log("Remove member (username: %s) from workspace (id: %s)", username, $scope.selectedWorkspace.id);
+			Workspace.removeMember({workspaceId: $scope.selectedWorkspace.id, username: username}, function(data, status) {
+					console.log("Workspace removeMember success! data: %o, status: %o", data, status);
+					// remove member from local workspace
+					var newMembers = $.grep($scope.selectedWorkspace.members, function(e) {
+						return e.username != username;
+					});
+					$scope.selectedWorkspace.members = newMembers;
+					console.log("new members: %o", $scope.selectedWorkspace.members);
+				}, function(data, status) {
+					console.log("Workspace removeMember error! data: %o, status: %o", data, status);
+				});
+		};
 		
 		// get logged user from local storage
 		$rootScope.loggedUser = LocalStorage.get('logged-user');

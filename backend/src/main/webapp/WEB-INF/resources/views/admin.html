@@ -45,7 +45,7 @@
 			<div id="adminLeftPane" class="adminLeftPane">
 				<div class="adminLeftPaneContent">
 					<div style="padding:5px">
-						<a id="addWorkspaceSubmit" class="btn btn-inverse" href="#"><span id="save"><i class="icon-plus icon-white"></i> Add</span></a>
+						<button class="btn btn-inverse" ng-click="setEditMode('WORKSPACE-ADD')"><i class="icon-plus icon-white"></i> Add</button>
 						<br /><br />
 						<div class="tile" ng-repeat="workspace in workspaces" ng-class="{'active':workspace.id==selectedWorkspace.id}" ng-click="setSelectedWorkspace(workspace.id)">
 							<div class="header"></div>
@@ -56,7 +56,7 @@
 			</div>
 			<div id="adminMainPane" class="adminMainPane">
 				<div class="adminMainPaneContent">
-					<div style="padding:10px 20px">
+					<div style="padding:10px 20px" ng-class="{'hidden':attrEditMode == 'WORKSPACE-ADD'}">
 						<ul class="nav nav-tabs">
 							<li class="active"><a href="#workspaceData" data-toggle="tab">Workspace</a></li>
 							<li><a href="#workspaceMembers" data-toggle="tab">Members</a></li>
@@ -76,16 +76,12 @@
 								</div>
 								<div class="tab-pane" id="workspaceMembers">
 									<legend>Members</legend>
-									<p><button class="btn btn-inverse" ng-click="setEditMode('WORKSPACE-ADD-MEMBER')"><i class="icon-plus icon-white"></i> Add a member</button></p>
-									<div ng-class="{'hidden':attrEditMode != 'WORKSPACE-ADD-MEMBER'}" style="margin-bottom:20px;padding:20px;border:1px solid #000;">
-										<legend>Add new member</legend>
-										<label>First name</label>
-										<input class="span4" type="text" placeholder="type first name..." ng-model="newMember.name" />
-										<label>Surname</label>
-										<input class="span4" type="text" placeholder="type surname..." ng-model="newMember.surName" />
+									<p><button class="btn btn-inverse" ng-click="setEditMode('WORKSPACE-INVITE-MEMBER')"><i class="icon-plus icon-white"></i> Invite a member</button></p>
+									<div ng-class="{'hidden':attrEditMode != 'WORKSPACE-INVITE-MEMBER'}" style="margin-bottom:20px;padding:20px;border:1px solid #000;">
+										<legend>Invite new member</legend>
 										<label>e-mail</label>
 										<input class="span4" type="text" placeholder="type e-mail..." ng-model="newMember.username" /><br />
-										<button class="btn btn-inverse" ng-click="addMember()">Add</button>
+										<button class="btn btn-inverse" ng-click="inviteMember()">Invite</button>
 									</div>
 									
 									<table class="table table-bordered table-striped table-hover">
@@ -94,6 +90,7 @@
 											<th>#</th>
 											<th>Name</th>
 											<th>Username</th>
+											<th>Actions</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -101,12 +98,21 @@
 											<td>1</td>
 											<td>{{member.name}} {{member.surName}}</td>
 											<td>{{member.username}}</td>
+											<td><button class="btn btn-inverse" ng-click="removeMember(member.username)"><i class="icon-remove icon-white"></i></button></td>
 										</tr>
 									</tbody>
 									</table>
 								</div>
 							</div>
 						</div>
+					</div>
+					<div style="padding:10px 20px" ng-class="{'hidden':attrEditMode != 'WORKSPACE-ADD'}">
+						<legend>Add new workspace</legend>
+						<label>Title</label>
+						<input class="span4" type="text" placeholder="type title..." ng-model="newWorkspace.title" /><br />
+						<label>Description</label>
+						<textarea class="span4" placeholder="type description..." ng-model="newWorkspace.description"></textarea><br />
+						<button class="btn btn-inverse" ng-click="addWorkspace()">Add</button>
 					</div>
 				</div>
 			</div>
