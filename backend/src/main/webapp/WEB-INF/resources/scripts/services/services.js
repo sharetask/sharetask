@@ -32,9 +32,9 @@ shareTaskApp.service('User', function($resource, $http) {
 
 shareTaskApp.service('Workspace', function($resource, $http) {
 	
-	this.findAll = function(success, error) {
-		console.log("Getting all workspaces from server");
-		var workspace = $resource("/sharetask/api/workspace", {}, {query: {method: "GET", isArray: true}});
+	this.find = function(input, success, error) {
+		console.log("Getting workspaces from server for type (type: %s)", input.type);
+		var workspace = $resource("/sharetask/api/workspace", {type: input.type}, {query: {method: "GET", isArray: true}});
 		workspace.query(function(response){return success(response);}, function(response){return error(response);});
 	};
 	
@@ -52,6 +52,16 @@ shareTaskApp.service('Workspace', function($resource, $http) {
 	this.create = function(input, success, error) {
 		console.log("Create workspace (workspace: %o)", input.workspace);
 		return $http.post("/sharetask/api/workspace/", input.workspace).success(success).error(error);
+	};
+	
+	this.addMember = function(input, success, error) {
+		console.log("Add new member (user: %o) to workspace (id: %o)", input.user, input.workspaceId);
+		return $http.post("/sharetask/api/workspace/"+input.workspaceId+"/member", {username: input.user.username}).success(success).error(error);
+	};
+	
+	this.removeMember = function(input, success, error) {
+		console.log("Delete member (username: %o) from workspace (id: %o)", input.username, input.workspaceId);
+		return $http.delete("/sharetask/api/workspace/"+input.workspaceId+"/member/"+input.username, input.user).success(success).error(error);
 	};
 });
 

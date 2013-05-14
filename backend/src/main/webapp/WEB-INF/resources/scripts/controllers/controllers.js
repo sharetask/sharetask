@@ -103,7 +103,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 		 */
 		$scope.loadWorkspaces = function() {
 			console.log("Load all workspaces");
-			Workspace.findAll(function(workspaces) {
+			Workspace.find({type: 'MEMBER'}, function(workspaces) {
 				console.log("Loaded workspaces from server: %o", workspaces);
 				if (workspaces.length) {
 					$scope.workspaces = workspaces;
@@ -512,6 +512,72 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 	}])
 	.controller('AdminCtrl', ['$scope', '$location', '$rootScope', 'Workspace', 'LocalStorage', function($scope, $location, $rootScope, Workspace, LocalStorage) {
 		
+		/**
+		 * Loading all workspaces from server.
+		 */
+		$scope.loadWorkspaces = function() {
+			console.log("Load all workspaces");
+			Workspace.find({type: 'OWNER'}, function(workspaces) {
+				console.log("Loaded workspaces from server: %o", workspaces);
+				if (workspaces.length) {
+					$scope.workspaces = workspaces;
+					$scope.selectedWorkspace = workspaces[0];
+				}
+			}, function(response) {
+				console.log("error response: %o", response);
+				if (response.status == 403) {
+					$scope.logout();
+				}
+			});
+		};
+		
+		/**
+		 * Setting selected workspace.
+		 * @param {number} id - Workspace ID.
+		 */
+		$scope.setSelectedWorkspace = function(id) {
+			console.log("Set selected workspace (id: %s)", id);
+			var workspace = $.grep($scope.workspaces, function(e) {
+				return e.id == id;
+			});
+			$scope.selectedWorkspace = workspace[0];
+			console.log("Selected workspace: %o", $scope.selectedWorkspace);
+		};
+		
+		/**
+		 * Setting edit mode.
+		 * Represents attribute which is currently in editing mode.
+		 * @param {string} mode - Edit mode.
+		 */
+		$scope.setEditMode = function(mode) {
+			console.log("Switch edit mode to: %s", mode);
+			if (mode == this.attrEditMode) {
+				$scope.attrEditMode = "";
+			}
+			else {
+				$scope.attrEditMode = mode;
+			}
+		};
+		
+		/**
+		 * Add new member.
+		 * New member data are stored to server.
+		 */
+		$scope.addMember = function() {
+			console.log("Add new member (member: %o)", $scope.newMember);
+			Workspace.addMember({workspaceId: $scope.selectedWorkspace.id, user: $scope.newMember}, function(data, status) {
+					console.log("Workspace addMember success! data: %o, status: %o", data, status);
+					$scope.selectedWorkspace.members.push(data);
+					
+					$scope.newMember = '';
+					$scope.setEditMode('');
+				}, function(data, status) {
+					console.log("Workspace addMember error! data: %o, status: %o", data, status);
+				});
+		};
+		
+		
+		
 		// get logged user from local storage
 		$rootScope.loggedUser = LocalStorage.get('logged-user');
 		console.log("Logged user: %o", $rootScope.loggedUser);
@@ -522,7 +588,8 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 			$location.path("/");
 		}
 		else {
-			
+			// Loading all workspaces from server.
+			$scope.loadWorkspaces();
 		}
 	}])
 	.controller('UserCtrl', ['$scope', '$location', '$rootScope', 'Workspace', 'LocalStorage', function($scope, $location, $rootScope, Workspace, LocalStorage) {

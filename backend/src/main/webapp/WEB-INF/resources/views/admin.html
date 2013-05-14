@@ -47,7 +47,10 @@
 					<div style="padding:5px">
 						<a id="addWorkspaceSubmit" class="btn btn-inverse" href="#"><span id="save"><i class="icon-plus icon-white"></i> Add</span></a>
 						<br /><br />
-						<div id="workspaceListItems"></div>
+						<div class="tile" ng-repeat="workspace in workspaces" ng-class="{'active':workspace.id==selectedWorkspace.id}" ng-click="setSelectedWorkspace(workspace.id)">
+							<div class="header"></div>
+							<div class="footer">{{workspace.title}}</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -61,28 +64,46 @@
 						<div class="tabbable">
 							<div class="tab-content">
 								<div class="tab-pane active" id="workspaceData">
-									<legend>Workspace - ABX Agency</legend>
+									<legend>{{selectedWorkspace.title}}</legend>
 									<label>Name</label>
-									<input id="workspaceName" type="text" placeholder="type workspace name..." />
+									<input id="workspaceName" type="text" placeholder="type workspace name..." value="{{selectedWorkspace.title}}" />
 									<label>Description</label>
-									<textarea id="workspaceDescription" rows="3" placeholder="type workspace description..."></textarea>
+									<textarea id="workspaceDescription" rows="3" placeholder="type workspace description...">{{selectedWorkspace.description}}</textarea>
 									<label>Owner</label>
-									<input id="workspaceOwner" type="text" placeholder="type owner name..." />
+									<input id="workspaceOwner" type="text" placeholder="type owner name..." value="{{selectedWorkspace.owner.name}} {{selectedWorkspace.owner.surName}}" />
 									<br />
-									<a id="saveWorkspaceSubmit" class="btn btn-inverse" href="#"><span id="save">Save</span></a>
+									<button class="btn btn-inverse">Save</button>
 								</div>
 								<div class="tab-pane" id="workspaceMembers">
 									<legend>Members</legend>
-									<a id="adminWorkspaceAddMember" class="btn btn-inverse" href="#"><i class="icon-plus icon-white"></i> Add a member</a>
-									<div id="adminWorkspaceAddMemberForm" class="" style="margin:20px;padding:20px;border:1px solid #000;">
+									<p><button class="btn btn-inverse" ng-click="setEditMode('WORKSPACE-ADD-MEMBER')"><i class="icon-plus icon-white"></i> Add a member</button></p>
+									<div ng-class="{'hidden':attrEditMode != 'WORKSPACE-ADD-MEMBER'}" style="margin-bottom:20px;padding:20px;border:1px solid #000;">
 										<legend>Add new member</legend>
-										<label>Name</label>
-										<input id="memberName" class="span4" type="text" placeholder="type member name..." />
+										<label>First name</label>
+										<input class="span4" type="text" placeholder="type first name..." ng-model="newMember.name" />
+										<label>Surname</label>
+										<input class="span4" type="text" placeholder="type surname..." ng-model="newMember.surName" />
 										<label>e-mail</label>
-										<input id="memberEmail" class="span4" type="text" placeholder="type member e-mail..." /><br />
-										<a id="addNewMemberSubmit" class="btn btn-inverse" href="#"><span id="add">Add</span></a>
+										<input class="span4" type="text" placeholder="type e-mail..." ng-model="newMember.username" /><br />
+										<button class="btn btn-inverse" ng-click="addMember()">Add</button>
 									</div>
-									<div id="adminWorkspaceMembers"></div>
+									
+									<table class="table table-bordered table-striped table-hover">
+									<thead>
+										<tr>
+											<th>#</th>
+											<th>Name</th>
+											<th>Username</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="member in selectedWorkspace.members">
+											<td>1</td>
+											<td>{{member.name}} {{member.surName}}</td>
+											<td>{{member.username}}</td>
+										</tr>
+									</tbody>
+									</table>
 								</div>
 							</div>
 						</div>
