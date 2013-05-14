@@ -17,7 +17,7 @@
   /*.dow {
     border-top: 1px solid #ddd !important;
   }*/
-
+  z-index: 9999;
 }
 .datepicker:before {
   content: '';

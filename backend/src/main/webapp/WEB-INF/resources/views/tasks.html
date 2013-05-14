@@ -217,7 +217,7 @@
 								</div>
 							</div>
 							<div class="row-full">
-								<div class="span8">
+								<div class="span12">
 									<div class="cursor-pointer" style="font-size:18px;" ng-class="{'hidden':taskEditMode == 'TITLE'}" ng-click="setEditMode('TITLE')">{{selectedTask.title}}</div>
 									<div ng-class="{'hidden':taskEditMode != 'TITLE'}">
 										<div class="input-append">
@@ -226,10 +226,12 @@
 										</div>
 									</div>
 								</div>
-								<div class="span4" style="text-align:right;">
-									<div class="tag cursor-pointer"><span class="text" ng-class="{'hidden':taskEditMode == 'PRIORITY','priority-low':selectedTask.priority == 'LOW','priority-medium':selectedTask.priority == 'MEDIUM','priority-high':selectedTask.priority == 'HIGH'}" ng-click="changeTaskPriority()"><strong>{{selectedTask.priority}}</strong></span></div>
-								</div>
 							</div>
+						</div>
+						
+						<div style="margin-top:5px;">
+							<span class="label label-success cursor-pointer" b-datepicker="{{dateOptions}}" ng-model="selectedTask.dueDate" data-date-format="MMM d, y" data-date="{{selectedTask.dueDate}}">Due date<br /><br /><strong>{{selectedTask.dueDate | date:'mediumDate'}}</strong></span>
+							<span class="label cursor-pointer" ng-class="{'priority-low':selectedTask.priority == 'LOW','priority-medium':selectedTask.priority == 'MEDIUM','priority-high':selectedTask.priority == 'HIGH'}" ng-click="changeTaskPriority()">Priority<br /><br /><strong>{{selectedTask.priority}}</strong></span>
 						</div>
 						
 						<div style="margin-top:5px;">

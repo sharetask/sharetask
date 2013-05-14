@@ -62,6 +62,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 		$scope.taskEditMode = '';
 		$scope.filter = {'queue': 'MY_PENDING', 'tag': '', 'searchString': '', 'orderBy': 'TASK_DUE_DATE'};
 		$scope.tags = [];
+		$scope.dateOptions = {format: 'dd/mm/yyyy'};
 		var taskFilter = $filter('filterTasks');
 		
 		/**
