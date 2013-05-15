@@ -67,6 +67,9 @@
 					</div>
 				</div>
 			</div>
+			<div class="panel-task-divider" ng-class="{'left':!viewPanelTaskFilter}" ng-click="setView('PANEL-TASK-FILTER')">
+				<div class="panel-task-divider-inner cursor-pointer" title="show / hide left panel"><b ng-class="{'caret-left':viewPanelTaskFilter, 'caret-right':!viewPanelTaskFilter}"></b></div>
+			</div>
 			<!-- task filter panel -->
 			<div class="panel-task-filter" ng-class="{'hide2':!viewPanelTaskFilter}">
 				<div class="panel-task-filter-inner">
@@ -96,9 +99,6 @@
 					</div>
 				</div>
 			</div>
-			<div class="panel-task-divider" ng-class="{'left':!viewPanelTaskFilter}" ng-click="setView('PANEL-TASK-FILTER')">
-				<div class="panel-task-divider-inner cursor-pointer" title="show / hide left panel"></div>
-			</div>
 			<!-- task list panel -->
 			<div class="panel-task-list" ng-class="{'large':!viewPanelTaskFilter}">
 				<div class="panel-task-list-inner">
@@ -123,8 +123,11 @@
 										<li ng-click="setTaskOrdering('TASK_AUTHOR')"><a>Author</a></li>
 									</ul>
 								</div>
-								<div class="btn-group">
-									<button class="btn dropdown-toggle" data-toggle="dropdown">A <span class="caret"></span></button>
+								
+								<button class="btn btn-inverse pull-right" style="margin-left:5px;" ng-click="setEditMode('NEW')"><i class="icon-plus icon-white"></i></button>
+								<button class="btn pull-right" style="margin-left:5px;" ng-click="loadTasks()"><i class="icon-refresh"></i></button>
+								<div class="btn-group pull-right">
+									<button class="btn dropdown-toggle" data-toggle="dropdown"><i class="icon-list"></i> <span class="caret"></span></button>
 									<ul class="dropdown-menu">
 										<li ng-click="completeTask(true)"><a>Complete</a></li>
 										<li ng-click=""><a>Forward</a></li>
@@ -132,8 +135,7 @@
 										<li ng-click=""><a>Delete</a></li>
 									</ul>
 								</div>
-								<button class="btn btn-inverse pull-right" style="margin-left:5px;" ng-click="setEditMode('NEW')"><i class="icon-plus icon-white"></i></button>
-								<button class="btn pull-right" ng-click="loadTasks()"><i class="icon-refresh"></i></button>
+								
 							</div>
 						</div>
 						<div class="new-task-simple" ng-class="{'hidden':taskEditMode != 'NEW'}">
@@ -152,7 +154,7 @@
 								<div class="navbar-inner thick light inline" ng-repeat="task in tasks | orderBy:orderTasks" ng-class="{'selected':task.id == selectedTask.id}" ng-click="setSelectedTask(task.id)" data-drop="true" jqyoui-droppable="{onDrop:'addTaskTagDragDrop'}">
 									<div class="row-full">
 										<div class="span1">
-											<div class="st-checkbox" ng-click="task.checked = !task.checked" ng-class="{'checked':task.checked}" stop-event="click"><i class="icon-ok" ng-class="{'icon-white':task.checked}"></i></div>
+											<div class="st-checkbox" ng-click="task.checked = !task.checked" ng-class="{'selected checked':task.id == selectedTask.id && task.checked, 'checked':task.checked}" stop-event="click"><i class="icon-ok icon-white" ng-class="{'hidden':!task.checked}"></i></div>
 										</div>
 										<div class="span11">
 											<div class="row-full">
@@ -165,7 +167,7 @@
 												<div class="span8">
 													<div class="tag" ng-repeat="tag in task.tags"><span class="text" ng-class="{'selected':tag == filter.tag}">{{tag}}</span><span class="remove cursor-pointer" ng-click="removeTag(task.id, tag)" stop-event="click">x</span></div>
 												</div>
-												<div class="span4" style="text-align:right;"><i class="icon-comment"></i> {{task.comments.length}}</div>
+												<div class="span4" style="text-align:right;"><i class="icon-comment" ng-class="{'icon-white':task.id == selectedTask.id}"></i> {{task.comments.length}}</div>
 											</div>
 										</div>
 									</div>
@@ -212,8 +214,7 @@
 							<button class="btn" ng-click="setEditMode('')">No</button>
 						</div>
 						
-						<div style="margin-top:5px;padding:5px;background:#2B6266;color:#fff;">
-							<p>by {{selectedTask.createdBy.name}}</p>
+						<div style="margin:10px 0;color:#1763A6;">
 							<div class="cursor-pointer" style="font-weight:bold;font-size:18px;" ng-class="{'hidden':taskEditMode == 'TITLE'}" ng-click="setEditMode('TITLE')">{{selectedTask.title}}</div>
 							<div ng-class="{'hidden':taskEditMode != 'TITLE'}">
 								<div class="input-append">
@@ -222,11 +223,12 @@
 								</div>
 							</div>
 						</div>
+						<p>by {{selectedTask.createdBy.name}}</p>
 						
 						<div style="margin-top:5px;">
-							<span class="label label-success" style="background:#A7A119;">Created on<br /><br /><strong>{{selectedTask.createdOn | date:'mediumDate'}}</strong></span>
+							<span class="label label-success" style="background:#656565;">Created on<br /><br /><strong>{{selectedTask.createdOn | date:'mediumDate'}}</strong></span>
 							<span class="label cursor-pointer" ng-class="{'priority-low':selectedTask.priority == 'LOW','priority-medium':selectedTask.priority == 'MEDIUM','priority-high':selectedTask.priority == 'HIGH'}" ng-click="changeTaskPriority()">Priority<br /><br /><strong>{{selectedTask.priority}}</strong></span>
-							<span class="label label-warning cursor-pointer" style="background:#A7A119;" b-datepicker="{{dateOptions}}" ng-model="selectedTask.dueDate" data-date-format="MMM d, y" data-date="{{selectedTask.dueDate}}">Due date<br /><br /><strong>{{selectedTask.dueDate | date:'mediumDate'}}</strong></span>
+							<span class="label label-warning cursor-pointer" style="background:#656565;" b-datepicker="{{dateOptions}}" ng-model="selectedTask.dueDate" data-date-format="MMM d, y" data-date="{{selectedTask.dueDate}}">Due date<br /><br /><strong>{{selectedTask.dueDate | date:'mediumDate'}}</strong></span>
 							
 						</div>
 						
@@ -243,7 +245,7 @@
 							<div id="taskDetailAddLabelForm" class="hidden"><input id="taskDetailAddLabelInput" class="span3" type="text" placeholder="" /> <a href="#" id="taskDetailAddLabelClose"><i class="icon-remove"></i></a></div>
 						</div>
 						
-						<div style="margin-top:5px;padding:5px;background:#fff;border:1px solid #ddd;">
+						<div style="margin-top:5px;padding:5px;border:1px solid #ddd;">
 							<div class="row-full">
 								<div class="cursor-pointer" ng-class="{'hidden':taskEditMode == 'DESCRIPTION'}" ng-click="setEditMode('DESCRIPTION')">{{selectedTask.description}}</div>
 								<button class="btn" ng-class="{'hidden':selectedTask.description != '' && selectedTask.description != null}" ng-click="setEditMode('DESCRIPTION')">Add description</button>
