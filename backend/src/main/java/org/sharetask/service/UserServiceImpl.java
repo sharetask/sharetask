@@ -119,6 +119,6 @@ public class UserServiceImpl implements UserService {
 		UserDetails userDetails = new org.springframework.security.core.userdetails.User(user.getUsername(), "password", new ArrayList<GrantedAuthority>());
 		user.setPassword(passwordEncoder.encodePassword(userDTO.getPassword(), saltSource.getSalt(userDetails)));
 		user = userRepository.save(user);
-		return DTOConverter.convert(userDetails,  UserDTO.class);
+		return DTOConverter.convert(user,  UserDTO.class);
 	}
 }
