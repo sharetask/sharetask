@@ -77,14 +77,8 @@ public class TaskConverter implements CustomConverter {
 			final User assignee = source.getAssignee();
 			taskDTO.setAssignee(DTOConverter.convert(assignee, UserDTO.class));
 		}
-		if (source.getEvents() != null) {
-			final Collection<Event> events = source.getEvents();
-			taskDTO.setEvents(DTOConverter.convertList(new ArrayList<Event>(events), EventDTO.class));
-		}
-		if (source.getComments() != null) {
-			final Collection<Comment> comments = source.getComments();
-			taskDTO.setComments(DTOConverter.convertList(new ArrayList<Comment>(comments), CommentDTO.class));
-		}
+		taskDTO.setEventsCount(source.getEvents().size());
+		taskDTO.setCommentsCount(source.getComments().size());
 		return taskDTO;
 	}
 

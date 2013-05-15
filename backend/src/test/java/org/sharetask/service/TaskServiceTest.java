@@ -75,7 +75,7 @@ public class TaskServiceTest extends DbUnitTest {
 		assertNotNull(result.getUpdatedBy());
 		assertNotNull(result.getUpdatedOn());
 		assertThat(result.getPriority(), equalTo("MEDIUM"));
-		assertThat(result.getEvents().size(), equalTo(1));
+		assertThat(result.getEventsCount(), equalTo(1));
 		assertThat(result.getState(), equalTo("NEW"));
 		assertTrue(result.getTags() == null);
 	}
@@ -99,7 +99,7 @@ public class TaskServiceTest extends DbUnitTest {
 		assertNotNull(result.getUpdatedBy());
 		assertNotNull(result.getUpdatedOn());
 		assertThat(result.getPriority(), equalTo("MEDIUM"));
-		assertThat(result.getEvents().size(), equalTo(1));
+		assertThat(result.getEventsCount(), equalTo(1));
 		assertThat(result.getState(), equalTo("NEW"));
 		assertTrue(result.getTags() == null);
 	}
@@ -111,7 +111,7 @@ public class TaskServiceTest extends DbUnitTest {
 	public void testAddComment() {
 		Task task = taskRepository.findOne(100L);
 		TaskDTO taskDTO = taskService.addComment(task.getId(), "Test message");
-		assertThat(taskDTO.getComments().size(), equalTo(2));
+		assertThat(taskDTO.getCommentsCount(), equalTo(2));
 	}
 
 	/**

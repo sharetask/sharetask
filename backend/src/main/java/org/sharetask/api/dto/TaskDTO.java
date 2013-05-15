@@ -72,8 +72,8 @@ public class TaskDTO {
 	private UserDTO assignee;
 
 	@Getter @Setter
-	private List<EventDTO> events;
+	private Integer eventsCount;
 	
 	@Getter @Setter
-	private List<CommentDTO> comments;
+	private Integer commentsCount;
 }
