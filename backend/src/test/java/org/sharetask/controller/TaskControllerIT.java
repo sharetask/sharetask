@@ -21,6 +21,7 @@ package org.sharetask.controller;
 import java.io.IOException;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.message.BasicHeader;
@@ -36,7 +37,8 @@ import org.springframework.http.HttpStatus;
  */
 public class TaskControllerIT extends IntegrationTest {
 
-    private static final String URL_WORKSPACE = BASE_URL + "/workspace/1/task";
+	private static final String TASK_PATH = "/workspace/1/task";
+    private static final String URL_WORKSPACE = BASE_URL + TASK_PATH;
  
     @Test
     public void testAddComment() throws IOException {
@@ -44,7 +46,6 @@ public class TaskControllerIT extends IntegrationTest {
         HttpPost httpPost = new HttpPost(URL_WORKSPACE + "/1/comment");
         httpPost.addHeader(new BasicHeader("Content-Type", "application/json"));
         StringEntity httpEntity = new StringEntity("{\"comment\":\"test comment\"}");
-        System.out.println(EntityUtils.toString(httpEntity));
         httpPost.setEntity(httpEntity);
         
         //when
@@ -52,9 +53,23 @@ public class TaskControllerIT extends IntegrationTest {
  
         //then
         Assert.assertEquals(HttpStatus.OK.value(), response.getStatusLine().getStatusCode());
-        httpEntity.getContent().close();
     }
 
+    @Test
+    public void testGetComments() throws IOException {
+        //given
+        HttpGet httpGet = new HttpGet(URL_WORKSPACE + "/1/comment");
+        httpGet.addHeader(new BasicHeader("Content-Type", "application/json"));
+        
+        //when
+        HttpResponse response = getClient().execute(httpGet);
+ 
+        //then
+        Assert.assertEquals(HttpStatus.OK.value(), response.getStatusLine().getStatusCode());
+        String responseData = EntityUtils.toString(response.getEntity());
+        Assert.assertTrue(responseData.contains("\"message\":\"Comment message 1\""));
+    }
+    
     @Test
     public void testCreateTask() throws IOException {
         //given

@@ -24,11 +24,13 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
+import javax.validation.constraints.NotNull;
 
 import lombok.extern.slf4j.Slf4j;
 
 import org.sharetask.api.TaskQueue;
 import org.sharetask.api.TaskService;
+import org.sharetask.api.dto.CommentDTO;
 import org.sharetask.api.dto.TaskDTO;
 import org.sharetask.entity.Comment;
 import org.sharetask.entity.Event;
@@ -147,20 +149,20 @@ public class TaskServiceImpl implements TaskService {
 	@Override
 	@Transactional
 	public void completeTask(Long taskId) {
-		Task entity = taskRepository.findOne(taskId);
+		final Task entity = taskRepository.findOne(taskId);
 		entity.finish();
 		taskRepository.save(entity);
 	}
 	
 	@Override
 	public void forwardTask(Long taskId, String assignee) {
-		Task task = taskRepository.findOne(taskId);
+		final Task task = taskRepository.findOne(taskId);
 		if (task == null) {
 			log.error("Task with id: {} doesn't exists.", taskId);
 			throw new EntityNotFoundException("Task entity doesn't exists for id: " + taskId);
 		}
 
-		User assigneeUser = userRepository.findOne(assignee);
+		final User assigneeUser = userRepository.findOne(assignee);
 		if (task.getWorkspace().getMembers().contains(assigneeUser)) {
 			log.debug("Added user {} is member of workspace.", assigneeUser.getUsername());
 			task.setAssignee(assigneeUser);
@@ -168,5 +170,15 @@ public class TaskServiceImpl implements TaskService {
 		
 		task.addEvent(new Event(EventType.TASK_FORWARDED));
 		taskRepository.save(task);
+	}
+
+	@Override
+	public List<CommentDTO> getComments(final Long taskId) {
+		final Task task = taskRepository.findOne(taskId);
+		if (task == null) {
+			log.error("Task with id: {} doesn't exists.", taskId);
+			throw new EntityNotFoundException("Task entity doesn't exists for id: " + taskId);
+		}
+		return DTOConverter.convertList(task.getComments(), CommentDTO.class);
 	}
 }

@@ -51,6 +51,15 @@
 			</roles>
 			<timezone>+1</timezone>
 		</developer>
+		<developer>
+			<id>michalmoravek</id>
+			<name>Michal Moravek</name>
+			<roles>
+				<role>developer</role>
+				<role>architect</role>
+			</roles>
+			<timezone>+1</timezone>
+		</developer>
 	</developers>
 
 	<build>
@@ -288,7 +297,12 @@
 				<artifactId>jackson-mapper-asl</artifactId>
 				<version>1.9.12</version>
 			</dependency>
-			
+			<dependency>
+				<groupId>com.google.guava</groupId>
+				<artifactId>guava</artifactId>
+				<version>14.0.1</version>
+			</dependency>
+            			
 			<dependency>
 				<groupId>javax.servlet</groupId>
 				<artifactId>jstl</artifactId>
