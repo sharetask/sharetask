@@ -53,7 +53,8 @@ import lombok.ToString;
 @Table(name = "WORKSPACE")
 @NamedQueries(value = { 
 		@NamedQuery(name = Workspace.QUERY_NAME_FIND_BY_OWNER_USERNAME, query = Workspace.QUERY_FIND_BY_OWNER_USERNAME),   
-		@NamedQuery(name = Workspace.QUERY_NAME_FIND_BY_MEMBER_USERNAME, query = Workspace.QUERY_FIND_BY_MEMBER_USERNAME)  
+		@NamedQuery(name = Workspace.QUERY_NAME_FIND_BY_MEMBER_USERNAME, query = Workspace.QUERY_FIND_BY_MEMBER_USERNAME),  
+		@NamedQuery(name = Workspace.QUERY_NAME_FIND_BY_MEMBER_OR_OWNER, query = Workspace.QUERY_FIND_BY_MEMBER_OR_OWNER)  
 	})
 public class Workspace extends BaseEntity implements Serializable {
 
@@ -64,6 +65,10 @@ public class Workspace extends BaseEntity implements Serializable {
 
 	public static final String QUERY_NAME_FIND_BY_MEMBER_USERNAME = "Workspace.findByMemberUsername";
 	public static final String QUERY_FIND_BY_MEMBER_USERNAME = "SELECT w FROM Workspace w, IN(w.members) as m WHERE m.username = :memberUsername";
+
+	public static final String QUERY_NAME_FIND_BY_MEMBER_OR_OWNER = "Workspace.findByMemberOrOwner";
+	public static final String QUERY_FIND_BY_MEMBER_OR_OWNER = "SELECT w FROM Workspace w LEFT OUTER JOIN w.members as m " +
+			                                                     "WHERE m.username = :username or w.owner.username = :username";
 
 	@Getter
 	@Id	@GeneratedValue(strategy = GenerationType.AUTO)

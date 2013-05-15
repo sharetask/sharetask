@@ -19,9 +19,10 @@
 package org.sharetask.api;
 
 /**
+ * Definition for query types to workspace.
  * @author Michal Bocek
  * @since 1.0.0
  */
 public enum WorkspaceQueryType {
-	OWNER, MEMBER; 
+	OWNER, MEMBER, ALL_MY; 
 }

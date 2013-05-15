@@ -23,7 +23,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
-import javax.validation.constraints.NotNull;
 
 import org.sharetask.api.WorkspaceQueryType;
 import org.sharetask.api.WorkspaceService;
@@ -116,6 +115,12 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 	}
 
 	@Override
+	public List<WorkspaceDTO> findAllMyWorkspaces(final String username) {
+		final List<Workspace> workspaces = workspaceRepository.findByMemberOrOwner(username);
+		return DTOConverter.convertList(workspaces, WorkspaceDTO.class);
+	}
+
+	@Override
 	public List<WorkspaceDTO> findWorkspaceByType(final WorkspaceQueryType queryType) {
 		List<Workspace> workspaces ;
 		final String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -124,6 +129,9 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 				workspaces = workspaceRepository.findByOwnerUsername(username);
 				break;
 			case MEMBER:
+				workspaces = workspaceRepository.findByMemberUsername(username);
+				break;
+			case ALL_MY:
 				workspaces = workspaceRepository.findByMemberUsername(username);
 				break;
 			default:

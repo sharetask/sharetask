@@ -31,4 +31,6 @@ public interface WorkspaceRepositoryCustom {
 	List<Workspace> findByOwnerUsername(String username);
 
 	List<Workspace> findByMemberUsername(String username);
+	
+	List<Workspace> findByMemberOrOwner(String username);
 }

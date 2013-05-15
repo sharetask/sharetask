@@ -68,6 +68,13 @@ public interface WorkspaceService {
 	 * @return
 	 */
 	List<WorkspaceDTO> findWorkspaceByMember(@NotNull String username);
+
+	/**
+	 * Find all workspaces where i'm owner or member. 
+ 	 * @param username
+	 * @return
+	 */
+	List<WorkspaceDTO> findAllMyWorkspaces(@NotNull String username);
 	
 	/**
 	 * Find workspace by type.

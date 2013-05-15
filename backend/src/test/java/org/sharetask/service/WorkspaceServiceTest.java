@@ -79,7 +79,7 @@ public class WorkspaceServiceTest extends DbUnitTest {
 	public void testAddMember() {
 		workspaceService.addMember(100L, "test2@test.com");
 		Workspace workspace = workspaceRepository.findOne(100L);
-		Assert.assertThat(workspace.getMembers().size(), CoreMatchers.is(3));
+		Assert.assertThat(workspace.getMembers().size(), CoreMatchers.is(2));
 	}
 	
 	/**
@@ -89,7 +89,7 @@ public class WorkspaceServiceTest extends DbUnitTest {
 	public void testRemoveMember() {
 		workspaceService.removeMember(100L, "test3@test.com");
 		Workspace workspace = workspaceRepository.findOne(100L);
-		Assert.assertThat(workspace.getMembers().size(), CoreMatchers.is(1));
+		Assert.assertThat(workspace.getMembers().size(), CoreMatchers.is(0));
 	}
 	
 	/**
@@ -110,5 +110,14 @@ public class WorkspaceServiceTest extends DbUnitTest {
 		List<WorkspaceDTO> workspaces = workspaceService.findWorkspaceByMember("test3@test.com");
 		Assert.assertThat(workspaces.size(), CoreMatchers.is(1));
 		Assert.assertThat(workspaces.get(0).getId(), CoreMatchers.is(100L));
+	}
+
+	/**
+	 * Test method for {@link org.sharetask.api.WorkspaceService#findAllMyWorkspaces(String)}.
+	 */
+	@Test
+	public void testFindAllMyWorkspaces() {
+		List<WorkspaceDTO> workspaces = workspaceService.findAllMyWorkspaces("test3@test.com");
+		Assert.assertThat(workspaces.size(), CoreMatchers.is(2));
 	}
 }
