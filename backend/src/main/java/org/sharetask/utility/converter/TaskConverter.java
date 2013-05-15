@@ -18,17 +18,10 @@
  */
 package org.sharetask.utility.converter;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import org.dozer.CustomConverter;
 import org.dozer.MappingException;
-import org.sharetask.api.dto.CommentDTO;
-import org.sharetask.api.dto.EventDTO;
 import org.sharetask.api.dto.TaskDTO;
 import org.sharetask.api.dto.UserDTO;
-import org.sharetask.entity.Comment;
-import org.sharetask.entity.Event;
 import org.sharetask.entity.Task;
 import org.sharetask.entity.Task.PriorityType;
 import org.sharetask.entity.User;

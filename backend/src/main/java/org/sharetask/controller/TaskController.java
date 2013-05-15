@@ -25,6 +25,7 @@ import javax.inject.Inject;
 import org.sharetask.api.TaskQueue;
 import org.sharetask.api.TaskService;
 import org.sharetask.api.dto.CommentDTO;
+import org.sharetask.api.dto.EventDTO;
 import org.sharetask.api.dto.TaskDTO;
 import org.sharetask.controller.json.Comment;
 import org.springframework.http.HttpStatus;
@@ -67,12 +68,19 @@ public class TaskController {
 	}
 
 	@RequestMapping(value = "/{taskId}/comment", 
-	                method = RequestMethod.GET, 
-	                produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody List<CommentDTO> getComments(@PathVariable("taskId") final Long taskId) {
- 		return taskService.getComments(taskId);
-	}
-	
+            method = RequestMethod.GET, 
+            produces = MediaType.APPLICATION_JSON_VALUE)
+public @ResponseBody List<CommentDTO> getComments(@PathVariable("taskId") final Long taskId) {
+	return taskService.getComments(taskId);
+}
+
+	@RequestMapping(value = "/{taskId}/event", 
+            method = RequestMethod.GET, 
+            produces = MediaType.APPLICATION_JSON_VALUE)
+public @ResponseBody List<EventDTO> getEvents(@PathVariable("taskId") final Long taskId) {
+	return taskService.getEvents(taskId);
+}
+
 	@RequestMapping(method = RequestMethod.GET, 
 	                produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody List<TaskDTO> findTaskByQueue(@PathVariable("workspaceId") final Long workspaceId, 

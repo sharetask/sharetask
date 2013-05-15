@@ -34,6 +34,7 @@ import org.junit.Test;
 import org.sharetask.api.TaskQueue;
 import org.sharetask.api.TaskService;
 import org.sharetask.api.dto.CommentDTO;
+import org.sharetask.api.dto.EventDTO;
 import org.sharetask.api.dto.TaskDTO;
 import org.sharetask.data.DbUnitTest;
 import org.sharetask.entity.Event;
@@ -199,11 +200,20 @@ public class TaskServiceTest extends DbUnitTest {
 	}
 
 	/**
-	 * Test method for {@link org.sharetask.api.TaskService#forwardTask(Long, List)}.
+	 * Test method for {@link org.sharetask.api.TaskService#getComments(Long)}.
 	 */
 	@Test
 	public void testGetComments() {
 		List<CommentDTO> comments = taskService.getComments(100L);
 		assertThat(comments.size(), equalTo(1));
+	}
+
+	/**
+	 * Test method for {@link org.sharetask.api.TaskService#getEvents(Long)}.
+	 */
+	@Test
+	public void testGetEvents() {
+		List<EventDTO> events = taskService.getEvents(100L);
+		assertThat(events.size(), equalTo(1));
 	}
 }

@@ -20,8 +20,6 @@ package org.sharetask.entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -133,8 +131,8 @@ public class Task extends BaseEntity implements Serializable {
 		this.addEvent(new Event(EventType.TASK_CREATED));
 	}
 	
-	public Collection<Event> getEvents() {
-		return Collections.unmodifiableCollection(this.events);
+	public List<Event> getEvents() {
+		return ImmutableList.copyOf(this.events);
 	}
 
 	public void addEvent(final Event event) {

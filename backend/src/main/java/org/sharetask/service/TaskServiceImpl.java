@@ -24,13 +24,13 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
-import javax.validation.constraints.NotNull;
 
 import lombok.extern.slf4j.Slf4j;
 
 import org.sharetask.api.TaskQueue;
 import org.sharetask.api.TaskService;
 import org.sharetask.api.dto.CommentDTO;
+import org.sharetask.api.dto.EventDTO;
 import org.sharetask.api.dto.TaskDTO;
 import org.sharetask.entity.Comment;
 import org.sharetask.entity.Event;
@@ -154,6 +154,9 @@ public class TaskServiceImpl implements TaskService {
 		taskRepository.save(entity);
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.sharetask.api.TaskService#forwardTask(java.lang.Long, java.lang.String)
+	 */
 	@Override
 	public void forwardTask(Long taskId, String assignee) {
 		final Task task = taskRepository.findOne(taskId);
@@ -172,6 +175,9 @@ public class TaskServiceImpl implements TaskService {
 		taskRepository.save(task);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.sharetask.api.TaskService#getComments(java.lang.Long)
+	 */
 	@Override
 	public List<CommentDTO> getComments(final Long taskId) {
 		final Task task = taskRepository.findOne(taskId);
@@ -180,5 +186,18 @@ public class TaskServiceImpl implements TaskService {
 			throw new EntityNotFoundException("Task entity doesn't exists for id: " + taskId);
 		}
 		return DTOConverter.convertList(task.getComments(), CommentDTO.class);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.sharetask.api.TaskService#getEvents(java.lang.Long)
+	 */
+	@Override
+	public List<EventDTO> getEvents(final Long taskId) {
+		final Task task = taskRepository.findOne(taskId);
+		if (task == null) {
+			log.error("Task with id: {} doesn't exists.", taskId);
+			throw new EntityNotFoundException("Task entity doesn't exists for id: " + taskId);
+		}
+		return DTOConverter.convertList(task.getEvents(), EventDTO.class);
 	}
 }

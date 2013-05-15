@@ -24,6 +24,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.sharetask.api.dto.CommentDTO;
+import org.sharetask.api.dto.EventDTO;
 import org.sharetask.api.dto.TaskDTO;
 import org.springframework.validation.annotation.Validated;
 
@@ -85,4 +86,11 @@ public interface TaskService {
 	 * @return
 	 */
 	List<CommentDTO> getComments(@NotNull Long taskId);
+
+	/**
+	 * Get all events for task.
+	 * @param taskId
+	 * @return
+	 */
+	List<EventDTO> getEvents(@NotNull Long taskId);
 }

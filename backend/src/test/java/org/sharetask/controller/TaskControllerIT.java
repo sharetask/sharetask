@@ -71,6 +71,21 @@ public class TaskControllerIT extends IntegrationTest {
     }
     
     @Test
+    public void testGetEvents() throws IOException {
+        //given
+        HttpGet httpGet = new HttpGet(URL_WORKSPACE + "/1/event");
+        httpGet.addHeader(new BasicHeader("Content-Type", "application/json"));
+        
+        //when
+        HttpResponse response = getClient().execute(httpGet);
+ 
+        //then
+        Assert.assertEquals(HttpStatus.OK.value(), response.getStatusLine().getStatusCode());
+        String responseData = EntityUtils.toString(response.getEntity());
+        Assert.assertTrue(responseData.contains("\"message\":\"TASK_CREATED\""));
+    }
+    
+    @Test
     public void testCreateTask() throws IOException {
         //given
         HttpPost httpPost = new HttpPost(URL_WORKSPACE );
