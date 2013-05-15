@@ -25,53 +25,58 @@ angular.module('shareTaskApp.filters', []).
 			console.log("filter: %o", filter);
 			var newTasks = [];
 			angular.forEach(tasks, function(task) {
-				if (filter.queue == "MY_PENDING") {
-					if (task.state != "FINISHED" && task.state != "TERMINATED" && task.state != "FAILED") {
-						if (filter.tag == '') {
-							newTasks.push(task);
-						}
-						else if (!jQuery.isEmptyObject(task.tags) && task.tags.indexOf(filter.tag) != -1) {
-							newTasks.push(task);
-						}
-					}
-				}
-				else if (filter.queue == "MY_TODAY") {
-					if (new Date().toDateString() == new Date(task.dueDate).toDateString() && task.state != "FINISHED" && task.state != "TERMINATED" && task.state != "FAILED") {
-						if (filter.tag == '') {
-							newTasks.push(task);
-						}
-						else if (!jQuery.isEmptyObject(task.tags) && task.tags.indexOf(filter.tag) != -1) {
-							newTasks.push(task);
+				
+				if (task.title.toLowerCase().indexOf(filter.searchString.toLowerCase()) != -1
+						|| task.description.toLowerCase().indexOf(filter.searchString.toLowerCase()) != -1) {
+					
+					if (filter.queue == "MY_PENDING") {
+						if (task.state != "FINISHED" && task.state != "TERMINATED" && task.state != "FAILED") {
+							if (filter.tag == '') {
+								newTasks.push(task);
+							}
+							else if (!jQuery.isEmptyObject(task.tags) && task.tags.indexOf(filter.tag) != -1) {
+								newTasks.push(task);
+							}
 						}
 					}
-				}
-				else if (filter.queue == "MY_OVERDUE") {
-					if (new Date().toDateString() > new Date(task.dueDate).toDateString() && task.state != "FINISHED" && task.state != "TERMINATED" && task.state != "FAILED") {
-						if (filter.tag == '') {
-							newTasks.push(task);
-						}
-						else if (!jQuery.isEmptyObject(task.tags) && task.tags.indexOf(filter.tag) != -1) {
-							newTasks.push(task);
-						}
-					}
-				}
-				else if (filter.queue == "MY_HIGH_PRIORITY") {
-					if (task.priority == "HIGH" && task.state != "FINISHED" && task.state != "TERMINATED" && task.state != "FAILED") {
-						if (filter.tag == '') {
-							newTasks.push(task);
-						}
-						else if (!jQuery.isEmptyObject(task.tags) && task.tags.indexOf(filter.tag) != -1) {
-							newTasks.push(task);
+					else if (filter.queue == "MY_TODAY") {
+						if (new Date().toDateString() == new Date(task.dueDate).toDateString() && task.state != "FINISHED" && task.state != "TERMINATED" && task.state != "FAILED") {
+							if (filter.tag == '') {
+								newTasks.push(task);
+							}
+							else if (!jQuery.isEmptyObject(task.tags) && task.tags.indexOf(filter.tag) != -1) {
+								newTasks.push(task);
+							}
 						}
 					}
-				}
-				else if (filter.queue == "MY_COMPLETED") {
-					if (task.state == "FINISHED") {
-						if (filter.tag == '') {
-							newTasks.push(task);
+					else if (filter.queue == "MY_OVERDUE") {
+						if (new Date().toDateString() > new Date(task.dueDate).toDateString() && task.state != "FINISHED" && task.state != "TERMINATED" && task.state != "FAILED") {
+							if (filter.tag == '') {
+								newTasks.push(task);
+							}
+							else if (!jQuery.isEmptyObject(task.tags) && task.tags.indexOf(filter.tag) != -1) {
+								newTasks.push(task);
+							}
 						}
-						else if (!jQuery.isEmptyObject(task.tags) && task.tags.indexOf(filter.tag) != -1) {
-							newTasks.push(task);
+					}
+					else if (filter.queue == "MY_HIGH_PRIORITY") {
+						if (task.priority == "HIGH" && task.state != "FINISHED" && task.state != "TERMINATED" && task.state != "FAILED") {
+							if (filter.tag == '') {
+								newTasks.push(task);
+							}
+							else if (!jQuery.isEmptyObject(task.tags) && task.tags.indexOf(filter.tag) != -1) {
+								newTasks.push(task);
+							}
+						}
+					}
+					else if (filter.queue == "MY_COMPLETED") {
+						if (task.state == "FINISHED") {
+							if (filter.tag == '') {
+								newTasks.push(task);
+							}
+							else if (!jQuery.isEmptyObject(task.tags) && task.tags.indexOf(filter.tag) != -1) {
+								newTasks.push(task);
+							}
 						}
 					}
 				}

@@ -59,7 +59,7 @@
 							</ul>
 							<ul class="nav pull-right">
 								<div class="input-append" style="padding-top:2px;">
-									<input class="span2" type="text" placeholder="type search phrase..." ng-model="filter.searchString" />
+									<input class="span2" type="text" placeholder="type search phrase..." ng-model="filter.searchString" ui-keypress="{enter:'filterTasks()'}" />
 									<button class="btn btn-inverse" ng-click="filterTasks()"><i class="icon-search icon-white"></i></button>
 								</div>
 							</ul>
@@ -67,6 +67,7 @@
 					</div>
 				</div>
 			</div>
+			<!-- divider -->
 			<div class="panel-task-divider" ng-class="{'left':!viewPanelTaskFilter}" ng-click="setView('PANEL-TASK-FILTER')">
 				<div class="panel-task-divider-inner cursor-pointer" title="show / hide left panel"><b ng-class="{'caret-left':viewPanelTaskFilter, 'caret-right':!viewPanelTaskFilter}"></b></div>
 			</div>

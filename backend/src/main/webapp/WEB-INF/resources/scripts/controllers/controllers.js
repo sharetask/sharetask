@@ -247,6 +247,13 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 			console.log("Filter tasks: %o", $scope.filter);
 			$scope.tasks = taskFilter($scope.filter, this.allTasks);
 			$scope.tasks = $filter('orderBy')(this.tasks, this.orderTasks);
+			// set selected task
+			if (!jQuery.isEmptyObject($scope.tasks)) {
+				$scope.setSelectedTask($scope.tasks[0].id);
+			}
+			else {
+				$scope.selectedTask = null;
+			}
 		};
 		
 		/**
