@@ -95,7 +95,7 @@
 							<div class="footer">Completed<span class="pull-right">{{allTasks | queueTasksCount: 'MY_COMPLETED'}}</span></div>
 						</div>
 						<br />
-						<div class="tag cursor-pointer" ng-repeat="tag in tags" data-drag="true" data-jqyoui-options="{appendTo:'body', revert:'invalid', helper:'clone'}" ng-model="tag" jqyoui-draggable=""><span class="text" ng-class="{'selected':tag == filter.tag}" ng-click="setTaskFilterTag(tag)">{{tag}}</span></div>
+						<div class="tag cursor-pointer" ng-repeat="tag in tags" ng-class="{'hidden':!viewPanelTaskFilter}" data-drag="true" data-jqyoui-options="{appendTo:'body', revert:'invalid', helper:'clone'}" ng-model="tag" jqyoui-draggable=""><span class="text" ng-class="{'selected':tag == filter.tag}" ng-click="setTaskFilterTag(tag)">{{tag}}</span></div>
 					</div>
 				</div>
 			</div>
@@ -106,7 +106,7 @@
 					<div class="header" ng-class="{'large':taskEditMode == 'NEW'}">
 						<div class="queue-name">
 							<div class="queue-name-inner">
-								<div class="title pull-left cursor-pointer" ng-click="changeTaskQueue()">{{filter.queue | taskQueueName}} <small>/ {{allTasks | queueTasksCount:filter.queue}}</small></div>
+								<div class="title pull-left cursor-pointer" ng-click="changeTaskQueue()">{{filter.queue | taskQueueName}} <small>({{allTasks | queueTasksCount:filter.queue}})</small></div>
 								<!--<div class="input-append pull-right">
 									<input class="span2" type="text" placeholder="type search phrase..." ng-model="filter.searchString" />
 									<button class="btn btn-inverse" ng-click="filterTasks()"><i class="icon-search icon-white"></i></button>
@@ -215,7 +215,7 @@
 						</div>
 						<!-- task title, author -->
 						<div style="margin:10px 0;color:#1763A6;">
-							<div class="cursor-pointer" style="font-weight:bold;font-size:18px;" ng-class="{'hidden':taskEditMode == 'TITLE'}" ng-click="setEditMode('TITLE')">{{selectedTask.title}}</div>
+							<div class="cursor-pointer" style="font-size:23px;" ng-class="{'hidden':taskEditMode == 'TITLE'}" ng-click="setEditMode('TITLE')">{{selectedTask.title}}</div>
 							<div ng-class="{'hidden':taskEditMode != 'TITLE'}">
 								<div class="input-append">
 									<input type="text" ng-model="selectedTask.title" ui-keypress="{enter:'updateTask(selectedTask)', esc:'setEditMode(\'\')'}" focus="editing" />
