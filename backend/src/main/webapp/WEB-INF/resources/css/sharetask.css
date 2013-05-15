@@ -182,7 +182,9 @@ body {margin:0;padding:0;-webkit-text-size-adjust:100%;}
 .panel-task-filter-content {padding:5px;}
 .panel-task-filter.hide2 {width:0;}
 
-.panel-task-divider {top:72px;bottom:0;left:0;width:10px;overflow:visible;position:absolute;background:#ddd;}
+.panel-task-divider {top:72px;bottom:0;left:0;width:10px;overflow:visible;position:absolute;background:#ccc;}
+.panel-task-divider:hover {background:#98C7F0;}
+/*.panel-task-divider:hover .caret-left, .panel-task-divider:hover .caret-right {border-right: 6px solid #fff;}*/
 .panel-task-divider-inner {height:100%;cursor:pointer;}
 .panel-task-divider.left {left:0;}
 
@@ -210,7 +212,7 @@ body {margin:0;padding:0;-webkit-text-size-adjust:100%;}
 .task-list.small {top:125px;}
 .task-list-inner {height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;}
 
-.st-checkbox {border:solid 2px #aaa;background:#fff;width:20px;height:20px;text-align:center;line-height:20px;}
+.st-checkbox {border:solid 2px #aaa;background:#fff;width:18px;height:18px;text-align:center;line-height:18px;}
 .st-checkbox.checked {background:#1763A6;border:solid 2px #1763A6;}
 .st-checkbox.selected {border:solid 2px #1763A6;}
 .st-checkbox.selected.checked {background:#1763A6;border:solid 2px #fff;}

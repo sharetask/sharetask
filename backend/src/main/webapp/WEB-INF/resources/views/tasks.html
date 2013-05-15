@@ -168,7 +168,7 @@
 												<div class="span8">
 													<div class="tag" ng-repeat="tag in task.tags"><span class="text" ng-class="{'selected':tag == filter.tag}">{{tag}}</span><span class="remove cursor-pointer" ng-click="removeTag(task.id, tag)" stop-event="click">x</span></div>
 												</div>
-												<div class="span4" style="text-align:right;"><i class="icon-comment" ng-class="{'icon-white':task.id == selectedTask.id}"></i> {{task.comments.length}}</div>
+												<div class="span4" style="text-align:right;"><i class="icon-comment" ng-class="{'icon-white':task.id == selectedTask.id}"></i> {{task.comments}}</div>
 											</div>
 										</div>
 									</div>
