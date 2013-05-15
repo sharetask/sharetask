@@ -144,6 +144,9 @@
 			<column name="WORKSPACE_ID" type="BIGINT" remarks="Reference to workspace">
 				<constraints nullable="false" />
 			</column>
+			<column name="ASSIGNEE_USER_NAME" type="VARCHAR(255)" remarks="Reference to user">
+				<constraints nullable="true" />
+			</column>
 		</createTable>
 
 		<addForeignKeyConstraint constraintName="FK_TASK_EVENT"
@@ -153,6 +156,10 @@
 		<addForeignKeyConstraint constraintName="FK_TASK_COMMENT"
 			baseTableName="COMMENT" baseColumnNames="TASK_ID"
 			referencedTableName="TASK" referencedColumnNames="ID" />
+
+		<addForeignKeyConstraint constraintName="FK_TASK_ASSIGNEE"
+			baseTableName="TASK" baseColumnNames="ASSIGNEE_USER_NAME"
+			referencedTableName="USER" referencedColumnNames="USER_NAME" />
 	</changeSet>
 		
 	<changeSet id="create: workspace" author="mbocek">
@@ -205,26 +212,5 @@
 
 		<addPrimaryKey tableName="WORKSPACE_MEMBER" columnNames="WORKSPACE_ID,USER_NAME"
 			constraintName="PK_WORKSPACE_MEMBER" />
-	</changeSet>
-
-	<changeSet id="create: task_owner" author="mbocek" >
-		<createTable tableName="TASK_OWNER" remarks="Table for storing references between task and user">
-			<column name="TASK_ID" type="BIGINT" remarks="Reference to task">
-				<constraints nullable="false" />
-			</column>
-			<column name="USER_NAME" type="VARCHAR(255)" remarks="Reference to user">
-				<constraints nullable="false" />
-			</column>
-		</createTable>
-		
-		<addForeignKeyConstraint constraintName="FK_TASK_OWNER_TASK"
-			baseTableName="TASK_OWNER" baseColumnNames="TASK_ID"
-			referencedTableName="TASK" referencedColumnNames="ID" />
-		<addForeignKeyConstraint constraintName="FK_TASK_OWNER_USER"
-			baseTableName="TASK_OWNER" baseColumnNames="USER_NAME"
-			referencedTableName="USER" referencedColumnNames="USER_NAME" />
-
-		<addPrimaryKey tableName="TASK_OWNER" columnNames="TASK_ID,USER_NAME"
-			constraintName="PK_TASK_OWNER" />
 	</changeSet>
 </databaseChangeLog>

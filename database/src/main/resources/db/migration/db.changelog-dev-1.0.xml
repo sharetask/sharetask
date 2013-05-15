@@ -56,9 +56,10 @@
 			<column name="PRIORITY" type="STRING"/>
 			<column name="STATE" type="STRING"/>
 			<column name="WORKSPACE_ID" type="NUMERIC"/>
+			<column name="ASSIGNEE_USER_NAME" type="STRING"/>
 		</loadData>
 		<rollback>
-			<delete tableName="COMMENT"/>
+			<delete tableName="TASK"/>
 		</rollback>
 	</changeSet>
 	

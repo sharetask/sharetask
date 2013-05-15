@@ -82,7 +82,7 @@ public class TaskController {
 
 	@RequestMapping(value = "/{taskId}/forward", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void forward(@PathVariable("taskId") final Long taskId,
-	                    @RequestBody final List<String> owners) {
- 		taskService.forwardTask(taskId, owners);
+	                    @RequestBody final String assignee) {
+ 		taskService.forwardTask(taskId, assignee);
 	}	
 }

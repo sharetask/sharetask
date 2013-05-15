@@ -69,12 +69,11 @@ public class TaskDTO {
 	private String state;
 	
 	@Getter	@Setter
-	private List<UserDTO> owners;
+	private UserDTO assignee;
 
 	@Getter @Setter
 	private List<EventDTO> events;
 	
 	@Getter @Setter
 	private List<CommentDTO> comments;
-	
 }

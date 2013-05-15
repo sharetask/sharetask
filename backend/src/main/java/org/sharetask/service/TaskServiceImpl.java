@@ -153,20 +153,17 @@ public class TaskServiceImpl implements TaskService {
 	}
 	
 	@Override
-	public void forwardTask(Long taskId, List<String> owners) {
+	public void forwardTask(Long taskId, String assignee) {
 		Task task = taskRepository.findOne(taskId);
 		if (task == null) {
 			log.error("Task with id: {} doesn't exists.", taskId);
 			throw new EntityNotFoundException("Task entity doesn't exists for id: " + taskId);
 		}
 
-		task.getOwners().clear();
-		Iterable<User> ownerList = userRepository.findAll(owners);
-		for (User user : ownerList) {
-			if (task.getWorkspace().getMembers().contains(user)) {
-				log.debug("Added user {} is member of workspace.", user.getUsername());
-				task.getOwners().add(user);
-			}
+		User assigneeUser = userRepository.findOne(assignee);
+		if (task.getWorkspace().getMembers().contains(assigneeUser)) {
+			log.debug("Added user {} is member of workspace.", assigneeUser.getUsername());
+			task.setAssignee(assigneeUser);
 		}
 		
 		task.addEvent(new Event(EventType.TASK_FORWARDED));

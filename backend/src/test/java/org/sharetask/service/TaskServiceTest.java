@@ -24,7 +24,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -40,7 +39,6 @@ import org.sharetask.entity.Event;
 import org.sharetask.entity.Event.EventType;
 import org.sharetask.entity.Task;
 import org.sharetask.entity.Task.StateType;
-import org.sharetask.entity.User;
 import org.sharetask.repository.TaskRepository;
 import org.sharetask.utility.DTOConverter;
 
@@ -191,13 +189,11 @@ public class TaskServiceTest extends DbUnitTest {
 	 */
 	@Test
 	public void testForwardTask() {
-		taskService.forwardTask(100L, Arrays.asList(new String[] { "test3@test.com" }));
+		taskService.forwardTask(100L, "test3@test.com");
 		Task task = taskRepository.findOne(100L);
 		Collection<Event> events = task.getEvents();
 		assertThat(events.toArray(new Event[events.size()])[events.size() - 1].getType(),
 				equalTo(EventType.TASK_FORWARDED));
-		List<User> owners = task.getOwners();
-		assertThat(owners.size(), equalTo(1));
-		assertThat(owners.get(0).getUsername(), equalTo("test3@test.com"));
+		assertThat(task.getAssignee().getUsername(), equalTo("test3@test.com"));
 	}
 }

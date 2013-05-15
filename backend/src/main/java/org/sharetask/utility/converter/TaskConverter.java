@@ -20,7 +20,6 @@ package org.sharetask.utility.converter;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import org.dozer.CustomConverter;
 import org.dozer.MappingException;
@@ -74,9 +73,9 @@ public class TaskConverter implements CustomConverter {
 		taskDTO.setPriority(source.getPriority().name());
 		taskDTO.setTags(source.getTags());
 		taskDTO.setState(source.getState().name());
-		if (source.getOwners() != null) {
-			final List<User> owners = source.getOwners();
-			taskDTO.setOwners(DTOConverter.convertList(owners, UserDTO.class));
+		if (source.getAssignee() != null) {
+			final User assignee = source.getAssignee();
+			taskDTO.setAssignee(DTOConverter.convert(assignee, UserDTO.class));
 		}
 		if (source.getEvents() != null) {
 			final Collection<Event> events = source.getEvents();
@@ -96,9 +95,9 @@ public class TaskConverter implements CustomConverter {
 		task.setDueDate(sourceDTO.getDueDate());
 		task.setPriority(PriorityType.valueOf(sourceDTO.getPriority()));
 		task.setTags(sourceDTO.getTags());
-		if (sourceDTO.getOwners() != null) {
-			final List<UserDTO> owners = sourceDTO.getOwners();
-			task.setOwners(DTOConverter.convertList(owners, User.class));
+		if (sourceDTO.getAssignee() != null) {
+			final UserDTO assignee = sourceDTO.getAssignee();
+			task.setAssignee(DTOConverter.convert(assignee, User.class));
 		}
 		return task;
 	}

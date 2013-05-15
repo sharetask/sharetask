@@ -74,7 +74,7 @@ public interface TaskService {
 	/**
 	 * Forward task to specified group.
 	 * @param taskId
-	 * @param owners
+	 * @param assignee
 	 */
-	void forwardTask(@NotNull Long taskId, @NotNull List<String> owners);
+	void forwardTask(@NotNull Long taskId, @NotNull String assignee);
 }

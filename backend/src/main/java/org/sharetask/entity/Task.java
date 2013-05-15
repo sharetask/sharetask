@@ -37,7 +37,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -101,11 +100,9 @@ public class Task extends BaseEntity implements Serializable {
 	private Date dueDate;
 	
 	@Getter @Setter
-	@OneToMany
-	@JoinTable(name = "TASK_OWNER", 
-    	joinColumns = { @JoinColumn(name = "TASK_ID", referencedColumnName = "ID") }, 
-    	inverseJoinColumns = { @JoinColumn(name = "USER_NAME", referencedColumnName = "USER_NAME", unique = true) })
-	private List<User> owners;
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
+	@JoinColumn(name = "ASSIGNEE_USER_NAME")
+	private User assignee;
 	
 	@Getter @Setter
 	@Enumerated(value = EnumType.STRING)
