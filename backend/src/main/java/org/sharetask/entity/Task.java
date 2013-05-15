@@ -52,6 +52,8 @@ import lombok.ToString;
 import org.sharetask.api.Constants;
 import org.sharetask.entity.Event.EventType;
 
+import com.google.common.collect.ImmutableList;
+
 /**
  * @author Michal Bocek
  * @since 1.0.0
@@ -139,8 +141,8 @@ public class Task extends BaseEntity implements Serializable {
 		this.events.add(event);
 	}
 
-	public Collection<Comment> getComments() {
-		return Collections.unmodifiableCollection(this.comments);
+	public List<Comment> getComments() {
+		return ImmutableList.copyOf(this.comments);
 	}
 
 	public void addComment(final Comment comment) {

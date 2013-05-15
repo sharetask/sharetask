@@ -23,6 +23,7 @@ import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import org.sharetask.api.dto.CommentDTO;
 import org.sharetask.api.dto.TaskDTO;
 import org.springframework.validation.annotation.Validated;
 
@@ -77,4 +78,11 @@ public interface TaskService {
 	 * @param assignee
 	 */
 	void forwardTask(@NotNull Long taskId, @NotNull String assignee);
+	
+	/**
+	 * Get all comments for task.
+	 * @param taskId
+	 * @return
+	 */
+	List<CommentDTO> getComments(@NotNull Long taskId);
 }

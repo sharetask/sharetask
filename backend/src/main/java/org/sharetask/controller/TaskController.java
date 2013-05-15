@@ -24,6 +24,7 @@ import javax.inject.Inject;
 
 import org.sharetask.api.TaskQueue;
 import org.sharetask.api.TaskService;
+import org.sharetask.api.dto.CommentDTO;
 import org.sharetask.api.dto.TaskDTO;
 import org.sharetask.controller.json.Comment;
 import org.springframework.http.HttpStatus;
@@ -48,39 +49,55 @@ public class TaskController {
 	@Inject
 	private TaskService taskService;
 	
-	@RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(method = RequestMethod.POST, 
+	                produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
 	public @ResponseBody TaskDTO create(@PathVariable("workspaceId") final Long workspaceId, 
 	                                    @RequestBody final TaskDTO task) {
  		return taskService.createTask(workspaceId, task);
 	}
 	
-	@RequestMapping(value = "/{taskId}/comment", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/{taskId}/comment", 
+	                method = RequestMethod.POST, 
+	                produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
 	public @ResponseBody TaskDTO addComment(@PathVariable("taskId") final Long taskId,
 	                                        @RequestBody final Comment comment) {
  		return taskService.addComment(taskId, comment.getComment());
 	}
+
+	@RequestMapping(value = "/{taskId}/comment", 
+	                method = RequestMethod.GET, 
+	                produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody List<CommentDTO> getComments(@PathVariable("taskId") final Long taskId) {
+ 		return taskService.getComments(taskId);
+	}
 	
-	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(method = RequestMethod.GET, 
+	                produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody List<TaskDTO> findTaskByQueue(@PathVariable("workspaceId") final Long workspaceId, 
 	                                                   @RequestParam("taskQueue") final String taskQueue) {
  		return taskService.findTaskByQueue(workspaceId, TaskQueue.valueOf(taskQueue));
 	}
 	
-	@RequestMapping(method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(method = RequestMethod.PUT, 
+	                produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
 	public @ResponseBody TaskDTO update(@RequestBody final TaskDTO task) {
  		return taskService.updateTask(task);
 	}
 
-	@RequestMapping(value = "/{taskId}/complete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/{taskId}/complete", 
+	                method = RequestMethod.POST, 
+	                produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
 	public void complete(@PathVariable("taskId") final Long taskId) {
  		taskService.completeTask(taskId);
 	}	
 
-	@RequestMapping(value = "/{taskId}/forward", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/{taskId}/forward", 
+	                method = RequestMethod.POST, 
+	                produces = MediaType.APPLICATION_JSON_VALUE)
 	public void forward(@PathVariable("taskId") final Long taskId,
 	                    @RequestBody final String assignee) {
  		taskService.forwardTask(taskId, assignee);

@@ -33,6 +33,7 @@ import javax.inject.Inject;
 import org.junit.Test;
 import org.sharetask.api.TaskQueue;
 import org.sharetask.api.TaskService;
+import org.sharetask.api.dto.CommentDTO;
 import org.sharetask.api.dto.TaskDTO;
 import org.sharetask.data.DbUnitTest;
 import org.sharetask.entity.Event;
@@ -195,5 +196,14 @@ public class TaskServiceTest extends DbUnitTest {
 		assertThat(events.toArray(new Event[events.size()])[events.size() - 1].getType(),
 				equalTo(EventType.TASK_FORWARDED));
 		assertThat(task.getAssignee().getUsername(), equalTo("test3@test.com"));
+	}
+
+	/**
+	 * Test method for {@link org.sharetask.api.TaskService#forwardTask(Long, List)}.
+	 */
+	@Test
+	public void testGetComments() {
+		List<CommentDTO> comments = taskService.getComments(100L);
+		assertThat(comments.size(), equalTo(1));
 	}
 }
