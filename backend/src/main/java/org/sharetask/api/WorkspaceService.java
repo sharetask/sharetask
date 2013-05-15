@@ -42,6 +42,13 @@ public interface WorkspaceService {
 	@NotNull WorkspaceDTO createWorkspace(@Valid @NotNull WorkspaceDTO workspace);
 	
 	/**
+	 * Update workspace.
+	 * @param workspace
+	 * @return
+	 */
+	@NotNull WorkspaceDTO updateWorkspace(@Valid @NotNull WorkspaceDTO workspace);
+
+	/**
 	 * Add member to specified workspace.
 	 * @param workspaceId
 	 * @param userId

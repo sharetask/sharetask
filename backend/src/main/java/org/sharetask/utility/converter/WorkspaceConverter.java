@@ -77,12 +77,6 @@ public class WorkspaceConverter implements CustomConverter {
 		if (sourceDTO.getOwner() != null) {
 			workspace.setOwner(new User(sourceDTO.getOwner().getUsername()));
 		}
-		if (sourceDTO.getMembers() != null) {
-			workspace.clearMembers();
-			for (UserDTO member : sourceDTO.getMembers()) {
-				workspace.addMember(DTOConverter.convert(member, User.class));
-			}
-		}
 		return workspace;
 	}
 }

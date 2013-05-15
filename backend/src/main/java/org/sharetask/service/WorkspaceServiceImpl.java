@@ -60,6 +60,18 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 
 	@Override
 	@Transactional
+	public WorkspaceDTO updateWorkspace(final WorkspaceDTO workspace) {
+		Workspace workspaceEntity = workspaceRepository.findOne(workspace.getId());
+		if (workspaceEntity == null) {
+			throw new EntityNotFoundException("Workspace entity doesn't exists for id: " + workspace.getId());
+		}
+		DTOConverter.convert(workspace, workspaceEntity);
+		workspaceEntity = workspaceRepository.save(workspaceEntity);
+		return DTOConverter.convert(workspaceEntity, WorkspaceDTO.class);
+	}
+
+	@Override
+	@Transactional
 	public void addMember(final Long workspaceId, final String username) {
 		// sanity check if exist specified user
 		final User user = userRepository.findOne(username);

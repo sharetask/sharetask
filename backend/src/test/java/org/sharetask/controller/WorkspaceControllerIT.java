@@ -25,6 +25,7 @@ import java.net.URISyntaxException;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.message.BasicHeader;
@@ -59,7 +60,6 @@ public class WorkspaceControllerIT extends IntegrationTest {
         Assert.assertEquals(HttpStatus.OK.value(), response.getStatusLine().getStatusCode());
         String responseData = EntityUtils.toString(response.getEntity());
         Assert.assertTrue(responseData.contains("\"title\":\"ABX Agency\""));
-        EntityUtils.consume(response.getEntity());
     }
 
     @Test
@@ -75,6 +75,25 @@ public class WorkspaceControllerIT extends IntegrationTest {
 
         //then
         Assert.assertEquals(HttpStatus.OK.value(), response.getStatusLine().getStatusCode());
-        EntityUtils.consume(response.getEntity());
+    }
+
+    @Test
+    public void testUpdateWorkspace() throws IOException {
+        //given
+    	HttpPut httpPut = new HttpPut(URL_WORKSPACE);
+        httpPut.addHeader(new BasicHeader("Content-Type", "application/json"));
+        StringEntity httpEntity = new StringEntity("{\"id\":1," +
+                                                    "\"title\":\"Test Title\"," +
+                                                    "\"owner\":{\"username\":\"dev1@shareta.sk\"}" +
+                                                    "}");
+        httpPut.setEntity(httpEntity);
+        
+        //when
+        HttpResponse response = getClient().execute(httpPut);
+
+        //then
+        Assert.assertEquals(HttpStatus.OK.value(), response.getStatusLine().getStatusCode());
+        String responseData = EntityUtils.toString(response.getEntity());
+        Assert.assertTrue(responseData.contains("\"title\":\"Test Title\""));
     }
 }

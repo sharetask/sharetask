@@ -48,26 +48,39 @@ public class WorkspaceController {
 	@Inject
 	private WorkspaceService workspaceService;
 	
-	@RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(method = RequestMethod.POST, 
+	                produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody WorkspaceDTO create(@RequestBody final WorkspaceDTO workspace) {
  		return workspaceService.createWorkspace(workspace);
 	}
 	
-	@RequestMapping(value = "/{workspaceId}/member", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(method = RequestMethod.PUT, 
+	                produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseStatus(value = HttpStatus.OK)
+	public @ResponseBody WorkspaceDTO update(@RequestBody final WorkspaceDTO workspace) {
+		return workspaceService.updateWorkspace(workspace);
+	}
+
+	@RequestMapping(value = "/{workspaceId}/member", 
+	                method = RequestMethod.POST, 
+	                produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
 	public void addMember(@PathVariable("workspaceId") final Long workspaceId, 
 	                      @RequestBody final User user) {
  		workspaceService.addMember(workspaceId, user.getUsername());
 	}
 	
-	@RequestMapping(value = "/{workspaceId}/member/{username:.*}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/{workspaceId}/member/{username:.*}", 
+	                method = RequestMethod.DELETE, 
+	                produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
 	public void removeMember(@PathVariable("workspaceId") final Long workspaceId, 
 	                         @PathVariable("username") final String username) {
  		workspaceService.removeMember(workspaceId, username);
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(method = RequestMethod.GET, 
+	                produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody List<WorkspaceDTO> findWorkspace(@RequestParam("type") final String type) {
 		final WorkspaceQueryType queryType = WorkspaceQueryType.valueOf(type);
  		return workspaceService.findWorkspaceByType(queryType);
