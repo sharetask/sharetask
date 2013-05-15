@@ -95,7 +95,7 @@
 							<div class="footer">Completed<span class="pull-right">{{allTasks | queueTasksCount: 'MY_COMPLETED'}}</span></div>
 						</div>
 						<br />
-						<div class="tag cursor-pointer" ng-repeat="tag in tags" data-drag="true" data-jqyoui-options="{appendTo:'body', revert:'invalid', helper:'clone'}" ng-model="tag" jqyoui-draggable=""><span class="text" ng-class="{'warning':tag == filter.tag}" ng-click="setTaskFilterTag(tag)">{{tag}}</span></div>
+						<div class="tag cursor-pointer" ng-repeat="tag in tags" data-drag="true" data-jqyoui-options="{appendTo:'body', revert:'invalid', helper:'clone'}" ng-model="tag" jqyoui-draggable=""><span class="text" ng-class="{'selected':tag == filter.tag}" ng-click="setTaskFilterTag(tag)">{{tag}}</span></div>
 					</div>
 				</div>
 			</div>
@@ -181,19 +181,19 @@
 			<div class="panel-task-detail">
 				<div class="panel-task-detail-inner">
 					<div class="panel-task-detail-content" ng-class="{'hidden':selectedTask == null}">
-						
+						<!-- action buttons -->
 						<div class="task-detail-action">
 							<button class="btn btn-inverse" ng-click="setEditMode('COMPLETE-TASK')">Complete</button>
 							<button class="btn" ng-click="setEditMode('FORWARD-TASK')">Forward</button>
 							<button class="btn" ng-click="setEditMode('DELETE-TASK')">Delete</button>
 						</div>
-						
+						<!-- complete task -->
 						<div class="task-detail-action-confirm" ng-class="{'hidden':taskEditMode != 'COMPLETE-TASK'}">
 							<p>Do you really want to complete task?</p>
 							<button class="btn btn-inverse" ng-click="completeTask(false)">Yes</button>
 							<button class="btn" ng-click="setEditMode('')">No</button>
 						</div>
-						
+						<!-- forward task -->
 						<div class="task-detail-action-confirm" ng-class="{'hidden':taskEditMode != 'FORWARD-TASK'}">
 							<p>Forward task to another workspace member.</p>
 							<div class="input-append">
@@ -207,13 +207,13 @@
 								</div>
 							</div>
 						</div>
-						
+						<!-- delete task -->
 						<div class="task-detail-action-confirm" ng-class="{'hidden':taskEditMode != 'DELETE-TASK'}">
 							<p>Do you really want to delete task?</p>
 							<button class="btn btn-inverse" ng-click="deleteTask()">Yes</button>
 							<button class="btn" ng-click="setEditMode('')">No</button>
 						</div>
-						
+						<!-- task title, author -->
 						<div style="margin:10px 0;color:#1763A6;">
 							<div class="cursor-pointer" style="font-weight:bold;font-size:18px;" ng-class="{'hidden':taskEditMode == 'TITLE'}" ng-click="setEditMode('TITLE')">{{selectedTask.title}}</div>
 							<div ng-class="{'hidden':taskEditMode != 'TITLE'}">
@@ -224,14 +224,14 @@
 							</div>
 						</div>
 						<p>by {{selectedTask.createdBy.name}}</p>
-						
+						<!-- task created on, priority, due date -->
 						<div style="margin-top:5px;">
 							<span class="label label-success" style="background:#656565;">Created on<br /><br /><strong>{{selectedTask.createdOn | date:'mediumDate'}}</strong></span>
 							<span class="label cursor-pointer" ng-class="{'priority-low':selectedTask.priority == 'LOW','priority-medium':selectedTask.priority == 'MEDIUM','priority-high':selectedTask.priority == 'HIGH'}" ng-click="changeTaskPriority()">Priority<br /><br /><strong>{{selectedTask.priority}}</strong></span>
 							<span class="label label-warning cursor-pointer" style="background:#656565;" b-datepicker="{{dateOptions}}" ng-model="selectedTask.dueDate" data-date-format="MMM d, y" data-date="{{selectedTask.dueDate}}">Due date<br /><br /><strong>{{selectedTask.dueDate | date:'mediumDate'}}</strong></span>
 							
 						</div>
-						
+						<!-- task tags -->
 						<div style="margin-top:5px;">
 							<div class="tag" ng-repeat="tag in selectedTask.tags"><span class="text">{{tag}}</span><span class="remove cursor-pointer" ng-click="removeTag(selectedTask.id, tag)">x</span></div>
 							<span class="tag cursor-pointer" ng-click="setEditMode('ADD-TAG')"><span class="remove cursor-pointer"><i class="icon-plus icon-white"></i></span></span>
@@ -244,7 +244,7 @@
 							
 							<div id="taskDetailAddLabelForm" class="hidden"><input id="taskDetailAddLabelInput" class="span3" type="text" placeholder="" /> <a href="#" id="taskDetailAddLabelClose"><i class="icon-remove"></i></a></div>
 						</div>
-						
+						<!-- task description -->
 						<div style="margin-top:5px;padding:5px;border:1px solid #ddd;">
 							<div class="row-full">
 								<div class="cursor-pointer" ng-class="{'hidden':taskEditMode == 'DESCRIPTION'}" ng-click="setEditMode('DESCRIPTION')">{{selectedTask.description}}</div>
@@ -255,7 +255,7 @@
 								</div>
 							</div>
 						</div>
-						
+						<!-- task comments -->
 						<div style="margin-top:5px;padding:5px;border:1px solid #ddd;">
 							tady budou komentáře
 						</div>

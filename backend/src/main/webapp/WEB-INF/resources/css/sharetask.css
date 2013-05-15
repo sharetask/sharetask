@@ -126,7 +126,7 @@ h1,h2,h3,h4,h5,h6 {margin:5px 0;line-height:0;}
 .tag {color:#000;display:inline-block;margin-right:5px;margin-bottom:5px;z-index:10;}
 .tag .text {background:#fff;border:1px solid #ccc;display:inline-block;padding:0 7px;line-height:20px;font-size:11px;}
 .tag .remove {background:#ccc;border:1px solid #ccc;display:inline-block;padding:0 5px;line-height:20px;font-size:11px;}
-.tag .selected {background:#921C03;border:1px solid #921C03;color:#fff;}
+.tag .selected {background:#63A617;border:1px solid #63A617;color:#fff;}
 .priority-low {background:#999;}
 .priority-medium {background:#D9A86C;}
 .priority-high {background:#D94436;}

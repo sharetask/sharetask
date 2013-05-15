@@ -177,6 +177,9 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 			if (!jQuery.isEmptyObject($scope.tasks)) {
 				// set selected task
 				$scope.setSelectedTask($scope.tasks[0].id);
+				// set tags
+				$scope.setTags();
+				/*
 				// parse tags
 				var taskTags = new Array();
 				angular.forEach($scope.tasks, function(task) {
@@ -190,10 +193,26 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 				});
 				$scope.tags = taskTags;
 				console.log("Tags parsed for queue: %o", $scope.tags);
+				*/
 			}
 			else {
 				$scope.selectedTask = null;
 			}
+		};
+		
+		$scope.setTags = function() {
+			var taskTags = new Array();
+			angular.forEach($scope.tasks, function(task) {
+				if (!jQuery.isEmptyObject(task.tags)) {
+					angular.forEach(task.tags, function(tag) {
+						if (taskTags.indexOf(tag) == -1) {
+							taskTags.push(tag);
+						}
+					});
+				}
+			});
+			$scope.tags = taskTags;
+			console.log("Tags parsed for queue: %o", $scope.tags);
 		};
 		
 		/**
@@ -211,6 +230,13 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 				$scope.filter.tag = tag;
 			}
 			$scope.filterTasks();
+			// set selected task
+			if (!jQuery.isEmptyObject($scope.tasks)) {
+				$scope.setSelectedTask($scope.tasks[0].id);
+			}
+			else {
+				$scope.selectedTask = null;
+			}
 		};
 		
 		/**
@@ -273,6 +299,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 			console.log("Add new tag to task, id: %s, tag: %s", $scope.selectedTask.id, $scope.newTag);
 			$scope.selectedTask.tags.push($scope.newTag);
 			$scope.updateTask($scope.selectedTask);
+			$scope.setTags();
 			$scope.taskEditMode = '';
 			$scope.newTag = '';
 		};
