@@ -1,3 +1,5 @@
 ID,TITLE,DESCRIPTION,CREATED_BY,CREATED_ON,UPDATED_BY,UPDATED_ON,DUE_DATE,PRIORITY,STATE,WORKSPACE_ID,ASSIGNEE_USER_NAME
 1,Contact editors about the launch,Lorem ipsum dolor sit amet. Cras feugiat libero purus. Nulla facilisi. Suspendisse potenti. Phasellus luctus pharetra justo a facilisis dui facilisis dignissim. Sed eu mauris suscipit enim convallis sollicitudin.,dev1@shareta.sk,2013-01-30,dev1@shareta.sk,2013-01-30,2014-01-30,MEDIUM,NEW,1,dev1@shareta.sk
 2,Create a task with Carolyn,Cras feugiat libero purus. Nulla facilisi. Suspendisse potenti.,dev1@shareta.sk,2013-02-30,dev1@shareta.sk,2013-02-30,2014-01-30,MEDIUM,NEW,1,NULL
+3,Book a room for the event,Nulla facilisi. Suspendisse potenti. Phasellus luctus pharetra justo a facilisis dui facilisis dignissim. Sed eu mauris suscipit enim convallis sollicitudin.,dev1@shareta.sk,2013-02-30,dev1@shareta.sk,2013-02-30,2014-01-30,MEDIUM,NEW,1,NULL
+4,Launch meeting,Phasellus luctus pharetra justo a facilisis dui facilisis dignissim. Sed eu mauris suscipit enim convallis sollicitudin.,dev1@shareta.sk,2013-02-30,dev1@shareta.sk,2013-02-30,2014-01-30,MEDIUM,NEW,1,NULL
