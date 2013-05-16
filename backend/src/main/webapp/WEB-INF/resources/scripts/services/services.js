@@ -34,19 +34,22 @@ shareTaskApp.service('Workspace', function($resource, $http) {
 	
 	this.find = function(input, success, error) {
 		console.log("Getting workspaces from server for type (type: %s)", input.type);
-		var workspace = $resource("/sharetask/api/workspace", {type: input.type}, {query: {method: "GET", isArray: true}});
-		workspace.query(function(response){return success(response);}, function(response){return error(response);});
+		//var workspace = $resource("/sharetask/api/workspace", {type: input.type}, {query: {method: "GET", isArray: true}});
+		//workspace.query(function(response){return success(response);}, function(response){return error(response);});
+		return $http.get("/sharetask/api/workspace/", {params: {type: input.type}}).success(success).error(error);
 	};
 	
 	this.getActiveTasks = function(input, success, error) {
 		console.log("Getting active tasks for workspace (id: %s) from server", input.workspaceId);
-		var task = $resource("/sharetask/api/workspace/"+input.workspaceId+"/task", {taskQueue: 'ALL'}, {query: {method: "GET", isArray: true}});
-		task.query(function(response){return success(response);}, function(response){return error(response);});
+		//var task = $resource("/sharetask/api/workspace/"+input.workspaceId+"/task", {taskQueue: 'ALL'}, {query: {method: "GET", isArray: true}});
+		//task.query(function(response){return success(response);}, function(response){return error(response);});
+		return $http.get("/sharetask/api/workspace/"+input.workspaceId+"/task", {params: {taskQueue: 'ALL'}}).success(success).error(error);
 	};
 	
-	this.getCompletedTasks = function(input, callback) {
+	this.getCompletedTasks = function(input, success, error) {
 		console.log("Getting completed tasks for workspace (id: %s) from server", input.workspaceId);
-		return $resource("/sharetask/api/workspace/"+input.workspaceId+"/task", {taskQueue: 'FINISHED'}, {query: {method: "GET", isArray: true}}).query(callback);
+		//return $resource("/sharetask/api/workspace/"+input.workspaceId+"/task", {taskQueue: 'FINISHED'}, {query: {method: "GET", isArray: true}}).query(callback);
+		return $http.get("/sharetask/api/workspace/"+input.workspaceId+"/task", {params: {taskQueue: 'FINISHED'}}).success(success).error(error);
 	};
 	
 	this.create = function(input, success, error) {
@@ -88,14 +91,21 @@ shareTaskApp.service('Task', function($resource, $http) {
 		return $http.post("/sharetask/api/workspace/"+input.workspaceId+"/task/"+input.taskId+"/complete", {}).success(success).error(error);
 	};
 	
-	this.getComments = function(input, callback) {
+	this.forward = function(input, success, error) {
+		console.log("Forward task (id: %s) on workspace (id: %s) to user (id: %s)", input.taskId, input.workspaceId, input.username);
+		return $http.post("/sharetask/api/workspace/"+input.workspaceId+"/task/"+input.taskId+"/forward", {assignee: input.username}).success(success).error(error);
+	};
+	
+	this.getComments = function(input, success, error) {
 		console.log("Getting task (id: %s) comments from server", input.taskId);
-		return $resource("/sharetask/api/workspace/"+input.workspaceId+"/task/"+input.taskId+"/comment", {}, {query: {method: "GET", isArray: true}}).query(callback);
+		//return $resource("/sharetask/api/workspace/"+input.workspaceId+"/task/"+input.taskId+"/comment", {}, {query: {method: "GET", isArray: true}}).query(callback);
+		return $http.get("/sharetask/api/workspace/"+input.workspaceId+"/task/"+input.taskId+"/comment", {}).success(success).error(error);
 	};
 	
 	this.getEvents = function(input, callback) {
 		console.log("Getting task (id: %s) events from server", input.taskId);
-		return $resource("/sharetask/api/workspace/"+input.workspaceId+"/task/"+input.taskId+"/event", {}, {query: {method: "GET", isArray: true}}).query(callback);
+		//return $resource("/sharetask/api/workspace/"+input.workspaceId+"/task/"+input.taskId+"/event", {}, {query: {method: "GET", isArray: true}}).query(callback);
+		return $http.get("/sharetask/api/workspace/"+input.workspaceId+"/task/"+input.taskId+"/event", {}).success(success).error(error);
 	};
 });
 
@@ -106,7 +116,29 @@ shareTaskApp.service('Logger', function($log) {
 	};
 });
 
-shareTaskApp.service('Utils', function($resource) {
+shareTaskApp.service('Event', ['$rootScope', '$location', 'LocalStorage', function($rootScope, $location, LocalStorage) {
+	
+	this.logout = function() {
+		console.log("Logout user: %s", $rootScope.loggedUser.username);
+		$rootScope.loggedUser = {};
+		LocalStorage.remove('logged-user');
+		$location.path("/");
+	};
+}]);
+
+shareTaskApp.service('ErrorHandling', ['Event', function(Event) {
+	
+	this.handle = function(data, status) {
+		console.log("Handle error! data: %o, status: %o", data, status);
+		if (status == 403) {
+			// logout user
+			Event.logout();
+		}
+	};
+}]);
+
+
+shareTaskApp.service('Utils', function($resource, $rootScope) {
 	
 	this.isCookieEnabled = function() {
 		console.log("isCookieEnabled called");
