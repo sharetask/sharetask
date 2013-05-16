@@ -100,7 +100,7 @@ public class Task extends BaseEntity implements Serializable {
 	private Date dueDate;
 	
 	@Getter @Setter
-	@ManyToOne(fetch = FetchType.EAGER, optional = false)
+	@ManyToOne(fetch = FetchType.EAGER, optional = true)
 	@JoinColumn(name = "ASSIGNEE_USER_NAME")
 	private User assignee;
 	

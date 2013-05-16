@@ -67,7 +67,7 @@ public class TaskControllerIT extends IntegrationTest {
         //then
         Assert.assertEquals(HttpStatus.OK.value(), response.getStatusLine().getStatusCode());
         String responseData = EntityUtils.toString(response.getEntity());
-        Assert.assertTrue(responseData.contains("\"message\":\"Comment message 1\""));
+        Assert.assertTrue(responseData.contains("\"message\":\"Vivamus diam "));
     }
     
     @Test
