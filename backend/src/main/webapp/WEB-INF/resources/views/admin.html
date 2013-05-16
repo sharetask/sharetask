@@ -63,17 +63,19 @@
 						</ul>
 						<div class="tabbable">
 							<div class="tab-content">
+								<!-- workspace update form -->
 								<div class="tab-pane active" id="workspaceData">
 									<legend>{{selectedWorkspace.title}}</legend>
 									<label>Name</label>
-									<input id="workspaceName" type="text" placeholder="type workspace name..." value="{{selectedWorkspace.title}}" />
+									<input class="span4" type="text" placeholder="type workspace name..." ng-model="selectedWorkspace.title" />
 									<label>Description</label>
-									<textarea id="workspaceDescription" rows="3" placeholder="type workspace description...">{{selectedWorkspace.description}}</textarea>
+									<textarea class="span4" rows="3" placeholder="type workspace description..." ng-model="selectedWorkspace.description"></textarea>
 									<label>Owner</label>
-									<input id="workspaceOwner" type="text" placeholder="type owner name..." value="{{selectedWorkspace.owner.name}} {{selectedWorkspace.owner.surName}}" />
+									<input type="text" placeholder="type owner name..." value="{{selectedWorkspace.owner.name}} {{selectedWorkspace.owner.surName}}" disabled="disabled" />
 									<br />
-									<button class="btn btn-inverse">Save</button>
+									<button class="btn btn-inverse" ng-click="updateWorkspace()">Save</button>
 								</div>
+								<!-- workspace members -->
 								<div class="tab-pane" id="workspaceMembers">
 									<legend>Members</legend>
 									<p><button class="btn btn-inverse" ng-click="setEditMode('WORKSPACE-INVITE-MEMBER')"><i class="icon-plus icon-white"></i> Invite a member</button></p>

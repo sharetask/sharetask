@@ -220,6 +220,11 @@ body {margin:0;padding:0;-webkit-text-size-adjust:100%;}
 .caret-left {display:inline-block;width:0;height:0;vertical-align:top;content:"";border-right: 6px solid #1763A6;border-top:6px solid transparent;border-bottom:6px solid transparent;margin-top:5px;margin-left:2px;}
 .caret-right {display:inline-block;width:0;height:0;vertical-align:top;content:"";border-left: 6px solid #1763A6;border-top:6px solid transparent;border-bottom:6px solid transparent;margin-top:5px;margin-left:2px;}
 
+.notice {margin:10px 0;margin-right:10%;padding:10px;background:#1763A6;color:#fff;}
+.notice.author {margin-left:10%;margin-right:0;}
+.notice .header {padding-bottom:5px;}
+.notice .header:after {clear:both;}
+.notice .body {font-size:90%;}
 
 .adminLeftPane {top:36px;bottom:0;width:140px;overflow:visible;position:absolute;background:#f5f5f5;}
 .adminLeftPaneContent {height:100%;border-right:3px solid #ddd;overflow-y:auto;-webkit-overflow-scrolling:touch;}

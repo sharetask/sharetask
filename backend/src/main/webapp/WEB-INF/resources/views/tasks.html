@@ -168,7 +168,7 @@
 												<div class="span8">
 													<div class="tag" ng-repeat="tag in task.tags"><span class="text" ng-class="{'selected':tag == filter.tag}">{{tag}}</span><span class="remove cursor-pointer" ng-click="removeTag(task.id, tag)" stop-event="click">x</span></div>
 												</div>
-												<div class="span4" style="text-align:right;"><i class="icon-comment" ng-class="{'icon-white':task.id == selectedTask.id}"></i> {{task.comments}}</div>
+												<div class="span4" style="text-align:right;"><i class="icon-comment" ng-class="{'icon-white':task.id == selectedTask.id}"></i> {{task.commentsCount}}</div>
 											</div>
 										</div>
 									</div>
@@ -257,8 +257,17 @@
 							</div>
 						</div>
 						<!-- task comments -->
-						<div style="margin-top:5px;padding:5px;border:1px solid #ddd;">
-							tady budou komentáře
+						<div class="notice" ng-repeat="comment in selectedTask.comments" ng-class="{'author':comment.createdBy == selectedTask.createdBy}">
+							<div class="row-full">
+								<div class="span2"></div>
+								<div class="span10">
+									<div class="row-full header">
+										<div class="pull-left">{{comment.createdBy}}</div>
+										<div class="pull-right"><small>{{comment.createdOn | date:'medium'}}</small></div>
+									</div>
+									<div class="row-full body">{{comment.message}}</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>

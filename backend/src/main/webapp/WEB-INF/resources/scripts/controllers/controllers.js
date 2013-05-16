@@ -278,6 +278,18 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 			});
 			$scope.selectedTask = tasks[0];
 			console.log("Selected task: %o", $scope.selectedTask);
+			// get task comments
+			Task.getComments({workspaceId: $scope.selectedWorkspace.id, taskId: $scope.selectedTask.id}, function(comments) {
+				console.log("Loaded task comments from server: %o", comments);
+				$scope.selectedTask.comments = comments;
+			}, function(response) {
+				console.log("error response: %o", response);
+				if (response.status == 403) {
+					$scope.logout();
+				}
+			});
+			
+			
 			/*
 			$scope.selectedTask = Task.findById({id: taskId}, function(data) {
 					console.log("Task.findById: %o", data);
@@ -574,6 +586,19 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 					$scope.setEditMode('');
 				}, function(data, status) {
 					console.log("Workspace create error! data: %o, status: %o", data, status);
+				});
+		};
+		
+		/**
+		 * Update workspace.
+		 * Workspace data are stored to server.
+		 */
+		$scope.updateWorkspace = function() {
+			console.log("Update workspace (workspace: %o)", $scope.selectedWorkspace);
+			Workspace.update({workspace: $scope.selectedWorkspace}, function(data, status) {
+					console.log("Workspace update success! data: %o, status: %o", data, status);
+				}, function(data, status) {
+					console.log("Workspace update error! data: %o, status: %o", data, status);
 				});
 		};
 		
