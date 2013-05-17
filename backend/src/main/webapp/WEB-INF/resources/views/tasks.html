@@ -224,7 +224,7 @@
 								</div>
 							</div>
 						</div>
-						<p>by {{selectedTask.createdBy.name}}</p>
+						<p>by {{selectedTask.createdBy.name}} {{selectedTask.createdBy.surName}}</p>
 						<!-- task created on, priority, due date -->
 						<div style="margin-top:5px;">
 							<span class="label label-success" style="background:#656565;">Created on<br /><br /><strong>{{selectedTask.createdOn | date:'mediumDate'}}</strong></span>
@@ -262,7 +262,7 @@
 								<div class="span2"></div>
 								<div class="span10">
 									<div class="row-full header">
-										<div class="pull-left">{{comment.createdBy}}</div>
+										<div class="pull-left">{{comment.createdBy.name}} {{comment.createdBy.surName}}</div>
 										<div class="pull-right"><small>{{comment.createdOn | date:'medium'}}</small></div>
 									</div>
 									<div class="row-full body">{{comment.message}}</div>
