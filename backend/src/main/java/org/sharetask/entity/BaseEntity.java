@@ -59,14 +59,12 @@ public abstract class BaseEntity {
 	@PrePersist
 	private void onCreate() {
 		this.updatedOn = this.createdOn = new Date();
-		// TODO fix user name 
 		this.updatedBy = this.createdBy =  SecurityContextHolder.getContext().getAuthentication().getName();
 	}
 
 	@PreUpdate
 	private void onUpdate() {
 		this.updatedOn = new Date();
-		// TODO fix user name 
 		this.updatedBy = SecurityContextHolder.getContext().getAuthentication().getName();;
 	}
 }

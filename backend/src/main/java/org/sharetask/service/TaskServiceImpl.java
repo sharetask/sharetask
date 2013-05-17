@@ -23,7 +23,6 @@ import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.persistence.EntityNotFoundException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -71,13 +70,7 @@ public class TaskServiceImpl implements TaskService {
 	@Override
 	@Transactional
 	public TaskDTO createTask(final Long workspaceId, final TaskDTO task) {
-		// sanity check if exist workspace
-		final Workspace workspace = workspaceRepository.findOne(workspaceId);
-		if (workspace == null) {
-			log.error("Workspace with id: {} doesn't exists.", workspaceId);
-			throw new EntityNotFoundException("Workspace entity doesn't exists for id: " + workspaceId);
-		}
-		
+		final Workspace workspace = workspaceRepository.read(workspaceId);
 		Task taskEntity = DTOConverter.convert(task, Task.class);
 		taskEntity.setWorkspace(workspace);
 		taskEntity = taskRepository.save(taskEntity);
@@ -90,13 +83,7 @@ public class TaskServiceImpl implements TaskService {
 	@Override
 	@Transactional
 	public TaskDTO addComment(final Long taskId, final String message) {
-		// sanity check if exist workspace
-		final Task task = taskRepository.findOne(taskId);
-		if (task == null) {
-			log.error("Task with id: {} doesn't exists.", taskId);
-			throw new EntityNotFoundException("Task entity doesn't exists for id: " + taskId);
-		}
-		
+		final Task task = taskRepository.read(taskId);
 		task.addComment(new Comment(message));
 		taskRepository.save(task);
 		return DTOConverter.convert(task, TaskDTO.class);
@@ -159,13 +146,9 @@ public class TaskServiceImpl implements TaskService {
 	 */
 	@Override
 	public void forwardTask(Long taskId, String assignee) {
-		final Task task = taskRepository.findOne(taskId);
-		if (task == null) {
-			log.error("Task with id: {} doesn't exists.", taskId);
-			throw new EntityNotFoundException("Task entity doesn't exists for id: " + taskId);
-		}
+		final Task task = taskRepository.read(taskId);
 
-		final User assigneeUser = userRepository.findOne(assignee);
+		final User assigneeUser = userRepository.read(assignee);
 		if (task.getWorkspace().getMembers().contains(assigneeUser)) {
 			log.debug("Added user {} is member of workspace.", assigneeUser.getUsername());
 			task.setAssignee(assigneeUser);
@@ -180,11 +163,7 @@ public class TaskServiceImpl implements TaskService {
 	 */
 	@Override
 	public List<CommentDTO> getComments(final Long taskId) {
-		final Task task = taskRepository.findOne(taskId);
-		if (task == null) {
-			log.error("Task with id: {} doesn't exists.", taskId);
-			throw new EntityNotFoundException("Task entity doesn't exists for id: " + taskId);
-		}
+		final Task task = taskRepository.read(taskId);
 		return DTOConverter.convertList(task.getComments(), CommentDTO.class);
 	}
 
@@ -193,11 +172,7 @@ public class TaskServiceImpl implements TaskService {
 	 */
 	@Override
 	public List<EventDTO> getEvents(final Long taskId) {
-		final Task task = taskRepository.findOne(taskId);
-		if (task == null) {
-			log.error("Task with id: {} doesn't exists.", taskId);
-			throw new EntityNotFoundException("Task entity doesn't exists for id: " + taskId);
-		}
+		final Task task = taskRepository.read(taskId);
 		return DTOConverter.convertList(task.getEvents(), EventDTO.class);
 	}
 }

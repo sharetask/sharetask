@@ -19,13 +19,13 @@
 package org.sharetask.repository;
 
 import org.sharetask.entity.User;
-import org.springframework.data.repository.CrudRepository;
+import org.sharetask.repository.base.BaseJpaRepository;
 
 /**
  * @author Michal Bocek
  * @since 1.0.0
  */
-public interface UserRepository extends CrudRepository<User, String> {
+public interface UserRepository extends BaseJpaRepository<User, String> {
 	
 	/**
 	 * Find user by user name.

@@ -24,13 +24,13 @@ import java.util.List;
 import org.sharetask.entity.Task;
 import org.sharetask.entity.Task.PriorityType;
 import org.sharetask.entity.Task.StateType;
-import org.springframework.data.repository.CrudRepository;
+import org.sharetask.repository.base.BaseJpaRepository;
 
 /**
  * @author Michal Bocek
  * @since 1.0.0
  */
-public interface TaskRepository extends CrudRepository<Task, Long>, TaskRepositoryCustom {
+public interface TaskRepository extends BaseJpaRepository<Task, Long>, TaskRepositoryCustom {
 
 	List<Task> findByWorkspaceId(Long workspaceId);
 	

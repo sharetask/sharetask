@@ -16,14 +16,24 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.sharetask.repository;
+package org.sharetask.repository.base;
 
-import org.sharetask.entity.Workspace;
-import org.sharetask.repository.base.BaseJpaRepository;
+import java.io.Serializable;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.NoRepositoryBean;
 
 /**
+ * Interface for base repository.
  * @author Michal Bocek
  * @since 1.0.0
  */
-public interface WorkspaceRepository extends BaseJpaRepository<Workspace, Long>, WorkspaceRepositoryCustom {
+@NoRepositoryBean
+public interface BaseJpaRepository<T, ID extends Serializable> extends JpaRepository<T, ID> {
+
+	/**
+	 * Read entity. When entity doesn't exists throw exception EntityNotFound.
+	 * @param id
+	 */
+	T read(ID id);
 }

@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.persistence.EntityNotFoundException;
 
 import org.sharetask.api.WorkspaceQueryType;
 import org.sharetask.api.WorkspaceService;
@@ -65,10 +64,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 	@Override
 	@Transactional
 	public WorkspaceDTO updateWorkspace(final WorkspaceDTO workspace) {
-		Workspace workspaceEntity = workspaceRepository.findOne(workspace.getId());
-		if (workspaceEntity == null) {
-			throw new EntityNotFoundException("Workspace entity doesn't exists for id: " + workspace.getId());
-		}
+		Workspace workspaceEntity = workspaceRepository.read(workspace.getId());
 		DTOConverter.convert(workspace, workspaceEntity);
 		workspaceEntity = workspaceRepository.save(workspaceEntity);
 		return DTOConverter.convert(workspaceEntity, WorkspaceDTO.class);
@@ -77,17 +73,8 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 	@Override
 	@Transactional
 	public void addMember(final Long workspaceId, final String username) {
-		// sanity check if exist specified user
-		final User user = userRepository.findOne(username);
-		if (user == null) {
-			throw new EntityNotFoundException("User entity doesn't exists for id: " + username);
-		}
-		
-		// sanity check if exist workspace
-		final Workspace workspace = workspaceRepository.findOne(workspaceId);
-		if (workspace == null) {
-			throw new EntityNotFoundException("Workspace entity doesn't exists for id: " + workspaceId);
-		}
+		final User user = userRepository.read(username);
+		final Workspace workspace = workspaceRepository.read(workspaceId);
 		
 		// add member to workspace
 		if (!workspace.getMembers().contains(user)) {
@@ -99,17 +86,8 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 	@Override
 	@Transactional
 	public void removeMember(final Long workspaceId, final String username) {
-		// sanity check if exist specified user
-		final User user = userRepository.findOne(username);
-		if (user == null) {
-			throw new EntityNotFoundException("User entity doesn't exists for id: " + username);
-		}
-		
-		// sanity check if exist workspace
-		final Workspace workspace = workspaceRepository.findOne(workspaceId);
-		if (workspace == null) {
-			throw new EntityNotFoundException("Workspace entity doesn't exists for id: " + workspaceId);
-		}
+		final User user = userRepository.read(username);
+		final Workspace workspace = workspaceRepository.read(workspaceId);
 		
 		// add member to workspace
 		if (workspace.getMembers().contains(user)) {
