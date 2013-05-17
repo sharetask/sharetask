@@ -21,7 +21,9 @@ package org.sharetask.utility.converter;
 import org.dozer.CustomConverter;
 import org.dozer.MappingException;
 import org.sharetask.api.dto.EventDTO;
+import org.sharetask.api.dto.UserDTO;
 import org.sharetask.entity.Event;
+import org.sharetask.utility.DTOConverter;
 
 /**
  * @author Michal Bocek
@@ -48,7 +50,7 @@ public class EventConverter implements CustomConverter {
 
 	private EventDTO convert(final Event source) {
 		final EventDTO eventDTO = new EventDTO();
-		eventDTO.setCreatedBy(source.getCreatedBy());
+		eventDTO.setCreatedBy(DTOConverter.convert(source.getCreatedBy(), UserDTO.class));
 		eventDTO.setCreatedOn(source.getCreatedOn());
 		eventDTO.setMessage(source.getType().name());
 		return eventDTO;

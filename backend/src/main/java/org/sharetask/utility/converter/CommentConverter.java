@@ -21,7 +21,9 @@ package org.sharetask.utility.converter;
 import org.dozer.CustomConverter;
 import org.dozer.MappingException;
 import org.sharetask.api.dto.CommentDTO;
+import org.sharetask.api.dto.UserDTO;
 import org.sharetask.entity.Comment;
+import org.sharetask.utility.DTOConverter;
 
 /**
  * @author Michal Bocek
@@ -48,7 +50,7 @@ public class CommentConverter implements CustomConverter {
 
 	private CommentDTO convert(final Comment source) {
 		final CommentDTO commentDTO = new CommentDTO();
-		commentDTO.setCreatedBy(source.getCreatedBy());
+		commentDTO.setCreatedBy(DTOConverter.convert(source.getCreatedBy(), UserDTO.class));
 		commentDTO.setCreatedOn(source.getCreatedOn());
 		commentDTO.setMessage(source.getMessage());
 		return commentDTO;

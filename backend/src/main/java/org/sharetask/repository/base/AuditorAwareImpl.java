@@ -16,64 +16,29 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.sharetask.api.dto;
+package org.sharetask.repository.base;
 
-import java.util.Date;
-import java.util.List;
+import javax.inject.Inject;
 
-import javax.validation.constraints.NotNull;
-
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import org.sharetask.entity.User;
+import org.sharetask.repository.UserRepository;
+import org.springframework.data.domain.AuditorAware;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  * @author Michal Bocek
  * @since 1.0.0
  */
-@ToString
-public class TaskDTO {
+public class AuditorAwareImpl implements AuditorAware<User>{
 
-	@Getter @Setter
-	private Long id;
+	@Inject
+	private UserRepository userRepository;
 
-	@NotNull
-	@Getter	@Setter
-	private String title;
+	@Override
+	public User getCurrentAuditor() {
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		User user = userRepository.read(username);
+		return user;
+	}
 
-	@Getter	@Setter
-	private String description;
-
-	@Getter	@Setter
-	private UserDTO createdBy;
-
-	@Getter	@Setter
-	private Date createdOn;
-
-	@Getter	@Setter
-	private UserDTO updatedBy;
-
-	@Getter	@Setter
-	private Date updatedOn;
-
-	@Getter	@Setter
-	private Date dueDate;
-
-	@Getter	@Setter
-	private String priority;
-
-	@Getter	@Setter
-	private List<String> tags;
-
-	@Getter	@Setter
-	private String state;
-	
-	@Getter	@Setter
-	private UserDTO assignee;
-
-	@Getter @Setter
-	private Integer eventsCount;
-	
-	@Getter @Setter
-	private Integer commentsCount;
 }

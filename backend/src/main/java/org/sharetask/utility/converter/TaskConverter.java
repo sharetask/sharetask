@@ -58,9 +58,9 @@ public class TaskConverter implements CustomConverter {
 		taskDTO.setId(source.getId());
 		taskDTO.setTitle(source.getTitle());
 		taskDTO.setDescription(source.getDescription());
-		taskDTO.setCreatedBy(source.getCreatedBy());
+		taskDTO.setCreatedBy(DTOConverter.convert(source.getCreatedBy(), UserDTO.class));
 		taskDTO.setCreatedOn(source.getCreatedOn());
-		taskDTO.setUpdatedBy(source.getUpdatedBy());
+		taskDTO.setUpdatedBy(DTOConverter.convert(source.getUpdatedBy(), UserDTO.class));
 		taskDTO.setUpdatedOn(source.getUpdatedOn());
 		taskDTO.setDueDate(source.getDueDate());
 		taskDTO.setPriority(source.getPriority().name());

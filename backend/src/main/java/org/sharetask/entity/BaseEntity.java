@@ -20,51 +20,35 @@ package org.sharetask.entity;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.springframework.security.core.context.SecurityContextHolder;
-
 import lombok.Getter;
+
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 
 /**
  * @author Michal Bocek
  * @since 1.0.0
  */
 @MappedSuperclass
-public abstract class BaseEntity {
+public abstract class BaseEntity extends BaseImmutableEntity {
 
 	@Getter
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "CREATED_ON", nullable = false)
-	private Date createdOn;
-	
-	@Getter
-	@Column(name = "CREATED_BY", nullable = false)
-	private String createdBy; 
-
-	@Getter
+	@LastModifiedDate
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "UPDATED_ON", nullable = false)
 	private Date updatedOn;
 
 	@Getter
-	@Column(name = "UPDATED_BY", nullable = false)
-	private String updatedBy; 
-
-	@PrePersist
-	private void onCreate() {
-		this.updatedOn = this.createdOn = new Date();
-		this.updatedBy = this.createdBy =  SecurityContextHolder.getContext().getAuthentication().getName();
-	}
-
-	@PreUpdate
-	private void onUpdate() {
-		this.updatedOn = new Date();
-		this.updatedBy = SecurityContextHolder.getContext().getAuthentication().getName();;
-	}
+	@LastModifiedBy
+	@ManyToOne(cascade = { CascadeType.REFRESH }, optional = false)
+	@JoinColumn(name = "UPDATED_BY")
+	private User updatedBy; 
 }

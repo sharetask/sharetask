@@ -21,7 +21,6 @@ package org.sharetask.utility.converter;
 import org.dozer.CustomConverter;
 import org.dozer.MappingException;
 import org.sharetask.api.dto.UserDTO;
-import org.sharetask.entity.Role;
 import org.sharetask.entity.User;
 
 /**
@@ -51,14 +50,14 @@ public class UserConverter implements CustomConverter {
 
 	private UserDTO convert(final User source) {
 		final UserDTO userDTO = new UserDTO();
+		userDTO.setUsername(source.getUsername());
 		userDTO.setEnabled(source.isEnabled());
 		userDTO.setName(source.getName());
 		userDTO.setSurName(source.getSurName());
-		userDTO.setPassword(source.getPassword());
-		userDTO.setUsername(source.getUsername());
-		for (Role role : source.getRoles()) {
-			userDTO.addRole(role);
-		}
+		//userDTO.setPassword(source.getPassword());
+		//for (Role role : source.getRoles()) {
+		//	userDTO.addRole(role);
+		//}
 		return userDTO;
 	}
 

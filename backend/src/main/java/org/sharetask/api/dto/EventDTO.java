@@ -32,7 +32,7 @@ import lombok.ToString;
 public class EventDTO {
 
 	@Getter	@Setter
-	private String createdBy;
+	private UserDTO createdBy;
 
 	@Getter	@Setter
 	private Date createdOn;

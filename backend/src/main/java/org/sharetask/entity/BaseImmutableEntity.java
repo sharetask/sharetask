@@ -20,15 +20,18 @@ package org.sharetask.entity;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.PrePersist;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.springframework.security.core.context.SecurityContextHolder;
-
 import lombok.Getter;
+
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
 
 /**
  * @author Michal Bocek
@@ -38,17 +41,14 @@ import lombok.Getter;
 public abstract class BaseImmutableEntity {
 
 	@Getter
+	@CreatedDate
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "CREATED_ON", nullable = false)
 	private Date createdOn;
-	
-	@Getter
-	@Column(name = "CREATED_BY", nullable = false)
-	private String createdBy; 
 
-	@PrePersist
-	private void onCreate() {
-		this.createdOn = new Date();
-		this.createdBy = SecurityContextHolder.getContext().getAuthentication().getName();
-	}
+	@Getter
+	@CreatedBy
+	@ManyToOne(cascade = { CascadeType.REFRESH }, optional = false)
+	@JoinColumn(name = "CREATED_BY")
+	private User createdBy; 
 }
