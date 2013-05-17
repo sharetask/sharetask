@@ -54,6 +54,10 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 	@Transactional
 	public WorkspaceDTO createWorkspace(final WorkspaceDTO workspace) {
 		Workspace workspaceEntity = DTOConverter.convert(workspace, Workspace.class);
+		// load owner
+		User owner = userRepository.findOne(workspace.getOwner().getUsername());
+		workspaceEntity.setOwner(owner);
+		// store workspace
 		workspaceEntity = workspaceRepository.save(workspaceEntity);
 		return DTOConverter.convert(workspaceEntity, WorkspaceDTO.class);
 	}

@@ -18,8 +18,6 @@
  */
 package org.sharetask.service;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -64,6 +62,8 @@ public class WorkspaceServiceTest extends DbUnitTest {
 		Assert.assertThat(dto.getTitle(), CoreMatchers.is("Test"));
 		Assert.assertThat(dto.getDescription(), CoreMatchers.nullValue());
 		Assert.assertThat(dto.getOwner().getUsername(), CoreMatchers.is("test1@test.com"));
+		Assert.assertThat(dto.getOwner().getName(), CoreMatchers.is("Test1"));
+		Assert.assertThat(dto.getOwner().getSurName(), CoreMatchers.is("Test"));
 	}
 	
 	/**
