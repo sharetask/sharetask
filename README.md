@@ -7,5 +7,5 @@ ShareTask
 Linux:
 >    mvn clean install; mvn -pl backend jetty:run
 
-Windows>
+Windows:
 >    mvn clean install & mvn -pl backend jetty:run
