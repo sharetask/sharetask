@@ -21,7 +21,7 @@ package org.sharetask.utility.converter;
 import org.dozer.CustomConverter;
 import org.dozer.MappingException;
 import org.sharetask.api.dto.TaskDTO;
-import org.sharetask.api.dto.UserDTO;
+import org.sharetask.api.dto.UserInfoDTO;
 import org.sharetask.entity.Task;
 import org.sharetask.entity.Task.PriorityType;
 import org.sharetask.entity.User;
@@ -58,9 +58,9 @@ public class TaskConverter implements CustomConverter {
 		taskDTO.setId(source.getId());
 		taskDTO.setTitle(source.getTitle());
 		taskDTO.setDescription(source.getDescription());
-		taskDTO.setCreatedBy(DTOConverter.convert(source.getCreatedBy(), UserDTO.class));
+		taskDTO.setCreatedBy(DTOConverter.convert(source.getCreatedBy(), UserInfoDTO.class));
 		taskDTO.setCreatedOn(source.getCreatedOn());
-		taskDTO.setUpdatedBy(DTOConverter.convert(source.getUpdatedBy(), UserDTO.class));
+		taskDTO.setUpdatedBy(DTOConverter.convert(source.getUpdatedBy(), UserInfoDTO.class));
 		taskDTO.setUpdatedOn(source.getUpdatedOn());
 		taskDTO.setDueDate(source.getDueDate());
 		taskDTO.setPriority(source.getPriority().name());
@@ -68,7 +68,7 @@ public class TaskConverter implements CustomConverter {
 		taskDTO.setState(source.getState().name());
 		if (source.getAssignee() != null) {
 			final User assignee = source.getAssignee();
-			taskDTO.setAssignee(DTOConverter.convert(assignee, UserDTO.class));
+			taskDTO.setAssignee(DTOConverter.convert(assignee, UserInfoDTO.class));
 		}
 		taskDTO.setEventsCount(source.getEvents().size());
 		taskDTO.setCommentsCount(source.getComments().size());
@@ -82,10 +82,6 @@ public class TaskConverter implements CustomConverter {
 		task.setDueDate(sourceDTO.getDueDate());
 		task.setPriority(PriorityType.valueOf(sourceDTO.getPriority()));
 		task.setTags(sourceDTO.getTags());
-		if (sourceDTO.getAssignee() != null) {
-			final UserDTO assignee = sourceDTO.getAssignee();
-			task.setAssignee(DTOConverter.convert(assignee, User.class));
-		}
 		return task;
 	}
 }

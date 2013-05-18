@@ -18,9 +18,7 @@
  */
 package org.sharetask.api.dto;
 
-import java.util.Collection;
-
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -31,22 +29,17 @@ import lombok.ToString;
  * @since 1.0.0
  */
 @ToString
-public class WorkspaceDTO {
+public class UserInfoDTO {
 
+	@Size(min = 6, max = 255)
 	@Getter @Setter
-	private Long id;
+	private String username;
 
-	@NotNull
-	@Getter	@Setter
-	private String title;
-
-	@Getter	@Setter
-	private String description;
-
-	@NotNull
-	@Getter	@Setter
-	private UserInfoDTO owner;
+	@Size(min = 1, max = 255)
+	@Getter @Setter
+	private String name;
 	
+	@Size(min = 1, max = 255)
 	@Getter @Setter
-	private Collection<UserDTO> members;
+	private String surName;
 }

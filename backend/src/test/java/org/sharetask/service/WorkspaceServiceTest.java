@@ -27,6 +27,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.sharetask.api.WorkspaceService;
 import org.sharetask.api.dto.UserDTO;
+import org.sharetask.api.dto.UserInfoDTO;
 import org.sharetask.api.dto.WorkspaceDTO;
 import org.sharetask.data.DbUnitTest;
 import org.sharetask.entity.Workspace;
@@ -55,7 +56,7 @@ public class WorkspaceServiceTest extends DbUnitTest {
 	public void testCreateWorkspace() {
 		WorkspaceDTO workspace = new WorkspaceDTO();
 		workspace.setTitle("Test");
-		UserDTO userDTO = new UserDTO();
+		UserInfoDTO userDTO = new UserInfoDTO();
 		userDTO.setUsername("test1@test.com");
 		workspace.setOwner(userDTO);
 		WorkspaceDTO dto = workspaceService.createWorkspace(workspace);

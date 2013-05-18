@@ -24,6 +24,7 @@ import java.util.Collection;
 import org.dozer.CustomConverter;
 import org.dozer.MappingException;
 import org.sharetask.api.dto.UserDTO;
+import org.sharetask.api.dto.UserInfoDTO;
 import org.sharetask.api.dto.WorkspaceDTO;
 import org.sharetask.entity.User;
 import org.sharetask.entity.Workspace;
@@ -61,7 +62,7 @@ public class WorkspaceConverter implements CustomConverter {
 		workspaceDTO.setTitle(source.getTitle());
 		workspaceDTO.setDescription(source.getDescription());
 		if (source.getOwner() != null) {
-			workspaceDTO.setOwner(DTOConverter.convert(source.getOwner(), UserDTO.class));
+			workspaceDTO.setOwner(DTOConverter.convert(source.getOwner(), UserInfoDTO.class));
 		}
 		if (source.getMembers() != null) {
 			final Collection<User> members = source.getMembers();
@@ -74,9 +75,6 @@ public class WorkspaceConverter implements CustomConverter {
 		final Workspace workspace = destination == null ? new Workspace() : destination;
 		workspace.setTitle(sourceDTO.getTitle());
 		workspace.setDescription(sourceDTO.getDescription());
-		if (sourceDTO.getOwner() != null) {
-			workspace.setOwner(new User(sourceDTO.getOwner().getUsername()));
-		}
 		return workspace;
 	}
 }

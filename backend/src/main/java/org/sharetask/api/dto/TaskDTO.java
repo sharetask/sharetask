@@ -45,13 +45,13 @@ public class TaskDTO {
 	private String description;
 
 	@Getter	@Setter
-	private UserDTO createdBy;
+	private UserInfoDTO createdBy;
 
 	@Getter	@Setter
 	private Date createdOn;
 
 	@Getter	@Setter
-	private UserDTO updatedBy;
+	private UserInfoDTO updatedBy;
 
 	@Getter	@Setter
 	private Date updatedOn;
@@ -69,7 +69,7 @@ public class TaskDTO {
 	private String state;
 	
 	@Getter	@Setter
-	private UserDTO assignee;
+	private UserInfoDTO assignee;
 
 	@Getter @Setter
 	private Integer eventsCount;
