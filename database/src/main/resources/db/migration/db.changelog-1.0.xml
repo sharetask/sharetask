@@ -35,6 +35,12 @@
 			<column name="PASSWORD" type="VARCHAR(128)" remarks="Encoded password">
 				<constraints nullable="false" />
 			</column>
+			<column name="CREATED_ON" type="DATE" remarks="Date when record was creaded">
+				<constraints nullable="false" />
+			</column>
+			<column name="UPDATED_ON" type="DATE" remarks="Date when record was updated">
+				<constraints nullable="false" />
+			</column>
 		</createTable>
 		
 		<addForeignKeyConstraint baseColumnNames="USER_NAME" baseTableName="USER_ROLE"

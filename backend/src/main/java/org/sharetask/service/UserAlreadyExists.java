@@ -16,16 +16,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.sharetask.api;
+package org.sharetask.service;
 
-import org.sharetask.api.dto.UserDTO;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.sharetask.api.Constants;
 
 /**
+ * Runtime exception for signalization of already existing user.
  * @author Michal Bocek
  * @since 1.0.0
  */
-public interface UserService extends UserDetailsService {
+public class UserAlreadyExists extends RuntimeException {
 
-	UserDTO create(final UserDTO userDTO);
+	private static final long serialVersionUID = Constants.VERSION;
 }

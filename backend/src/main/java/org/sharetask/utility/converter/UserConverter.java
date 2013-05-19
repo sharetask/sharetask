@@ -54,10 +54,8 @@ public class UserConverter implements CustomConverter {
 		userDTO.setEnabled(source.isEnabled());
 		userDTO.setName(source.getName());
 		userDTO.setSurName(source.getSurName());
-		//userDTO.setPassword(source.getPassword());
-		//for (Role role : source.getRoles()) {
-		//	userDTO.addRole(role);
-		//}
+		userDTO.setCreatedOn(source.getCreatedOn());
+		userDTO.setUpdatedOn(source.getUpdatedOn());
 		return userDTO;
 	}
 
@@ -68,7 +66,6 @@ public class UserConverter implements CustomConverter {
 		user.setPassword(sourceDTO.getPassword());
 		user.setSurName(sourceDTO.getSurName());
 		user.setUsername(sourceDTO.getUsername());
-		user.setRoles(sourceDTO.getRoles());
 		return user;
 	}
 }

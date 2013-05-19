@@ -25,7 +25,6 @@ import javax.inject.Inject;
 
 import lombok.extern.slf4j.Slf4j;
 
-import org.sharetask.api.UserAlreadyExists;
 import org.sharetask.api.UserService;
 import org.sharetask.api.dto.UserDTO;
 import org.sharetask.entity.Role;
@@ -102,7 +101,7 @@ public class UserServiceImpl implements UserService {
 	
 	@Transactional
 	@Override
-	public UserDTO create(final UserDTO userDTO) throws UserAlreadyExists {
+	public UserDTO create(final UserDTO userDTO) {
 		log.info("Registering user: {}", userDTO);
 		User user = DTOConverter.convert(userDTO, User.class);
 		

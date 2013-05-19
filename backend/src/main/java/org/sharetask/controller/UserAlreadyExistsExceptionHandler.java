@@ -16,14 +16,28 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.sharetask.api;
+package org.sharetask.controller;
+
+import org.sharetask.service.UserAlreadyExists;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
- * Checked exception for signalisation of already existing user.
  * @author Michal Bocek
  * @since 1.0.0
  */
-public class UserAlreadyExists extends Exception {
-
-	private static final long serialVersionUID = Constants.VERSION;
+@ControllerAdvice
+public class UserAlreadyExistsExceptionHandler {
+    
+    @ExceptionHandler
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ResponseBody
+	public String handlException(final UserAlreadyExists error) {
+    	// TODO parse exception
+		return "Bad request (UserAlreadyExists): " + error.getMessage();
+	}
+    
 }

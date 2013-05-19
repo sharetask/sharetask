@@ -20,6 +20,7 @@ package org.sharetask.api.dto;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import javax.validation.constraints.Size;
 
@@ -57,6 +58,12 @@ public class UserDTO {
 	
 	@Getter
 	private final Collection<Role> roles = new ArrayList<Role>();
+	
+	@Getter @Setter
+	private Date createdOn;
+	
+	@Getter @Setter
+	private Date updatedOn;
 	
 	public void addRole(final Role role) {
 		roles.add(role);

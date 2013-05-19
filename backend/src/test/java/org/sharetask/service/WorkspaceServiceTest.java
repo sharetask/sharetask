@@ -26,7 +26,6 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
 import org.sharetask.api.WorkspaceService;
-import org.sharetask.api.dto.UserDTO;
 import org.sharetask.api.dto.UserInfoDTO;
 import org.sharetask.api.dto.WorkspaceDTO;
 import org.sharetask.data.DbUnitTest;

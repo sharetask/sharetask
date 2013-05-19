@@ -22,6 +22,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -32,6 +33,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,6 +42,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 import org.sharetask.api.Constants;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 /**
  * @author Michal Bocek
@@ -85,6 +90,18 @@ public class User implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private Collection<Role> roles = new ArrayList<Role>();;
 	
+	@Getter
+	@CreatedDate
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "CREATED_ON", nullable = false)
+	private Date createdOn;
+	
+	@Getter
+	@LastModifiedDate
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "UPDATED_ON", nullable = false)
+	private Date updatedOn;
+
 	public User(String username) {
 		this.username = username;
 	}

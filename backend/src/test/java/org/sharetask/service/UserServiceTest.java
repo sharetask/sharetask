@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import javax.inject.Inject;
 
 import org.junit.Test;
-import org.sharetask.api.UserAlreadyExists;
 import org.sharetask.api.UserService;
 import org.sharetask.api.dto.UserDTO;
 import org.sharetask.data.DbUnitTest;

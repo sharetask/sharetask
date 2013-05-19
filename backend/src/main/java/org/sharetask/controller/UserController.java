@@ -25,6 +25,8 @@ import javax.servlet.http.HttpSession;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.sharetask.api.UserService;
+import org.sharetask.api.dto.UserDTO;
 import org.sharetask.controller.json.UserPassword;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -40,6 +42,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * @author Michal Bocek
@@ -59,6 +63,9 @@ public class UserController {
 	@Inject
 	private RememberMeServices rememberMeServices;
 
+	@Inject
+	private UserService userService;
+	
 	@RequestMapping(value = "/login/status", method = RequestMethod.GET)
 	public void login(HttpServletRequest request, HttpServletResponse response) {
 		int resultCode = HttpStatus.UNAUTHORIZED.value();
@@ -73,8 +80,10 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public void performLogin(@RequestBody final UserPassword login, HttpServletRequest request, HttpServletResponse response) {
-		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword());
+	public void performLogin(@RequestBody final UserPassword login, HttpServletRequest request, 
+			HttpServletResponse response) {
+		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(login.getUsername(), 
+				login.getPassword());
 		try {
 			Authentication auth = authenticationManager.authenticate(token);
 			SecurityContextHolder.getContext().setAuthentication(auth);
@@ -86,7 +95,6 @@ public class UserController {
 		}
 	}
 	
-
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public void performLogout(HttpServletRequest request, HttpServletResponse response) {
 		SecurityContextHolder.clearContext();
@@ -94,5 +102,11 @@ public class UserController {
 		if (session != null) {
 			session.invalidate();
 		}
+	}
+
+	@RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseStatus(value = HttpStatus.OK)
+	public @ResponseBody UserDTO create(@RequestBody final UserDTO user) {
+		return userService.create(user);
 	}
 }
