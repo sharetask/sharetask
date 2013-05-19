@@ -415,6 +415,10 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 		 */
 		$scope.changeTaskPriority = function() {
 			console.log("Change task priority (id: %s, priority: %s)", $scope.selectedTask.id, $scope.selectedTask.priority);
+			if ($scope.selectedTask.state == 'FINISHED') {
+				console.log("Task (id: %s) already completed", $scope.selectedTask.id);
+				return;
+			}
 			if ($scope.selectedTask.priority == 'LOW') { $scope.selectedTask.priority = 'MEDIUM'; }
 			else if ($scope.selectedTask.priority == 'MEDIUM') { $scope.selectedTask.priority = 'HIGH'; }
 			else if ($scope.selectedTask.priority == 'HIGH') { $scope.selectedTask.priority = 'LOW'; }
@@ -450,6 +454,10 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 		 */
 		$scope.forwardTask = function(user) {
 			console.log("Forward task (id: %s) to user (user: %o)", $scope.selectedTask.id, user);
+			if ($scope.selectedTask.state == 'FINISHED') {
+				console.log("Task (id: %s) already completed", $scope.selectedTask.id);
+				return;
+			}
 			Task.forward({workspaceId: $scope.selectedWorkspace.id, taskId: $scope.selectedTask.id, username: user.username}, function(data, status) {
 					console.log("Task forward success! data: %o, status: %o", data, status);
 					var task = $.grep($scope.tasks, function(e) {
@@ -483,6 +491,10 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 		 */
 		$scope.completeTask = function(bulk) {
 			console.log("Complete task (bulk: %s)", bulk);
+			if ($scope.selectedTask.state == 'FINISHED') {
+				console.log("Task (id: %s) already completed", $scope.selectedTask.id);
+				return;
+			}
 			if (!bulk) {
 				// complete selected task
 				console.log("Complete task (id: %s)", $scope.selectedTask.id);
@@ -534,6 +546,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 				});
 			}
 		};
+		
 		
 		// get logged user from local storage
 		$rootScope.loggedUser = LocalStorage.get('logged-user');

@@ -177,7 +177,7 @@ body {margin:0;padding:0;-webkit-text-size-adjust:100%;}
 #appFooter {height:40px;bottom:0;width:100%;overflow:visible;position:absolute;background:#9954bb;}
 .appFooterContent {color:#fff;padding-top:10px;}
 
-.panel-task-filter {top:72px;bottom:0;left:10px;width:130px;overflow:visible;position:absolute;background:#eee;}
+.panel-task-filter {top:72px;bottom:0;left:10px;width:130px;overflow:visible;position:absolute;background:#fff;}
 .panel-task-filter-inner {height:100%;border-right:3px solid #ddd;}
 .panel-task-filter-content {padding:5px;}
 .panel-task-filter.hide2 {width:0;}

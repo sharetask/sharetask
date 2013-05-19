@@ -184,8 +184,8 @@
 					<div class="panel-task-detail-content" ng-class="{'hidden':selectedTask == null}">
 						<!-- action buttons -->
 						<div class="task-detail-action">
-							<button class="btn btn-inverse" ng-click="setEditMode('COMPLETE-TASK')">Complete</button>
-							<button class="btn" ng-click="setEditMode('FORWARD-TASK')">Forward</button>
+							<button class="btn btn-inverse" ng-click="setEditMode('COMPLETE-TASK')" ng-class="{'hidden':selectedTask.state == 'FINISHED'}">Complete</button>
+							<button class="btn" ng-click="setEditMode('FORWARD-TASK')" ng-class="{'hidden':selectedTask.state == 'FINISHED'}">Forward</button>
 							<button class="btn" ng-click="setEditMode('DELETE-TASK')">Delete</button>
 						</div>
 						<!-- complete task -->
@@ -230,7 +230,7 @@
 							<span class="label label-success" style="background:#656565;">Created on<br /><br /><strong>{{selectedTask.createdOn | date:'mediumDate'}}</strong></span>
 							<span class="label cursor-pointer" ng-class="{'priority-low':selectedTask.priority == 'LOW','priority-medium':selectedTask.priority == 'MEDIUM','priority-high':selectedTask.priority == 'HIGH'}" ng-click="changeTaskPriority()">Priority<br /><br /><strong>{{selectedTask.priority}}</strong></span>
 							<span class="label label-warning cursor-pointer" style="background:#656565;" b-datepicker="{{dateOptions}}" ng-model="selectedTask.dueDate" data-date-format="MMM d, y" data-date="{{selectedTask.dueDate}}">Due date<br /><br /><strong>{{selectedTask.dueDate | date:'mediumDate'}}</strong></span>
-							
+							{{selectedTask.dueDate}}
 						</div>
 						<!-- task tags -->
 						<div style="margin-top:5px;">

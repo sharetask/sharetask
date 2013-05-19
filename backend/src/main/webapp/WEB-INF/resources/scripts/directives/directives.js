@@ -48,6 +48,7 @@ angular.module('shareTaskApp.directives', []).
 			require: '?ngModel',
 			restrict: 'A',
 			link: function($scope, element, attrs, controller) {
+				console.log("scope: %o, element: %o, attrs: %o, controller: %o", $scope, element, attrs, controller);
 				var updateModel;
 				updateModel = function(ev) {
 					element.datepicker('hide');
@@ -59,6 +60,7 @@ angular.module('shareTaskApp.directives', []).
 					});
 				};
 				if (controller != null) {
+					console.log("viewValue: %o", controller.$viewValue);
 					controller.$render = function() {
 						element.datepicker().data().datepicker.date = controller.$viewValue;
 						element.datepicker('setValue');
