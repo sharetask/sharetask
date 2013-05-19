@@ -111,6 +111,26 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 		});
 		*/
 		
+		$scope.keyPressed = function(e) {
+			if (e.target.tagName === 'BODY') {
+				console.log("key pressed: %o", e);
+				switch (e.which) {
+					case 110:
+						// key 'n' pressed
+						$scope.setEditMode('NEW-TASK');
+						break;
+					case 102:
+						// key 'f' pressed
+						$scope.setEditMode('FORWARD-TASK');
+						break;
+					case 80:
+						// key 'Shift+p' pressed
+						$scope.changeTaskPriority();
+						break;
+				}
+			}
+		};
+		
 		/**
 		 * Loading all workspaces from server.
 		 */
@@ -414,6 +434,9 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 		 * Task data are stored to server.
 		 */
 		$scope.changeTaskPriority = function() {
+			if ($scope.selectedTask == null) {
+				return;
+			}
 			console.log("Change task priority (id: %s, priority: %s)", $scope.selectedTask.id, $scope.selectedTask.priority);
 			if ($scope.selectedTask.state == 'FINISHED') {
 				console.log("Task (id: %s) already completed", $scope.selectedTask.id);
