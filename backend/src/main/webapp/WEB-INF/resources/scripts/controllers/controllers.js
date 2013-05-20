@@ -52,19 +52,6 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 					$scope.errorStatus = status;
 			});
 		};
-		
-		/**
-		 * Receive event 'EVENT_SET_ACTIVE_WORKSPACE' for setting active workspace.
-		 * After receiving of event all workspace tasks are loaded from server.
-		 */
-		$scope.$on('handleBroadcast', function(event, data) {
-			console.log("Received broadcast message 'EVENT_LOGOUT' (data: %o)", data);
-			console.log("Logout user: %s", $rootScope.loggedUser.username);
-			$rootScope.loggedUser = {};
-			LocalStorage.remove('logged-user');
-			$location.path("/");
-		});
-		
 	}])
 	.controller('AppCtrl', ['$scope', '$location', '$rootScope', '$filter', 'Workspace', 'Task', 'User', 'LocalStorage', 'ErrorHandling', function($scope, $location, $rootScope, $filter, Workspace, Task, User, LocalStorage, ErrorHandling) {
 		
@@ -82,10 +69,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 		 * User is redirected to login page.
 		 */
 		$scope.logout = function() {
-			console.log("Logout user: %s", $rootScope.loggedUser.username);
-			$rootScope.loggedUser = {};
-			LocalStorage.remove('logged-user');
-			$location.path("/");
+			User.logout();
 		};
 		
 		/**
@@ -111,6 +95,10 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 		});
 		*/
 		
+		/**
+		 * Keyboard shortcuts service logic
+		 * @param {object} e - key event.
+		 */
 		$scope.keyPressed = function(e) {
 			if (e.target.tagName === 'BODY') {
 				console.log("key pressed: %o", e);
@@ -228,27 +216,15 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 				$scope.setSelectedTask($scope.tasks[0].id);
 				// set tags
 				$scope.setTags();
-				/*
-				// parse tags
-				var taskTags = new Array();
-				angular.forEach($scope.tasks, function(task) {
-					if (!jQuery.isEmptyObject(task.tags)) {
-						angular.forEach(task.tags, function(tag) {
-							if (taskTags.indexOf(tag) == -1) {
-								taskTags.push(tag);
-							}
-						});
-					}
-				});
-				$scope.tags = taskTags;
-				console.log("Tags parsed for queue: %o", $scope.tags);
-				*/
 			}
 			else {
 				$scope.selectedTask = null;
 			}
 		};
 		
+		/**
+		 * Parsing tasks from selected queue and collects all tags
+		 */
 		$scope.setTags = function() {
 			var taskTags = new Array();
 			angular.forEach($scope.tasks, function(task) {
@@ -383,6 +359,23 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 		 */
 		$scope.removeTag = function(taskId, tag) {
 			console.log("Remove task tag, id: %s, tag: %s", taskId, tag);
+			// get task
+			var task = $.grep($scope.tasks, function(e) {
+				return e.id == taskId;
+			});
+			console.log("task: %o", task);
+			// remove tag from task
+			var newTags = new Array();
+			angular.forEach(task.tags, function(_tag) {
+				if (_tag != tag) {
+					newTags.push(_tag);
+				}
+			});
+			task.tags = newTags;
+			console.log("new tags: %o", task.tags);
+			
+			
+			
 		};
 		
 		/**

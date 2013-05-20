@@ -21,14 +21,23 @@
 /* Services */
 var shareTaskApp = angular.module('shareTaskApp.services', ['ngResource']);
 
-shareTaskApp.service('User', function($resource, $http) {
+
+shareTaskApp.service('User', ['$rootScope', '$location', 'LocalStorage', '$resource', '$http', function($rootScope, $location, LocalStorage, $resource, $http) {
 	
 	this.authenticate = function(user, success, error) {
 		console.log("Login user (user: %o)", user);
 		//return $http.post('/sharetask/api/user/login', {username: 'dev1@shareta.sk', password: 'password'}).success(success).error(error);
 		return $http.post('/sharetask/api/user/login', {username: user.username, password: user.password}).success(success).error(error);
 	};
-});
+	
+	this.logout = function() {
+		console.log("Logout user: %s", $rootScope.loggedUser.username);
+		$rootScope.loggedUser = {};
+		LocalStorage.remove('logged-user');
+		$location.path("/");
+	};
+}]);
+
 
 shareTaskApp.service('Workspace', function($resource, $http) {
 	
@@ -74,6 +83,7 @@ shareTaskApp.service('Workspace', function($resource, $http) {
 	};
 });
 
+
 shareTaskApp.service('Task', function($resource, $http) {
 	
 	this.create = function(input, success, error) {
@@ -109,6 +119,7 @@ shareTaskApp.service('Task', function($resource, $http) {
 	};
 });
 
+
 shareTaskApp.service('Logger', function($log) {
 	
 	this.debug = function() {
@@ -116,23 +127,14 @@ shareTaskApp.service('Logger', function($log) {
 	};
 });
 
-shareTaskApp.service('Event', ['$rootScope', '$location', 'LocalStorage', function($rootScope, $location, LocalStorage) {
-	
-	this.logout = function() {
-		console.log("Logout user: %s", $rootScope.loggedUser.username);
-		$rootScope.loggedUser = {};
-		LocalStorage.remove('logged-user');
-		$location.path("/");
-	};
-}]);
 
-shareTaskApp.service('ErrorHandling', ['Event', function(Event) {
+shareTaskApp.service('ErrorHandling', ['User', function(User) {
 	
 	this.handle = function(data, status) {
 		console.log("Handle error! data: %o, status: %o", data, status);
 		if (status == 403) {
 			// logout user
-			Event.logout();
+			User.logout();
 		}
 	};
 }]);
@@ -150,6 +152,7 @@ shareTaskApp.service('Utils', function($resource, $rootScope) {
 		return (cookieEnabled);
 	};
 });
+
 
 shareTaskApp.service('LocalStorage', function($resource) {
 	
