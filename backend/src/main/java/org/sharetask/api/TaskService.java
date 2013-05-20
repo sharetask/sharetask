@@ -41,7 +41,7 @@ public interface TaskService {
 	 * @param task
 	 * @return
 	 */
-	@NotNull TaskDTO createTask(@NotNull Long workspaceId, @Valid @NotNull TaskDTO task);
+	@NotNull TaskDTO create(@NotNull Long workspaceId, @Valid @NotNull TaskDTO task);
 	
 	/**
 	 * Add comment to specified task.
@@ -64,21 +64,21 @@ public interface TaskService {
 	 * @param task
 	 * @return
 	 */
-	@NotNull TaskDTO updateTask(@NotNull @Valid TaskDTO task);
+	@NotNull TaskDTO update(@NotNull @Valid TaskDTO task);
 	
 	/**
 	 * Complete task.
 	 * Set state to FINISH and add FINISHED event to events.
 	 * @param taskId
 	 */
-	void completeTask(@NotNull Long taskId);
+	void complete(@NotNull Long taskId);
 	
 	/**
 	 * Forward task to specified group.
 	 * @param taskId
 	 * @param assignee
 	 */
-	void forwardTask(@NotNull Long taskId, @NotNull String assignee);
+	void forward(@NotNull Long taskId, @NotNull String assignee);
 	
 	/**
 	 * Get all comments for task.

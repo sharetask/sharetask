@@ -20,7 +20,6 @@ package org.sharetask.service;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -67,7 +66,7 @@ public class TaskServiceTest extends DbUnitTest {
 		task.setDescription("description");
 		task.setDueDate(new Date());
 		task.setPriority("MEDIUM");
-		TaskDTO result = taskService.createTask(100L, task);
+		TaskDTO result = taskService.create(100L, task);
 		assertNotNull(result);
 		assertNotNull(result.getId());
 		assertThat(result.getTitle(), equalTo("title"));
@@ -92,7 +91,7 @@ public class TaskServiceTest extends DbUnitTest {
 		task.setTitle("title");
 		task.setDescription("description");
 		task.setPriority("MEDIUM");
-		TaskDTO result = taskService.createTask(100L, task);
+		TaskDTO result = taskService.create(100L, task);
 		assertNotNull(result);
 		assertNotNull(result.getId());
 		assertThat(result.getTitle(), equalTo("title"));
@@ -171,7 +170,7 @@ public class TaskServiceTest extends DbUnitTest {
 		String title = entity.getTitle();
 		TaskDTO taskDTO = DTOConverter.convert(entity, TaskDTO.class);
 		taskDTO.setTitle("new Title");
-		TaskDTO newTask = taskService.updateTask(taskDTO);
+		TaskDTO newTask = taskService.update(taskDTO);
 		assertThat(newTask.getTitle(), not(equalTo(title)));
 		assertThat(newTask.getTitle(), equalTo("new Title"));
 	}
@@ -181,7 +180,7 @@ public class TaskServiceTest extends DbUnitTest {
 	 */
 	@Test
 	public void testCompleteTask() {
-		taskService.completeTask(100L);
+		taskService.complete(100L);
 		Task task = taskRepository.findOne(100L);
 		assertThat(task.getState(), equalTo(StateType.FINISHED));
 		assertThat(task.getEvents().size(), equalTo(2));
@@ -192,7 +191,7 @@ public class TaskServiceTest extends DbUnitTest {
 	 */
 	@Test
 	public void testForwardTask() {
-		taskService.forwardTask(100L, "test3@test.com");
+		taskService.forward(100L, "test3@test.com");
 		Task task = taskRepository.findOne(100L);
 		Collection<Event> events = task.getEvents();
 		assertThat(events.toArray(new Event[events.size()])[events.size() - 1].getType(),

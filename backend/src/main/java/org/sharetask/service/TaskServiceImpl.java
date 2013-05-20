@@ -23,7 +23,6 @@ import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.validation.constraints.NotNull;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -48,6 +47,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
+ * Task service implementation.
  * @author Michal Bocek
  * @since 1.0.0
  */
@@ -66,11 +66,11 @@ public class TaskServiceImpl implements TaskService {
 	private WorkspaceRepository workspaceRepository;
 
 	/* (non-Javadoc)
-	 * @see org.sharetask.api.TaskService#createTask(org.sharetask.api.dto.TaskDTO)
+	 * @see org.sharetask.api.TaskService#create(org.sharetask.api.dto.TaskDTO)
 	 */
 	@Override
 	@Transactional
-	public TaskDTO createTask(final Long workspaceId, final TaskDTO task) {
+	public TaskDTO create(final Long workspaceId, final TaskDTO task) {
 		final Workspace workspace = workspaceRepository.read(workspaceId);
 		Task taskEntity = DTOConverter.convert(task, Task.class);
 		taskEntity.setWorkspace(workspace);
@@ -120,11 +120,11 @@ public class TaskServiceImpl implements TaskService {
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.sharetask.api.TaskService#updateTask(org.sharetask.api.dto.TaskDTO)
+	 * @see org.sharetask.api.TaskService#update(org.sharetask.api.dto.TaskDTO)
 	 */
 	@Override
 	@Transactional
-	public TaskDTO updateTask(TaskDTO task) {
+	public TaskDTO update(TaskDTO task) {
 		Task entity = taskRepository.findOne(task.getId());
 		DTOConverter.convert(task, entity);
 		entity = taskRepository.save(entity);
@@ -132,21 +132,21 @@ public class TaskServiceImpl implements TaskService {
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.sharetask.api.TaskService#completeTask(java.lang.Long)
+	 * @see org.sharetask.api.TaskService#complete(java.lang.Long)
 	 */
 	@Override
 	@Transactional
-	public void completeTask(Long taskId) {
+	public void complete(Long taskId) {
 		final Task entity = taskRepository.findOne(taskId);
 		entity.finish();
 		taskRepository.save(entity);
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.sharetask.api.TaskService#forwardTask(java.lang.Long, java.lang.String)
+	 * @see org.sharetask.api.TaskService#forward(java.lang.Long, java.lang.String)
 	 */
 	@Override
-	public void forwardTask(Long taskId, String assignee) {
+	public void forward(Long taskId, String assignee) {
 		final Task task = taskRepository.read(taskId);
 
 		final User assigneeUser = userRepository.read(assignee);

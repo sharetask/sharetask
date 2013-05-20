@@ -55,7 +55,7 @@ public class TaskController {
 	@ResponseStatus(value = HttpStatus.OK)
 	public @ResponseBody TaskDTO create(@PathVariable("workspaceId") final Long workspaceId, 
 	                                    @RequestBody final TaskDTO task) {
- 		return taskService.createTask(workspaceId, task);
+ 		return taskService.create(workspaceId, task);
 	}
 	
 	@RequestMapping(value = "/{taskId}",
@@ -100,7 +100,7 @@ public @ResponseBody List<EventDTO> getEvents(@PathVariable("taskId") final Long
 	                produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
 	public @ResponseBody TaskDTO update(@RequestBody final TaskDTO task) {
- 		return taskService.updateTask(task);
+ 		return taskService.update(task);
 	}
 
 	@RequestMapping(value = "/{taskId}/complete", 
@@ -108,7 +108,7 @@ public @ResponseBody List<EventDTO> getEvents(@PathVariable("taskId") final Long
 	                produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
 	public void complete(@PathVariable("taskId") final Long taskId) {
- 		taskService.completeTask(taskId);
+ 		taskService.complete(taskId);
 	}	
 
 	@RequestMapping(value = "/{taskId}/forward", 
@@ -116,6 +116,6 @@ public @ResponseBody List<EventDTO> getEvents(@PathVariable("taskId") final Long
 	                produces = MediaType.APPLICATION_JSON_VALUE)
 	public void forward(@PathVariable("taskId") final Long taskId,
 	                    @RequestBody final String assignee) {
- 		taskService.forwardTask(taskId, assignee);
+ 		taskService.forward(taskId, assignee);
 	}	
 }
