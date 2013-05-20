@@ -117,47 +117,47 @@ public class TaskServiceTest extends DbUnitTest {
 	}
 
 	/**
-	 * Test method for {@link org.sharetask.api.TaskService#findTaskByQueue(Long, org.sharetask.api.TaskQueue)}.
+	 * Test method for {@link org.sharetask.api.TaskService#findByQueue(Long, org.sharetask.api.TaskQueue)}.
 	 */
 	@Test
 	public void testFindTaskByQueueAllTasks() {
-		List<TaskDTO> tasks = taskService.findTaskByQueue(100L, TaskQueue.ALL);
+		List<TaskDTO> tasks = taskService.findByQueue(100L, TaskQueue.ALL);
 		assertThat(tasks.size(), equalTo(2));
 	}
 
 	/**
-	 * Test method for {@link org.sharetask.api.TaskService#findTaskByQueue(Long, org.sharetask.api.TaskQueue)}.
+	 * Test method for {@link org.sharetask.api.TaskService#findByQueue(Long, org.sharetask.api.TaskQueue)}.
 	 */
 	@Test
 	public void testFindTaskByQueueExpiredTasks() {
-		List<TaskDTO> tasks = taskService.findTaskByQueue(100L, TaskQueue.EXPIRED);
+		List<TaskDTO> tasks = taskService.findByQueue(100L, TaskQueue.EXPIRED);
 		assertThat(tasks.size(), equalTo(2));
 	}
 
 	/**
-	 * Test method for {@link org.sharetask.api.TaskService#findTaskByQueue(Long, org.sharetask.api.TaskQueue)}.
+	 * Test method for {@link org.sharetask.api.TaskService#findByQueue(Long, org.sharetask.api.TaskQueue)}.
 	 */
 	@Test
 	public void testFindTaskByQueueHighPriorityTasks() {
-		List<TaskDTO> tasks = taskService.findTaskByQueue(100L, TaskQueue.HIGH_PRIORITY);
+		List<TaskDTO> tasks = taskService.findByQueue(100L, TaskQueue.HIGH_PRIORITY);
 		assertThat(tasks.size(), equalTo(1));
 	}
 
 	/**
-	 * Test method for {@link org.sharetask.api.TaskService#findTaskByQueue(Long, org.sharetask.api.TaskQueue)}.
+	 * Test method for {@link org.sharetask.api.TaskService#findByQueue(Long, org.sharetask.api.TaskQueue)}.
 	 */
 	@Test
 	public void testFindTaskByQueueFinshedTasks() {
-		List<TaskDTO> tasks = taskService.findTaskByQueue(100L, TaskQueue.FINISHED);
+		List<TaskDTO> tasks = taskService.findByQueue(100L, TaskQueue.FINISHED);
 		assertThat(tasks.size(), equalTo(1));
 	}
 
 	/**
-	 * Test method for {@link org.sharetask.api.TaskService#findTaskByQueue(Long, org.sharetask.api.TaskQueue)}.
+	 * Test method for {@link org.sharetask.api.TaskService#findByQueue(Long, org.sharetask.api.TaskQueue)}.
 	 */
 	@Test
 	public void testFindTaskTodayTasks() {
-		List<TaskDTO> tasks = taskService.findTaskByQueue(100L, TaskQueue.TODAY);
+		List<TaskDTO> tasks = taskService.findByQueue(100L, TaskQueue.TODAY);
 		assertThat(tasks.size(), equalTo(0));
 	}
 

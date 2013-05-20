@@ -91,10 +91,10 @@ public class TaskServiceImpl implements TaskService {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.sharetask.api.TaskService#findTaskByQueue(java.lang.Long, org.sharetask.api.TaskQueue)
+	 * @see org.sharetask.api.TaskService#findByQueue(java.lang.Long, org.sharetask.api.TaskQueue)
 	 */
 	@Override
-	public List<TaskDTO> findTaskByQueue(final Long workspaceId, final TaskQueue taskQueue) {
+	public List<TaskDTO> findByQueue(final Long workspaceId, final TaskQueue taskQueue) {
 		List<Task> result;
 		switch (taskQueue) {
 			case ALL:

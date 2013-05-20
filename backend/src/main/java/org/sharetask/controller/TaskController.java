@@ -93,7 +93,7 @@ public @ResponseBody List<EventDTO> getEvents(@PathVariable("taskId") final Long
 	                produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody List<TaskDTO> findTaskByQueue(@PathVariable("workspaceId") final Long workspaceId, 
 	                                                   @RequestParam("taskQueue") final String taskQueue) {
- 		return taskService.findTaskByQueue(workspaceId, TaskQueue.valueOf(taskQueue));
+ 		return taskService.findByQueue(workspaceId, TaskQueue.valueOf(taskQueue));
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT, 

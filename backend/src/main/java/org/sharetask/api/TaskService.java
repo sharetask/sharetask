@@ -57,7 +57,7 @@ public interface TaskService {
 	 * @param taskQueue
 	 * @return
 	 */
-	@NotNull List<TaskDTO> findTaskByQueue(@NotNull Long workspaceId, @NotNull TaskQueue taskQueue);
+	@NotNull List<TaskDTO> findByQueue(@NotNull Long workspaceId, @NotNull TaskQueue taskQueue);
 	
 	/**
 	 * Update task.
