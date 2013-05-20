@@ -49,7 +49,7 @@ public class WorkspaceServiceTest extends DbUnitTest {
 	private UserRepository userRepository;
 
 	/**
-	 * Test method for {@link org.sharetask.api.WorkspaceService#createWorkspace(org.sharetask.entity.Workspace)}.
+	 * Test method for {@link org.sharetask.api.WorkspaceService#create(org.sharetask.entity.Workspace)}.
 	 */
 	@Test
 	public void testCreateWorkspace() {
@@ -58,7 +58,7 @@ public class WorkspaceServiceTest extends DbUnitTest {
 		UserInfoDTO userDTO = new UserInfoDTO();
 		userDTO.setUsername("test1@test.com");
 		workspace.setOwner(userDTO);
-		WorkspaceDTO dto = workspaceService.createWorkspace(workspace);
+		WorkspaceDTO dto = workspaceService.create(workspace);
 		Assert.assertThat(dto.getTitle(), CoreMatchers.is("Test"));
 		Assert.assertThat(dto.getDescription(), CoreMatchers.nullValue());
 		Assert.assertThat(dto.getOwner().getUsername(), CoreMatchers.is("test1@test.com"));
@@ -67,14 +67,14 @@ public class WorkspaceServiceTest extends DbUnitTest {
 	}
 	
 	/**
-	 * Test method for {@link org.sharetask.api.WorkspaceService#updateWorkspace(WorkspaceDTO)}.
+	 * Test method for {@link org.sharetask.api.WorkspaceService#update(WorkspaceDTO)}.
 	 */
 	@Test
 	public void testUpdateWorkspace() {
-		List<WorkspaceDTO> workspaces = workspaceService.findWorkspaceByOwner("test1@test.com");
+		List<WorkspaceDTO> workspaces = workspaceService.findByOwner("test1@test.com");
 		WorkspaceDTO workspace = workspaces.get(0);
 		workspace.setTitle("Test Title");
-		WorkspaceDTO dto = workspaceService.updateWorkspace(workspace);
+		WorkspaceDTO dto = workspaceService.update(workspace);
 		Assert.assertThat(dto.getTitle(), CoreMatchers.is("Test Title"));
 	}
 	
@@ -99,21 +99,21 @@ public class WorkspaceServiceTest extends DbUnitTest {
 	}
 	
 	/**
-	 * Test method for {@link org.sharetask.api.WorkspaceService#findWorkspaceByOwner(String)}.
+	 * Test method for {@link org.sharetask.api.WorkspaceService#findByOwner(String)}.
 	 */
 	@Test
 	public void testFindWorkspaceByOwner() {
-		List<WorkspaceDTO> workspaces = workspaceService.findWorkspaceByOwner("test1@test.com");
+		List<WorkspaceDTO> workspaces = workspaceService.findByOwner("test1@test.com");
 		Assert.assertThat(workspaces.size(), CoreMatchers.is(1));
 		Assert.assertThat(workspaces.get(0).getId(), CoreMatchers.is(100L));
 	}
 
 	/**
-	 * Test method for {@link org.sharetask.api.WorkspaceService#findWorkspaceByMember(String)}.
+	 * Test method for {@link org.sharetask.api.WorkspaceService#findByMember(String)}.
 	 */
 	@Test
 	public void testFindWorkspaceByMember() {
-		List<WorkspaceDTO> workspaces = workspaceService.findWorkspaceByMember("test3@test.com");
+		List<WorkspaceDTO> workspaces = workspaceService.findByMember("test3@test.com");
 		Assert.assertThat(workspaces.size(), CoreMatchers.is(1));
 		Assert.assertThat(workspaces.get(0).getId(), CoreMatchers.is(100L));
 	}

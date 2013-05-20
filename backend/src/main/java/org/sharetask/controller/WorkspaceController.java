@@ -51,14 +51,14 @@ public class WorkspaceController {
 	@RequestMapping(method = RequestMethod.POST, 
 	                produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody WorkspaceDTO create(@RequestBody final WorkspaceDTO workspace) {
- 		return workspaceService.createWorkspace(workspace);
+ 		return workspaceService.create(workspace);
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT, 
 	                produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
 	public @ResponseBody WorkspaceDTO update(@RequestBody final WorkspaceDTO workspace) {
-		return workspaceService.updateWorkspace(workspace);
+		return workspaceService.update(workspace);
 	}
 
 	@RequestMapping(value = "/{workspaceId}/member", 
@@ -83,6 +83,6 @@ public class WorkspaceController {
 	                produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody List<WorkspaceDTO> findWorkspace(@RequestParam("type") final String type) {
 		final WorkspaceQueryType queryType = WorkspaceQueryType.valueOf(type);
- 		return workspaceService.findWorkspaceByType(queryType);
+ 		return workspaceService.findByType(queryType);
 	}
 }

@@ -39,14 +39,14 @@ public interface WorkspaceService {
 	 * @param workspace
 	 * @return
 	 */
-	@NotNull WorkspaceDTO createWorkspace(@Valid @NotNull WorkspaceDTO workspace);
+	@NotNull WorkspaceDTO create(@Valid @NotNull WorkspaceDTO workspace);
 	
 	/**
 	 * Update workspace.
 	 * @param workspace
 	 * @return
 	 */
-	@NotNull WorkspaceDTO updateWorkspace(@Valid @NotNull WorkspaceDTO workspace);
+	@NotNull WorkspaceDTO update(@Valid @NotNull WorkspaceDTO workspace);
 
 	/**
 	 * Add member to specified workspace.
@@ -67,14 +67,14 @@ public interface WorkspaceService {
 	 * @param ownerId
 	 * @return
 	 */
-	List<WorkspaceDTO> findWorkspaceByOwner(@NotNull String username);
+	List<WorkspaceDTO> findByOwner(@NotNull String username);
 	
 	/**
 	 * Find all workspaces for member.
 	 * @param username
 	 * @return
 	 */
-	List<WorkspaceDTO> findWorkspaceByMember(@NotNull String username);
+	List<WorkspaceDTO> findByMember(@NotNull String username);
 
 	/**
 	 * Find all workspaces where i'm owner or member. 
@@ -89,6 +89,6 @@ public interface WorkspaceService {
 	 * @param type
 	 * @return
 	 */
-	List<WorkspaceDTO> findWorkspaceByType(@NotNull WorkspaceQueryType queryType);
+	List<WorkspaceDTO> findByType(@NotNull WorkspaceQueryType queryType);
 	
 }

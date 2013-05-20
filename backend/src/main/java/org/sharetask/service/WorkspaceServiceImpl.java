@@ -51,7 +51,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 
 	@Override
 	@Transactional
-	public WorkspaceDTO createWorkspace(final WorkspaceDTO workspace) {
+	public WorkspaceDTO create(final WorkspaceDTO workspace) {
 		Workspace workspaceEntity = DTOConverter.convert(workspace, Workspace.class);
 		// load owner
 		User owner = userRepository.findOne(workspace.getOwner().getUsername());
@@ -63,7 +63,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 
 	@Override
 	@Transactional
-	public WorkspaceDTO updateWorkspace(final WorkspaceDTO workspace) {
+	public WorkspaceDTO update(final WorkspaceDTO workspace) {
 		Workspace workspaceEntity = workspaceRepository.read(workspace.getId());
 		DTOConverter.convert(workspace, workspaceEntity);
 		workspaceEntity = workspaceRepository.save(workspaceEntity);
@@ -97,13 +97,13 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 	}
 
 	@Override
-	public List<WorkspaceDTO> findWorkspaceByOwner(final String username) {
+	public List<WorkspaceDTO> findByOwner(final String username) {
 		final List<Workspace> workspaces = workspaceRepository.findByOwnerUsername(username);
 		return DTOConverter.convertList(workspaces, WorkspaceDTO.class);
 	}	
 	
 	@Override
-	public List<WorkspaceDTO> findWorkspaceByMember(final String username) {
+	public List<WorkspaceDTO> findByMember(final String username) {
 		final List<Workspace> workspaces = workspaceRepository.findByMemberUsername(username);
 		return DTOConverter.convertList(workspaces, WorkspaceDTO.class);
 	}
@@ -115,7 +115,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 	}
 
 	@Override
-	public List<WorkspaceDTO> findWorkspaceByType(final WorkspaceQueryType queryType) {
+	public List<WorkspaceDTO> findByType(final WorkspaceQueryType queryType) {
 		List<Workspace> workspaces ;
 		final String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		switch (queryType) {
