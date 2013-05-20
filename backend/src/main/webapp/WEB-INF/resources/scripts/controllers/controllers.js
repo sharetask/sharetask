@@ -116,16 +116,36 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 				console.log("key pressed: %o", e);
 				switch (e.which) {
 					case 110:
-						// key 'n' pressed
+						// key 'n' pressed - add new task
 						$scope.setEditMode('NEW-TASK');
 						break;
 					case 102:
-						// key 'f' pressed
+						// key 'f' pressed - forward task
 						$scope.setEditMode('FORWARD-TASK');
 						break;
+					case 100:
+						// key 'd' pressed - delete task
+						$scope.setEditMode('DELETE-TASK');
+						break;
 					case 80:
-						// key 'Shift+p' pressed
+						// key 'Shift+p' pressed - change task priority
 						$scope.changeTaskPriority();
+						break;
+					case 119:
+						// key 'w' pressed - add new workspace
+						$scope.setEditMode('NEW-WORKSPACE');
+						break;
+					case 116:
+						// key 't' pressed - show/hide task filter panel
+						$scope.setView('PANEL-TASK-FILTER');
+						break;
+					case 114:
+						// key 'r' pressed - refresh/load workspace task from server
+						$scope.loadTasks();
+						break;
+					case 99:
+						// key 'c' pressed - add new task comment
+						// TODO - implement
 						break;
 				}
 			}
