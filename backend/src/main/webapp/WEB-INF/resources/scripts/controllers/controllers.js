@@ -52,19 +52,6 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 					$scope.errorStatus = status;
 			});
 		};
-		
-		/**
-		 * Receive event 'EVENT_SET_ACTIVE_WORKSPACE' for setting active workspace.
-		 * After receiving of event all workspace tasks are loaded from server.
-		 */
-		$scope.$on('handleBroadcast', function(event, data) {
-			console.log("Received broadcast message 'EVENT_LOGOUT' (data: %o)", data);
-			console.log("Logout user: %s", $rootScope.loggedUser.username);
-			$rootScope.loggedUser = {};
-			LocalStorage.remove('logged-user');
-			$location.path("/");
-		});
-		
 	}])
 	.controller('AppCtrl', ['$scope', '$location', '$rootScope', '$filter', 'Workspace', 'Task', 'User', 'LocalStorage', 'ErrorHandling', function($scope, $location, $rootScope, $filter, Workspace, Task, User, LocalStorage, ErrorHandling) {
 		
@@ -82,10 +69,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 		 * User is redirected to login page.
 		 */
 		$scope.logout = function() {
-			console.log("Logout user: %s", $rootScope.loggedUser.username);
-			$rootScope.loggedUser = {};
-			LocalStorage.remove('logged-user');
-			$location.path("/");
+			User.logout();
 		};
 		
 		/**
@@ -110,6 +94,50 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 			$scope.loadTasks();
 		});
 		*/
+		
+		/**
+		 * Keyboard shortcuts service logic
+		 * @param {object} e - key event.
+		 */
+		$scope.keyPressed = function(e) {
+			if (e.target.tagName === 'BODY') {
+				console.log("key pressed: %o", e);
+				switch (e.which) {
+					case 110:
+						// key 'n' pressed - add new task
+						$scope.setEditMode('NEW-TASK');
+						break;
+					case 102:
+						// key 'f' pressed - forward task
+						$scope.setEditMode('FORWARD-TASK');
+						break;
+					case 100:
+						// key 'd' pressed - delete task
+						$scope.setEditMode('DELETE-TASK');
+						break;
+					case 80:
+						// key 'Shift+p' pressed - change task priority
+						$scope.changeTaskPriority();
+						break;
+					case 119:
+						// key 'w' pressed - add new workspace
+						$scope.setEditMode('NEW-WORKSPACE');
+						break;
+					case 116:
+						// key 't' pressed - show/hide task filter panel
+						$scope.setView('PANEL-TASK-FILTER');
+						break;
+					case 114:
+						// key 'r' pressed - refresh/load workspace task from server
+						$scope.loadTasks();
+						break;
+					case 99:
+						// key 'c' pressed - add new task comment
+						// TODO - implement
+						break;
+				}
+			}
+		};
 		
 		/**
 		 * Loading all workspaces from server.
@@ -188,27 +216,15 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 				$scope.setSelectedTask($scope.tasks[0].id);
 				// set tags
 				$scope.setTags();
-				/*
-				// parse tags
-				var taskTags = new Array();
-				angular.forEach($scope.tasks, function(task) {
-					if (!jQuery.isEmptyObject(task.tags)) {
-						angular.forEach(task.tags, function(tag) {
-							if (taskTags.indexOf(tag) == -1) {
-								taskTags.push(tag);
-							}
-						});
-					}
-				});
-				$scope.tags = taskTags;
-				console.log("Tags parsed for queue: %o", $scope.tags);
-				*/
 			}
 			else {
 				$scope.selectedTask = null;
 			}
 		};
 		
+		/**
+		 * Parsing tasks from selected queue and collects all tags
+		 */
 		$scope.setTags = function() {
 			var taskTags = new Array();
 			angular.forEach($scope.tasks, function(task) {
@@ -343,6 +359,23 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 		 */
 		$scope.removeTag = function(taskId, tag) {
 			console.log("Remove task tag, id: %s, tag: %s", taskId, tag);
+			// get task
+			var task = $.grep($scope.tasks, function(e) {
+				return e.id == taskId;
+			});
+			console.log("task: %o", task);
+			// remove tag from task
+			var newTags = new Array();
+			angular.forEach(task.tags, function(_tag) {
+				if (_tag != tag) {
+					newTags.push(_tag);
+				}
+			});
+			task.tags = newTags;
+			console.log("new tags: %o", task.tags);
+			
+			
+			
 		};
 		
 		/**
@@ -414,7 +447,14 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 		 * Task data are stored to server.
 		 */
 		$scope.changeTaskPriority = function() {
+			if ($scope.selectedTask == null) {
+				return;
+			}
 			console.log("Change task priority (id: %s, priority: %s)", $scope.selectedTask.id, $scope.selectedTask.priority);
+			if ($scope.selectedTask.state == 'FINISHED') {
+				console.log("Task (id: %s) already completed", $scope.selectedTask.id);
+				return;
+			}
 			if ($scope.selectedTask.priority == 'LOW') { $scope.selectedTask.priority = 'MEDIUM'; }
 			else if ($scope.selectedTask.priority == 'MEDIUM') { $scope.selectedTask.priority = 'HIGH'; }
 			else if ($scope.selectedTask.priority == 'HIGH') { $scope.selectedTask.priority = 'LOW'; }
@@ -450,6 +490,10 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 		 */
 		$scope.forwardTask = function(user) {
 			console.log("Forward task (id: %s) to user (user: %o)", $scope.selectedTask.id, user);
+			if ($scope.selectedTask.state == 'FINISHED') {
+				console.log("Task (id: %s) already completed", $scope.selectedTask.id);
+				return;
+			}
 			Task.forward({workspaceId: $scope.selectedWorkspace.id, taskId: $scope.selectedTask.id, username: user.username}, function(data, status) {
 					console.log("Task forward success! data: %o, status: %o", data, status);
 					var task = $.grep($scope.tasks, function(e) {
@@ -483,6 +527,10 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 		 */
 		$scope.completeTask = function(bulk) {
 			console.log("Complete task (bulk: %s)", bulk);
+			if ($scope.selectedTask.state == 'FINISHED') {
+				console.log("Task (id: %s) already completed", $scope.selectedTask.id);
+				return;
+			}
 			if (!bulk) {
 				// complete selected task
 				console.log("Complete task (id: %s)", $scope.selectedTask.id);
@@ -534,6 +582,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 				});
 			}
 		};
+		
 		
 		// get logged user from local storage
 		$rootScope.loggedUser = LocalStorage.get('logged-user');
