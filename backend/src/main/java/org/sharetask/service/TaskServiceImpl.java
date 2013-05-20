@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.validation.constraints.NotNull;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -174,5 +175,12 @@ public class TaskServiceImpl implements TaskService {
 	public List<EventDTO> getEvents(final Long taskId) {
 		final Task task = taskRepository.read(taskId);
 		return DTOConverter.convertList(task.getEvents(), EventDTO.class);
+	}
+
+	@Override
+	public void delete(final Long taskId) {
+		final Task task = taskRepository.read(taskId);
+		task.setState(StateType.DELETED);
+		taskRepository.save(task);
 	}
 }

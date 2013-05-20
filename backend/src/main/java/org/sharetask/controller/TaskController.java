@@ -58,6 +58,14 @@ public class TaskController {
  		return taskService.createTask(workspaceId, task);
 	}
 	
+	@RequestMapping(value = "/{taskId}",
+	                method = RequestMethod.DELETE, 
+	                produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseStatus(value = HttpStatus.OK)
+	public void delete(@PathVariable("taskId") final Long taskId) {
+		taskService.delete(taskId);
+	}
+
 	@RequestMapping(value = "/{taskId}/comment", 
 	                method = RequestMethod.POST, 
 	                produces = MediaType.APPLICATION_JSON_VALUE)

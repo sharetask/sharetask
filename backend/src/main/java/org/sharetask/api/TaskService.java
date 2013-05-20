@@ -93,4 +93,10 @@ public interface TaskService {
 	 * @return
 	 */
 	List<EventDTO> getEvents(@NotNull Long taskId);
+	
+	/**
+	 * Delete task with specified id.
+	 * @param taskId
+	 */
+	void delete(@NotNull Long taskId);	
 }

@@ -20,6 +20,7 @@ package org.sharetask.service;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -215,5 +216,15 @@ public class TaskServiceTest extends DbUnitTest {
 	public void testGetEvents() {
 		List<EventDTO> events = taskService.getEvents(100L);
 		assertThat(events.size(), equalTo(1));
+	}
+
+	/**
+	 * Test method for {@link org.sharetask.api.TaskService#delete(Long)}.
+	 */
+	@Test
+	public void testDelete() {
+		taskService.delete(100L);
+		Task task = taskRepository.findOne(100L);
+		assertThat(task.getState(), equalTo(StateType.DELETED));
 	}
 }

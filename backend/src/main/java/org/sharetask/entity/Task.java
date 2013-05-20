@@ -70,7 +70,7 @@ public class Task extends BaseEntity implements Serializable {
 	public static final String QUERY_FIND_BY_DUE_DATE = "SELECT t FROM Task t WHERE t.dueDate = :dueDate";
 
 	public static enum StateType {
-		NEW, FORWARDED, FINISHED;
+		NEW, FORWARDED, FINISHED, DELETED;
 	}
 	
 	public static enum PriorityType {
