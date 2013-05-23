@@ -98,5 +98,5 @@ public interface TaskService {
 	 * Delete task with specified id.
 	 * @param taskId
 	 */
-	void delete(@NotNull Long taskId);	
+	void delete(@NotNull Long taskId);
 }

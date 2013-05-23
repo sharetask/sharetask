@@ -18,6 +18,8 @@
  */
 package org.sharetask.service;
 
+import static org.junit.Assert.assertThat;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -125,5 +127,16 @@ public class WorkspaceServiceTest extends DbUnitTest {
 	public void testFindAllMyWorkspaces() {
 		List<WorkspaceDTO> workspaces = workspaceService.findAllMyWorkspaces("test3@test.com");
 		Assert.assertThat(workspaces.size(), CoreMatchers.is(2));
+	}
+	
+
+	/**
+	 * Test method for {@link org.sharetask.api.WorkspaceService#delete(Long)}.
+	 */
+	@Test
+	public void testDelete() {
+		workspaceService.delete(100L);
+		Workspace workspace = workspaceRepository.findOne(100L);
+		assertThat(workspace, CoreMatchers.nullValue());
 	}
 }

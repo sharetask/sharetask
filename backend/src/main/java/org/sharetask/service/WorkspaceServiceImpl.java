@@ -36,6 +36,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
+ * Implementati0on of workspace service.
  * @author Michal Bocek
  * @since 1.0.0
  */
@@ -49,6 +50,9 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 	@Inject
 	private UserRepository userRepository;
 
+	/* (non-Javadoc)
+	 * @see org.sharetask.api.WorkspaceService#create(org.sharetask.api.dto.WorkspaceDTO)
+	 */
 	@Override
 	@Transactional
 	public WorkspaceDTO create(final WorkspaceDTO workspace) {
@@ -61,6 +65,9 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 		return DTOConverter.convert(workspaceEntity, WorkspaceDTO.class);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.sharetask.api.WorkspaceService#update(org.sharetask.api.dto.WorkspaceDTO)
+	 */
 	@Override
 	@Transactional
 	public WorkspaceDTO update(final WorkspaceDTO workspace) {
@@ -70,6 +77,9 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 		return DTOConverter.convert(workspaceEntity, WorkspaceDTO.class);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.sharetask.api.WorkspaceService#addMember(java.lang.Long, java.lang.String)
+	 */
 	@Override
 	@Transactional
 	public void addMember(final Long workspaceId, final String username) {
@@ -83,6 +93,9 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 		}		
 	}
 
+	/* (non-Javadoc)
+	 * @see org.sharetask.api.WorkspaceService#removeMember(java.lang.Long, java.lang.String)
+	 */
 	@Override
 	@Transactional
 	public void removeMember(final Long workspaceId, final String username) {
@@ -96,24 +109,36 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 		}		
 	}
 
+	/* (non-Javadoc)
+	 * @see org.sharetask.api.WorkspaceService#findByOwner(java.lang.String)
+	 */
 	@Override
 	public List<WorkspaceDTO> findByOwner(final String username) {
 		final List<Workspace> workspaces = workspaceRepository.findByOwnerUsername(username);
 		return DTOConverter.convertList(workspaces, WorkspaceDTO.class);
 	}	
 	
+	/* (non-Javadoc)
+	 * @see org.sharetask.api.WorkspaceService#findByMember(java.lang.String)
+	 */
 	@Override
 	public List<WorkspaceDTO> findByMember(final String username) {
 		final List<Workspace> workspaces = workspaceRepository.findByMemberUsername(username);
 		return DTOConverter.convertList(workspaces, WorkspaceDTO.class);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.sharetask.api.WorkspaceService#findAllMyWorkspaces(java.lang.String)
+	 */
 	@Override
 	public List<WorkspaceDTO> findAllMyWorkspaces(final String username) {
 		final List<Workspace> workspaces = workspaceRepository.findByMemberOrOwner(username);
 		return DTOConverter.convertList(workspaces, WorkspaceDTO.class);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.sharetask.api.WorkspaceService#findByType(org.sharetask.api.WorkspaceQueryType)
+	 */
 	@Override
 	public List<WorkspaceDTO> findByType(final WorkspaceQueryType queryType) {
 		List<Workspace> workspaces ;
@@ -132,5 +157,14 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 				workspaces = new ArrayList<Workspace>();
 		}
 		return DTOConverter.convertList(workspaces, WorkspaceDTO.class);
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.sharetask.api.WorkspaceService#delete(java.lang.Long)
+	 */
+	@Override
+	@Transactional
+	public void delete(final Long workspaceId) {
+		workspaceRepository.delete(workspaceId);
 	}
 }

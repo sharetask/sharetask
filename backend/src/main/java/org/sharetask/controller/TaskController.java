@@ -76,18 +76,18 @@ public class TaskController {
 	}
 
 	@RequestMapping(value = "/{taskId}/comment", 
-            method = RequestMethod.GET, 
-            produces = MediaType.APPLICATION_JSON_VALUE)
-public @ResponseBody List<CommentDTO> getComments(@PathVariable("taskId") final Long taskId) {
-	return taskService.getComments(taskId);
-}
+	                method = RequestMethod.GET,
+	                produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody List<CommentDTO> getComments(@PathVariable("taskId") final Long taskId) {
+		return taskService.getComments(taskId);
+	}
 
 	@RequestMapping(value = "/{taskId}/event", 
-            method = RequestMethod.GET, 
-            produces = MediaType.APPLICATION_JSON_VALUE)
-public @ResponseBody List<EventDTO> getEvents(@PathVariable("taskId") final Long taskId) {
-	return taskService.getEvents(taskId);
-}
+	                method = RequestMethod.GET, 
+	                produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody List<EventDTO> getEvents(@PathVariable("taskId") final Long taskId) {
+		return taskService.getEvents(taskId);
+	}
 
 	@RequestMapping(method = RequestMethod.GET, 
 	                produces = MediaType.APPLICATION_JSON_VALUE)

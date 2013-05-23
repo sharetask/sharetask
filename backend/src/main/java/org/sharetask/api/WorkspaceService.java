@@ -85,10 +85,15 @@ public interface WorkspaceService {
 	
 	/**
 	 * Find workspace by type.
-	 * Expected type is OWNER, MEMBER.
+	 * Expected type is OWNER, MEMBER, ALL_MY.
 	 * @param type
 	 * @return
 	 */
 	List<WorkspaceDTO> findByType(@NotNull WorkspaceQueryType queryType);
-	
+
+	/**
+	 * Delete whole workspace
+	 * @param taskId
+	 */
+	void delete(@NotNull Long workspaceId);
 }

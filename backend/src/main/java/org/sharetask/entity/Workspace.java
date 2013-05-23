@@ -67,11 +67,12 @@ public class Workspace extends BaseEntity implements Serializable {
 	public static final String QUERY_FIND_BY_MEMBER_USERNAME = "SELECT w FROM Workspace w, IN(w.members) as m WHERE m.username = :memberUsername";
 
 	public static final String QUERY_NAME_FIND_BY_MEMBER_OR_OWNER = "Workspace.findByMemberOrOwner";
-	public static final String QUERY_FIND_BY_MEMBER_OR_OWNER = "SELECT w FROM Workspace w LEFT OUTER JOIN w.members as m " +
-			                                                     "WHERE m.username = :username or w.owner.username = :username";
+	public static final String QUERY_FIND_BY_MEMBER_OR_OWNER = "SELECT w FROM Workspace w LEFT OUTER JOIN w.members as m "
+			+ "WHERE m.username = :username or w.owner.username = :username";
 
 	@Getter
-	@Id	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
 	@Getter	@Setter
@@ -87,13 +88,11 @@ public class Workspace extends BaseEntity implements Serializable {
 	@JoinColumn(name = "OWNER_USER_NAME")
 	private User owner;
 
-	@OneToMany(mappedBy = "workspace")
+	@OneToMany(mappedBy = "workspace", cascade = CascadeType.ALL)
 	private List<Task> tasks = new ArrayList<Task>();
-	
+
 	@OneToMany
-	@JoinTable(name = "WORKSPACE_MEMBER", 
-	           joinColumns = { @JoinColumn(name = "WORKSPACE_ID", referencedColumnName = "ID") }, 
-	           inverseJoinColumns = { @JoinColumn(name = "USER_NAME", referencedColumnName = "USER_NAME", unique = true) })
+	@JoinTable(name = "WORKSPACE_MEMBER", joinColumns = { @JoinColumn(name = "WORKSPACE_ID", referencedColumnName = "ID") }, inverseJoinColumns = { @JoinColumn(name = "USER_NAME", referencedColumnName = "USER_NAME", unique = true) })
 	private List<User> members = new ArrayList<User>();
 	
 	public Workspace() {

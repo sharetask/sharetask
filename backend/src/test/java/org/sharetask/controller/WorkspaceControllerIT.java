@@ -23,6 +23,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -95,5 +96,19 @@ public class WorkspaceControllerIT extends IntegrationTest {
         Assert.assertEquals(HttpStatus.OK.value(), response.getStatusLine().getStatusCode());
         String responseData = EntityUtils.toString(response.getEntity());
         Assert.assertTrue(responseData.contains("\"title\":\"Test Title\""));
+    }
+    
+    
+    @Test
+    public void testDelete() throws IOException {
+        //given
+    	HttpDelete httpDelete = new HttpDelete(URL_WORKSPACE + "/2");
+        httpDelete.addHeader(new BasicHeader("Content-Type", "application/json"));
+        
+        //when
+        HttpResponse response = getClient().execute(httpDelete);
+ 
+        //then
+        Assert.assertEquals(HttpStatus.OK.value(), response.getStatusLine().getStatusCode());
     }
 }

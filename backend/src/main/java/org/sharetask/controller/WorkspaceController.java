@@ -85,4 +85,12 @@ public class WorkspaceController {
 		final WorkspaceQueryType queryType = WorkspaceQueryType.valueOf(type);
  		return workspaceService.findByType(queryType);
 	}
+	
+	@RequestMapping(value = "/{workspaceId}",
+	                method = RequestMethod.DELETE,
+	                produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseStatus(value = HttpStatus.OK)
+	public void delete(@PathVariable("workspaceId") final Long workspaceId) {
+		workspaceService.delete(workspaceId);
+	}	
 }
