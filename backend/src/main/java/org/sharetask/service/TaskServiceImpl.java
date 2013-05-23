@@ -43,6 +43,7 @@ import org.sharetask.repository.TaskRepository;
 import org.sharetask.repository.UserRepository;
 import org.sharetask.repository.WorkspaceRepository;
 import org.sharetask.utility.DTOConverter;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -83,6 +84,7 @@ public class TaskServiceImpl implements TaskService {
 	 */
 	@Override
 	@Transactional
+	@PreAuthorize("isAuthenticated() and hasPermission(#taskId, 'isAssigneeOnTask')")
 	public TaskDTO addComment(final Long taskId, final String message) {
 		final Task task = taskRepository.read(taskId);
 		task.addComment(new Comment(message));

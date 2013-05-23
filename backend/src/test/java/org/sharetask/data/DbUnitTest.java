@@ -67,15 +67,15 @@ public class DbUnitTest {
 	
 	@Before
 	public void init() throws DatabaseUnitException, SQLException, MalformedURLException {
-		// login
-		if (enableSecurity) {
-		    Authentication authentication = new UsernamePasswordAuthenticationToken("dev1@shareta.sk", "password");
-	    	Authentication authenticate = authenticationManager.authenticate(authentication);
-	    	SecurityContextHolder.getContext().setAuthentication(authenticate);
-		}
 		// insert data into database
 		DatabaseOperation.DELETE.execute(getConnection(), getDataSet());
 		DatabaseOperation.INSERT.execute(getConnection(), getDataSet());
+		// login
+		if (enableSecurity) {
+		    Authentication authentication = new UsernamePasswordAuthenticationToken("test1@test.com", "password");
+	    	Authentication authenticate = authenticationManager.authenticate(authentication);
+	    	SecurityContextHolder.getContext().setAuthentication(authenticate);
+		}
 	}
 
 	@After

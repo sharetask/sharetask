@@ -13,6 +13,8 @@
 				<constraints nullable="false"/>
 			</column>
 		</createTable>
+		<addPrimaryKey tableName="USER_ROLE" columnNames="USER_NAME,ROLE"
+			constraintName="PK_USER_ROLE" />
 	</changeSet>
 	
 	<changeSet id="create: user" author="mbocek">

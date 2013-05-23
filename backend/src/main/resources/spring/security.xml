@@ -3,8 +3,10 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:p="http://www.springframework.org/schema/p"
 	xmlns:util="http://www.springframework.org/schema/util"  
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd 
+ 	xmlns:context="http://www.springframework.org/schema/context"
+ 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd 
 						http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd
+						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
 						http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
 	<util:properties id="applicationProps" location="classpath:application.properties"/>
@@ -37,8 +39,29 @@
 	<beans:bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder">
 		<beans:constructor-arg name="strength" value="512" />
 	</beans:bean>
-	
-	<beans:bean id="saltSource" class="org.springframework.security.authentication.dao.ReflectionSaltSource" p:userPropertyToUse="username" />
 
-	<global-method-security pre-post-annotations="enabled" />
+	<beans:bean id="saltSource" class="org.springframework.security.authentication.dao.ReflectionSaltSource"
+		p:userPropertyToUse="username" />
+
+	<global-method-security pre-post-annotations="enabled">
+		<expression-handler ref="expressionHandler"/>
+	</global-method-security>
+
+	<beans:bean id="expressionHandler"
+		class="org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler">
+		<beans:property name="permissionEvaluator" ref="permissionEvaluator" />
+	</beans:bean>
+
+	<beans:bean id="permissionEvaluator" class="org.sharetask.security.AccessPermissionEvaluator">
+		<beans:constructor-arg index="0">
+			<beans:map key-type="java.lang.String" value-type="org.sharetask.security.Permission">
+				<beans:entry key="isAssigneeOnTask" value-ref="assigneeOnTaskPermission" />
+			</beans:map>
+		</beans:constructor-arg>
+	</beans:bean>
+	
+	<beans:bean id="assigneeOnTaskPermission" class="org.sharetask.security.AssigneeOnTaskPermission">
+		<beans:property name="taskRepository" ref="taskRepository"/>
+	</beans:bean>
+	
 </beans:beans>
