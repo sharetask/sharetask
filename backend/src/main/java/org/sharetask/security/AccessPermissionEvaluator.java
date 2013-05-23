@@ -28,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 /**
+ * Implementation of PermissionEvaluator. Extending possibility of evaluate different verb in hasPermission.
  * @author Michal Bocek
  * @since 1.0.0
  */
@@ -42,6 +43,9 @@ public class AccessPermissionEvaluator implements PermissionEvaluator {
 		this.permissionNameToPermissionMap = permissionNameToPermissionMap;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.springframework.security.access.PermissionEvaluator#hasPermission(org.springframework.security.core.Authentication, java.lang.Object, java.lang.Object)
+	 */
 	@Override
 	@Transactional
 	public boolean hasPermission(Authentication authentication, Object targetDomainObject, Object permission) {
@@ -69,6 +73,9 @@ public class AccessPermissionEvaluator implements PermissionEvaluator {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see org.springframework.security.access.PermissionEvaluator#hasPermission(org.springframework.security.core.Authentication, java.io.Serializable, java.lang.String, java.lang.Object)
+	 */
 	@Override
 	public boolean hasPermission(Authentication authentication, Serializable targetId, String targetType,
 			Object permission) {

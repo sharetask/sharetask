@@ -21,6 +21,7 @@ package org.sharetask.security;
 import org.sharetask.api.Constants;
 
 /**
+ * Runtime exception for signalization undefined permission.
  * @author Michal Bocek
  * @since 1.0.0
  */

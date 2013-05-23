@@ -20,20 +20,22 @@ package org.sharetask.security;
 
 import lombok.Setter;
 
-import org.sharetask.entity.Task;
-import org.sharetask.repository.TaskRepository;
+import org.sharetask.entity.User;
+import org.sharetask.entity.Workspace;
+import org.sharetask.repository.WorkspaceRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.util.Assert;
 
 /**
+ * Check if actually logged in user is member or owner of workspace.
  * @author Michal Bocek
  * @since 1.0.0
  */
-public class AssigneeOnTaskPermission implements Permission {
+public class WorkspaceMemberOrOwnerPermission implements Permission {
 
 	@Setter
-	private TaskRepository taskRepository;
+	private WorkspaceRepository workspaceRepository;
 	
 	/* (non-Javadoc)
 	 * @see org.sharetask.security.Permission#isAllowed(org.springframework.security.core.Authentication, java.lang.Object)
@@ -41,12 +43,14 @@ public class AssigneeOnTaskPermission implements Permission {
 	@Override
 	public boolean isAllowed(Authentication authentication, Object targetDomainObject) {
 		boolean result;
-		Assert.isTrue(isAuthenticated(authentication), "User is unauthenticated!");
+		Assert.isTrue(isAuthenticated(authentication), "User is not authenticated!");
 		Assert.isTrue(targetDomainObject instanceof Long);
-		Long taskId = (Long) targetDomainObject;
+		Long workspaceId = (Long) targetDomainObject;
 		String userName = authentication.getName();
-		Task task = taskRepository.read(taskId);
-		if (task.getAssignee().getUsername().equals(userName)) {
+		Workspace workspace = workspaceRepository.read(workspaceId);
+		if (isWorkspaceOwner(workspace, userName)) {
+			result = true;
+		} else if (isWorkspaceMember(workspace, userName)) {
 			result = true;
 		} else {
 			result = false;
@@ -54,7 +58,22 @@ public class AssigneeOnTaskPermission implements Permission {
 		return result;
 	}
 	
-    private boolean isAuthenticated(Authentication authentication) {
+    private boolean isWorkspaceMember(Workspace workspace, String userName) {
+    	boolean result = false;
+    	for (User member : workspace.getMembers()) {
+			if (member.getUsername().equals(userName)) {
+				result = true;
+				break;
+			}
+		}
+		return result;
+	}
+
+	private boolean isAuthenticated(Authentication authentication) {
         return authentication != null && authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_USER"));
+    }
+    
+    private boolean isWorkspaceOwner(Workspace workspace, String userName) {
+    	return workspace.getOwner().getUsername().equals(userName);
     }
 }

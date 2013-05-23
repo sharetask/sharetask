@@ -71,6 +71,7 @@ public class TaskServiceImpl implements TaskService {
 	 */
 	@Override
 	@Transactional
+	@PreAuthorize("isAuthenticated() and hasPermission(#workspaceId, 'isWorkspaceMemberOrOwner')")
 	public TaskDTO create(final Long workspaceId, final TaskDTO task) {
 		final Workspace workspace = workspaceRepository.read(workspaceId);
 		Task taskEntity = DTOConverter.convert(task, Task.class);
@@ -84,7 +85,7 @@ public class TaskServiceImpl implements TaskService {
 	 */
 	@Override
 	@Transactional
-	@PreAuthorize("isAuthenticated() and hasPermission(#taskId, 'isAssigneeOnTask')")
+	@PreAuthorize("isAuthenticated() and hasPermission(#taskId, 'isTaskAssignee')")
 	public TaskDTO addComment(final Long taskId, final String message) {
 		final Task task = taskRepository.read(taskId);
 		task.addComment(new Comment(message));
@@ -96,6 +97,7 @@ public class TaskServiceImpl implements TaskService {
 	 * @see org.sharetask.api.TaskService#findByQueue(java.lang.Long, org.sharetask.api.TaskQueue)
 	 */
 	@Override
+	@PreAuthorize("isAuthenticated() and hasPermission(#workspaceId, 'isWorkspaceMemberOrOwner')")
 	public List<TaskDTO> findByQueue(final Long workspaceId, final TaskQueue taskQueue) {
 		List<Task> result;
 		switch (taskQueue) {
@@ -126,6 +128,7 @@ public class TaskServiceImpl implements TaskService {
 	 */
 	@Override
 	@Transactional
+	@PreAuthorize("isAuthenticated() and hasPermission(#task.id, 'isTaskAssignee')")
 	public TaskDTO update(TaskDTO task) {
 		Task entity = taskRepository.findOne(task.getId());
 		DTOConverter.convert(task, entity);
@@ -138,6 +141,7 @@ public class TaskServiceImpl implements TaskService {
 	 */
 	@Override
 	@Transactional
+	@PreAuthorize("isAuthenticated() and hasPermission(#taskId, 'isTaskAssignee')")
 	public void complete(Long taskId) {
 		final Task entity = taskRepository.findOne(taskId);
 		entity.finish();
@@ -148,6 +152,7 @@ public class TaskServiceImpl implements TaskService {
 	 * @see org.sharetask.api.TaskService#forward(java.lang.Long, java.lang.String)
 	 */
 	@Override
+	@PreAuthorize("isAuthenticated() and hasPermission(#taskId, 'isTaskAssignee')")
 	public void forward(Long taskId, String assignee) {
 		final Task task = taskRepository.read(taskId);
 
@@ -184,6 +189,7 @@ public class TaskServiceImpl implements TaskService {
 	 */
 	@Override
 	@Transactional
+	@PreAuthorize("isAuthenticated() and hasPermission(#taskId, 'isTaskAssignee')")
 	public void delete(final Long taskId) {
 		taskRepository.delete(taskId);
 	}

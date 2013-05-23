@@ -21,6 +21,7 @@ package org.sharetask.security;
 import org.springframework.security.core.Authentication;
 
 /**
+ * Interface for implementing permission. Class which implement this interface should be added to security.xml. 
  * @author Michal Bocek
  * @since 1.0.0
  */

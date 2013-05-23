@@ -55,13 +55,23 @@
 	<beans:bean id="permissionEvaluator" class="org.sharetask.security.AccessPermissionEvaluator">
 		<beans:constructor-arg index="0">
 			<beans:map key-type="java.lang.String" value-type="org.sharetask.security.Permission">
-				<beans:entry key="isAssigneeOnTask" value-ref="assigneeOnTaskPermission" />
+				<beans:entry key="isTaskAssignee" value-ref="taskAssigneePermission" />
+				<beans:entry key="isWorkspaceMemberOrOwner" value-ref="workspaceMemberOrOwnerPermission" />
+				<beans:entry key="isWorkspaceOwner" value-ref="workspaceOwnerPermission" />
 			</beans:map>
 		</beans:constructor-arg>
 	</beans:bean>
 	
-	<beans:bean id="assigneeOnTaskPermission" class="org.sharetask.security.AssigneeOnTaskPermission">
+	<beans:bean id="taskAssigneePermission" class="org.sharetask.security.TaskAssigneePermission">
 		<beans:property name="taskRepository" ref="taskRepository"/>
 	</beans:bean>
 	
+	<beans:bean id="workspaceMemberOrOwnerPermission" class="org.sharetask.security.WorkspaceMemberOrOwnerPermission">
+		<beans:property name="workspaceRepository" ref="workspaceRepository"/>
+	</beans:bean>
+
+	<beans:bean id="workspaceOwnerPermission" class="org.sharetask.security.WorkspaceOwnerPermission">
+		<beans:property name="workspaceRepository" ref="workspaceRepository"/>
+	</beans:bean>
+
 </beans:beans>

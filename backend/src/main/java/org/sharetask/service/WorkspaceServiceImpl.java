@@ -31,6 +31,7 @@ import org.sharetask.entity.Workspace;
 import org.sharetask.repository.UserRepository;
 import org.sharetask.repository.WorkspaceRepository;
 import org.sharetask.utility.DTOConverter;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,6 +71,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 	 */
 	@Override
 	@Transactional
+	@PreAuthorize("isAuthenticated() and hasPermission(#workspace.id, 'isWorkspaceOwner')")
 	public WorkspaceDTO update(final WorkspaceDTO workspace) {
 		Workspace workspaceEntity = workspaceRepository.read(workspace.getId());
 		DTOConverter.convert(workspace, workspaceEntity);
@@ -82,6 +84,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 	 */
 	@Override
 	@Transactional
+	@PreAuthorize("isAuthenticated() and hasPermission(#workspaceId, 'isWorkspaceOwner')")
 	public void addMember(final Long workspaceId, final String username) {
 		final User user = userRepository.read(username);
 		final Workspace workspace = workspaceRepository.read(workspaceId);
@@ -98,6 +101,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 	 */
 	@Override
 	@Transactional
+	@PreAuthorize("isAuthenticated() and hasPermission(#workspaceId, 'isWorkspaceOwner')")
 	public void removeMember(final Long workspaceId, final String username) {
 		final User user = userRepository.read(username);
 		final Workspace workspace = workspaceRepository.read(workspaceId);
@@ -164,6 +168,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 	 */
 	@Override
 	@Transactional
+	@PreAuthorize("isAuthenticated() and hasPermission(#workspaceId, 'isWorkspaceOwner')")
 	public void delete(final Long workspaceId) {
 		workspaceRepository.delete(workspaceId);
 	}
