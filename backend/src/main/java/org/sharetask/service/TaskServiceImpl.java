@@ -177,10 +177,12 @@ public class TaskServiceImpl implements TaskService {
 		return DTOConverter.convertList(task.getEvents(), EventDTO.class);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.sharetask.api.TaskService#delete(java.lang.Long)
+	 */
 	@Override
+	@Transactional
 	public void delete(final Long taskId) {
-		final Task task = taskRepository.read(taskId);
-		task.setState(StateType.DELETED);
-		taskRepository.save(task);
+		taskRepository.delete(taskId);
 	}
 }

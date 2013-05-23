@@ -70,60 +70,70 @@ public class Task extends BaseEntity implements Serializable {
 	public static final String QUERY_FIND_BY_DUE_DATE = "SELECT t FROM Task t WHERE t.dueDate = :dueDate";
 
 	public static enum StateType {
-		NEW, FORWARDED, FINISHED, DELETED;
+		NEW, FORWARDED, FINISHED;
 	}
-	
+
 	public static enum PriorityType {
 		LOW, MEDIUM, HIGH;
 	}
-	
-	@Getter @Setter
-	@Id @GeneratedValue(strategy = GenerationType.AUTO)
+
+	@Getter
+	@Setter
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@Getter @Setter
+	@Getter
+	@Setter
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "WORKSPACE_ID")
 	private Workspace workspace;
-	
-	@Getter	@Setter
+
+	@Getter
+	@Setter
 	@Column(name = "TITLE", nullable = false, length = 100)
 	private String title;
 
-	@Getter	@Setter
+	@Getter
+	@Setter
 	@Column(name = "DESCRIPTION", nullable = true, length = 256)
 	private String description;
-	
-	@Getter @Setter
+
+	@Getter
+	@Setter
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "DUE_DATE")
 	private Date dueDate;
-	
-	@Getter @Setter
+
+	@Getter
+	@Setter
 	@ManyToOne(fetch = FetchType.EAGER, optional = true)
 	@JoinColumn(name = "ASSIGNEE_USER_NAME")
 	private User assignee;
-	
-	@Getter @Setter
+
+	@Getter
+	@Setter
 	@Enumerated(value = EnumType.STRING)
 	private StateType state;
-	
-	@Getter @Setter
+
+	@Getter
+	@Setter
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "TASK_TAG", joinColumns = @JoinColumn(name = "TASK_ID"))
 	@Column(name = "TAG", nullable = false)
 	private List<String> tags;
 
-	@Getter @Setter
+	@Getter
+	@Setter
 	@Enumerated(value = EnumType.STRING)
 	private PriorityType priority;
-	
-	@OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-	@JoinColumn(name="TASK_ID", referencedColumnName="ID", nullable = false)
+
+	@OneToMany(cascade = { CascadeType.ALL })
+	@JoinColumn(name = "TASK_ID", referencedColumnName = "ID", nullable = false)
 	private List<Event> events = new ArrayList<Event>();
 
-	@OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-	@JoinColumn(name="TASK_ID", referencedColumnName="ID", nullable = false)
+	@OneToMany(cascade = { CascadeType.ALL })
+	@JoinColumn(name = "TASK_ID", referencedColumnName = "ID", nullable = false)
 	private List<Comment> comments = new ArrayList<Comment>();
 
 	public Task() {

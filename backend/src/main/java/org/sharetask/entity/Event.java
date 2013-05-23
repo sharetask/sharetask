@@ -67,7 +67,7 @@ public class Event extends BaseImmutableEntity implements Serializable {
 	private EventType type;
 
 	@ElementCollection
-	@CollectionTable(name = "EVENT_VALUE", joinColumns = @JoinColumn(name = "ENT_ID"))
+	@CollectionTable(name = "EVENT_VALUE", joinColumns = @JoinColumn(name = "EVENT_ID"))
 	@Column(name = "VALUE")
 	private List<String> values;
 	

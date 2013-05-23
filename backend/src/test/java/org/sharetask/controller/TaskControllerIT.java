@@ -21,6 +21,7 @@ package org.sharetask.controller;
 import java.io.IOException;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -38,12 +39,12 @@ import org.springframework.http.HttpStatus;
 public class TaskControllerIT extends IntegrationTest {
 
 	private static final String TASK_PATH = "/workspace/1/task";
-    private static final String URL_WORKSPACE = BASE_URL + TASK_PATH;
+    private static final String URL_TASK = BASE_URL + TASK_PATH;
  
     @Test
     public void testAddComment() throws IOException {
         //given
-        HttpPost httpPost = new HttpPost(URL_WORKSPACE + "/1/comment");
+        HttpPost httpPost = new HttpPost(URL_TASK + "/1/comment");
         httpPost.addHeader(new BasicHeader("Content-Type", "application/json"));
         StringEntity httpEntity = new StringEntity("{\"comment\":\"test comment\"}");
         httpPost.setEntity(httpEntity);
@@ -58,7 +59,7 @@ public class TaskControllerIT extends IntegrationTest {
     @Test
     public void testGetComments() throws IOException {
         //given
-        HttpGet httpGet = new HttpGet(URL_WORKSPACE + "/1/comment");
+        HttpGet httpGet = new HttpGet(URL_TASK + "/1/comment");
         httpGet.addHeader(new BasicHeader("Content-Type", "application/json"));
         
         //when
@@ -73,7 +74,7 @@ public class TaskControllerIT extends IntegrationTest {
     @Test
     public void testGetEvents() throws IOException {
         //given
-        HttpGet httpGet = new HttpGet(URL_WORKSPACE + "/1/event");
+        HttpGet httpGet = new HttpGet(URL_TASK + "/1/event");
         httpGet.addHeader(new BasicHeader("Content-Type", "application/json"));
         
         //when
@@ -88,7 +89,7 @@ public class TaskControllerIT extends IntegrationTest {
     @Test
     public void testCreateTask() throws IOException {
         //given
-        HttpPost httpPost = new HttpPost(URL_WORKSPACE );
+        HttpPost httpPost = new HttpPost(URL_TASK );
         httpPost.addHeader(new BasicHeader("Content-Type", "application/json"));
         StringEntity httpEntity = new StringEntity("{\"title\":\"TestTask\"," +
         		                                     "\"priority\":\"MEDIUM\"," +
@@ -105,11 +106,24 @@ public class TaskControllerIT extends IntegrationTest {
     @Test
     public void testCompleteTask() throws IOException {
         //given
-        HttpPost httpPost = new HttpPost(URL_WORKSPACE + "/1/complete");
+        HttpPost httpPost = new HttpPost(URL_TASK + "/1/complete");
         httpPost.addHeader(new BasicHeader("Content-Type", "application/json"));
         
         //when
         HttpResponse response = getClient().execute(httpPost);
+ 
+        //then
+        Assert.assertEquals(HttpStatus.OK.value(), response.getStatusLine().getStatusCode());
+    }
+    
+    @Test
+    public void testDelete() throws IOException {
+        //given
+    	HttpDelete httpDelete = new HttpDelete(URL_TASK + "/4");
+        httpDelete.addHeader(new BasicHeader("Content-Type", "application/json"));
+        
+        //when
+        HttpResponse response = getClient().execute(httpDelete);
  
         //then
         Assert.assertEquals(HttpStatus.OK.value(), response.getStatusLine().getStatusCode());

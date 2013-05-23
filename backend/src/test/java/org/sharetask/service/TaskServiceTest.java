@@ -30,6 +30,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import org.sharetask.api.TaskQueue;
 import org.sharetask.api.TaskService;
@@ -224,6 +225,6 @@ public class TaskServiceTest extends DbUnitTest {
 	public void testDelete() {
 		taskService.delete(100L);
 		Task task = taskRepository.findOne(100L);
-		assertThat(task.getState(), equalTo(StateType.DELETED));
+		assertThat(task, CoreMatchers.nullValue());
 	}
 }
