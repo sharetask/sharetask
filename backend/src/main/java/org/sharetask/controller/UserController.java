@@ -67,7 +67,7 @@ public class UserController {
 	private UserService userService;
 	
 	@RequestMapping(value = "/login/status", method = RequestMethod.GET)
-	public void login(HttpServletRequest request, HttpServletResponse response) {
+	public void login(final HttpServletRequest request, final HttpServletResponse response) {
 		int resultCode = HttpStatus.UNAUTHORIZED.value();
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		log.info("authetication: {}", authentication);
@@ -80,8 +80,8 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public void performLogin(@RequestBody final UserPassword login, HttpServletRequest request, 
-			HttpServletResponse response) {
+	public void performLogin(@RequestBody final UserPassword login, final HttpServletRequest request, 
+			final HttpServletResponse response) {
 		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(login.getUsername(), 
 				login.getPassword());
 		try {
@@ -96,7 +96,7 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
-	public void performLogout(HttpServletRequest request, HttpServletResponse response) {
+	public void performLogout(final HttpServletRequest request, final HttpServletResponse response) {
 		SecurityContextHolder.clearContext();
 		HttpSession session = request.getSession(false);
 		if (session != null) {
@@ -106,7 +106,7 @@ public class UserController {
 
 	@RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
-	public @ResponseBody UserDTO create(@RequestBody final UserDTO user) {
+	@ResponseBody public UserDTO create(@RequestBody final UserDTO user) {
 		return userService.create(user);
 	}
 }

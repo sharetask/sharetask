@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class DummyController {
 
 	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody String getSimpleData() {
+	@ResponseBody public String getSimpleData() {
  		return "OK";
 	}
 }

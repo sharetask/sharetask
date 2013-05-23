@@ -53,7 +53,7 @@ public class TaskController {
 	@RequestMapping(method = RequestMethod.POST, 
 	                produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
-	public @ResponseBody TaskDTO create(@PathVariable("workspaceId") final Long workspaceId, 
+	@ResponseBody public TaskDTO create(@PathVariable("workspaceId") final Long workspaceId, 
 	                                    @RequestBody final TaskDTO task) {
  		return taskService.create(workspaceId, task);
 	}
@@ -70,7 +70,7 @@ public class TaskController {
 	                method = RequestMethod.POST, 
 	                produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
-	public @ResponseBody TaskDTO addComment(@PathVariable("taskId") final Long taskId,
+	@ResponseBody public TaskDTO addComment(@PathVariable("taskId") final Long taskId,
 	                                        @RequestBody final Comment comment) {
  		return taskService.addComment(taskId, comment.getComment());
 	}
@@ -78,20 +78,20 @@ public class TaskController {
 	@RequestMapping(value = "/{taskId}/comment", 
 	                method = RequestMethod.GET,
 	                produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody List<CommentDTO> getComments(@PathVariable("taskId") final Long taskId) {
+	@ResponseBody public List<CommentDTO> getComments(@PathVariable("taskId") final Long taskId) {
 		return taskService.getComments(taskId);
 	}
 
 	@RequestMapping(value = "/{taskId}/event", 
 	                method = RequestMethod.GET, 
 	                produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody List<EventDTO> getEvents(@PathVariable("taskId") final Long taskId) {
+	@ResponseBody public List<EventDTO> getEvents(@PathVariable("taskId") final Long taskId) {
 		return taskService.getEvents(taskId);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, 
 	                produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody List<TaskDTO> findTaskByQueue(@PathVariable("workspaceId") final Long workspaceId, 
+	@ResponseBody public List<TaskDTO> findTaskByQueue(@PathVariable("workspaceId") final Long workspaceId, 
 	                                                   @RequestParam("taskQueue") final String taskQueue) {
  		return taskService.findByQueue(workspaceId, TaskQueue.valueOf(taskQueue));
 	}
@@ -99,7 +99,7 @@ public class TaskController {
 	@RequestMapping(method = RequestMethod.PUT, 
 	                produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
-	public @ResponseBody TaskDTO update(@RequestBody final TaskDTO task) {
+	@ResponseBody public TaskDTO update(@RequestBody final TaskDTO task) {
  		return taskService.update(task);
 	}
 
