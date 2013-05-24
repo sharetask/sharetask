@@ -109,6 +109,54 @@
 			</build>
 		</profile>
 		<profile>
+			<id>integration</id>
+			<activation>
+				<activeByDefault></activeByDefault>
+			</activation>
+			<properties>
+				<database.path>/tmp/db-integration</database.path>
+				<liquibase.context>integration</liquibase.context>
+				<liquibase.database.jdbc.driver>org.hsqldb.jdbcDriver</liquibase.database.jdbc.driver>
+				<liquibase.database.jdbc.url>jdbc:hsqldb:file:${database.path}/sharetask;shutdown=true</liquibase.database.jdbc.url>
+				<liquibase.database.jdbc.user>sa</liquibase.database.jdbc.user>
+				<liquibase.database.jdbc.password></liquibase.database.jdbc.password>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>id.pre-clean</id>
+								<phase>pre-clean</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<target>
+										<delete dir="${database.path}"/>
+									</target>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.liquibase</groupId>
+						<artifactId>liquibase-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>process-resources</phase>
+								<goals>
+									<goal>update</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
 			<id>test-deploy</id>
 			<activation>
 				<activeByDefault>false</activeByDefault>

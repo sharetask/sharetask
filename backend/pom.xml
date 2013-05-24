@@ -216,6 +216,9 @@
 								<type>installed</type>
 								<home>${catalina.home}</home>
 								<!-- <log>cargo.log</log> -->
+								<systemProperties>
+									<definition.database.jdbc.url>jdbc:hsqldb:file:/tmp/db-integration/sharetask;shutdown=true</definition.database.jdbc.url>
+								</systemProperties>
 							</container>
 							<type>existing</type>
 							<home>${catalina.home}</home>
@@ -265,6 +268,9 @@
 					</plugin>
 				</plugins>			
 			</build>
+			<properties>
+				<definition.database.jdbc.url>jdbc:hsqldb:file:/tmp/db-integration/sharetask;shutdown=true</definition.database.jdbc.url>
+			</properties>
 		</profile>
 	</profiles>
 

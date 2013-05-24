@@ -11,10 +11,6 @@
 	
 	<jpa:repositories base-package="org.sharetask.repository" factory-class="org.sharetask.repository.base.RepositoryFactoryBean"/>
 	
-	<jpa:auditing auditor-aware-ref="auditorAware"/>
-	
-	<bean id="auditorAware" class="org.sharetask.repository.base.AuditorAwareImpl" />	
-
 	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="persistenceUnitName" value="${persistence-unit}" />
@@ -38,7 +34,7 @@
 		</property>
 	</bean>
 
-	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"  destroy-method="close">
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
 		<property name="driverClass" value="${database.jdbc.driver}" />
 		<property name="jdbcUrl" value="${database.jdbc.url}" />
 		<property name="user" value="${database.jdbc.user}" />
@@ -50,5 +46,12 @@
 		<property name="acquireIncrement" value="${pool.acquireIncrement}" />
 		<property name="maxIdleTime" value="${pool.maxIdleTime}" />
 		<property name="maxStatements" value="${pool.maxStatements}" />
-	</bean> 
+	</bean>
+
+	<!-- ================================================================= -->	
+	<!-- Auditing support                                                  -->
+	<!-- ================================================================= -->	
+	<jpa:auditing auditor-aware-ref="auditorAware"/>
+	
+	<bean id="auditorAware" class="org.sharetask.repository.base.AuditorAwareImpl" />	
 </beans>
