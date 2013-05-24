@@ -18,7 +18,6 @@
 	<context:annotation-config />
 
 	<context:component-scan base-package="org.sharetask.service" />
-	<context:component-scan base-package="org.sharetask.security" />
 
 	<context:property-placeholder location="classpath:/config.properties"/>
 	
