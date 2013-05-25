@@ -35,13 +35,13 @@ public class BaseJpaRepositoryImpl<T, ID extends Serializable> extends SimpleJpa
 	private final EntityManager entityManager;
 	private final Class<T> entityClass;
 
-	public BaseJpaRepositoryImpl(Class<T> entityClass, EntityManager entityManager) {
+	public BaseJpaRepositoryImpl(final Class<T> entityClass, final EntityManager entityManager) {
 		super(entityClass, entityManager);
 		this.entityManager = entityManager;
 		this.entityClass = entityClass;
 	}
 
-	public T read(ID id) {
+	public T read(final ID id) {
 		final T entity = entityManager.find(this.entityClass, id);
 		if (entity == null) {
 			throw new EntityNotFoundException("Entity for class " + this.entityClass + " with id " + id

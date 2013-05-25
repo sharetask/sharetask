@@ -35,53 +35,53 @@ import org.springframework.validation.annotation.Validated;
 public interface WorkspaceService {
 
 	/**
-	 * Create new workspace
+	 * Create new workspace.
 	 * @param workspace
 	 * @return
 	 */
-	@NotNull WorkspaceDTO create(@Valid @NotNull WorkspaceDTO workspace);
+	@NotNull WorkspaceDTO create(@Valid @NotNull final WorkspaceDTO workspace);
 	
 	/**
 	 * Update workspace.
 	 * @param workspace
 	 * @return
 	 */
-	@NotNull WorkspaceDTO update(@Valid @NotNull WorkspaceDTO workspace);
+	@NotNull WorkspaceDTO update(@Valid @NotNull final WorkspaceDTO workspace);
 
 	/**
 	 * Add member to specified workspace.
 	 * @param workspaceId
 	 * @param userId
 	 */
-	void addMember(@NotNull Long workspaceId, @NotNull String username);
+	void addMember(@NotNull final Long workspaceId, @NotNull final String username);
 	
 	/**
 	 * Remove member from specified workspace.
 	 * @param workspaceId
 	 * @param userId
 	 */
-	void removeMember(@NotNull Long workspaceId, @NotNull String username);
+	void removeMember(@NotNull final Long workspaceId, @NotNull final String username);
 	
 	/**
 	 * Find all workspaces for specified owner.
 	 * @param ownerId
 	 * @return
 	 */
-	List<WorkspaceDTO> findByOwner(@NotNull String username);
+	List<WorkspaceDTO> findByOwner(@NotNull final String username);
 	
 	/**
 	 * Find all workspaces for member.
 	 * @param username
 	 * @return
 	 */
-	List<WorkspaceDTO> findByMember(@NotNull String username);
+	List<WorkspaceDTO> findByMember(@NotNull final String username);
 
 	/**
 	 * Find all workspaces where i'm owner or member. 
  	 * @param username
 	 * @return
 	 */
-	List<WorkspaceDTO> findAllMyWorkspaces(@NotNull String username);
+	List<WorkspaceDTO> findAllMyWorkspaces(@NotNull final String username);
 	
 	/**
 	 * Find workspace by type.
@@ -89,11 +89,11 @@ public interface WorkspaceService {
 	 * @param type
 	 * @return
 	 */
-	List<WorkspaceDTO> findByType(@NotNull WorkspaceQueryType queryType);
+	List<WorkspaceDTO> findByType(@NotNull final WorkspaceQueryType queryType);
 
 	/**
-	 * Delete whole workspace
+	 * Delete whole workspace.
 	 * @param taskId
 	 */
-	void delete(@NotNull Long workspaceId);
+	void delete(@NotNull final Long workspaceId);
 }

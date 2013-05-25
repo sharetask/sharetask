@@ -37,7 +37,8 @@ public class TaskAssigneePermission implements Permission {
 	private TaskRepository taskRepository;
 	
 	/* (non-Javadoc)
-	 * @see org.sharetask.security.Permission#isAllowed(org.springframework.security.core.Authentication, java.lang.Object)
+	 * @see org.sharetask.security.Permission#isAllowed(org.springframework.security.core.Authentication,
+	 * java.lang.Object)
 	 */
 	@Override
 	public boolean isAllowed(final Authentication authentication, final Object targetDomainObject) {
@@ -46,7 +47,7 @@ public class TaskAssigneePermission implements Permission {
 		Assert.isTrue(targetDomainObject instanceof Long);
 		final Long taskId = (Long) targetDomainObject;
 		final String userName = authentication.getName();
-		final Task task = taskRepository.read(taskId);
+		final Task task = this.taskRepository.read(taskId);
 		if (task.getAssignee().getUsername().equals(userName)) {
 			result = true;
 		} else {
@@ -55,7 +56,8 @@ public class TaskAssigneePermission implements Permission {
 		return result;
 	}
 	
-    private boolean isAuthenticated(Authentication authentication) {
-        return authentication != null && authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_USER"));
+    private boolean isAuthenticated(final Authentication authentication) {
+		return authentication != null
+				&& authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_USER"));
     }
 }

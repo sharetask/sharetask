@@ -94,23 +94,29 @@ public class User implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private Collection<Role> roles = new ArrayList<Role>();;
 	
-	@Getter
 	@CreatedDate
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "CREATED_ON", nullable = false)
 	private Date createdOn;
 	
-	@Getter
 	@LastModifiedDate
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "UPDATED_ON", nullable = false)
 	private Date updatedOn;
 
-	public User(String username) {
+	public User(final String username) {
 		this.username = username;
 	}
 
 	public Collection<Role> getRoles() {
 		return Collections.unmodifiableCollection(this.roles);
+	}
+	
+	public Date getCreatedOn() {
+		return this.createdOn == null ? null : (Date)this.createdOn.clone();
+	}
+	
+	public Date getUpdatedOn() {
+		return this.updatedOn == null ? null : (Date) this.updatedOn.clone();
 	}
 }

@@ -40,7 +40,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 @MappedSuperclass
 public abstract class BaseEntity extends BaseImmutableEntity {
 
-	@Getter
 	@LastModifiedDate
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "UPDATED_ON", nullable = false)
@@ -50,5 +49,9 @@ public abstract class BaseEntity extends BaseImmutableEntity {
 	@LastModifiedBy
 	@ManyToOne(cascade = { CascadeType.REFRESH }, optional = false)
 	@JoinColumn(name = "UPDATED_BY")
-	private User updatedBy; 
+	private User updatedBy;
+	
+	public Date getUpdatedOn() {
+		return this.updatedOn == null ? null : (Date)this.updatedOn.clone();
+	}
 }

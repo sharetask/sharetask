@@ -37,11 +37,11 @@ import org.springframework.validation.annotation.Validated;
 public interface TaskService {
 
 	/**
-	 * Create new task
+	 * Create new task.
 	 * @param task
 	 * @return
 	 */
-	@NotNull TaskDTO create(@NotNull Long workspaceId, @Valid @NotNull TaskDTO task);
+	@NotNull TaskDTO create(@NotNull final Long workspaceId, @Valid @NotNull final TaskDTO task);
 	
 	/**
 	 * Add comment to specified task.
@@ -49,7 +49,7 @@ public interface TaskService {
 	 * @param message
 	 * @return
 	 */
-	@NotNull TaskDTO addComment(@NotNull Long taskId, @NotNull String message);
+	@NotNull TaskDTO addComment(@NotNull final Long taskId, @NotNull final String message);
 	
 	/**
 	 * Find task by specified queue.
@@ -57,46 +57,46 @@ public interface TaskService {
 	 * @param taskQueue
 	 * @return
 	 */
-	@NotNull List<TaskDTO> findByQueue(@NotNull Long workspaceId, @NotNull TaskQueue taskQueue);
+	@NotNull List<TaskDTO> findByQueue(@NotNull final Long workspaceId, @NotNull final TaskQueue taskQueue);
 	
 	/**
 	 * Update task.
 	 * @param task
 	 * @return
 	 */
-	@NotNull TaskDTO update(@NotNull @Valid TaskDTO task);
+	@NotNull TaskDTO update(@NotNull @Valid final TaskDTO task);
 	
 	/**
 	 * Complete task.
 	 * Set state to FINISH and add FINISHED event to events.
 	 * @param taskId
 	 */
-	void complete(@NotNull Long taskId);
+	void complete(@NotNull final Long taskId);
 	
 	/**
 	 * Forward task to specified group.
 	 * @param taskId
 	 * @param assignee
 	 */
-	void forward(@NotNull Long taskId, @NotNull String assignee);
+	void forward(@NotNull final Long taskId, @NotNull final String assignee);
 	
 	/**
 	 * Get all comments for task.
 	 * @param taskId
 	 * @return
 	 */
-	List<CommentDTO> getComments(@NotNull Long taskId);
+	List<CommentDTO> getComments(@NotNull final Long taskId);
 
 	/**
 	 * Get all events for task.
 	 * @param taskId
 	 * @return
 	 */
-	List<EventDTO> getEvents(@NotNull Long taskId);
+	List<EventDTO> getEvents(@NotNull final Long taskId);
 	
 	/**
 	 * Delete task with specified id.
 	 * @param taskId
 	 */
-	void delete(@NotNull Long taskId);
+	void delete(@NotNull final Long taskId);
 }

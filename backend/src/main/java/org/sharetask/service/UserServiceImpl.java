@@ -18,6 +18,7 @@
  */
 package org.sharetask.service;
 
+import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -68,25 +69,25 @@ public class UserServiceImpl implements UserService {
 
 		private final User user;
 		
-		public UserDetailBuilder(User user) {
+		public UserDetailBuilder(final User user) {
 			this.user = user;
 		}
 
 		public UserDetails build() {
-			final String username = user.getUsername();
-			final String password = user.getPassword();
-			final String salt = user.getSalt();
-			final boolean enabled = user.isEnabled();
-			final boolean accountNonExpired = user.isEnabled();
-			final boolean credentialsNonExpired = user.isEnabled();
-			final boolean accountNonLocked = user.isEnabled();
+			final String username = this.user.getUsername();
+			final String password = this.user.getPassword();
+			final String salt = this.user.getSalt();
+			final boolean enabled = this.user.isEnabled();
+			final boolean accountNonExpired = this.user.isEnabled();
+			final boolean credentialsNonExpired = this.user.isEnabled();
+			final boolean accountNonLocked = this.user.isEnabled();
 
-			Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-			for (Role role : user.getRoles()) {
+			final Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+			for (final Role role : this.user.getRoles()) {
 				authorities.add(new SimpleGrantedAuthority(role.name()));
 			}
 
-			UserDetails userDetails = new UserDetailsImpl(username, password, salt,
+			final UserDetails userDetails = new UserDetailsImpl(username, password, salt,
 					enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
 			return userDetails;
 		}
@@ -94,7 +95,7 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-		User user = userRepository.findByUsername(username);
+		final User user = this.userRepository.findByUsername(username);
 		UserDetails userDetails = null;
 		if (user != null) {
 			userDetails = new UserDetailBuilder(user).build();
@@ -108,36 +109,38 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserDTO create(final UserDTO userDTO) {
 		log.info("Registering user: {}", userDTO);
-		User user = DTOConverter.convert(userDTO, User.class);
+		final User user = DTOConverter.convert(userDTO, User.class);
 		
-		if (userRepository.findByUsername(userDTO.getUsername()) != null) {
+		if (this.userRepository.findByUsername(userDTO.getUsername()) != null) {
 			throw new UserAlreadyExists();
 		}
 		
 		user.setEmail(user.getUsername());
-		Collection<Role> roles = new ArrayList<Role>();
+		final Collection<Role> roles = new ArrayList<Role>();
 		user.setEnabled(true);
 		
 		roles.add(Role.ROLE_USER);
 		user.setRoles(roles);
 		
 		// salt create
-		String salt = getSalt();
+		final String salt = getSalt();
 		user.setSalt(salt);
 		
-		UserDetails userDetails = new UserDetailsImpl(user.getUsername(), "password", salt, new ArrayList<GrantedAuthority>());
-		user.setPassword(passwordEncoder.encodePassword(userDTO.getPassword(), saltSource.getSalt(userDetails)));
-		user = userRepository.save(user);
-		return DTOConverter.convert(user,  UserDTO.class);
+		final UserDetails userDetails = new UserDetailsImpl(user.getUsername(), "password", salt,
+				new ArrayList<GrantedAuthority>());
+		user.setPassword(this.passwordEncoder.encodePassword(userDTO.getPassword(),
+				this.saltSource.getSalt(userDetails)));
+		final User storedUser = this.userRepository.save(user);
+		return DTOConverter.convert(storedUser,  UserDTO.class);
 	}
 	
 	private String getSalt() {
 		try {
-			MessageDigest mda = MessageDigest.getInstance("SHA-512");
-			String baseSalt = String.valueOf(System.currentTimeMillis()) + "dev1@shareta.sk";
-			byte [] digest = mda.digest(baseSalt.getBytes());
+			final MessageDigest mda = MessageDigest.getInstance("SHA-512");
+			final String baseSalt = System.currentTimeMillis() + "dev1@shareta.sk";
+			final byte [] digest = mda.digest(baseSalt.getBytes(Charset.forName("UTF-8")));
 			return new String(Hex.encode(digest));
-		} catch (NoSuchAlgorithmException e) {
+		} catch (final NoSuchAlgorithmException e) {
 			throw new UnsupportedOperationException(e);
 		}
 	}

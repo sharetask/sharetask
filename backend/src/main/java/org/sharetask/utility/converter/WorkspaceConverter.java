@@ -44,11 +44,11 @@ public class WorkspaceConverter implements CustomConverter {
 	                      final Class<?> sourceClass) {
 		Object result = null;
 		if (source instanceof WorkspaceDTO) {
-			final Workspace Workspace = convert((WorkspaceDTO) source, (Workspace) destination);
-			result = Workspace;
+			final Workspace workspace = convert((WorkspaceDTO) source, (Workspace) destination);
+			result = workspace;
 		} else if (source instanceof Workspace) {
-			final WorkspaceDTO Workspace = convert((Workspace) source);
-			result = Workspace;
+			final WorkspaceDTO workspace = convert((Workspace) source);
+			result = workspace;
 		} else if (source != null) {
 			throw new MappingException("Converter WorkspaceConverter used incorrectly. Arguments passed were:"
 					+ destination + " and " + source);

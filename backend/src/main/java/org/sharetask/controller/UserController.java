@@ -69,12 +69,11 @@ public class UserController {
 	@RequestMapping(value = "/login/status", method = RequestMethod.GET)
 	public void login(final HttpServletRequest request, final HttpServletResponse response) {
 		int resultCode = HttpStatus.UNAUTHORIZED.value();
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		log.info("authetication: {}", authentication);
-		if (authentication != null & authentication.isAuthenticated()) {
-			if (!authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ANONYMOUS"))) {
-				resultCode = HttpStatus.OK.value();
-			} 
+		if (authentication != null && authentication.isAuthenticated()
+				&& !authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ANONYMOUS"))) {
+			resultCode = HttpStatus.OK.value();
 		}
 		response.setStatus(resultCode);
 	}
@@ -82,10 +81,10 @@ public class UserController {
 	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void performLogin(@RequestBody final UserPassword login, final HttpServletRequest request, 
 			final HttpServletResponse response) {
-		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(login.getUsername(), 
+		final UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(login.getUsername(), 
 				login.getPassword());
 		try {
-			Authentication auth = authenticationManager.authenticate(token);
+			final Authentication auth = authenticationManager.authenticate(token);
 			SecurityContextHolder.getContext().setAuthentication(auth);
 			repository.saveContext(SecurityContextHolder.getContext(), request, response);
 			rememberMeServices.loginSuccess(request, response, auth);
@@ -98,7 +97,7 @@ public class UserController {
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public void performLogout(final HttpServletRequest request, final HttpServletResponse response) {
 		SecurityContextHolder.clearContext();
-		HttpSession session = request.getSession(false);
+		final HttpSession session = request.getSession(false);
 		if (session != null) {
 			session.invalidate();
 		}

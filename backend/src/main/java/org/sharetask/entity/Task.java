@@ -95,7 +95,6 @@ public class Task extends BaseEntity implements Serializable {
 	@Column(name = "DESCRIPTION", nullable = true, length = 256)
 	private String description;
 
-	@Getter	@Setter
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "DUE_DATE")
 	private Date dueDate;
@@ -121,22 +120,30 @@ public class Task extends BaseEntity implements Serializable {
 
 	@OneToMany(cascade = { CascadeType.ALL })
 	@JoinColumn(name = "TASK_ID", referencedColumnName = "ID", nullable = false)
-	private List<Event> events = new ArrayList<Event>();
+	private final List<Event> events = new ArrayList<Event>();
 
 	@OneToMany(cascade = { CascadeType.ALL })
 	@JoinColumn(name = "TASK_ID", referencedColumnName = "ID", nullable = false)
-	private List<Comment> comments = new ArrayList<Comment>();
+	private final List<Comment> comments = new ArrayList<Comment>();
 
 	public Task() {
 		this.setState(StateType.NEW);
 		this.addEvent(new Event(EventType.TASK_CREATED));
 	}
 	
+	public Date getDueDate() {
+		return this.dueDate == null ? null : (Date)this.dueDate.clone();
+	}
+	
+	public void setDueDate(final Date dueDate) {
+		this.dueDate = dueDate == null ? null : (Date)dueDate.clone();
+	}
+	
 	public List<Event> getEvents() {
 		return ImmutableList.copyOf(this.events);
 	}
 
-	public void addEvent(final Event event) {
+	public final void addEvent(final Event event) {
 		this.events.add(event);
 	}
 
@@ -144,7 +151,7 @@ public class Task extends BaseEntity implements Serializable {
 		return ImmutableList.copyOf(this.comments);
 	}
 
-	public void addComment(final Comment comment) {
+	public final void addComment(final Comment comment) {
 		this.comments.add(comment);
 	}
 
