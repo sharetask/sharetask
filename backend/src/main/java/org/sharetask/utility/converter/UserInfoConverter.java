@@ -33,7 +33,8 @@ public class UserInfoConverter implements CustomConverter {
 	 * @see org.dozer.CustomConverter#convert(java.lang.Object, java.lang.Object, java.lang.Class, java.lang.Class)
 	 */
 	@Override
-	public Object convert(final Object destination, final Object source, final Class<?> destClass, final Class<?> sourceClass) {
+	public Object convert(final Object destination, final Object source, final Class<?> destClass,
+			final Class<?> sourceClass) {
 		Object result = null;
 		if (source instanceof User) {
 			final UserInfoDTO teacher = convert((User) source);

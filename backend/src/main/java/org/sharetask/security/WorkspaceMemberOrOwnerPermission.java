@@ -38,7 +38,8 @@ public class WorkspaceMemberOrOwnerPermission implements Permission {
 	private WorkspaceRepository workspaceRepository;
 	
 	/* (non-Javadoc)
-	 * @see org.sharetask.security.Permission#isAllowed(org.springframework.security.core.Authentication, java.lang.Object)
+	 * @see org.sharetask.security.Permission#isAllowed(org.springframework.security.core.Authentication,
+	 * java.lang.Object)
 	 */
 	@Override
 	public boolean isAllowed(final Authentication authentication, final Object targetDomainObject) {
@@ -47,7 +48,7 @@ public class WorkspaceMemberOrOwnerPermission implements Permission {
 		Assert.isTrue(targetDomainObject instanceof Long);
 		final Long workspaceId = (Long) targetDomainObject;
 		final String userName = authentication.getName();
-		final Workspace workspace = workspaceRepository.read(workspaceId);
+		final Workspace workspace = this.workspaceRepository.read(workspaceId);
 		if (isWorkspaceOwner(workspace, userName)) {
 			result = true;
 		} else if (isWorkspaceMember(workspace, userName)) {
@@ -60,7 +61,7 @@ public class WorkspaceMemberOrOwnerPermission implements Permission {
 	
     private boolean isWorkspaceMember(final Workspace workspace, final String userName) {
     	boolean result = false;
-    	for (User member : workspace.getMembers()) {
+    	for (final User member : workspace.getMembers()) {
 			if (member.getUsername().equals(userName)) {
 				result = true;
 				break;
@@ -70,8 +71,9 @@ public class WorkspaceMemberOrOwnerPermission implements Permission {
 	}
 
 	private boolean isAuthenticated(final Authentication authentication) {
-        return authentication != null && authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_USER"));
-    }
+		return authentication != null
+				&& authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_USER"));
+	}
     
     private boolean isWorkspaceOwner(final Workspace workspace, final String userName) {
     	return workspace.getOwner().getUsername().equals(userName);

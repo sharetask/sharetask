@@ -40,7 +40,6 @@ import org.springframework.data.annotation.CreatedDate;
 @MappedSuperclass
 public abstract class BaseImmutableEntity {
 
-	@Getter
 	@CreatedDate
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "CREATED_ON", nullable = false)
@@ -50,5 +49,9 @@ public abstract class BaseImmutableEntity {
 	@CreatedBy
 	@ManyToOne(cascade = { CascadeType.REFRESH }, optional = false)
 	@JoinColumn(name = "CREATED_BY")
-	private User createdBy; 
+	private User createdBy;
+	
+	public Date getCreatedOn() {
+		return this.createdOn == null ? null : (Date)this.createdOn.clone();
+	}
 }

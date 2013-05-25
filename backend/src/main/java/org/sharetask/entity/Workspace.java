@@ -38,11 +38,11 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.sharetask.api.Constants;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import org.sharetask.api.Constants;
 
 /**
  * @author Michal Bocek
@@ -89,10 +89,12 @@ public class Workspace extends BaseEntity implements Serializable {
 	private User owner;
 
 	@OneToMany(mappedBy = "workspace", cascade = CascadeType.ALL)
-	private List<Task> tasks = new ArrayList<Task>();
+	private final List<Task> tasks = new ArrayList<Task>();
 
 	@OneToMany
-	@JoinTable(name = "WORKSPACE_MEMBER", joinColumns = { @JoinColumn(name = "WORKSPACE_ID", referencedColumnName = "ID") }, inverseJoinColumns = { @JoinColumn(name = "USER_NAME", referencedColumnName = "USER_NAME", unique = true) })
+	@JoinTable(name = "WORKSPACE_MEMBER", 
+		joinColumns = { @JoinColumn(name = "WORKSPACE_ID", referencedColumnName = "ID") }, 
+		inverseJoinColumns = { @JoinColumn(name = "USER_NAME", referencedColumnName = "USER_NAME", unique = true) })
 	private List<User> members = new ArrayList<User>();
 	
 	public Workspace() {
