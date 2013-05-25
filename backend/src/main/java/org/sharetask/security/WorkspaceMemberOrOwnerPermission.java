@@ -73,7 +73,7 @@ public class WorkspaceMemberOrOwnerPermission implements Permission {
         return authentication != null && authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_USER"));
     }
     
-    private boolean isWorkspaceOwner(Workspace workspace, String userName) {
+    private boolean isWorkspaceOwner(final Workspace workspace, final String userName) {
     	return workspace.getOwner().getUsername().equals(userName);
     }
 }

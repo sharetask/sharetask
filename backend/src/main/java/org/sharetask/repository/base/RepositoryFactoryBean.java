@@ -36,7 +36,7 @@ public class RepositoryFactoryBean<R extends JpaRepository<T, I>, T, I extends S
 		JpaRepositoryFactoryBean<R, T, I> {
 
 	@SuppressWarnings("rawtypes")
-	protected RepositoryFactorySupport createRepositoryFactory(EntityManager entityManager) {
+	protected RepositoryFactorySupport createRepositoryFactory(final EntityManager entityManager) {
 		return new CrudRepositoryFactory(entityManager);
 	}
 

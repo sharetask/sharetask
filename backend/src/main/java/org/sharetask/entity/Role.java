@@ -19,12 +19,10 @@
 package org.sharetask.entity;
 
 /**
+ * Role list.
  * @author Michal Bocek
  * @since 1.0.0
  */
 public enum Role {
-
 	ROLE_USER, ROLE_ADMINISTRATOR;
-	
-	public static String key = "role";
 }

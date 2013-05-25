@@ -62,7 +62,7 @@ public class AccessPermissionEvaluator implements PermissionEvaluator {
 
 	private boolean checkPermission(final Authentication authentication, final Object targetDomainObject, final String permissionKey) {
 		verifyPermissionIsDefined(permissionKey);
-		Permission permission = permissionNameToPermissionMap.get(permissionKey);
+		final Permission permission = permissionNameToPermissionMap.get(permissionKey);
 		return permission.isAllowed(authentication, targetDomainObject);
 	}
 

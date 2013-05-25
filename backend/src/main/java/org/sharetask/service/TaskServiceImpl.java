@@ -74,7 +74,7 @@ public class TaskServiceImpl implements TaskService {
 	@PreAuthorize("isAuthenticated() and hasPermission(#workspaceId, 'isWorkspaceMemberOrOwner')")
 	public TaskDTO create(final Long workspaceId, final TaskDTO task) {
 		final Workspace workspace = workspaceRepository.read(workspaceId);
-		Task taskEntity = DTOConverter.convert(task, Task.class);
+		final Task taskEntity = DTOConverter.convert(task, Task.class);
 		taskEntity.setWorkspace(workspace);
 		final Task storedTaskEntity = taskRepository.save(taskEntity);
 		return DTOConverter.convert(storedTaskEntity, TaskDTO.class);

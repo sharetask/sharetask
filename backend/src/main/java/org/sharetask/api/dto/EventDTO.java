@@ -34,9 +34,16 @@ public class EventDTO {
 	@Getter	@Setter
 	private UserDTO createdBy;
 
-	@Getter	@Setter
 	private Date createdOn;
 
 	@Getter	@Setter
 	private String message;
+	
+	public Date getCreatedOn() {
+		return this.createdOn == null ? null : (Date)this.createdOn.clone();
+	}
+	
+	public void setCreatedOn(final Date createdOn) {
+		this.createdOn = createdOn == null ? null : (Date)createdOn.clone();
+	}
 }

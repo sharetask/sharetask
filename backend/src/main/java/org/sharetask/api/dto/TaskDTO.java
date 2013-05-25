@@ -47,16 +47,13 @@ public class TaskDTO {
 	@Getter	@Setter
 	private UserInfoDTO createdBy;
 
-	@Getter	@Setter
 	private Date createdOn;
 
 	@Getter	@Setter
 	private UserInfoDTO updatedBy;
 
-	@Getter	@Setter
 	private Date updatedOn;
 
-	@Getter	@Setter
 	private Date dueDate;
 
 	@Getter	@Setter
@@ -76,4 +73,28 @@ public class TaskDTO {
 	
 	@Getter @Setter
 	private Integer commentsCount;
+	
+	public Date getCreatedOn() {
+		return this.createdOn == null ? null : (Date)this.createdOn.clone();
+	}
+	
+	public void setCreatedOn(final Date createdOn) {
+		this.createdOn = createdOn == null ? null : (Date)createdOn.clone();
+	}
+	
+	public Date getUpdatedOn() {
+		return this.updatedOn == null ? null : (Date)this.updatedOn.clone();
+	}
+	
+	public void setUpdatedOn(final Date updatedOn) {
+		this.updatedOn = updatedOn == null ? null : (Date)updatedOn.clone();
+	}
+	
+	public Date getDueDate() {
+		return this.dueDate == null ? null : (Date)this.dueDate.clone();
+	}
+	
+	public void setDueDate(final Date dueDate) {
+		this.dueDate = dueDate == null ? null : (Date)dueDate.clone();
+	}
 }

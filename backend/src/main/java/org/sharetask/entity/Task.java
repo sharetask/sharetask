@@ -136,7 +136,7 @@ public class Task extends BaseEntity implements Serializable {
 		return ImmutableList.copyOf(this.events);
 	}
 
-	public void addEvent(final Event event) {
+	public final void addEvent(final Event event) {
 		this.events.add(event);
 	}
 
@@ -144,7 +144,7 @@ public class Task extends BaseEntity implements Serializable {
 		return ImmutableList.copyOf(this.comments);
 	}
 
-	public void addComment(final Comment comment) {
+	public final void addComment(final Comment comment) {
 		this.comments.add(comment);
 	}
 

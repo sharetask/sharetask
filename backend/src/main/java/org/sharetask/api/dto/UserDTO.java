@@ -59,13 +59,27 @@ public class UserDTO {
 	@Getter
 	private final Collection<Role> roles = new ArrayList<Role>();
 	
-	@Getter @Setter
 	private Date createdOn;
 	
-	@Getter @Setter
 	private Date updatedOn;
 	
 	public void addRole(final Role role) {
-		roles.add(role);
+		this.roles.add(role);
+	}
+	
+	public Date getCreatedOn() {
+		return this.createdOn == null ? null : (Date)this.createdOn.clone();
+	}
+	
+	public Date getUpdatedOn() {
+		return this.updatedOn == null ? null : (Date)this.updatedOn.clone();
+	}
+	
+	public void setCreatedOn(final Date createdOn) {
+		this.createdOn = createdOn == null ? null : (Date)createdOn.clone();
+	}
+	
+	public void setUpdatedOn(final Date updatedOn) {
+		this.updatedOn = updatedOn == null ? null : (Date)updatedOn.clone();
 	}
 }

@@ -18,6 +18,7 @@
  */
 package org.sharetask.service;
 
+import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -135,7 +136,7 @@ public class UserServiceImpl implements UserService {
 		try {
 			final MessageDigest mda = MessageDigest.getInstance("SHA-512");
 			final String baseSalt = String.valueOf(System.currentTimeMillis()) + "dev1@shareta.sk";
-			final byte [] digest = mda.digest(baseSalt.getBytes());
+			final byte [] digest = mda.digest(baseSalt.getBytes(Charset.forName("UTF-8")));
 			return new String(Hex.encode(digest));
 		} catch (NoSuchAlgorithmException e) {
 			throw new UnsupportedOperationException(e);
