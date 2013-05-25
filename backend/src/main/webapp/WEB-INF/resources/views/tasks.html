@@ -230,8 +230,8 @@
 						<div style="margin-top:5px;">
 							<span class="label label-success" style="background:#656565;">Created on<br /><br /><strong>{{selectedTask.createdOn | date:'mediumDate'}}</strong></span>
 							<span class="label cursor-pointer" ng-class="{'priority-low':selectedTask.priority == 'LOW','priority-medium':selectedTask.priority == 'MEDIUM','priority-high':selectedTask.priority == 'HIGH'}" ng-click="changeTaskPriority()">Priority<br /><br /><strong>{{selectedTask.priority}}</strong></span>
-							<span class="label label-warning cursor-pointer" style="background:#656565;" b-datepicker="{{dateOptions}}" ng-model="selectedTask.dueDate" data-date-format="MMM d, y" data-date="{{selectedTask.dueDate}}">Due date<br /><br /><strong>{{selectedTask.dueDate | date:'mediumDate'}}</strong></span>
-							{{selectedTask.dueDate}}
+							<span class="label label-warning cursor-pointer" style="background:#656565;" ng-click="setView('TASK-DUE-DATE-PICKER')">Due date<br /><br /><strong>{{selectedTask.dueDate | date:'mediumDate'}}</strong></span>
+							<jqui-datepicker model="selectedTask.dueDate" selected="viewTaskDueDatePicker=false" options="datePickerOptions" ng-class="{'hidden':!viewTaskDueDatePicker}"></jqui-datepicker>
 						</div>
 						<!-- task tags -->
 						<div style="margin-top:5px;">

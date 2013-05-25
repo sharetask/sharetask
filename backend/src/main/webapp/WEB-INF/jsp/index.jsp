@@ -28,8 +28,9 @@
 		<meta charset="utf-8">
 		<title>ShareTa.sk</title>
 		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-${applicationVersion}/css/bootswatch.min.css" />">
-		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-${applicationVersion}/css/datepicker.css" />">
-		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-${applicationVersion}/css/bootstrap-timepicker.css" />">
+		<!--<link rel="stylesheet" type="text/css" href="<c:url value="/resources-${applicationVersion}/css/datepicker.css" />">-->
+		<!--<link rel="stylesheet" type="text/css" href="<c:url value="/resources-${applicationVersion}/css/bootstrap-timepicker.css" />">-->
+		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-${applicationVersion}/css/jquery.ui.datepicker.css" />">
 		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-${applicationVersion}/css/sharetask.css" />">
 	</head>
 	<body>
@@ -40,7 +41,7 @@
 		<script type="text/javascript" src="<c:url value="/resources-${applicationVersion}/scripts/vendor/jquery/jquery-1.9.1.min.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-${applicationVersion}/scripts/vendor/jquery/jquery-ui.min.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-${applicationVersion}/scripts/vendor/bootstrap/bootstrap.min.js" />"></script>
-		<script type="text/javascript" src="<c:url value="/resources-${applicationVersion}/scripts/vendor/bootstrap/bootstrap-datepicker.js" />"></script>
+		<!--<script type="text/javascript" src="<c:url value="/resources-${applicationVersion}/scripts/vendor/bootstrap/bootstrap-datepicker.js" />"></script>-->
 		<script type="text/javascript" src="<c:url value="/resources-${applicationVersion}/scripts/vendor/angular/angular.min.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-${applicationVersion}/scripts/vendor/angular/angular-resource.min.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-${applicationVersion}/scripts/vendor/angular/angular-ui.min.js" />"></script>

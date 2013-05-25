@@ -56,12 +56,14 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 	.controller('AppCtrl', ['$scope', '$location', '$rootScope', '$filter', 'Workspace', 'Task', 'User', 'LocalStorage', 'ErrorHandling', function($scope, $location, $rootScope, $filter, Workspace, Task, User, LocalStorage, ErrorHandling) {
 		
 		$scope.viewPanelTaskFilter = true;
+		$scope.viewDatePicker = false;
 		$scope.selectedWorkspace;
 		$scope.selectedTask;
 		$scope.taskEditMode = '';
 		$scope.filter = {'queue': 'MY_PENDING', 'tag': '', 'searchString': '', 'orderBy': 'TASK_DUE_DATE'};
 		$scope.tags = [];
-		$scope.dateOptions = {format: 'dd/mm/yyyy'};
+		//$scope.dateOptions = {format: 'dd/mm/yyyy'};
+		$scope.datePickerOptions = { dateFormat: "M d, yy" };
 		var taskFilter = $filter('filterTasks');
 		
 		/**
@@ -401,8 +403,19 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 		$scope.setView = function(element) {
 			console.log("Set view for element: %s", element);
 			if (element == 'PANEL-TASK-FILTER') {
-				$scope.viewPanelTaskFilter === true ? $scope.viewPanelTaskFilter = false : $scope.viewPanelTaskFilter = true;
+				//$scope.viewPanelTaskFilter === true ? $scope.viewPanelTaskFilter = false : $scope.viewPanelTaskFilter = true;
+				$scope.viewPanelTaskFilter = !$scope.viewPanelTaskFilter;
 				console.log("viewPanelTaskFilter set to: %s", $scope.viewPanelTaskFilter);
+			}
+			if (element == 'TASK-DUE-DATE-PICKER') {
+				$scope.viewTaskDueDatePicker = !$scope.viewTaskDueDatePicker;
+				$scope.viewTaskCreatedDatePicker = false;
+				console.log("viewTaskDueDatePicker set to: %s", $scope.viewTaskDueDatePicker);
+			}
+			if (element == 'TASK-CREATED-DATE-PICKER') {
+				$scope.viewTaskCreatedDatePicker = !$scope.viewTaskCreatedDatePicker;
+				$scope.viewTaskDueDatePicker = false;
+				console.log("viewTaskCreatedDatePicker set to: %s", $scope.viewTaskCreatedDatePicker);
 			}
 		};
 		

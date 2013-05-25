@@ -44,52 +44,99 @@ angular.module('shareTaskApp.directives', []).
 	    };
 	})
 	.directive('shortcut', function() {
-  return {
-    restrict: 'E',
-    replace: true,
-    scope: true,
-    link:    function postLink(scope, iElement, iAttrs){
-      jQuery(document).on('keypress', function(e){
-         scope.$apply(scope.keyPressed(e));
-       });
-    }
-  };
-})
-	.directive('bDatepicker', function() {
 		return {
-			require: '?ngModel',
-			restrict: 'A',
-			link: function($scope, element, attrs, controller) {
-				console.log("scope: %o, element: %o, attrs: %o, controller: %o", $scope, element, attrs, controller);
-				var updateModel;
-				updateModel = function(ev) {
-					element.datepicker('hide');
-					element.blur();
-					return $scope.$apply(function() {
-						console.log("controller: %o", controller);
-						console.log("date: %o", ev.date);
-						return controller.$setViewValue(ev.date);
-					});
-				};
-				if (controller != null) {
-					console.log("viewValue: %o", controller.$viewValue);
-					controller.$render = function() {
-						element.datepicker().data().datepicker.date = controller.$viewValue;
-						element.datepicker('setValue');
-						element.datepicker('update');
-						return controller.$viewValue;
+			restrict: 'E',
+			replace: true,
+			scope: true,
+			link: function postLink(scope, iElement, iAttrs) {
+				jQuery(document).on('keypress', function(e) {
+					scope.$apply(scope.keyPressed(e));
+				});
+			}
+		};
+	})
+	.directive('jquiDatepicker', function() {
+		return {
+			restrict: 'E',
+			link: function(scope, elm, attrs) {
+				// Lookup attrributes
+				var model = attrs.model || null;
+				var fnSelected = attrs.selected || null;
+				var show = attrs.show || null;
+				var options = attrs.options || null;
+
+				var baseOptions = scope.$eval(options) || null;
+				var dpCtrl = null;
+
+				// init model to null
+				scope[model] = null;
+
+				// return an object with options for the datepicker control
+				function buildOptions() {
+					var opts = baseOptions || {};
+					opts.onSelect = function(dateText, inst) { 
+						if (model)
+							scope.$apply(attrs.model+"='"+ dateText+"'");
+						if (fnSelected)
+							scope.$apply(fnSelected);
 					};
+
+					opts.onClose = function(dateText, inst) {
+						closePicker();
+					};
+
+					return opts;
 				}
-				return attrs.$observe('bDatepicker', function(value) {
-					var options;
-					options = {};
-					if (angular.isObject(value)) {
-						options = value;
+
+				// close picker control and remove any related DOM elements 
+				function closePicker() {
+					if (dpCtrl) {
+						dpCtrl.datepicker('destroy');
+						dpCtrl.remove();
+						dpCtrl = null;
 					}
-					if (typeof(value) === "string" && value.length > 0) {
-						options = angular.fromJson(value);
-					}
-					return element.datepicker(options).on('changeDate', updateModel);
+				}
+
+				// create and show datepicker control
+				function openPicker() {
+					elm.append('<div class="datepicker"></div>');
+					dpCtrl = elm.find('.datepicker');
+					dpCtrl.datepicker( buildOptions() );
+				}
+
+
+				// defines a watch on the show attribute, if one was provided.
+				// otherwise, always display the control
+				if (show) {
+					scope.$watch(show, function(show) {
+
+						if (show) {
+							openPicker();
+						}
+						else {
+							closePicker();
+						}
+					})
+				}
+				else {
+					openPicker();
+				}
+
+				if (options) {
+					scope.$watch(options, function(newOptions) {
+						if (dpCtrl) {
+							// update our baseOptions object
+							baseOptions = newOptions;
+							dpCtrl.datepicker('option', buildOptions());
+						}
+					});
+				}
+				
+				scope.$watch(model, function(newModel, oldModel) {
+					//console.log("new model, %o", new Date(newModel));
+					//console.log("old model, %o", oldModel);
+					//dpCtrl.setDate(new Date(newModel));
+					dpCtrl.datepicker("setDate", new Date(newModel));
 				});
 			}
 		};
