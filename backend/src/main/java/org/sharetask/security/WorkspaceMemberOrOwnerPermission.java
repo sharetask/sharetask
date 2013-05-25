@@ -58,7 +58,7 @@ public class WorkspaceMemberOrOwnerPermission implements Permission {
 		return result;
 	}
 	
-    private boolean isWorkspaceMember(Workspace workspace, String userName) {
+    private boolean isWorkspaceMember(final Workspace workspace, final String userName) {
     	boolean result = false;
     	for (User member : workspace.getMembers()) {
 			if (member.getUsername().equals(userName)) {
@@ -69,7 +69,7 @@ public class WorkspaceMemberOrOwnerPermission implements Permission {
 		return result;
 	}
 
-	private boolean isAuthenticated(Authentication authentication) {
+	private boolean isAuthenticated(final Authentication authentication) {
         return authentication != null && authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_USER"));
     }
     

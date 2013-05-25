@@ -48,7 +48,7 @@ public class AccessPermissionEvaluator implements PermissionEvaluator {
 	 */
 	@Override
 	@Transactional
-	public boolean hasPermission(final Authentication authentication, final Object targetDomainObject, Object permission) {
+	public boolean hasPermission(final Authentication authentication, final Object targetDomainObject, final Object permission) {
 		boolean hasPermission = false;
 		if (canHandle(authentication, targetDomainObject, permission)) {
 			hasPermission = checkPermission(authentication, targetDomainObject, (String) permission);
@@ -77,8 +77,8 @@ public class AccessPermissionEvaluator implements PermissionEvaluator {
 	 * @see org.springframework.security.access.PermissionEvaluator#hasPermission(org.springframework.security.core.Authentication, java.io.Serializable, java.lang.String, java.lang.Object)
 	 */
 	@Override
-	public boolean hasPermission(Authentication authentication, Serializable targetId, String targetType,
-			Object permission) {
+	public boolean hasPermission(final Authentication authentication, final Serializable targetId,
+			final String targetType, final Object permission) {
 		throw new PermissionNotDefinedException("Id and Class permissions are not supperted by "
 				+ this.getClass().toString());
 	}

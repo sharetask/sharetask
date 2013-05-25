@@ -57,13 +57,13 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 	@Override
 	@Transactional
 	public WorkspaceDTO create(final WorkspaceDTO workspace) {
-		Workspace workspaceEntity = DTOConverter.convert(workspace, Workspace.class);
+		final Workspace workspaceEntity = DTOConverter.convert(workspace, Workspace.class);
 		// load owner
-		User owner = userRepository.findOne(workspace.getOwner().getUsername());
+		final User owner = userRepository.findOne(workspace.getOwner().getUsername());
 		workspaceEntity.setOwner(owner);
 		// store workspace
-		workspaceEntity = workspaceRepository.save(workspaceEntity);
-		return DTOConverter.convert(workspaceEntity, WorkspaceDTO.class);
+		final Workspace storedWorkspaceEntity = workspaceRepository.save(workspaceEntity);
+		return DTOConverter.convert(storedWorkspaceEntity, WorkspaceDTO.class);
 	}
 
 	/* (non-Javadoc)
@@ -73,10 +73,10 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 	@Transactional
 	@PreAuthorize("isAuthenticated() and hasPermission(#workspace.id, 'isWorkspaceOwner')")
 	public WorkspaceDTO update(final WorkspaceDTO workspace) {
-		Workspace workspaceEntity = workspaceRepository.read(workspace.getId());
+		final Workspace workspaceEntity = workspaceRepository.read(workspace.getId());
 		DTOConverter.convert(workspace, workspaceEntity);
-		workspaceEntity = workspaceRepository.save(workspaceEntity);
-		return DTOConverter.convert(workspaceEntity, WorkspaceDTO.class);
+		final Workspace storedWorkspaceEntity = workspaceRepository.save(workspaceEntity);
+		return DTOConverter.convert(storedWorkspaceEntity, WorkspaceDTO.class);
 	}
 
 	/* (non-Javadoc)

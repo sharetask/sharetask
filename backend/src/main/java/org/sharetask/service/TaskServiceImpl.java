@@ -76,8 +76,8 @@ public class TaskServiceImpl implements TaskService {
 		final Workspace workspace = workspaceRepository.read(workspaceId);
 		Task taskEntity = DTOConverter.convert(task, Task.class);
 		taskEntity.setWorkspace(workspace);
-		taskEntity = taskRepository.save(taskEntity);
-		return DTOConverter.convert(taskEntity, TaskDTO.class);
+		final Task storedTaskEntity = taskRepository.save(taskEntity);
+		return DTOConverter.convert(storedTaskEntity, TaskDTO.class);
 	}
 
 	/* (non-Javadoc)
@@ -129,11 +129,11 @@ public class TaskServiceImpl implements TaskService {
 	@Override
 	@Transactional
 	@PreAuthorize("isAuthenticated() and hasPermission(#task.id, 'isTaskAssignee')")
-	public TaskDTO update(TaskDTO task) {
-		Task entity = taskRepository.findOne(task.getId());
+	public TaskDTO update(final TaskDTO task) {
+		final Task entity = taskRepository.findOne(task.getId());
 		DTOConverter.convert(task, entity);
-		entity = taskRepository.save(entity);
-		return DTOConverter.convert(entity, TaskDTO.class);
+		final Task storedEntity = taskRepository.save(entity);
+		return DTOConverter.convert(storedEntity, TaskDTO.class);
 	}
 	
 	/* (non-Javadoc)
@@ -142,7 +142,7 @@ public class TaskServiceImpl implements TaskService {
 	@Override
 	@Transactional
 	@PreAuthorize("isAuthenticated() and hasPermission(#taskId, 'isTaskAssignee')")
-	public void complete(Long taskId) {
+	public void complete(final Long taskId) {
 		final Task entity = taskRepository.findOne(taskId);
 		entity.finish();
 		taskRepository.save(entity);
@@ -153,7 +153,7 @@ public class TaskServiceImpl implements TaskService {
 	 */
 	@Override
 	@PreAuthorize("isAuthenticated() and hasPermission(#taskId, 'isTaskAssignee')")
-	public void forward(Long taskId, String assignee) {
+	public void forward(final Long taskId, final String assignee) {
 		final Task task = taskRepository.read(taskId);
 
 		final User assigneeUser = userRepository.read(assignee);

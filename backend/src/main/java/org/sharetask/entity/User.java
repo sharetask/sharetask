@@ -106,7 +106,7 @@ public class User implements Serializable {
 	@Column(name = "UPDATED_ON", nullable = false)
 	private Date updatedOn;
 
-	public User(String username) {
+	public User(final String username) {
 		this.username = username;
 	}
 

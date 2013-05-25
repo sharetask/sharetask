@@ -44,13 +44,13 @@ public class RepositoryFactoryBean<R extends JpaRepository<T, I>, T, I extends S
 
 		private EntityManager entityManager;
 
-		public CrudRepositoryFactory(EntityManager entityManager) {
+		public CrudRepositoryFactory(final EntityManager entityManager) {
 			super(entityManager);
 			this.entityManager = entityManager;
 		}
 
 		@SuppressWarnings("unchecked")
-		protected Object getTargetRepository(RepositoryMetadata metadata) {
+		protected Object getTargetRepository(final RepositoryMetadata metadata) {
 			if (BaseJpaRepository.class.isAssignableFrom(metadata.getRepositoryInterface())) {
 				return new BaseJpaRepositoryImpl<T, I>((Class<T>) metadata.getDomainType(), entityManager);
 			} else {
@@ -58,7 +58,7 @@ public class RepositoryFactoryBean<R extends JpaRepository<T, I>, T, I extends S
 			}
 		}
 
-		protected Class<?> getRepositoryBaseClass(RepositoryMetadata metadata) {
+		protected Class<?> getRepositoryBaseClass(final RepositoryMetadata metadata) {
 			if (BaseJpaRepository.class.isAssignableFrom(metadata.getRepositoryInterface())) {
 				return BaseJpaRepository.class;
 			} else {

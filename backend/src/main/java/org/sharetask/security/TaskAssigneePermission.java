@@ -55,7 +55,7 @@ public class TaskAssigneePermission implements Permission {
 		return result;
 	}
 	
-    private boolean isAuthenticated(Authentication authentication) {
+    private boolean isAuthenticated(final Authentication authentication) {
         return authentication != null && authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_USER"));
     }
 }
