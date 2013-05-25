@@ -37,6 +37,9 @@
 			<column name="PASSWORD" type="VARCHAR(128)" remarks="Encoded password">
 				<constraints nullable="false" />
 			</column>
+			<column name="SALT" type="VARCHAR(128)" remarks="Generated salt password">
+				<constraints nullable="false" />
+			</column>
 			<column name="CREATED_ON" type="DATE" remarks="Date when record was creaded">
 				<constraints nullable="false" />
 			</column>

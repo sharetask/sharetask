@@ -41,13 +41,13 @@ public class WorkspaceMemberOrOwnerPermission implements Permission {
 	 * @see org.sharetask.security.Permission#isAllowed(org.springframework.security.core.Authentication, java.lang.Object)
 	 */
 	@Override
-	public boolean isAllowed(Authentication authentication, Object targetDomainObject) {
+	public boolean isAllowed(final Authentication authentication, final Object targetDomainObject) {
 		boolean result;
 		Assert.isTrue(isAuthenticated(authentication), "User is not authenticated!");
 		Assert.isTrue(targetDomainObject instanceof Long);
-		Long workspaceId = (Long) targetDomainObject;
-		String userName = authentication.getName();
-		Workspace workspace = workspaceRepository.read(workspaceId);
+		final Long workspaceId = (Long) targetDomainObject;
+		final String userName = authentication.getName();
+		final Workspace workspace = workspaceRepository.read(workspaceId);
 		if (isWorkspaceOwner(workspace, userName)) {
 			result = true;
 		} else if (isWorkspaceMember(workspace, userName)) {

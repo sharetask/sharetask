@@ -38,7 +38,6 @@ import org.springframework.security.authentication.dao.SaltSource;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**
@@ -92,9 +91,6 @@ public class UserServiceTest extends DbUnitTest {
 		org.sharetask.entity.User user = userRepository.findByUsername(name);
 		assertEquals(user.getEmail(), userDTO.getUsername());
 		assertEquals(user.getName(), userDTO.getName());
-		String password = passwordEncoder.encodePassword("password", 
-				saltSource.getSalt(new User(name, "password", new ArrayList<GrantedAuthority>())));
-		assertEquals(user.getPassword(), password);
 		assertEquals(user.getSurName(), userDTO.getSurName());
 		assertEquals(user.getUsername(), userDTO.getUsername());
 		assertTrue(user.getRoles().size() == 1);

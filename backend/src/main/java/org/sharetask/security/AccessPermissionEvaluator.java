@@ -38,7 +38,7 @@ public class AccessPermissionEvaluator implements PermissionEvaluator {
 	protected AccessPermissionEvaluator() {
 	}
 
-	public AccessPermissionEvaluator(Map<String, Permission> permissionNameToPermissionMap) {
+	public AccessPermissionEvaluator(final Map<String, Permission> permissionNameToPermissionMap) {
 		Assert.notNull(permissionNameToPermissionMap);
 		this.permissionNameToPermissionMap = permissionNameToPermissionMap;
 	}
@@ -48,7 +48,7 @@ public class AccessPermissionEvaluator implements PermissionEvaluator {
 	 */
 	@Override
 	@Transactional
-	public boolean hasPermission(Authentication authentication, Object targetDomainObject, Object permission) {
+	public boolean hasPermission(final Authentication authentication, final Object targetDomainObject, Object permission) {
 		boolean hasPermission = false;
 		if (canHandle(authentication, targetDomainObject, permission)) {
 			hasPermission = checkPermission(authentication, targetDomainObject, (String) permission);
@@ -56,17 +56,17 @@ public class AccessPermissionEvaluator implements PermissionEvaluator {
 		return hasPermission;
 	}
 
-	private boolean canHandle(Authentication authentication, Object targetDomainObject, Object permission) {
+	private boolean canHandle(final Authentication authentication, final Object targetDomainObject, final Object permission) {
 		return targetDomainObject != null && authentication != null && permission instanceof String;
 	}
 
-	private boolean checkPermission(Authentication authentication, Object targetDomainObject, String permissionKey) {
+	private boolean checkPermission(final Authentication authentication, final Object targetDomainObject, final String permissionKey) {
 		verifyPermissionIsDefined(permissionKey);
 		Permission permission = permissionNameToPermissionMap.get(permissionKey);
 		return permission.isAllowed(authentication, targetDomainObject);
 	}
 
-	private void verifyPermissionIsDefined(String permissionKey) {
+	private void verifyPermissionIsDefined(final String permissionKey) {
 		if (!permissionNameToPermissionMap.containsKey(permissionKey)) {
 			throw new PermissionNotDefinedException("No permission with key " + permissionKey + " is defined in "
 					+ this.getClass().toString());

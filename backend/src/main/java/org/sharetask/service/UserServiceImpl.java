@@ -18,6 +18,8 @@
  */
 package org.sharetask.service;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -30,6 +32,7 @@ import org.sharetask.api.dto.UserDTO;
 import org.sharetask.entity.Role;
 import org.sharetask.entity.User;
 import org.sharetask.repository.UserRepository;
+import org.sharetask.security.UserDetailsImpl;
 import org.sharetask.utility.DTOConverter;
 import org.springframework.security.authentication.dao.SaltSource;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
@@ -37,6 +40,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.codec.Hex;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -71,6 +75,7 @@ public class UserServiceImpl implements UserService {
 		public UserDetails build() {
 			final String username = user.getUsername();
 			final String password = user.getPassword();
+			final String salt = user.getSalt();
 			final boolean enabled = user.isEnabled();
 			final boolean accountNonExpired = user.isEnabled();
 			final boolean credentialsNonExpired = user.isEnabled();
@@ -81,7 +86,7 @@ public class UserServiceImpl implements UserService {
 				authorities.add(new SimpleGrantedAuthority(role.name()));
 			}
 
-			UserDetails userDetails = new org.springframework.security.core.userdetails.User(username, password,
+			UserDetails userDetails = new UserDetailsImpl(username, password, salt,
 					enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
 			return userDetails;
 		}
@@ -115,9 +120,25 @@ public class UserServiceImpl implements UserService {
 		
 		roles.add(Role.ROLE_USER);
 		user.setRoles(roles);
-		UserDetails userDetails = new org.springframework.security.core.userdetails.User(user.getUsername(), "password", new ArrayList<GrantedAuthority>());
+		
+		// salt create
+		String salt = getSalt();
+		user.setSalt(salt);
+		
+		UserDetails userDetails = new UserDetailsImpl(user.getUsername(), "password", salt, new ArrayList<GrantedAuthority>());
 		user.setPassword(passwordEncoder.encodePassword(userDTO.getPassword(), saltSource.getSalt(userDetails)));
 		user = userRepository.save(user);
 		return DTOConverter.convert(user,  UserDTO.class);
+	}
+	
+	private String getSalt() {
+		try {
+			MessageDigest mda = MessageDigest.getInstance("SHA-512");
+			String baseSalt = String.valueOf(System.currentTimeMillis()) + "dev1@shareta.sk";
+			byte [] digest = mda.digest(baseSalt.getBytes());
+			return new String(Hex.encode(digest));
+		} catch (NoSuchAlgorithmException e) {
+			throw new UnsupportedOperationException(e);
+		}
 	}
 }

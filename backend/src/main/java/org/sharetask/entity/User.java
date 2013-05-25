@@ -83,6 +83,10 @@ public class User implements Serializable {
 	@Column(name = "EMAIL", nullable = false, length = 255)
 	private String email;
 
+	@Getter @Setter
+	@Column(name = "SALT", nullable = false, length = 64)
+	private String salt;
+	
 	@Setter
 	@ElementCollection(targetClass = Role.class)
 	@JoinTable(name = "USER_ROLE", joinColumns = @JoinColumn(name = "USER_NAME"))

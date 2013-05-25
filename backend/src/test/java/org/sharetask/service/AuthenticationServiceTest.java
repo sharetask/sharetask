@@ -21,6 +21,9 @@ package org.sharetask.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.util.ArrayList;
 
 import javax.inject.Inject;
@@ -30,6 +33,7 @@ import org.sharetask.api.UserService;
 import org.sharetask.data.DbUnitTest;
 import org.sharetask.entity.Role;
 import org.sharetask.repository.UserRepository;
+import org.sharetask.security.UserDetailsImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -39,6 +43,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.codec.Hex;
 
 /**
  * @author Michal Bocek
@@ -60,17 +65,17 @@ public class AuthenticationServiceTest extends DbUnitTest {
 	
 	@Inject
 	private AuthenticationManager authenticationManager;
-	
+
 	public AuthenticationServiceTest() {
 		this.enableSecurity = false;
 	}
 	
 	@Test
-	public void testPasswordEncoding() {
+	public void testPasswordEncoding() throws NoSuchAlgorithmException, NoSuchProviderException {
 		ArrayList<GrantedAuthority> list = new ArrayList<GrantedAuthority>();
 		list.add(new SimpleGrantedAuthority(Role.ROLE_USER.name()));
 		list.add(new SimpleGrantedAuthority(Role.ROLE_ADMINISTRATOR.name()));
-		User u = new User("dev1@shareta.sk", "password", list);
+		User u = new UserDetailsImpl("dev1@shareta.sk", "password", "6ef7a5723d302c64d65d02f5c6662dc61bebec930ea300620bc9ff7f12b49fda11e2e57933526fd3b73840b0693a7cf4abe05fbfe16223d4bd42eb3043cf5d24", list);
 		String password = passwordEncoder.encodePassword("password", saltSource.getSalt(u));
 		org.sharetask.entity.User user = userRepository.findOne(u.getUsername());
 		assertEquals(password, user.getPassword());
@@ -80,5 +85,24 @@ public class AuthenticationServiceTest extends DbUnitTest {
 	    } catch (BadCredentialsException e) {
 	    	fail("Problem with authentication: user/password");
 	    }
+	}
+	
+	@Test
+	public void testSaltPasswordEncoder() throws NoSuchAlgorithmException {
+		String username = "test3@test.com";
+		String password = "password";
+		ArrayList<GrantedAuthority> list = new ArrayList<GrantedAuthority>();
+		list.add(new SimpleGrantedAuthority(Role.ROLE_USER.name()));
+		list.add(new SimpleGrantedAuthority(Role.ROLE_ADMINISTRATOR.name()));
+		MessageDigest mda = MessageDigest.getInstance("SHA-512");
+		String baseSalt = String.valueOf(System.currentTimeMillis()) + "dev1@shareta.sk";
+		byte [] digest = mda.digest(baseSalt.getBytes());
+		String salt = new String(Hex.encode(digest));
+		User u = new UserDetailsImpl(username, password, salt, list);
+		String passwordEncoded = passwordEncoder.encodePassword("password", saltSource.getSalt(u));
+		System.out.println("User name: " + username);
+		System.out.println("Password: " + password);
+		System.out.println("Salt: " + salt);
+		System.out.println("Encoded password: " + passwordEncoded);
 	}
 }

@@ -33,7 +33,7 @@ public class PermissionNotDefinedException extends RuntimeException {
 		super();
 	}
 
-	public PermissionNotDefinedException(String message) {
+	public PermissionNotDefinedException(final String message) {
 		super(message);
 	}
 }
