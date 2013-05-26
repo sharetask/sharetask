@@ -402,15 +402,21 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 				console.log("viewPanelTaskFilter set to: %s", $scope.viewPanelTaskFilter);
 			}
 			if (element == 'TASK-DUE-DATE-PICKER') {
+				if ($scope.selectedTask.state == 'FINISHED') {
+					console.log("Task (id: %s) already completed", $scope.selectedTask.id);
+					return;
+				}
 				$scope.viewTaskDueDatePicker = !$scope.viewTaskDueDatePicker;
 				$scope.viewTaskCreatedDatePicker = false;
 				console.log("viewTaskDueDatePicker set to: %s", $scope.viewTaskDueDatePicker);
 			}
+			/*
 			if (element == 'TASK-CREATED-DATE-PICKER') {
 				$scope.viewTaskCreatedDatePicker = !$scope.viewTaskCreatedDatePicker;
 				$scope.viewTaskDueDatePicker = false;
 				console.log("viewTaskCreatedDatePicker set to: %s", $scope.viewTaskCreatedDatePicker);
 			}
+			*/
 		};
 		
 		/**
