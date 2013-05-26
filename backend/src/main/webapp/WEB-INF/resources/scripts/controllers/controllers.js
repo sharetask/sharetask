@@ -365,19 +365,13 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 			var task = $.grep($scope.tasks, function(e) {
 				return e.id == taskId;
 			});
-			console.log("task: %o", task);
 			// remove tag from task
-			var newTags = new Array();
-			angular.forEach(task.tags, function(_tag) {
-				if (_tag != tag) {
-					newTags.push(_tag);
-				}
+			var newTags = $.grep(task[0].tags, function(e) {
+				console.log("%s : %o", tag, e);
+				return e != tag;
 			});
-			task.tags = newTags;
-			console.log("new tags: %o", task.tags);
-			
-			
-			
+			task[0].tags = newTags;
+			console.log("new tags: %o", task[0].tags);
 		};
 		
 		/**
