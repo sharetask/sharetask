@@ -11,4 +11,5 @@
      <import resource="classpath:/spring/transaction.xml"/>
      <import resource="classpath:/spring/security.xml"/>
      <import resource="classpath:/spring/mail.xml"/>
+     <import resource="classpath:/spring/template.xml"/>
 </beans>
