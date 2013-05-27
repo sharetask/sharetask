@@ -54,7 +54,8 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({"classpath:spring/transaction.xml", "classpath:spring/security.xml", "classpath:spring/applicationConfig.xml"})
+@ContextConfiguration({ "classpath:spring/mail.xml", "classpath:spring/transaction.xml",
+		"classpath:spring/security.xml", "classpath:spring/applicationConfig.xml" })
 public class DbUnitTest {
 
 	@PersistenceContext(name = "entityManagerFactory")
@@ -71,9 +72,9 @@ public class DbUnitTest {
 		DatabaseOperation.DELETE.execute(getConnection(), getDataSet());
 		DatabaseOperation.INSERT.execute(getConnection(), getDataSet());
 		// login
-		if (enableSecurity) {
-		    Authentication authentication = new UsernamePasswordAuthenticationToken("test1@test.com", "password");
-	    	Authentication authenticate = authenticationManager.authenticate(authentication);
+		if (this.enableSecurity) {
+		    final Authentication authentication = new UsernamePasswordAuthenticationToken("test1@test.com", "password");
+	    	final Authentication authenticate = this.authenticationManager.authenticate(authentication);
 	    	SecurityContextHolder.getContext().setAuthentication(authenticate);
 		}
 	}
@@ -85,7 +86,7 @@ public class DbUnitTest {
 
 	private IDatabaseConnection getConnection() throws DatabaseUnitException {
 		// get connection
-		final SessionImpl session = (SessionImpl) entityManager.getDelegate();
+		final SessionImpl session = (SessionImpl) this.entityManager.getDelegate();
 		final Connection con = session.connection(); // NOPMD
 		//DatabaseMetaData databaseMetaData = con.getMetaData();
 		final IDatabaseConnection connection = new DatabaseConnection(con);

@@ -9,7 +9,15 @@
 		<param-name>contextConfigLocation</param-name>
 		<param-value>/WEB-INF/applicationContext.xml</param-value>
 	</context-param>
-
+	
+	<!-- ================================================================= -->
+	<!-- Default spring profile: production                                -->
+	<!-- ================================================================= -->
+	<context-param>
+	   <param-name>spring.profiles.default</param-name>
+	   <param-value>prod</param-value>
+	</context-param>
+	
 	<!-- ================================================================= -->
 	<!-- Security filter                                                   -->
 	<!-- ================================================================= -->

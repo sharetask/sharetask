@@ -23,6 +23,10 @@
 				<class-a>org.sharetask.entity.User</class-a>
 				<class-b>org.sharetask.api.dto.UserDTO</class-b>
 			</converter>
+			<converter type="org.sharetask.utility.converter.UserInfoConverter">
+				<class-a>org.sharetask.entity.User</class-a>
+				<class-b>org.sharetask.api.dto.UserInfoDTO</class-b>
+			</converter>
 		</custom-converters>
 	</configuration>
 </mappings> 

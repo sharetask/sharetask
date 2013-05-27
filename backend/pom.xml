@@ -73,6 +73,9 @@
 						<exclude>**/*IT.java</exclude>
 					</excludes>
 					<forkMode>once</forkMode>
+					<systemPropertyVariables>
+						<spring.profiles.active>${spring.profile}</spring.profiles.active>
+					</systemPropertyVariables>
 					<!-- reportFormat>xml</reportFormat-->
 				</configuration>
 			</plugin>
@@ -97,6 +100,9 @@
 						<contextPath>/sharetask</contextPath>
 					</webAppConfig>
 					<webAppSourceDirectory>${basedir}/src/main/webapp</webAppSourceDirectory>
+					<systemProperties>
+						<spring.profiles.active>${spring.profile}</spring.profiles.active>
+					</systemProperties> 
 				</configuration>
 			</plugin>
 			<plugin>
@@ -192,6 +198,15 @@
 
 	<profiles>
 		<profile>
+			<id>dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<spring.profile>dev</spring.profile>
+			</properties>
+		</profile>
+		<profile>
 			<id>integration</id>
 			<build>
 				<plugins>
@@ -218,6 +233,7 @@
 								<!-- <log>cargo.log</log> -->
 								<systemProperties>
 									<definition.database.jdbc.url>jdbc:hsqldb:file:/tmp/db-integration/sharetask;shutdown=true</definition.database.jdbc.url>
+									<spring.profiles.active>${spring.profile}</spring.profiles.active>
 								</systemProperties>
 							</container>
 							<type>existing</type>
@@ -270,6 +286,7 @@
 			</build>
 			<properties>
 				<definition.database.jdbc.url>jdbc:hsqldb:file:/tmp/db-integration/sharetask;shutdown=true</definition.database.jdbc.url>
+				<spring.profile>integration</spring.profile>
 			</properties>
 		</profile>
 	</profiles>
@@ -388,6 +405,15 @@
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.activation</groupId>
+			<artifactId>activation</artifactId>
 		</dependency>
 		
 		<dependency>
