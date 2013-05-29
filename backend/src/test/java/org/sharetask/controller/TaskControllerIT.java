@@ -19,6 +19,9 @@
 package org.sharetask.controller;
 
 import java.io.IOException;
+import java.util.TimeZone;
+
+import lombok.extern.slf4j.Slf4j;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpDelete;
@@ -36,6 +39,7 @@ import org.springframework.http.HttpStatus;
  * @author Michal Bocek
  * @since 1.0.0
  */
+@Slf4j
 public class TaskControllerIT extends IntegrationTest {
 
 	private static final String TASK_PATH = "/workspace/1/task";
@@ -88,12 +92,16 @@ public class TaskControllerIT extends IntegrationTest {
     
     @Test
     public void testCreateTask() throws IOException {
+    	// show timezone
+        System.out.println("Default time zone name: " + TimeZone.getDefault().getDisplayName());  
+        System.out.println("Default time zone id: " + TimeZone.getDefault().getID());  
+    	
         //given
         HttpPost httpPost = new HttpPost(URL_TASK );
         httpPost.addHeader(new BasicHeader("Content-Type", "application/json"));
         StringEntity httpEntity = new StringEntity("{\"title\":\"TestTask\"," +
         		                                     "\"priority\":\"MEDIUM\"," +
-        		                                     "\"dueDate\":\"2013-01-01\"}");
+        		                                     "\"dueDate\":\"2013-01-01T01:10:53Z\"}");
         httpPost.setEntity(httpEntity);
         
         //when

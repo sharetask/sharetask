@@ -40,10 +40,10 @@
 			<column name="SALT" type="VARCHAR(128)" remarks="Generated salt password">
 				<constraints nullable="false" />
 			</column>
-			<column name="CREATED_ON" type="DATE" remarks="Date when record was creaded">
+			<column name="CREATED_ON" type="DATETIME" remarks="Date when record was creaded">
 				<constraints nullable="false" />
 			</column>
-			<column name="UPDATED_ON" type="DATE" remarks="Date when record was updated">
+			<column name="UPDATED_ON" type="DATETIME" remarks="Date when record was updated">
 				<constraints nullable="false" />
 			</column>
 		</createTable>
@@ -85,7 +85,7 @@
 			<column name="CREATED_BY" type="VARCHAR(255)" remarks="User indentifiert who created record">
 				<constraints nullable="false" />
 			</column>
-			<column name="CREATED_ON" type="DATE" remarks="Date when record was creaded">
+			<column name="CREATED_ON" type="DATETIME" remarks="Date when record was creaded">
 				<constraints nullable="false" />
 			</column>
 			<column name="TASK_ID" type="BIGINT" remarks="Reference to task id">
@@ -105,7 +105,7 @@
 			<column name="CREATED_BY" type="VARCHAR(255)" remarks="User indentifiert who created record">
 				<constraints nullable="false" />
 			</column>
-			<column name="CREATED_ON" type="DATE" remarks="Date when record was creaded">
+			<column name="CREATED_ON" type="DATETIME" remarks="Date when record was creaded">
 				<constraints nullable="false" />
 			</column>
 			<column name="TYPE" type="VARCHAR(50)" remarks="Event type">
@@ -130,20 +130,20 @@
 			<column name="CREATED_BY" type="VARCHAR(255)" remarks="User indentifiert who created record">
 				<constraints nullable="false" />
 			</column>
-			<column name="CREATED_ON" type="DATE" remarks="Date when record was creaded">
+			<column name="CREATED_ON" type="DATETIME" remarks="Date when record was creaded">
 				<constraints nullable="false" />
 			</column>
 			<column name="UPDATED_BY" type="VARCHAR(255)" remarks="User indentifiert who updated record">
 				<constraints nullable="false" />
 			</column>
-			<column name="UPDATED_ON" type="DATE" remarks="Date when record was updated">
+			<column name="UPDATED_ON" type="DATETIME" remarks="Date when record was updated">
 				<constraints nullable="false" />
 			</column>
 			<column name="TITLE" type="VARCHAR(100)" remarks="Title">
 				<constraints nullable="false" />
 			</column>
 			<column name="DESCRIPTION" type="VARCHAR(2000)" remarks="Title" />
-			<column name="DUE_DATE" type="DATE" remarks="Expiration date">
+			<column name="DUE_DATE" type="DATETIME" remarks="Expiration date">
 				<constraints nullable="true" />
 			</column>
 			<column name="PRIORITY" type="VARCHAR(50)" remarks="Task priority">
@@ -181,13 +181,13 @@
 			<column name="CREATED_BY" type="VARCHAR(255)" remarks="User indentifiert who created record">
 				<constraints nullable="false" />
 			</column>
-			<column name="CREATED_ON" type="DATE" remarks="Date when record was creaded">
+			<column name="CREATED_ON" type="DATETIME" remarks="Date when record was creaded">
 				<constraints nullable="false" />
 			</column>
 			<column name="UPDATED_BY" type="VARCHAR(255)" remarks="User indentifiert who updated record">
 				<constraints nullable="false" />
 			</column>
-			<column name="UPDATED_ON" type="DATE" remarks="Date when record was updated">
+			<column name="UPDATED_ON" type="DATETIME" remarks="Date when record was updated">
 				<constraints nullable="false" />
 			</column>
 			<column name="TITLE" type="VARCHAR(100)" remarks="Title">
