@@ -33,9 +33,7 @@ import org.sharetask.api.dto.UserDTO;
 import org.sharetask.api.dto.UserInfoDTO;
 import org.sharetask.data.DbUnitTest;
 import org.sharetask.entity.Role;
-import org.sharetask.entity.User;
 import org.sharetask.repository.UserRepository;
-import org.sharetask.utility.DTOConverter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.SaltSource;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
@@ -101,13 +99,13 @@ public class UserServiceTest extends DbUnitTest {
 	
 	@Test
 	public void testUpdateUser() {
-		final User user = this.userRepository.read("dev1@shareta.sk");
-		final UserDTO userDTO = DTOConverter.convert(user, UserDTO.class);
-		userDTO.setName("Samuel");
-		userDTO.setSurName("Michaelson");
-		final UserDTO updatedUser = this.userService.update(userDTO);
-		assertEquals(updatedUser.getName(), userDTO.getName());
-		assertEquals(updatedUser.getSurName(), userDTO.getSurName());
+		final UserInfoDTO userInfoDTO = new UserInfoDTO();
+		userInfoDTO.setUsername("dev1@shareta.sk");
+		userInfoDTO.setName("Samuel");
+		userInfoDTO.setSurName("Michaelson");
+		final UserInfoDTO updatedUser = this.userService.update(userInfoDTO);
+		assertEquals(updatedUser.getName(), userInfoDTO.getName());
+		assertEquals(updatedUser.getSurName(), userInfoDTO.getSurName());
 	}
 	
 	@Test

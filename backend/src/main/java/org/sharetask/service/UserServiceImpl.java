@@ -151,15 +151,12 @@ public class UserServiceImpl implements UserService {
 	
 	@Transactional
 	@Override
-	public UserDTO update(final UserDTO userDTO) {
-		final User user = this.userRepository.read(userDTO.getUsername());
-		DTOConverter.convert(userDTO, user);
-		final UserDetails userDetails = new UserDetailsImpl(user.getUsername(), "password", user.getSalt(),
-				new ArrayList<GrantedAuthority>());
-		user.setPassword(this.passwordEncoder.encodePassword(userDTO.getPassword(),
-				this.saltSource.getSalt(userDetails)));
+	public UserInfoDTO update(final UserInfoDTO userInfoDTO) {
+		final User user = this.userRepository.read(userInfoDTO.getUsername());
+		user.setName(userInfoDTO.getName());
+		user.setSurName(userInfoDTO.getSurName());
 		final User storedUser = this.userRepository.save(user);
-		return DTOConverter.convert(storedUser, UserDTO.class);
+		return DTOConverter.convert(storedUser, UserInfoDTO.class);
 	}
 	
 	@Override

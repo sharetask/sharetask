@@ -33,7 +33,7 @@ public interface UserService extends UserDetailsService {
 
 	UserDTO create(@NotNull @Valid final UserDTO userDTO);
 
-	UserDTO update(@NotNull @Valid final UserDTO userDTO);
+	UserInfoDTO update(@NotNull @Valid final UserInfoDTO userInfoDTO);
 
 	UserInfoDTO read(@NotNull final String username);
 }

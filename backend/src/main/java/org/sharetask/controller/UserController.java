@@ -113,7 +113,7 @@ public class UserController {
 	
 	@RequestMapping(method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
-	@ResponseBody public UserDTO update(@RequestBody final UserDTO user) {
+	@ResponseBody public UserInfoDTO update(@RequestBody final UserInfoDTO user) {
 		return this.userService.update(user);
 	}
 	
