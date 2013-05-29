@@ -84,12 +84,12 @@ public class UserController {
 		final UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(login.getUsername(), 
 				login.getPassword());
 		try {
-			final Authentication auth = authenticationManager.authenticate(token);
+			final Authentication auth = this.authenticationManager.authenticate(token);
 			SecurityContextHolder.getContext().setAuthentication(auth);
-			repository.saveContext(SecurityContextHolder.getContext(), request, response);
-			rememberMeServices.loginSuccess(request, response, auth);
+			this.repository.saveContext(SecurityContextHolder.getContext(), request, response);
+			this.rememberMeServices.loginSuccess(request, response, auth);
 			response.setStatus(HttpStatus.OK.value());
-		} catch (BadCredentialsException ex) {
+		} catch (final BadCredentialsException ex) {
 			response.setStatus(HttpStatus.UNAUTHORIZED.value());
 		}
 	}
@@ -106,6 +106,12 @@ public class UserController {
 	@RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
 	@ResponseBody public UserDTO create(@RequestBody final UserDTO user) {
-		return userService.create(user);
+		return this.userService.create(user);
+	}
+	
+	@RequestMapping(method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseStatus(value = HttpStatus.OK)
+	@ResponseBody public UserDTO update(@RequestBody final UserDTO user) {
+		return this.userService.update(user);
 	}
 }

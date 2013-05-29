@@ -32,7 +32,9 @@ import org.sharetask.api.UserService;
 import org.sharetask.api.dto.UserDTO;
 import org.sharetask.data.DbUnitTest;
 import org.sharetask.entity.Role;
+import org.sharetask.entity.User;
 import org.sharetask.repository.UserRepository;
+import org.sharetask.utility.DTOConverter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.SaltSource;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
@@ -66,33 +68,44 @@ public class UserServiceTest extends DbUnitTest {
 	 */
 	@Test
 	public void testLoadUserByUsername() {
-		UserDetails user = userService.loadUserByUsername("dev1@shareta.sk");
+		final UserDetails user = this.userService.loadUserByUsername("dev1@shareta.sk");
 		assertNotNull(user);
 		assertTrue(user.getAuthorities().size() == 1);
-		ArrayList<GrantedAuthority> list = new ArrayList<GrantedAuthority>();
+		final ArrayList<GrantedAuthority> list = new ArrayList<GrantedAuthority>();
 		list.add(new SimpleGrantedAuthority(Role.ROLE_USER.name()));
 		assertTrue(user.getAuthorities().containsAll(list));
 	}
 	
 	@Test
 	public void testCreateUser() {
-		UserDTO userDTO = new UserDTO();
-		String name = String.valueOf(System.currentTimeMillis()) + "@test.test";
+		final UserDTO userDTO = new UserDTO();
+		final String name = String.valueOf(System.currentTimeMillis()) + "@test.test";
 		userDTO.setUsername(name);
 		userDTO.setName("Test");
 		userDTO.setPassword("password");
 		userDTO.setSurName("Test Surname");
 		try {
-			userService.create(userDTO );
-		} catch (UserAlreadyExists e) {
+			this.userService.create(userDTO );
+		} catch (final UserAlreadyExists e) {
 			fail("User " + userDTO.getUsername() + " already exists!");
 		}
 		
-		org.sharetask.entity.User user = userRepository.findByUsername(name);
+		final org.sharetask.entity.User user = this.userRepository.findByUsername(name);
 		assertEquals(user.getEmail(), userDTO.getUsername());
 		assertEquals(user.getName(), userDTO.getName());
 		assertEquals(user.getSurName(), userDTO.getSurName());
 		assertEquals(user.getUsername(), userDTO.getUsername());
 		assertTrue(user.getRoles().size() == 1);
 	}
+	
+	@Test
+	public void testUpdateUser() {
+		final User user = this.userRepository.read("dev1@shareta.sk");
+		final UserDTO userDTO = DTOConverter.convert(user, UserDTO.class);
+		userDTO.setName("Samuel");
+		userDTO.setSurName("Michaelson");
+		final UserDTO updatedUser = this.userService.update(userDTO);
+		assertEquals(updatedUser.getName(), userDTO.getName());
+		assertEquals(updatedUser.getSurName(), userDTO.getSurName());
+	}	
 }

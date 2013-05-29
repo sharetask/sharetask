@@ -62,11 +62,8 @@ public class UserConverter implements CustomConverter {
 
 	private User convert(final UserDTO sourceDTO, final User destination) {
 		final User user = destination == null ? new User() : destination;
-		user.setEnabled(sourceDTO.getEnabled());
 		user.setName(sourceDTO.getName());
-		user.setPassword(sourceDTO.getPassword());
 		user.setSurName(sourceDTO.getSurName());
-		user.setUsername(sourceDTO.getUsername());
 		return user;
 	}
 }

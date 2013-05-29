@@ -20,8 +20,6 @@ package org.sharetask.controller;
 
 import java.io.IOException;
 
-import lombok.extern.slf4j.Slf4j;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
@@ -38,7 +36,6 @@ import org.springframework.http.HttpStatus;
  * @author Michal Bocek
  * @since 1.0.0
  */
-@Slf4j
 public class TaskControllerIT extends IntegrationTest {
 
 	private static final String TASK_PATH = "/workspace/1/task";

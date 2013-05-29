@@ -18,6 +18,9 @@
  */
 package org.sharetask.api;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
 import org.sharetask.api.dto.UserDTO;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -27,5 +30,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
  */
 public interface UserService extends UserDetailsService {
 
-	UserDTO create(final UserDTO userDTO);
+	UserDTO create(@NotNull @Valid final UserDTO userDTO);
+
+	UserDTO update(@NotNull @Valid final UserDTO userDTO);
 }

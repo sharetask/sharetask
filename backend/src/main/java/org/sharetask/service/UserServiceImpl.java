@@ -109,7 +109,10 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserDTO create(final UserDTO userDTO) {
 		log.info("Registering user: {}", userDTO);
-		final User user = DTOConverter.convert(userDTO, User.class);
+		final User user = new User();
+		user.setUsername(userDTO.getUsername());
+		user.setName(userDTO.getName());
+		user.setSurName(userDTO.getSurName());
 		
 		if (this.userRepository.findByUsername(userDTO.getUsername()) != null) {
 			throw new UserAlreadyExists();
@@ -143,5 +146,18 @@ public class UserServiceImpl implements UserService {
 		} catch (final NoSuchAlgorithmException e) {
 			throw new UnsupportedOperationException(e);
 		}
+	}
+	
+	@Transactional
+	@Override
+	public UserDTO update(final UserDTO userDTO) {
+		final User user = this.userRepository.read(userDTO.getUsername());
+		DTOConverter.convert(userDTO, user);
+		final UserDetails userDetails = new UserDetailsImpl(user.getUsername(), "password", user.getSalt(),
+				new ArrayList<GrantedAuthority>());
+		user.setPassword(this.passwordEncoder.encodePassword(userDTO.getPassword(),
+				this.saltSource.getSalt(userDetails)));
+		final User storedUser = this.userRepository.save(user);
+		return DTOConverter.convert(storedUser, UserDTO.class);
 	}
 }
