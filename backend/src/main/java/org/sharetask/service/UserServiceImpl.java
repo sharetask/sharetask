@@ -30,6 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.sharetask.api.UserService;
 import org.sharetask.api.dto.UserDTO;
+import org.sharetask.api.dto.UserInfoDTO;
 import org.sharetask.entity.Role;
 import org.sharetask.entity.User;
 import org.sharetask.repository.UserRepository;
@@ -159,5 +160,11 @@ public class UserServiceImpl implements UserService {
 				this.saltSource.getSalt(userDetails)));
 		final User storedUser = this.userRepository.save(user);
 		return DTOConverter.convert(storedUser, UserDTO.class);
+	}
+	
+	@Override
+	public UserInfoDTO read(final String username) {
+		final User user = this.userRepository.read(username);
+		return DTOConverter.convert(user, UserInfoDTO.class);
 	}
 }

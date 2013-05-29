@@ -30,6 +30,7 @@ import javax.inject.Inject;
 import org.junit.Test;
 import org.sharetask.api.UserService;
 import org.sharetask.api.dto.UserDTO;
+import org.sharetask.api.dto.UserInfoDTO;
 import org.sharetask.data.DbUnitTest;
 import org.sharetask.entity.Role;
 import org.sharetask.entity.User;
@@ -107,5 +108,12 @@ public class UserServiceTest extends DbUnitTest {
 		final UserDTO updatedUser = this.userService.update(userDTO);
 		assertEquals(updatedUser.getName(), userDTO.getName());
 		assertEquals(updatedUser.getSurName(), userDTO.getSurName());
+	}
+	
+	@Test
+	public void testReadUser() {
+		final UserInfoDTO userInfoDTO = this.userService.read("dev1@shareta.sk");
+		assertEquals(userInfoDTO.getName(), "John");
+		assertEquals(userInfoDTO.getSurName(), "Developer");
 	}	
 }

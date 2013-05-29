@@ -21,6 +21,7 @@ package org.sharetask.controller;
 import java.io.IOException;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
@@ -41,7 +42,7 @@ public class UserControllerIT extends IntegrationTest {
     private static final String URL_USER = BASE_URL + TASK_PATH;
  
     @Test
-    public void testCreateTask() throws IOException {
+    public void testCreateUser() throws IOException {
         //given
         final HttpPost httpPost = new HttpPost(URL_USER );
         httpPost.addHeader(new BasicHeader("Content-Type", "application/json"));
@@ -61,7 +62,7 @@ public class UserControllerIT extends IntegrationTest {
     
     
     @Test
-    public void testUpdateTask() throws IOException {
+    public void testUpdateUser() throws IOException {
         //given
         final HttpPut httpPut = new HttpPut(URL_USER );
         httpPut.addHeader(new BasicHeader("Content-Type", "application/json"));
@@ -79,4 +80,19 @@ public class UserControllerIT extends IntegrationTest {
         Assert.assertTrue(responseData.contains("\"name\":\"Integration\""));
     }
     
+    @Test
+    public void testReadUser() throws IOException {
+        //given
+        final HttpGet httpGet = new HttpGet(URL_USER + "/dev1@shareta.sk");
+        httpGet.addHeader(new BasicHeader("Content-Type", "application/json"));
+        
+        //when
+        final HttpResponse response = getClient().execute(httpGet);
+ 
+        //then
+        Assert.assertEquals(HttpStatus.OK.value(), response.getStatusLine().getStatusCode());
+        final String responseData = EntityUtils.toString(response.getEntity());
+        Assert.assertTrue(responseData.contains("\"name\":\"John\""));
+        Assert.assertTrue(responseData.contains("\"surName\":\"Developer\""));
+    }
 }

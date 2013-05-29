@@ -27,6 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.sharetask.api.UserService;
 import org.sharetask.api.dto.UserDTO;
+import org.sharetask.api.dto.UserInfoDTO;
 import org.sharetask.controller.json.UserPassword;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -39,6 +40,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -113,5 +115,10 @@ public class UserController {
 	@ResponseStatus(value = HttpStatus.OK)
 	@ResponseBody public UserDTO update(@RequestBody final UserDTO user) {
 		return this.userService.update(user);
+	}
+	
+	@RequestMapping(value = "/{username:.*}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody public UserInfoDTO get(@PathVariable("username") final String username) {
+		return this.userService.read(username);
 	}
 }

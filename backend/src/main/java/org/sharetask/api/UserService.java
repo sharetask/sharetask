@@ -22,6 +22,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.sharetask.api.dto.UserDTO;
+import org.sharetask.api.dto.UserInfoDTO;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 /**
@@ -33,4 +34,6 @@ public interface UserService extends UserDetailsService {
 	UserDTO create(@NotNull @Valid final UserDTO userDTO);
 
 	UserDTO update(@NotNull @Valid final UserDTO userDTO);
+
+	UserInfoDTO read(@NotNull final String username);
 }
