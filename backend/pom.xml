@@ -101,7 +101,10 @@
 					</webAppConfig>
 					<webAppSourceDirectory>${basedir}/src/main/webapp</webAppSourceDirectory>
 					<systemProperties>
-						<spring.profiles.active>${spring.profile}</spring.profiles.active>
+						<systemProperty>
+							<name>spring.profiles.active</name>
+							<value>${spring.profile}</value>
+						</systemProperty>
 					</systemProperties> 
 				</configuration>
 			</plugin>
