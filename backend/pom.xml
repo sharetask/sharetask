@@ -105,6 +105,10 @@
 							<name>spring.profiles.active</name>
 							<value>${spring.profile}</value>
 						</systemProperty>
+						<systemProperty>
+							<name>user.timezone</name>
+							<value>GMT</value>
+						</systemProperty>
 					</systemProperties> 
 				</configuration>
 			</plugin>
@@ -224,6 +228,11 @@
 								</goals>
 							</execution>
 						</executions>
+						<configuration>
+							<systemPropertyVariables>
+								<user.timezone>GMT</user.timezone>
+							</systemPropertyVariables>
+						</configuration>						
 					</plugin>
 					<plugin>
 						<groupId>org.codehaus.cargo</groupId>
@@ -237,6 +246,7 @@
 								<systemProperties>
 									<definition.database.jdbc.url>jdbc:hsqldb:file:/tmp/db-integration/sharetask;shutdown=true</definition.database.jdbc.url>
 									<spring.profiles.active>${spring.profile}</spring.profiles.active>
+									<user.timezone>GMT</user.timezone>
 								</systemProperties>
 							</container>
 							<type>existing</type>

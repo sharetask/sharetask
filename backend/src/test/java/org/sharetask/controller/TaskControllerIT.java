@@ -19,7 +19,6 @@
 package org.sharetask.controller;
 
 import java.io.IOException;
-import java.util.TimeZone;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -48,13 +47,13 @@ public class TaskControllerIT extends IntegrationTest {
     @Test
     public void testAddComment() throws IOException {
         //given
-        HttpPost httpPost = new HttpPost(URL_TASK + "/1/comment");
+        final HttpPost httpPost = new HttpPost(URL_TASK + "/1/comment");
         httpPost.addHeader(new BasicHeader("Content-Type", "application/json"));
-        StringEntity httpEntity = new StringEntity("{\"comment\":\"test comment\"}");
+        final StringEntity httpEntity = new StringEntity("{\"comment\":\"test comment\"}");
         httpPost.setEntity(httpEntity);
         
         //when
-        HttpResponse response = getClient().execute(httpPost);
+        final HttpResponse response = getClient().execute(httpPost);
  
         //then
         Assert.assertEquals(HttpStatus.OK.value(), response.getStatusLine().getStatusCode());
@@ -63,49 +62,45 @@ public class TaskControllerIT extends IntegrationTest {
     @Test
     public void testGetComments() throws IOException {
         //given
-        HttpGet httpGet = new HttpGet(URL_TASK + "/1/comment");
+        final HttpGet httpGet = new HttpGet(URL_TASK + "/1/comment");
         httpGet.addHeader(new BasicHeader("Content-Type", "application/json"));
         
         //when
-        HttpResponse response = getClient().execute(httpGet);
+        final HttpResponse response = getClient().execute(httpGet);
  
         //then
         Assert.assertEquals(HttpStatus.OK.value(), response.getStatusLine().getStatusCode());
-        String responseData = EntityUtils.toString(response.getEntity());
+        final String responseData = EntityUtils.toString(response.getEntity());
         Assert.assertTrue(responseData.contains("\"message\":\"Vivamus diam "));
     }
     
     @Test
     public void testGetEvents() throws IOException {
         //given
-        HttpGet httpGet = new HttpGet(URL_TASK + "/1/event");
+        final HttpGet httpGet = new HttpGet(URL_TASK + "/1/event");
         httpGet.addHeader(new BasicHeader("Content-Type", "application/json"));
         
         //when
-        HttpResponse response = getClient().execute(httpGet);
+        final HttpResponse response = getClient().execute(httpGet);
  
         //then
         Assert.assertEquals(HttpStatus.OK.value(), response.getStatusLine().getStatusCode());
-        String responseData = EntityUtils.toString(response.getEntity());
+        final String responseData = EntityUtils.toString(response.getEntity());
         Assert.assertTrue(responseData.contains("\"message\":\"TASK_CREATED\""));
     }
     
     @Test
     public void testCreateTask() throws IOException {
-    	// show timezone
-        System.out.println("Default time zone name: " + TimeZone.getDefault().getDisplayName());  
-        System.out.println("Default time zone id: " + TimeZone.getDefault().getID());  
-    	
         //given
-        HttpPost httpPost = new HttpPost(URL_TASK );
+        final HttpPost httpPost = new HttpPost(URL_TASK );
         httpPost.addHeader(new BasicHeader("Content-Type", "application/json"));
-        StringEntity httpEntity = new StringEntity("{\"title\":\"TestTask\"," +
+        final StringEntity httpEntity = new StringEntity("{\"title\":\"TestTask\"," +
         		                                     "\"priority\":\"MEDIUM\"," +
         		                                     "\"dueDate\":\"2013-01-01T01:10:53Z\"}");
         httpPost.setEntity(httpEntity);
         
         //when
-        HttpResponse response = getClient().execute(httpPost);
+        final HttpResponse response = getClient().execute(httpPost);
  
         //then
         Assert.assertEquals(HttpStatus.OK.value(), response.getStatusLine().getStatusCode());
@@ -114,11 +109,11 @@ public class TaskControllerIT extends IntegrationTest {
     @Test
     public void testCompleteTask() throws IOException {
         //given
-        HttpPost httpPost = new HttpPost(URL_TASK + "/1/complete");
+        final HttpPost httpPost = new HttpPost(URL_TASK + "/1/complete");
         httpPost.addHeader(new BasicHeader("Content-Type", "application/json"));
         
         //when
-        HttpResponse response = getClient().execute(httpPost);
+        final HttpResponse response = getClient().execute(httpPost);
  
         //then
         Assert.assertEquals(HttpStatus.OK.value(), response.getStatusLine().getStatusCode());
@@ -127,11 +122,11 @@ public class TaskControllerIT extends IntegrationTest {
     @Test
     public void testDelete() throws IOException {
         //given
-    	HttpDelete httpDelete = new HttpDelete(URL_TASK + "/4");
+    	final HttpDelete httpDelete = new HttpDelete(URL_TASK + "/4");
         httpDelete.addHeader(new BasicHeader("Content-Type", "application/json"));
         
         //when
-        HttpResponse response = getClient().execute(httpDelete);
+        final HttpResponse response = getClient().execute(httpDelete);
  
         //then
         Assert.assertEquals(HttpStatus.OK.value(), response.getStatusLine().getStatusCode());
