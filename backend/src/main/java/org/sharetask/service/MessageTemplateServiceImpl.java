@@ -42,13 +42,19 @@ import com.floreysoft.jmte.Engine;
 @Service
 public class MessageTemplateServiceImpl implements TemplateMessageService {
 
+	private static final String FILE_EXTENSION_SEPARATOR = ".";
+
+	private static final String LOCALE_SEPARATOR = "_";
+
+	private static final String TEMPLATE_EXTENSION = "jmte";
+
 	@Inject
-	private Engine templateEngine;  
-	
+	private Engine templateEngine;
+
 	private final Map<TemplateList, String> templates = new HashMap<TemplateList, String>();
 
 	{
-		this.templates.put(TemplateList.INVITATION, "templates/invitation.jmte");
+		templates.put(TemplateList.INVITATION, "templates/invitation");
 	};
 
 	/*
@@ -56,14 +62,14 @@ public class MessageTemplateServiceImpl implements TemplateMessageService {
 	 * @see org.sharetask.api.TemplateMessageService#prepareMessage(java.lang.String, java.lang.Object)
 	 */
 	@Override
-	public String prepareMessage(final TemplateList template, final Map<String, Object> model) {
-		final String loadTemplate = loadTemplate(this.templates.get(template));
-		return this.templateEngine.transform(loadTemplate, model);
+	public String prepareMessage(final TemplateList template, final Map<String, Object> model, final String locale) {
+		final String loadTemplate = loadTemplate(templates.get(template), locale);
+		return templateEngine.transform(loadTemplate, model);
 	}
 
-	private String loadTemplate(final String resourceName) {
+	private String loadTemplate(final String resourceName, final String locale) {
 		final StringBuilder result = new StringBuilder();
-		final InputStream is = this.getClass().getClassLoader().getResourceAsStream(resourceName);
+		final InputStream is = getInputStream(resourceName, locale);
 		BufferedReader br = new BufferedReader(new InputStreamReader(is));
 		String strLine;
 		try {
@@ -85,5 +91,15 @@ public class MessageTemplateServiceImpl implements TemplateMessageService {
 			}
 		}
 		return result.toString();
+	}
+
+	private InputStream getInputStream(final String resourceName, final String locale) {
+		String fullResourceName = resourceName + LOCALE_SEPARATOR + locale + FILE_EXTENSION_SEPARATOR + TEMPLATE_EXTENSION;
+		InputStream is = this.getClass().getClassLoader().getResourceAsStream(fullResourceName);
+		if (is == null) {
+			fullResourceName = resourceName + FILE_EXTENSION_SEPARATOR + TEMPLATE_EXTENSION;
+			is = this.getClass().getClassLoader().getResourceAsStream(fullResourceName);
+		}
+		return is;
 	}
 }

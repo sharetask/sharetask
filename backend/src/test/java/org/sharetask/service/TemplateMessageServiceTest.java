@@ -38,8 +38,8 @@ import org.sharetask.data.DbUnitTest;
 public class TemplateMessageServiceTest extends DbUnitTest {
 
 	@Inject
-	private TemplateMessageService templateMessageService; 
-	
+	private TemplateMessageService templateMessageService;
+
 	/**
 	 * Test method for {@link org.sharetask.api.TemplateMessageService#prepareMessage(org.sharetask.api.TemplateMessageService.TemplateList, java.util.Map)}.
 	 */
@@ -47,7 +47,7 @@ public class TemplateMessageServiceTest extends DbUnitTest {
 	public void testPrepareMessage() {
 		final HashMap<String, Object> model = new HashMap<String, Object>();
 		model.put("myName", "Samuel");
-		final String message = this.templateMessageService.prepareMessage(TemplateList.INVITATION, model);
+		final String message = templateMessageService.prepareMessage(TemplateList.INVITATION, model, null);
 		assertThat(message, equalTo("My name is: Samuel"));
 	}
 
