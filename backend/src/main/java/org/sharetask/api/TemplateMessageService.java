@@ -29,7 +29,7 @@ import javax.validation.constraints.NotNull;
 public interface TemplateMessageService {
 
 	public static enum TemplateList {
-		INVITATION;
+		WORKSPACE_INVITATION;
 	}
 
 	String prepareMessage(@NotNull final TemplateList template, @NotNull final Map<String, Object> model,

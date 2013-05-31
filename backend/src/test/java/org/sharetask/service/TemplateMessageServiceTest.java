@@ -18,13 +18,13 @@
  */
 package org.sharetask.service;
 
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 import java.util.HashMap;
 
 import javax.inject.Inject;
 
+import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import org.sharetask.api.TemplateMessageService;
 import org.sharetask.api.TemplateMessageService.TemplateList;
@@ -46,9 +46,8 @@ public class TemplateMessageServiceTest extends DbUnitTest {
 	@Test
 	public void testPrepareMessage() {
 		final HashMap<String, Object> model = new HashMap<String, Object>();
-		model.put("myName", "Samuel");
-		final String message = templateMessageService.prepareMessage(TemplateList.INVITATION, model, null);
-		assertThat(message, equalTo("My name is: Samuel"));
+		final String message = templateMessageService.prepareMessage(TemplateList.WORKSPACE_INVITATION, model, null);
+		assertThat(message, CoreMatchers.notNullValue());
 	}
 
 }

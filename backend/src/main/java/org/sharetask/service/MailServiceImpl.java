@@ -18,10 +18,22 @@
  */
 package org.sharetask.service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.inject.Inject;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.sharetask.api.MailService;
+import org.sharetask.api.TemplateMessageService;
+import org.sharetask.api.TemplateMessageService.TemplateList;
 import org.sharetask.api.dto.InvitationDTO;
+import org.sharetask.entity.User;
+import org.sharetask.entity.Workspace;
+import org.sharetask.repository.UserRepository;
+import org.sharetask.repository.WorkspaceRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -31,6 +43,7 @@ import org.springframework.stereotype.Service;
  * @author Michal Bocek
  * @since 1.0.0
  */
+@Slf4j
 @Service
 public class MailServiceImpl implements MailService {
 
@@ -38,17 +51,41 @@ public class MailServiceImpl implements MailService {
 	private JavaMailSender mailSender;
 
 	@Inject
-	private SimpleMailMessage templateMessage;
+	private TemplateMessageService templateMessageService;
 
+	@Inject
+	private SimpleMailMessage templateMessage;
+	
+	@Inject
+	private UserRepository userRepository;
+
+	@Inject
+	private WorkspaceRepository workspaceRepository;
+	
+	@Value("#{applicationProps['applicationUrl']}")
+	private String applicationUrl;
+
+	@Override
 	public void sendInvitation(final InvitationDTO invitation) {
-		SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
-		msg.setTo("michal.bocek@gmail.com");
-		msg.setText("test");
+		final SimpleMailMessage msg = new SimpleMailMessage(templateMessage);
+		msg.setTo(invitation.getEmail());
+		final Map<String, Object> model = prepareInvitationMode(invitation);
+		msg.setText(templateMessageService.prepareMessage(TemplateList.WORKSPACE_INVITATION, model, null));
 		try {
-			this.mailSender.send(msg);
-		} catch (MailException ex) {
-			// simply log it and go on...
-			System.err.println(ex.getMessage());
+			mailSender.send(msg);
+		} catch (final MailException ex) {
+			log.error("Problem in sending email notification:", ex);
 		}
+	}
+	
+	private Map<String, Object> prepareInvitationMode(final InvitationDTO invitation) {
+		final Map<String, Object> model = new HashMap<String, Object>();
+		final User invitingUser = userRepository.findOne(invitation.getInvitingUser());
+		model.put("userName", invitingUser.getName());
+		model.put("userSurName", invitingUser.getSurName());
+		final Workspace workspace = workspaceRepository.findOne(invitation.getEntityId());		
+		model.put("workspaceName", workspace.getTitle());
+		model.put("confimationLink", applicationUrl + "?code=" + invitation.getInvitationCode());
+		return model;
 	}
 }

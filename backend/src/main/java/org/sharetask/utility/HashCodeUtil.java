@@ -16,31 +16,28 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.sharetask.api.dto;
+package org.sharetask.utility;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import java.nio.charset.Charset;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+import org.springframework.security.crypto.codec.Hex;
 
 /**
  * @author Michal Bocek
  * @since 1.0.0
  */
-@ToString
-public class InvitationDTO {
+public class HashCodeUtil {
 
-	@Getter @Setter
-	private String email;
-	
-	@Getter @Setter
-	private String invitationCode;
-	
-	@Getter @Setter
-	private String invitingUser;
-	
-	@Getter @Setter
-	private Long entityId;
-
-	@Getter @Setter
-	private String invitationType;
+	public static String getHashCode(final String data) {
+		try {
+			final MessageDigest mda = MessageDigest.getInstance("SHA-512");
+			final String baseSalt = System.currentTimeMillis() + "dev1@shareta.sk";
+			final byte [] digest = mda.digest(baseSalt.getBytes(Charset.forName("UTF-8")));
+			return new String(Hex.encode(digest));
+		} catch (final NoSuchAlgorithmException e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
 }

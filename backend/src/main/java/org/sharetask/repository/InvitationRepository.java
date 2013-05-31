@@ -16,31 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.sharetask.api.dto;
+package org.sharetask.repository;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import org.sharetask.entity.Invitation;
+import org.sharetask.repository.base.BaseJpaRepository;
 
 /**
  * @author Michal Bocek
  * @since 1.0.0
  */
-@ToString
-public class InvitationDTO {
-
-	@Getter @Setter
-	private String email;
-	
-	@Getter @Setter
-	private String invitationCode;
-	
-	@Getter @Setter
-	private String invitingUser;
-	
-	@Getter @Setter
-	private Long entityId;
-
-	@Getter @Setter
-	private String invitationType;
+public interface InvitationRepository extends BaseJpaRepository<Invitation, Long> {
 }

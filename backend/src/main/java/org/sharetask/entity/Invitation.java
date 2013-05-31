@@ -42,7 +42,7 @@ import org.sharetask.api.Constants;
 @ToString
 @Entity
 @Table(name = "INVITATION")
-public class Invitation extends BaseEntity implements Serializable {
+public class Invitation extends BaseImmutableEntity implements Serializable {
 
 	private static final long serialVersionUID = Constants.VERSION;
 
@@ -69,5 +69,5 @@ public class Invitation extends BaseEntity implements Serializable {
 
 	@Getter @Setter
 	@Column(name = "ENTITY_ID", nullable = false)
-	private String entityId;
+	private Long entityId;
 }

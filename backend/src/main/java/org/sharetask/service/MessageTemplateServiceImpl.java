@@ -54,7 +54,7 @@ public class MessageTemplateServiceImpl implements TemplateMessageService {
 	private final Map<TemplateList, String> templates = new HashMap<TemplateList, String>();
 
 	{
-		templates.put(TemplateList.INVITATION, "templates/invitation");
+		templates.put(TemplateList.WORKSPACE_INVITATION, "templates/workspace_invitation");
 	};
 
 	/*

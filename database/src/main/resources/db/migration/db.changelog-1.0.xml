@@ -226,17 +226,26 @@
 	</changeSet>
 	
 	<changeSet id="create: invitation" author="mbocek">
-		<createTable tableName="INVITIATION" remarks="Table for storing invitations">
+		<createTable tableName="INVITATION" remarks="Table for storing invitations">
 			<column autoIncrement="true" name="ID" type="BIGINT" remarks="Primary key">
 				<constraints nullable="false" primaryKey="true" primaryKeyName="PK_INVITATION" />
 			</column>
 			<column name="USER_NAME" type="VARCHAR(255)" remarks="User identifiert">
 				<constraints nullable="false" />
 			</column>
-			<column name="TYPE" type="VARCHAR(255)" remarks="Invitation type">
+			<column name="TYPE" type="VARCHAR(128)" remarks="Invitation type">
+				<constraints nullable="false" />
+			</column>
+			<column name="INVITATION_CODE" type="VARCHAR(255)" remarks="Invitation code">
 				<constraints nullable="false" />
 			</column>
 			<column name="ENTITY_ID" type="BIGINT" remarks="Referenced entity id" >
+				<constraints nullable="false" />
+			</column>
+			<column name="CREATED_BY" type="VARCHAR(255)" remarks="User indentifiert who created record">
+				<constraints nullable="false" />
+			</column>
+			<column name="CREATED_ON" type="DATETIME" remarks="Date when record was creaded">
 				<constraints nullable="false" />
 			</column>
 		</createTable>
