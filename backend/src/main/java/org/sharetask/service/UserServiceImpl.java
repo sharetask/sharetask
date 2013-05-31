@@ -75,16 +75,16 @@ public class UserServiceImpl implements UserService {
 		}
 
 		public UserDetails build() {
-			final String username = this.user.getUsername();
-			final String password = this.user.getPassword();
-			final String salt = this.user.getSalt();
-			final boolean enabled = this.user.isEnabled();
-			final boolean accountNonExpired = this.user.isEnabled();
-			final boolean credentialsNonExpired = this.user.isEnabled();
-			final boolean accountNonLocked = this.user.isEnabled();
+			final String username = user.getUsername();
+			final String password = user.getPassword();
+			final String salt = user.getSalt();
+			final boolean enabled = user.isEnabled();
+			final boolean accountNonExpired = user.isEnabled();
+			final boolean credentialsNonExpired = user.isEnabled();
+			final boolean accountNonLocked = user.isEnabled();
 
 			final Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-			for (final Role role : this.user.getRoles()) {
+			for (final Role role : user.getRoles()) {
 				authorities.add(new SimpleGrantedAuthority(role.name()));
 			}
 
@@ -96,7 +96,7 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-		final User user = this.userRepository.findByUsername(username);
+		final User user = userRepository.findByUsername(username);
 		UserDetails userDetails = null;
 		if (user != null) {
 			userDetails = new UserDetailBuilder(user).build();
@@ -115,7 +115,7 @@ public class UserServiceImpl implements UserService {
 		user.setName(userDTO.getName());
 		user.setSurName(userDTO.getSurName());
 		
-		if (this.userRepository.findByUsername(userDTO.getUsername()) != null) {
+		if (userRepository.findByUsername(userDTO.getUsername()) != null) {
 			throw new UserAlreadyExists();
 		}
 		
@@ -127,21 +127,21 @@ public class UserServiceImpl implements UserService {
 		user.setRoles(roles);
 		
 		// salt create
-		final String salt = getSalt();
+		final String salt = getSalt(userDTO.getUsername());
 		user.setSalt(salt);
 		
 		final UserDetails userDetails = new UserDetailsImpl(user.getUsername(), "password", salt,
 				new ArrayList<GrantedAuthority>());
-		user.setPassword(this.passwordEncoder.encodePassword(userDTO.getPassword(),
-				this.saltSource.getSalt(userDetails)));
-		final User storedUser = this.userRepository.save(user);
+		user.setPassword(passwordEncoder.encodePassword(userDTO.getPassword(),
+				saltSource.getSalt(userDetails)));
+		final User storedUser = userRepository.save(user);
 		return DTOConverter.convert(storedUser,  UserDTO.class);
 	}
 	
-	private String getSalt() {
+	private String getSalt(final String username) {
 		try {
 			final MessageDigest mda = MessageDigest.getInstance("SHA-512");
-			final String baseSalt = System.currentTimeMillis() + "dev1@shareta.sk";
+			final String baseSalt = System.currentTimeMillis() + username;
 			final byte [] digest = mda.digest(baseSalt.getBytes(Charset.forName("UTF-8")));
 			return new String(Hex.encode(digest));
 		} catch (final NoSuchAlgorithmException e) {
@@ -152,16 +152,16 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	@Override
 	public UserInfoDTO update(final UserInfoDTO userInfoDTO) {
-		final User user = this.userRepository.read(userInfoDTO.getUsername());
+		final User user = userRepository.read(userInfoDTO.getUsername());
 		user.setName(userInfoDTO.getName());
 		user.setSurName(userInfoDTO.getSurName());
-		final User storedUser = this.userRepository.save(user);
+		final User storedUser = userRepository.save(user);
 		return DTOConverter.convert(storedUser, UserInfoDTO.class);
 	}
 	
 	@Override
 	public UserInfoDTO read(final String username) {
-		final User user = this.userRepository.read(username);
+		final User user = userRepository.read(username);
 		return DTOConverter.convert(user, UserInfoDTO.class);
 	}
 }
