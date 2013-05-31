@@ -50,8 +50,8 @@ public class Invitation extends BaseEntity implements Serializable {
 		ADD_WORKSPACE_MEMBER, ADD_TASK_ASSIGNEE;
 	}
 
-	@Getter
 	@Id
+	@Getter
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
@@ -65,6 +65,9 @@ public class Invitation extends BaseEntity implements Serializable {
 
 	@Getter	@Setter
 	@Enumerated(value = EnumType.STRING)
-	private InvitationType state;
-	
+	private InvitationType type;
+
+	@Getter @Setter
+	@Column(name = "ENTITY_ID", nullable = false)
+	private String entityId;
 }
