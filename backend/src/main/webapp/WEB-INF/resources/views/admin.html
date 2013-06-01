@@ -67,11 +67,14 @@
 								<div class="tab-pane active" id="workspaceData">
 									<legend>{{selectedWorkspace.title}}</legend>
 									<label>Name</label>
-									<input class="span4" type="text" placeholder="type workspace name..." ng-model="selectedWorkspace.title" />
+									<input class="span5" type="text" placeholder="type workspace name..." ng-model="selectedWorkspace.title" />
 									<label>Description</label>
-									<textarea class="span4" rows="3" placeholder="type workspace description..." ng-model="selectedWorkspace.description"></textarea>
+									<textarea class="span5" rows="3" placeholder="type workspace description..." ng-model="selectedWorkspace.description"></textarea>
 									<label>Owner</label>
-									<input type="text" placeholder="type owner name..." value="{{selectedWorkspace.owner.name}} {{selectedWorkspace.owner.surName}}" disabled="disabled" />
+									<div class="input-append">
+										<input type="text" placeholder="type owner name..." value="{{selectedWorkspace.owner.name}} {{selectedWorkspace.owner.surName}}" disabled="disabled" />
+										<button class="btn" ng-click="">Forward ownership</button>
+									</div>
 									<br />
 									<button class="btn btn-inverse" ng-click="updateWorkspace()">Save</button>
 								</div>
@@ -80,27 +83,39 @@
 									<legend>Members</legend>
 									<p><button class="btn btn-inverse" ng-click="setEditMode('WORKSPACE-INVITE-MEMBER')"><i class="icon-plus icon-white"></i> Invite a member</button></p>
 									<div ng-class="{'hidden':attrEditMode != 'WORKSPACE-INVITE-MEMBER'}" style="margin-bottom:20px;padding:20px;border:1px solid #000;">
-										<legend>Invite new member</legend>
-										<label>e-mail</label>
-										<input class="span4" type="text" placeholder="type e-mail..." ng-model="newMember.username" /><br />
-										<button class="btn btn-inverse" ng-click="inviteMember()">Invite</button>
+										<form name="formWorkspaceInviteMember" novalidate class="css-form">
+											<legend>Invite new member</legend>
+											<label>e-mail</label>
+											<input class="span4" type="text" placeholder="type member's e-mail..." ng-model="newMember.username" required /><br />
+											<button class="btn btn-inverse" ng-click="inviteMember()" ng-disabled="formWorkspaceInviteMember.$invalid">Invite</button>
+										</form>
 									</div>
 									
 									<table class="table table-bordered table-striped table-hover">
 									<thead>
 										<tr>
 											<th>#</th>
+											<th>Role</th>
 											<th>Name</th>
 											<th>Username</th>
 											<th>Actions</th>
 										</tr>
 									</thead>
 									<tbody>
-										<tr ng-repeat="member in selectedWorkspace.members">
+										<tr>
 											<td>1</td>
+											<td>Owner</td>
+											<td>{{selectedWorkspace.owner.name}} {{selectedWorkspace.owner.surName}}</td>
+											<td>{{selectedWorkspace.owner.username}}</td>
+											<td></td>
+										</tr>
+										<tr ng-repeat="member in selectedWorkspace.members">
+											<td>{{$index + 2}}</td>
+											<td>Member</td>
 											<td>{{member.name}} {{member.surName}}</td>
 											<td>{{member.username}}</td>
-											<td><button class="btn btn-inverse" ng-click="removeMember(member.username)"><i class="icon-remove icon-white"></i></button></td>
+											<!--<td><button class="btn btn-inverse" ng-click="removeMember(member.username)"><i class="icon-remove icon-white"></i></button></td>-->
+											<td><button class="btn" ng-click="removeMember(member.username)">Remove</button></td>
 										</tr>
 									</tbody>
 									</table>
@@ -109,12 +124,14 @@
 						</div>
 					</div>
 					<div style="padding:10px 20px" ng-class="{'hidden':attrEditMode != 'WORKSPACE-ADD'}">
-						<legend>Add new workspace</legend>
-						<label>Title</label>
-						<input class="span4" type="text" placeholder="type title..." ng-model="newWorkspace.title" /><br />
-						<label>Description</label>
-						<textarea class="span4" placeholder="type description..." ng-model="newWorkspace.description"></textarea><br />
-						<button class="btn btn-inverse" ng-click="addWorkspace()">Add</button>
+						<form name="formWorkspaceAdd" novalidate class="css-form">
+							<legend>Add new workspace</legend>
+							<label>Title</label>
+							<input class="span5" type="text" placeholder="type title..." ng-model="newWorkspace.title" required /><br />
+							<label>Description</label>
+							<textarea class="span5" rows="3" placeholder="type description..." ng-model="newWorkspace.description"></textarea><br />
+							<button class="btn btn-inverse" ng-click="addWorkspace()" ng-disabled="formWorkspaceAdd.$invalid">Add</button>
+						</form>
 					</div>
 				</div>
 			</div>

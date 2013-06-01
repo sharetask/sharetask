@@ -43,32 +43,32 @@ shareTaskApp.service('Workspace', function($resource, $http) {
 	
 	this.find = function(input, success, error) {
 		console.log("Getting workspaces from server for type (type: %s)", input.type);
-		//var workspace = $resource("/sharetask/api/workspace", {type: input.type}, {query: {method: "GET", isArray: true}});
-		//workspace.query(function(response){return success(response);}, function(response){return error(response);});
 		return $http.get("/sharetask/api/workspace/", {params: {type: input.type}}).success(success).error(error);
 	};
 	
 	this.getActiveTasks = function(input, success, error) {
 		console.log("Getting active tasks for workspace (id: %s) from server", input.workspaceId);
-		//var task = $resource("/sharetask/api/workspace/"+input.workspaceId+"/task", {taskQueue: 'ALL'}, {query: {method: "GET", isArray: true}});
-		//task.query(function(response){return success(response);}, function(response){return error(response);});
 		return $http.get("/sharetask/api/workspace/"+input.workspaceId+"/task", {params: {taskQueue: 'ALL'}}).success(success).error(error);
 	};
 	
 	this.getCompletedTasks = function(input, success, error) {
 		console.log("Getting completed tasks for workspace (id: %s) from server", input.workspaceId);
-		//return $resource("/sharetask/api/workspace/"+input.workspaceId+"/task", {taskQueue: 'FINISHED'}, {query: {method: "GET", isArray: true}}).query(callback);
 		return $http.get("/sharetask/api/workspace/"+input.workspaceId+"/task", {params: {taskQueue: 'FINISHED'}}).success(success).error(error);
 	};
 	
 	this.create = function(input, success, error) {
 		console.log("Create workspace (workspace: %o)", input.workspace);
-		return $http.post("/sharetask/api/workspace/", input.workspace).success(success).error(error);
+		return $http.post("/sharetask/api/workspace", input.workspace).success(success).error(error);
 	};
 	
 	this.update = function(input, success, error) {
 		console.log("Update workspace (workspace: %o)", input.workspace);
 		return $http.put("/sharetask/api/workspace", input.workspace).success(success).error(error);
+	};
+	
+	this.remove = function(input, success, error) {
+		console.log("Delete workspace (workspace: %o)", input.workspace);
+		return $http.delete("/sharetask/api/workspace/"+input.workspaceId, {}).success(success).error(error);
 	};
 	
 	this.inviteMember = function(input, success, error) {
@@ -96,6 +96,11 @@ shareTaskApp.service('Task', function($resource, $http) {
 		return $http.put("/sharetask/api/workspace/"+input.workspaceId+"/task", input.task).success(success).error(error);
 	};
 	
+	this.remove = function(input, success, error) {
+		console.log("Delete task (id: %s) on workspace (id: %s)", input.taskId, input.workspaceId);
+		return $http.delete("/sharetask/api/workspace/"+input.workspaceId+"/task/"+input.taskId, {}).success(success).error(error);
+	};
+	
 	this.complete = function(input, success, error) {
 		console.log("Complete task (id: %s) on workspace (id: %s)", input.taskId, input.workspaceId);
 		return $http.post("/sharetask/api/workspace/"+input.workspaceId+"/task/"+input.taskId+"/complete", {}).success(success).error(error);
@@ -108,13 +113,16 @@ shareTaskApp.service('Task', function($resource, $http) {
 	
 	this.getComments = function(input, success, error) {
 		console.log("Getting task (id: %s) comments from server", input.taskId);
-		//return $resource("/sharetask/api/workspace/"+input.workspaceId+"/task/"+input.taskId+"/comment", {}, {query: {method: "GET", isArray: true}}).query(callback);
 		return $http.get("/sharetask/api/workspace/"+input.workspaceId+"/task/"+input.taskId+"/comment", {}).success(success).error(error);
+	};
+	
+	this.addComment = function(input, success, error) {
+		console.log("Adding new comment (comment: %o) to task (id: %s)", input.comment, input.taskId);
+		return $http.post("/sharetask/api/workspace/"+input.workspaceId+"/task/"+input.taskId+"/comment", input.comment).success(success).error(error);
 	};
 	
 	this.getEvents = function(input, callback) {
 		console.log("Getting task (id: %s) events from server", input.taskId);
-		//return $resource("/sharetask/api/workspace/"+input.workspaceId+"/task/"+input.taskId+"/event", {}, {query: {method: "GET", isArray: true}}).query(callback);
 		return $http.get("/sharetask/api/workspace/"+input.workspaceId+"/task/"+input.taskId+"/event", {}).success(success).error(error);
 	};
 });

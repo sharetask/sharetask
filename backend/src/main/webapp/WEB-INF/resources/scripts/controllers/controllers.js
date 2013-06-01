@@ -55,6 +55,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 	}])
 	.controller('AppCtrl', ['$scope', '$location', '$rootScope', '$filter', 'Workspace', 'Task', 'User', 'LocalStorage', 'ErrorHandling', function($scope, $location, $rootScope, $filter, Workspace, Task, User, LocalStorage, ErrorHandling) {
 		
+		$scope.errorMessageOnTaskList = '';
 		$scope.viewPanelTaskFilter = true;
 		$scope.viewDatePicker = false;
 		$scope.selectedWorkspace;
@@ -526,11 +527,59 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 		
 		/**
 		 * Delete active task.
+		 * @param {boolean} bulk - If true then all checked tasks are deleted. Else only selected task is deleted.
 		 * Task data are stored to server.
 		 */
-		$scope.deleteTask = function() {
-			console.log("Delete task (id: %s)", $scope.selectedTask.id);
-			$scope.updateTask($scope.selectedTask);
+		$scope.deleteTask = function(bulk) {
+			console.log("Delete task (bulk: %s)", bulk);
+			if (!bulk) {
+				// delete selected task
+				console.log("Delete task (id: %s)", $scope.selectedTask.id);
+				Task.remove({workspaceId: $scope.selectedWorkspace.id, taskId: $scope.selectedTask.id}, function(data, status) {
+						console.log("Task remove success! data: %o, status: %o", data, status);
+						var tasks = $.grep($scope.allTasks, function(e) {
+							return e.id != $scope.selectedTask.id;
+						});
+						$scope.allTasks = tasks;
+						LocalStorage.store('workspace-' + $scope.selectedWorkspace.id, $scope.allTasks);
+						$scope.filterTasks();
+						if (!jQuery.isEmptyObject($scope.tasks)) {
+							$scope.setSelectedTask($scope.tasks[0].id);
+						}
+						$scope.setEditMode('');
+					}, function(data, status) {
+						console.log("Task remove error!");
+						ErrorHandling.handle(data, status);
+						$scope.errorMessageOnTaskList = 'Error deleting task "'+$scope.selectedTask.title+'".';
+					});
+			}
+			else {
+				// delete all checked tasks
+				var checkedTasks = $.grep($scope.tasks, function(e) {
+					return e.checked == true;
+				});
+				angular.forEach(checkedTasks, function(value, key) {
+					console.log("Delete task (id: %s)", value.id);
+					Task.remove({workspaceId: $scope.selectedWorkspace.id, taskId: value.id}, function(data, status) {
+							console.log("Task remove success! data: %o, status: %o", data, status);
+							var tasks = $.grep($scope.allTasks, function(e) {
+								return e.id != $scope.selectedTask.id;
+							});
+							$scope.allTasks = tasks;
+							LocalStorage.store('workspace-' + $scope.selectedWorkspace.id, $scope.allTasks);
+							$scope.filterTasks();
+							if (!jQuery.isEmptyObject($scope.tasks)) {
+								$scope.setSelectedTask($scope.tasks[0].id);
+							}
+							$scope.setEditMode('');
+						}, function(data, status) {
+							console.log("Task remove error!");
+							ErrorHandling.handle(data, status);
+							$scope.errorMessageOnTaskList = 'Error deleting selected tasks.';
+						});
+					value.checked = false;
+				});
+			}
 		};
 		
 		/**
@@ -557,7 +606,9 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 						//$scope.taskEditMode = '';
 						LocalStorage.store('workspace-' + $scope.selectedWorkspace.id, $scope.allTasks);
 						$scope.filterTasks();
-						$scope.setSelectedTask($scope.tasks[0].id);
+						if (!jQuery.isEmptyObject($scope.tasks)) {
+							$scope.setSelectedTask($scope.tasks[0].id);
+						}
 						$scope.setEditMode('');
 					}, function(data, status) {
 						console.log("Task complete error!");
@@ -593,6 +644,29 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 					}
 					value.checked = false;
 				});
+			}
+		};
+		
+		/**
+		 * Add new comment to task.
+		 * New comment is stored to server.
+		 */
+		$scope.addTaskComment = function() {
+			console.log("Add new comment (comment: %o) to task (id: %s)", $scope.newTaskComment, $scope.selectedTask.id);
+			if (!jQuery.isEmptyObject($scope.newTaskComment)) {
+				Task.addComment({workspaceId: $scope.selectedWorkspace.id, taskId: $scope.selectedTask.id, comment: $scope.newTaskComment}, function(data, status) {
+						console.log("Task addComment success! data: %o, status: %o", data, status);
+						// FIXME
+						var createdBy = {name: $rootScope.loggedUser.username, surName: $rootScope.loggedUser.username};
+						$scope.newTaskComment.createdBy = createdBy;
+						$scope.newTaskComment.createdOn = new Date();
+						$scope.newTaskComment.message = $scope.newTaskComment.comment;
+						$scope.selectedTask.comments.push($scope.newTaskComment);
+						$scope.newTaskComment = null;
+					}, function(data, status) {
+						console.log("Task addComment error!");
+						ErrorHandling.handle(data, status);
+					});
 			}
 		};
 		

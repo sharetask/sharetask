@@ -51,10 +51,12 @@
 							<ul id="workspaceList" class="nav">
 								<li class="cursor-pointer"><a ng-click="setEditMode('NEW-WORKSPACE')"><i class="icon-plus icon-white"></i></a></li>
 								<li ng-class="{'hidden':taskEditMode != 'NEW-WORKSPACE'}">
-									<div class="input-append" style="padding-top:2px;">
-										<input class="span3" type="text" placeholder="type new workspace name..." ng-model="newWorkspaceTitle" />
-										<button class="btn btn-inverse" ng-click="addWorkspace()">Add</button>
-									</div>
+									<form name="formWorkspaceAdd" novalidate class="css-form">
+										<div class="input-append" style="padding-top:2px;">
+											<input class="span3" type="text" placeholder="type new workspace name..." ng-model="newWorkspaceTitle" required />
+											<button class="btn btn-inverse" ng-click="addWorkspace()" ng-disabled="formWorkspaceAdd.$invalid">Add</button>
+										</div>
+									</form>
 								</li>
 								<li class="cursor-pointer" ng-repeat="workspace in workspaces" ng-class="{'hidden':taskEditMode == 'NEW-WORKSPACE'}"><a ng-click="setSelectedWorkspace(workspace)">{{workspace.title}}</a></li>
 							</ul>
@@ -133,8 +135,7 @@
 									<ul class="dropdown-menu">
 										<li ng-click="completeTask(true)"><a>Complete</a></li>
 										<li ng-click=""><a>Forward</a></li>
-										<li ng-click=""><a>Move</a></li>
-										<li ng-click=""><a>Delete</a></li>
+										<li ng-click="deleteTask(true)"><a>Delete</a></li>
 									</ul>
 								</div>
 								
@@ -142,16 +143,49 @@
 						</div>
 						<div class="new-task-simple" ng-class="{'hidden':taskEditMode != 'NEW-TASK'}">
 							<div class="new-task-simple-inner">
-								<div class="row-full input-append">
-									<input class="span10" type="text" placeholder="type new task name..." ng-model="newTaskTitle" />
-									<button class="btn btn-inverse span2" ng-click="addTask()">Add</button>
-								</div>
+								<form name="formTaskAdd" novalidate class="css-form">
+									<div class="row-full input-append">
+										<input class="span10" type="text" placeholder="type new task name..." ng-model="newTaskTitle" required />
+										<button class="btn btn-inverse span2" ng-click="addTask()" ng-disabled="formTaskAdd.$invalid">Add</button>
+									</div>
+								</form>
 							</div>
 						</div>
 					</div>
 					<!-- tasks -->
 					<div class="task-list" ng-class="{'small':taskEditMode == 'NEW-TASK'}">
 						<div class="task-list-inner">
+							<!-- error message -->
+							<div class="alert alert-error" ng-class="{'hidden':errorMessageOnTaskList == ''}">
+								<a class="close" ng-click="errorMessageOnTaskList = ''">&times;</a>
+								{{errorMessageOnTaskList}}
+							</div>
+							
+							
+							<div class="task-list-item" ng-repeat="task in tasks | orderBy:orderTasks" ng-class="{'selected':task.id == selectedTask.id}" ng-click="setSelectedTask(task.id)" data-drop="true" jqyoui-droppable="{onDrop:'addTaskTagDragDrop'}">
+								<div class="task-list-item-inner">
+									<div class="row-full">
+										<div class="span1">
+											<div class="st-checkbox" ng-click="task.checked = !task.checked" ng-class="{'selected checked':task.id == selectedTask.id && task.checked, 'checked':task.checked}" stop-event="click"><i class="icon-ok icon-white" ng-class="{'hidden':!task.checked}"></i></div>
+										</div>
+										<div class="span11">
+											<div class="row-full">
+												<div class="span8">
+													<strong>{{task.title}}</strong>
+												</div>
+												<div class="span4" style="text-align:right;"><small>{{task.dueDate | date:'mediumDate'}}</small></div>
+											</div>
+											<div class="row-full">
+												<div class="span8">
+													<div class="tag" ng-repeat="tag in task.tags"><span class="text" ng-class="{'selected':tag == filter.tag}">{{tag}}</span><span class="remove cursor-pointer" ng-click="removeTag(task.id, tag)" stop-event="click">x</span></div>
+												</div>
+												<div class="span4" style="text-align:right;"><i class="icon-comment" ng-class="{'icon-white':task.id == selectedTask.id}"></i> {{task.commentsCount}}</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!--
 							<div class="navbar">
 								<div class="navbar-inner thick light inline" ng-repeat="task in tasks | orderBy:orderTasks" ng-class="{'selected':task.id == selectedTask.id}" ng-click="setSelectedTask(task.id)" data-drop="true" jqyoui-droppable="{onDrop:'addTaskTagDragDrop'}">
 									<div class="row-full">
@@ -175,6 +209,7 @@
 									</div>
 								</div>
 							</div>
+							-->
 						</div>
 					</div>
 				</div>
@@ -212,7 +247,7 @@
 						<!-- delete task -->
 						<div class="task-detail-action-confirm" ng-class="{'hidden':taskEditMode != 'DELETE-TASK'}">
 							<p>Do you really want to delete task?</p>
-							<button class="btn btn-inverse" ng-click="deleteTask()">Yes</button>
+							<button class="btn btn-inverse" ng-click="deleteTask(false)">Yes</button>
 							<button class="btn" ng-click="setEditMode('')">No</button>
 						</div>
 						<!-- task title, author -->
@@ -238,13 +273,13 @@
 							<div class="tag" ng-repeat="tag in selectedTask.tags"><span class="text">{{tag}}</span><span class="remove cursor-pointer" ng-click="removeTag(selectedTask.id, tag)">x</span></div>
 							<span class="tag cursor-pointer" ng-click="setEditMode('ADD-TAG')"><span class="remove cursor-pointer"><i class="icon-plus icon-white"></i></span></span>
 							<div ng-class="{'hidden':taskEditMode != 'ADD-TAG'}">
-								<div class="input-append">
-									<input type="text" placeholder="type new label name..." ng-model="newTag" ui-keypress="{enter:'addTaskTag()', esc:'setEditMode(\'\')'}" focus="editing" />
-									<button class="btn btn-inverse" ng-click="addTaskTag()">OK</button>
-								</div>
+								<form name="formTaskAddLabel" novalidate class="css-form">
+									<div class="input-append">
+										<input type="text" placeholder="type new label name..." ng-model="newTag" ui-keypress="{enter:'addTaskTag()', esc:'setEditMode(\'\')'}" focus="editing" required />
+										<button class="btn btn-inverse" ng-click="addTaskTag()" ng-disabled="formTaskAddLabel.$invalid">OK</button>
+									</div>
+								</form>
 							</div>
-							
-							<div id="taskDetailAddLabelForm" class="hidden"><input id="taskDetailAddLabelInput" class="span3" type="text" placeholder="" /> <a href="#" id="taskDetailAddLabelClose"><i class="icon-remove"></i></a></div>
 						</div>
 						<!-- task description -->
 						<div style="margin-top:5px;padding:5px;border:1px solid #ddd;">
@@ -257,7 +292,14 @@
 								</div>
 							</div>
 						</div>
+						<br />
 						<!-- task comments -->
+						<form name="formTaskAddComment" novalidate class="css-form">
+							<div class="row-full input-append">
+								<input class="span10" type="text" placeholder="type new comment..." ng-model="newTaskComment.comment" required />
+								<button class="btn btn-inverse span2" ng-click="addTaskComment()" ng-disabled="formTaskAddComment.$invalid">Add</button>
+							</div>
+						</form>
 						<div class="notice" ng-repeat="comment in selectedTask.comments" ng-class="{'author':comment.createdBy == selectedTask.createdBy}">
 							<div class="row-full">
 								<div class="span2"></div>
