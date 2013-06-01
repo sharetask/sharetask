@@ -27,10 +27,11 @@ import javax.validation.constraints.NotNull;
  * @since 1.0.0
  */
 public interface TemplateMessageService {
-	
+
 	public static enum TemplateList {
-		INVITATION;
+		WORKSPACE_INVITATION;
 	}
-	
-	String prepareMessage(@NotNull final TemplateList template, @NotNull final Map<String, Object> model);
+
+	String prepareMessage(@NotNull final TemplateList template, @NotNull final Map<String, Object> model,
+			@NotNull final String locale);
 }

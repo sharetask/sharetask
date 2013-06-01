@@ -18,6 +18,8 @@
  */
 package org.sharetask.api.dto;
 
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 /**
@@ -27,4 +29,18 @@ import lombok.ToString;
 @ToString
 public class InvitationDTO {
 
+	@Getter @Setter
+	private String email;
+	
+	@Getter @Setter
+	private String invitationCode;
+	
+	@Getter @Setter
+	private String invitingUser;
+	
+	@Getter @Setter
+	private Long entityId;
+
+	@Getter @Setter
+	private String invitationType;
 }

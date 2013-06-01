@@ -18,6 +18,8 @@
  */
 package org.sharetask.data;
 
+import java.util.TimeZone;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -52,21 +54,21 @@ public class IntegrationTest {
 
 	@BeforeClass
 	public static void login() throws Exception {
-		DefaultHttpClient client = new DefaultHttpClient();
-        HttpPost httpPost = new HttpPost(BASE_URL + "/user/login");
+		final DefaultHttpClient client = new DefaultHttpClient();
+        final HttpPost httpPost = new HttpPost(BASE_URL + "/user/login");
         httpPost.addHeader(new BasicHeader("Content-Type", "application/json"));
-        StringEntity httpEntity = new StringEntity("{\"username\":\"dev1@shareta.sk\"," +
+        final StringEntity httpEntity = new StringEntity("{\"username\":\"dev1@shareta.sk\"," +
         		"\"password\":\"password\"}");
         System.out.println(EntityUtils.toString(httpEntity));
         httpPost.setEntity(httpEntity);
         
         //when
-        HttpResponse response = client.execute(httpPost);
+        final HttpResponse response = client.execute(httpPost);
 
         //then
         Assert.assertEquals(HttpStatus.OK.value(), response.getStatusLine().getStatusCode());
         client.getCookieStore().getCookies();
-        for (Cookie cookie : client.getCookieStore().getCookies()) {
+        for (final Cookie cookie : client.getCookieStore().getCookies()) {
 			if (cookie.getName().equals("JSESSIONID")) {
 				DOMAIN = cookie.getDomain();
 				SESSIONID = cookie.getValue();
@@ -74,12 +76,21 @@ public class IntegrationTest {
 		}
 	}
 	
+	@BeforeClass
+	public static void showInfo() {
+    	// show timezone
+        System.out.println("******************************************************************************");  
+        System.out.println("Default time zone name: " + TimeZone.getDefault().getDisplayName());  
+        System.out.println("Default time zone id: " + TimeZone.getDefault().getID());  
+        System.out.println("******************************************************************************");  
+	}
+	
 	@Before
 	public void setCookie() {
 		this.client = new DefaultHttpClient();
-		BasicClientCookie basicClientCookie = new BasicClientCookie("JSESSIONID", SESSIONID);
+		final BasicClientCookie basicClientCookie = new BasicClientCookie("JSESSIONID", SESSIONID);
 		basicClientCookie.setDomain(DOMAIN);
-		client.getCookieStore().addCookie(basicClientCookie);
+		this.client.getCookieStore().addCookie(basicClientCookie);
 	}
 	
 	public HttpClient getClient() {

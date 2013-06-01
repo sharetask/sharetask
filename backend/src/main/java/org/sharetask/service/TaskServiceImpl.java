@@ -86,7 +86,7 @@ public class TaskServiceImpl implements TaskService {
 	 */
 	@Override
 	@Transactional
-	@PreAuthorize(Constants.PERMISSION_TASK_ASSIGNEE)
+	@PreAuthorize(Constants.PERMISSION_TASK_ASSIGNEE_OR_CREATOR)
 	public TaskDTO addComment(final Long taskId, final String message) {
 		final Task task = this.taskRepository.read(taskId);
 		task.addComment(new Comment(message));
@@ -190,7 +190,7 @@ public class TaskServiceImpl implements TaskService {
 	 */
 	@Override
 	@Transactional
-	@PreAuthorize(Constants.PERMISSION_TASK_ASSIGNEE)
+	@PreAuthorize(Constants.PERMISSION_TASK_ASSIGNEE_OR_CREATOR)
 	public void delete(final Long taskId) {
 		this.taskRepository.delete(taskId);
 	}

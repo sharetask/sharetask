@@ -16,24 +16,28 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.sharetask.api;
+package org.sharetask.utility;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import java.nio.charset.Charset;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
-import org.sharetask.api.dto.UserDTO;
-import org.sharetask.api.dto.UserInfoDTO;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.codec.Hex;
 
 /**
  * @author Michal Bocek
  * @since 1.0.0
  */
-public interface UserService extends UserDetailsService {
+public class HashCodeUtil {
 
-	UserDTO create(@NotNull @Valid final UserDTO userDTO);
-
-	UserInfoDTO update(@NotNull @Valid final UserInfoDTO userInfoDTO);
-
-	UserInfoDTO read(@NotNull final String username);
+	public static String getHashCode(final String data) {
+		try {
+			final MessageDigest mda = MessageDigest.getInstance("SHA-512");
+			final String baseSalt = System.currentTimeMillis() + "dev1@shareta.sk";
+			final byte [] digest = mda.digest(baseSalt.getBytes(Charset.forName("UTF-8")));
+			return new String(Hex.encode(digest));
+		} catch (final NoSuchAlgorithmException e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
 }

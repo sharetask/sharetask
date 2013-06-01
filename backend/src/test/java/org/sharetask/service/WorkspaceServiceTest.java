@@ -31,7 +31,9 @@ import org.sharetask.api.WorkspaceService;
 import org.sharetask.api.dto.UserInfoDTO;
 import org.sharetask.api.dto.WorkspaceDTO;
 import org.sharetask.data.DbUnitTest;
+import org.sharetask.entity.Invitation;
 import org.sharetask.entity.Workspace;
+import org.sharetask.repository.InvitationRepository;
 import org.sharetask.repository.UserRepository;
 import org.sharetask.repository.WorkspaceRepository;
 
@@ -48,6 +50,9 @@ public class WorkspaceServiceTest extends DbUnitTest {
 	private WorkspaceRepository workspaceRepository;
 	
 	@Inject
+	private InvitationRepository invitationRepository;
+	
+	@Inject
 	private UserRepository userRepository;
 
 	/**
@@ -55,12 +60,12 @@ public class WorkspaceServiceTest extends DbUnitTest {
 	 */
 	@Test
 	public void testCreateWorkspace() {
-		WorkspaceDTO workspace = new WorkspaceDTO();
+		final WorkspaceDTO workspace = new WorkspaceDTO();
 		workspace.setTitle("Test");
-		UserInfoDTO userDTO = new UserInfoDTO();
+		final UserInfoDTO userDTO = new UserInfoDTO();
 		userDTO.setUsername("test1@test.com");
 		workspace.setOwner(userDTO);
-		WorkspaceDTO dto = workspaceService.create(workspace);
+		final WorkspaceDTO dto = workspaceService.create(workspace);
 		Assert.assertThat(dto.getTitle(), CoreMatchers.is("Test"));
 		Assert.assertThat(dto.getDescription(), CoreMatchers.nullValue());
 		Assert.assertThat(dto.getOwner().getUsername(), CoreMatchers.is("test1@test.com"));
@@ -73,10 +78,10 @@ public class WorkspaceServiceTest extends DbUnitTest {
 	 */
 	@Test
 	public void testUpdateWorkspace() {
-		List<WorkspaceDTO> workspaces = workspaceService.findByOwner("test1@test.com");
-		WorkspaceDTO workspace = workspaces.get(0);
+		final List<WorkspaceDTO> workspaces = workspaceService.findByOwner("test1@test.com");
+		final WorkspaceDTO workspace = workspaces.get(0);
 		workspace.setTitle("Test Title");
-		WorkspaceDTO dto = workspaceService.update(workspace);
+		final WorkspaceDTO dto = workspaceService.update(workspace);
 		Assert.assertThat(dto.getTitle(), CoreMatchers.is("Test Title"));
 	}
 	
@@ -86,8 +91,15 @@ public class WorkspaceServiceTest extends DbUnitTest {
 	@Test
 	public void testAddMember() {
 		workspaceService.addMember(100L, "test2@test.com");
-		Workspace workspace = workspaceRepository.findOne(100L);
-		Assert.assertThat(workspace.getMembers().size(), CoreMatchers.is(2));
+		final List<Invitation> findAll = invitationRepository.findAll();
+		boolean result = false;
+		for (final Invitation invitation : findAll) {
+			if (invitation.getUsername().equals("test2@test.com")) {
+				result = true;
+				Assert.assertThat(invitation.getEntityId(), CoreMatchers.is(100L));
+			}
+		}
+		Assert.assertThat(result, CoreMatchers.is(true));
 	}
 	
 	/**
@@ -96,7 +108,7 @@ public class WorkspaceServiceTest extends DbUnitTest {
 	@Test
 	public void testRemoveMember() {
 		workspaceService.removeMember(100L, "test3@test.com");
-		Workspace workspace = workspaceRepository.findOne(100L);
+		final Workspace workspace = workspaceRepository.findOne(100L);
 		Assert.assertThat(workspace.getMembers().size(), CoreMatchers.is(0));
 	}
 	
@@ -105,7 +117,7 @@ public class WorkspaceServiceTest extends DbUnitTest {
 	 */
 	@Test
 	public void testFindWorkspaceByOwner() {
-		List<WorkspaceDTO> workspaces = workspaceService.findByOwner("test1@test.com");
+		final List<WorkspaceDTO> workspaces = workspaceService.findByOwner("test1@test.com");
 		Assert.assertThat(workspaces.size(), CoreMatchers.is(1));
 		Assert.assertThat(workspaces.get(0).getId(), CoreMatchers.is(100L));
 	}
@@ -115,7 +127,7 @@ public class WorkspaceServiceTest extends DbUnitTest {
 	 */
 	@Test
 	public void testFindWorkspaceByMember() {
-		List<WorkspaceDTO> workspaces = workspaceService.findByMember("test3@test.com");
+		final List<WorkspaceDTO> workspaces = workspaceService.findByMember("test3@test.com");
 		Assert.assertThat(workspaces.size(), CoreMatchers.is(1));
 		Assert.assertThat(workspaces.get(0).getId(), CoreMatchers.is(100L));
 	}
@@ -125,7 +137,7 @@ public class WorkspaceServiceTest extends DbUnitTest {
 	 */
 	@Test
 	public void testFindAllMyWorkspaces() {
-		List<WorkspaceDTO> workspaces = workspaceService.findAllMyWorkspaces("test3@test.com");
+		final List<WorkspaceDTO> workspaces = workspaceService.findAllMyWorkspaces("test3@test.com");
 		Assert.assertThat(workspaces.size(), CoreMatchers.is(2));
 	}
 	
@@ -136,7 +148,7 @@ public class WorkspaceServiceTest extends DbUnitTest {
 	@Test
 	public void testDelete() {
 		workspaceService.delete(100L);
-		Workspace workspace = workspaceRepository.findOne(100L);
+		final Workspace workspace = workspaceRepository.findOne(100L);
 		assertThat(workspace, CoreMatchers.nullValue());
 	}
 }

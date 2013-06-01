@@ -24,14 +24,20 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.sharetask.api.Constants;
+import org.sharetask.api.MailService;
 import org.sharetask.api.WorkspaceQueryType;
 import org.sharetask.api.WorkspaceService;
+import org.sharetask.api.dto.InvitationDTO;
 import org.sharetask.api.dto.WorkspaceDTO;
+import org.sharetask.entity.Invitation;
+import org.sharetask.entity.Invitation.InvitationType;
 import org.sharetask.entity.User;
 import org.sharetask.entity.Workspace;
+import org.sharetask.repository.InvitationRepository;
 import org.sharetask.repository.UserRepository;
 import org.sharetask.repository.WorkspaceRepository;
 import org.sharetask.utility.DTOConverter;
+import org.sharetask.utility.HashCodeUtil;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -52,6 +58,12 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 	@Inject
 	private UserRepository userRepository;
 
+	@Inject
+	private MailService mailService;
+
+	@Inject
+	private InvitationRepository invitationRepository;
+
 	/* (non-Javadoc)
 	 * @see org.sharetask.api.WorkspaceService#create(org.sharetask.api.dto.WorkspaceDTO)
 	 */
@@ -60,10 +72,10 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 	public WorkspaceDTO create(final WorkspaceDTO workspace) {
 		final Workspace workspaceEntity = DTOConverter.convert(workspace, Workspace.class);
 		// load owner
-		final User owner = this.userRepository.findOne(workspace.getOwner().getUsername());
+		final User owner = userRepository.findOne(workspace.getOwner().getUsername());
 		workspaceEntity.setOwner(owner);
 		// store workspace
-		final Workspace storedWorkspaceEntity = this.workspaceRepository.save(workspaceEntity);
+		final Workspace storedWorkspaceEntity = workspaceRepository.save(workspaceEntity);
 		return DTOConverter.convert(storedWorkspaceEntity, WorkspaceDTO.class);
 	}
 
@@ -74,9 +86,9 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 	@Transactional
 	@PreAuthorize("isAuthenticated() and hasPermission(#workspace.id, 'isWorkspaceOwner')")
 	public WorkspaceDTO update(final WorkspaceDTO workspace) {
-		final Workspace workspaceEntity = this.workspaceRepository.read(workspace.getId());
+		final Workspace workspaceEntity = workspaceRepository.read(workspace.getId());
 		DTOConverter.convert(workspace, workspaceEntity);
-		final Workspace storedWorkspaceEntity = this.workspaceRepository.save(workspaceEntity);
+		final Workspace storedWorkspaceEntity = workspaceRepository.save(workspaceEntity);
 		return DTOConverter.convert(storedWorkspaceEntity, WorkspaceDTO.class);
 	}
 
@@ -87,14 +99,14 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 	@Transactional
 	@PreAuthorize(Constants.PERIMISSION_WORKSPACE_OWNER)
 	public void addMember(final Long workspaceId, final String username) {
-		final User user = this.userRepository.read(username);
-		final Workspace workspace = this.workspaceRepository.read(workspaceId);
-		
-		// add member to workspace
-		if (!workspace.getMembers().contains(user)) {
-			workspace.addMember(user);
-			this.workspaceRepository.save(workspace);
-		}		
+		final Invitation invitation = new Invitation();
+		invitation.setType(InvitationType.ADD_WORKSPACE_MEMBER);
+		invitation.setUsername(username);
+		invitation.setEntityId(workspaceId);
+		invitation.setInvitationCode(HashCodeUtil.getHashCode(workspaceId + username));
+		final Invitation storedInitation = invitationRepository.save(invitation);
+		//send invitation notification
+		mailService.sendInvitation(DTOConverter.convert(storedInitation, InvitationDTO.class));
 	}
 
 	/* (non-Javadoc)
@@ -104,13 +116,13 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 	@Transactional
 	@PreAuthorize(Constants.PERIMISSION_WORKSPACE_OWNER)
 	public void removeMember(final Long workspaceId, final String username) {
-		final User user = this.userRepository.read(username);
-		final Workspace workspace = this.workspaceRepository.read(workspaceId);
+		final User user = userRepository.read(username);
+		final Workspace workspace = workspaceRepository.read(workspaceId);
 		
 		// add member to workspace
 		if (workspace.getMembers().contains(user)) {
 			workspace.removeMember(user);
-			this.workspaceRepository.save(workspace);
+			workspaceRepository.save(workspace);
 		}		
 	}
 
@@ -119,7 +131,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 	 */
 	@Override
 	public List<WorkspaceDTO> findByOwner(final String username) {
-		final List<Workspace> workspaces = this.workspaceRepository.findByOwnerUsername(username);
+		final List<Workspace> workspaces = workspaceRepository.findByOwnerUsername(username);
 		return DTOConverter.convertList(workspaces, WorkspaceDTO.class);
 	}	
 	
@@ -128,7 +140,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 	 */
 	@Override
 	public List<WorkspaceDTO> findByMember(final String username) {
-		final List<Workspace> workspaces = this.workspaceRepository.findByMemberUsername(username);
+		final List<Workspace> workspaces = workspaceRepository.findByMemberUsername(username);
 		return DTOConverter.convertList(workspaces, WorkspaceDTO.class);
 	}
 
@@ -137,7 +149,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 	 */
 	@Override
 	public List<WorkspaceDTO> findAllMyWorkspaces(final String username) {
-		final List<Workspace> workspaces = this.workspaceRepository.findByMemberOrOwner(username);
+		final List<Workspace> workspaces = workspaceRepository.findByMemberOrOwner(username);
 		return DTOConverter.convertList(workspaces, WorkspaceDTO.class);
 	}
 
@@ -150,13 +162,13 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 		final String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		switch (queryType) {
 			case OWNER:
-				workspaces = this.workspaceRepository.findByOwnerUsername(username);
+				workspaces = workspaceRepository.findByOwnerUsername(username);
 				break;
 			case MEMBER:
-				workspaces = this.workspaceRepository.findByMemberUsername(username);
+				workspaces = workspaceRepository.findByMemberUsername(username);
 				break;
 			case ALL_MY:
-				workspaces = this.workspaceRepository.findByMemberUsername(username);
+				workspaces = workspaceRepository.findByMemberUsername(username);
 				break;
 			default:
 				workspaces = new ArrayList<Workspace>();
@@ -171,6 +183,6 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 	@Transactional
 	@PreAuthorize(Constants.PERIMISSION_WORKSPACE_OWNER)
 	public void delete(final Long workspaceId) {
-		this.workspaceRepository.delete(workspaceId);
+		workspaceRepository.delete(workspaceId);
 	}
 }

@@ -34,4 +34,7 @@ public interface Constants {
 	
 	String PERMISSION_TASK_ASSIGNEE = "isAuthenticated() and " +
 			"hasPermission(#taskId, 'isTaskAssignee')";
+
+	String PERMISSION_TASK_ASSIGNEE_OR_CREATOR = "isAuthenticated() and " +
+			"hasPermission(#taskId, 'isTaskAssigneeOrCreator')";
 }

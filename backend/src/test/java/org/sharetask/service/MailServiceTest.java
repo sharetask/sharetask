@@ -24,6 +24,7 @@ import org.junit.Test;
 import org.sharetask.api.MailService;
 import org.sharetask.api.dto.InvitationDTO;
 import org.sharetask.data.DbUnitTest;
+import org.sharetask.entity.Invitation.InvitationType;
 
 /**
  * @author Michal Bocek
@@ -39,6 +40,12 @@ public class MailServiceTest extends DbUnitTest {
 	 */
 	@Test
 	public void testSendInvitation() {
-		this.mailService.sendInvitation(new InvitationDTO());
+		final InvitationDTO invitationDTO = new InvitationDTO();
+		invitationDTO.setEmail("test3@test.com");
+		invitationDTO.setInvitingUser("test1@test.com");
+		invitationDTO.setEntityId(100L);
+		invitationDTO.setInvitationType(InvitationType.ADD_WORKSPACE_MEMBER.name());
+		invitationDTO.setInvitationCode("xxxxxxyyyyyyyy");
+		mailService.sendInvitation(invitationDTO);
 	}
 }

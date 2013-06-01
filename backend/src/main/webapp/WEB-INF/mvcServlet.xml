@@ -33,7 +33,6 @@
 		<property name="exposeContextBeansAsAttributes" value="true" />
 	</bean>
 	
-	<util:properties id="applicationProps" location="classpath:application.properties"/>
 	<!-- ================================================================= -->
 	<!-- Resource resolve                                                  -->
 	<!-- ================================================================= -->

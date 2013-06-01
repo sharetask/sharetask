@@ -20,14 +20,14 @@ package org.sharetask.utility.converter;
 
 import org.dozer.CustomConverter;
 import org.dozer.MappingException;
-import org.sharetask.api.dto.UserDTO;
-import org.sharetask.entity.User;
+import org.sharetask.api.dto.InvitationDTO;
+import org.sharetask.entity.Invitation;
 
 /**
  * @author Michal Bocek
  * @since 1.0.0
  */
-public class UserConverter implements CustomConverter {
+public class InvitationConverter implements CustomConverter {
 
 	/* (non-Javadoc)
 	 * @see org.dozer.CustomConverter#convert(java.lang.Object, java.lang.Object, java.lang.Class, java.lang.Class)
@@ -36,34 +36,23 @@ public class UserConverter implements CustomConverter {
 	public Object convert(final Object destination, final Object source, final Class<?> destClass,
 			final Class<?> sourceClass) {
 		Object result = null;
-		if (source instanceof UserDTO) {
-			final User teacher = convert((UserDTO) source, (User) destination);
-			result = teacher;
-		} else if (source instanceof User) {
-			final UserDTO teacher = convert((User) source);
-			result = teacher;
+		if (source instanceof Invitation) {
+			final InvitationDTO invitationDTO = convert((Invitation) source);
+			result = invitationDTO;
 		} else if (source != null) {
-			throw new MappingException("Converter UserConverter used incorrectly. Arguments passed were:"
+			throw new MappingException("Converter InvitationConverter used incorrectly. Arguments passed were:"
 					+ destination + " and " + source);
 		}
 		return result;
 	}
 
-	private UserDTO convert(final User source) {
-		final UserDTO userDTO = new UserDTO();
-		userDTO.setUsername(source.getUsername());
-		userDTO.setEnabled(source.isEnabled());
-		userDTO.setName(source.getName());
-		userDTO.setSurName(source.getSurName());
-		userDTO.setCreatedOn(source.getCreatedOn());
-		userDTO.setUpdatedOn(source.getUpdatedOn());
-		return userDTO;
-	}
-
-	private User convert(final UserDTO sourceDTO, final User destination) {
-		final User user = destination == null ? new User() : destination;
-		user.setName(sourceDTO.getName());
-		user.setSurName(sourceDTO.getSurName());
-		return user;
+	private InvitationDTO convert(final Invitation source) {
+		final InvitationDTO invitationDTO = new InvitationDTO();
+		invitationDTO.setEmail(source.getUsername());
+		invitationDTO.setInvitingUser(source.getCreatedBy().getUsername());
+		invitationDTO.setInvitationCode(source.getInvitationCode());
+		invitationDTO.setEntityId(source.getEntityId());
+		invitationDTO.setInvitationType(source.getType().name());
+		return invitationDTO;
 	}
 }

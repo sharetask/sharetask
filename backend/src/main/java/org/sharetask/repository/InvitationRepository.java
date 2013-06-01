@@ -16,24 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.sharetask.api;
+package org.sharetask.repository;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-
-import org.sharetask.api.dto.UserDTO;
-import org.sharetask.api.dto.UserInfoDTO;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.sharetask.entity.Invitation;
+import org.sharetask.repository.base.BaseJpaRepository;
 
 /**
  * @author Michal Bocek
  * @since 1.0.0
  */
-public interface UserService extends UserDetailsService {
-
-	UserDTO create(@NotNull @Valid final UserDTO userDTO);
-
-	UserInfoDTO update(@NotNull @Valid final UserInfoDTO userInfoDTO);
-
-	UserInfoDTO read(@NotNull final String username);
+public interface InvitationRepository extends BaseJpaRepository<Invitation, Long> {
 }
