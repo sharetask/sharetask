@@ -41,16 +41,25 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 		$scope.login = function() {
 			console.log("Login user (username: %s) with password (password: %s)", $scope.user.username, $scope.user.password);
 			User.authenticate({username: $scope.user.username, password: $scope.user.password}, function(data, status) {
-					console.log("Auth success! data: %o, status: %o", data, status);
-					$rootScope.loggedUser = {username: $scope.user.username};
-					LocalStorage.store('logged-user', $rootScope.loggedUser);
-					$location.path("/tasks");
+					console.log("User auth success! data: %o, status: %o", data, status);
+					// get user profile info
+					User.get({username: $scope.user.username}, function(data, status) {
+							console.log("User get success! data: %o, status: %o", data, status);
+							$rootScope.loggedUser = data;
+							LocalStorage.store('logged-user', $rootScope.loggedUser);
+							$location.path("/tasks");
+						}, function(data, status) {
+							console.log("Auth error! data: %o, status: %o", data, status);
+							$rootScope.loggedUser = {};
+							LocalStorage.remove('logged-user');
+							$scope.errorStatus = status;
+						});
 				}, function(data, status) {
-					console.log("Auth error! data: %o, status: %o", data, status);
+					console.log("User auth error! data: %o, status: %o", data, status);
 					$rootScope.loggedUser = {};
 					LocalStorage.remove('logged-user');
 					$scope.errorStatus = status;
-			});
+				});
 		};
 	}])
 	.controller('AppCtrl', ['$scope', '$location', '$rootScope', '$filter', 'Workspace', 'Task', 'User', 'LocalStorage', 'ErrorHandling', function($scope, $location, $rootScope, $filter, Workspace, Task, User, LocalStorage, ErrorHandling) {
@@ -656,8 +665,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 			if (!jQuery.isEmptyObject($scope.newTaskComment)) {
 				Task.addComment({workspaceId: $scope.selectedWorkspace.id, taskId: $scope.selectedTask.id, comment: $scope.newTaskComment}, function(data, status) {
 						console.log("Task addComment success! data: %o, status: %o", data, status);
-						// FIXME
-						var createdBy = {name: $rootScope.loggedUser.username, surName: $rootScope.loggedUser.username};
+						var createdBy = {username: $rootScope.loggedUser.username, name: $rootScope.loggedUser.name, surName: $rootScope.loggedUser.surName};
 						$scope.newTaskComment.createdBy = createdBy;
 						$scope.newTaskComment.createdOn = new Date();
 						$scope.newTaskComment.message = $scope.newTaskComment.comment;

@@ -226,6 +226,9 @@ body {margin:0;padding:0;-webkit-text-size-adjust:100%;}
 .adminMainPane {top:36px;bottom:0;left:140px;right:0;overflow:visible;position:absolute;background:#fff;}
 .adminMainPaneContent {height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;}
 
+.panel-full {top:36px;bottom:0;left:0;right:0;overflow:visible;position:absolute;background:#fff;}
+.panel-full-inside {height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+
 .datepicker {font-size:1.1em;margin:5px;}
 
 form {margin:0;padding:0;}

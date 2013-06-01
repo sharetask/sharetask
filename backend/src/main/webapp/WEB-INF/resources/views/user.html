@@ -18,5 +18,46 @@
 -->
 		<!-- user settings -->
 		<div ng-controller="UserCtrl">
-			<h1>User settings page</h1>
+			<!-- application menu -->
+			<sharetask-menu></sharetask-menu>
+			<!-- user profile -->
+			<div class="panel-full">
+				<div class="panel-full-inside">
+					<div style="padding:10px 20px;">
+						<ul class="nav nav-tabs">
+							<li class="active"><a href="#userProfile" data-toggle="tab">Profile</a></li>
+							<li><a href="#userSettings" data-toggle="tab">Settings</a></li>
+						</ul>
+						<div class="tabbable">
+							<div class="tab-content">
+								<!-- user profile update form -->
+								<div class="tab-pane active" id="userProfile">
+									<form name="formUserUpdate" novalidate class="css-form">
+										<legend>User profile</legend>
+										<label>First name</label>
+										<input class="span5" type="text" placeholder="type first name..." ng-model="loggedUser.name" required /><br />
+										<label>Last name</label>
+										<input class="span5" type="text" placeholder="type last name..." ng-model="loggedUser.surName" required /><br />
+										<label>e-mail</label>
+										<input class="span5" type="text" placeholder="type e-mail address..." ng-model="loggedUser.username" required /><br />
+										<br />
+										<label>New password</label>
+										<input class="span5" type="text" placeholder="type new password..." ng-model="loggedUser.newPassword1" /><br />
+										<label>New password (check)</label>
+										<input class="span5" type="text" placeholder="retype new password..." ng-model="loggedUser.newPassword2" /><br />
+										<button class="btn btn-inverse" ng-click="update()" ng-disabled="formUserUpdate.$invalid">Save</button>
+									</form>
+								</div>
+								<!-- user settings -->
+								<div class="tab-pane" id="userSettings">
+									<form name="formUserSettings" novalidate class="css-form">
+										<legend>User settings</legend>
+										No settings available yet.
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>

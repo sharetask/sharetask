@@ -30,6 +30,21 @@ shareTaskApp.service('User', ['$rootScope', '$location', 'LocalStorage', '$resou
 		return $http.post('/sharetask/api/user/login', {username: user.username, password: user.password}).success(success).error(error);
 	};
 	
+	this.get = function(input, success, error) {
+		console.log("Getting user (id: %s) from server", input.username);
+		return $http.get("/sharetask/api/user/"+input.username, {}).success(success).error(error);
+	};
+	
+	this.update = function(input, success, error) {
+		console.log("Create user (user: %o)", input.user);
+		return $http.post("/sharetask/api/user", input.user).success(success).error(error);
+	};
+	
+	this.update = function(input, success, error) {
+		console.log("Update user (user: %o)", input.user);
+		return $http.put("/sharetask/api/user", input.user).success(success).error(error);
+	};
+	
 	this.logout = function() {
 		console.log("Logout user: %s", $rootScope.loggedUser.username);
 		$rootScope.loggedUser = {};

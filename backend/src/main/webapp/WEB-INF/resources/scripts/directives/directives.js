@@ -116,7 +116,7 @@ angular.module('shareTaskApp.directives', []).
 						else {
 							closePicker();
 						}
-					})
+					});
 				}
 				else {
 					openPicker();
@@ -139,6 +139,23 @@ angular.module('shareTaskApp.directives', []).
 					dpCtrl.datepicker("setDate", new Date(newModel));
 				});
 			}
+		};
+	})
+	.directive('sharetaskMenu', function() {
+		return {
+			restrict: 'E',
+			templateUrl: 'resources-1.0.0/views/components/menu.html',
+			link: function(scope, element, attrs) {
+				//console.log("scope: %o, element: %o, attrs: %o", scope, element, attrs);
+			},
+			controller: ['$rootScope', '$scope', '$element', '$attrs', '$transclude', '$location', 'LocalStorage', function($rootScope, $scope, $element, $attrs, $transclude, $location, LocalStorage) {
+				$scope.logout = function() {
+					console.log("Logout user: %s", $rootScope.loggedUser.username);
+					$rootScope.loggedUser = {};
+					LocalStorage.remove('logged-user');
+					$location.path("/");
+				};
+			}]
 		};
 	})
 	;
