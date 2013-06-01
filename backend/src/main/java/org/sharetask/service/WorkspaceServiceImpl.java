@@ -92,13 +92,31 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 		return DTOConverter.convert(storedWorkspaceEntity, WorkspaceDTO.class);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.sharetask.api.WorkspaceService#addMember(java.lang.Long, java.lang.String)
+	 */
+	@Override
+	@Transactional
+	public void addMember(final String invitationCode) {
+		final Invitation invitation = invitationRepository.findByInvitationCode(invitationCode);
+		final Workspace workspace = workspaceRepository.read(invitation.getEntityId());
+		final User user = userRepository.read(invitation.getUsername());
+
+		// add member to workspace
+		if (!workspace.getMembers().contains(user.getUsername())) {
+			workspace.addMember(user);
+			workspaceRepository.save(workspace);
+		}
+	}
+	
 	/* (non-Javadoc)
 	 * @see org.sharetask.api.WorkspaceService#addMember(java.lang.Long, java.lang.String)
 	 */
 	@Override
 	@Transactional
 	@PreAuthorize(Constants.PERIMISSION_WORKSPACE_OWNER)
-	public void addMember(final Long workspaceId, final String username) {
+	public void invite(final Long workspaceId, final String username) {
 		final Invitation invitation = new Invitation();
 		invitation.setType(InvitationType.ADD_WORKSPACE_MEMBER);
 		invitation.setUsername(username);

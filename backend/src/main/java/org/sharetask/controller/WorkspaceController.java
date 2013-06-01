@@ -61,15 +61,23 @@ public class WorkspaceController {
 		return workspaceService.update(workspace);
 	}
 
-	@RequestMapping(value = "/{workspaceId}/member", 
+	@RequestMapping(value = "/{workspaceId}/invite", 
 	                method = RequestMethod.POST, 
 	                produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
-	public void addMember(@PathVariable("workspaceId") final Long workspaceId, 
-	                      @RequestBody final User user) {
- 		workspaceService.addMember(workspaceId, user.getUsername());
+	public void invite(@PathVariable("workspaceId") final Long workspaceId, 
+	                   @RequestBody final User user) {
+ 		workspaceService.invite(workspaceId, user.getUsername());
 	}
 	
+	@RequestMapping(value = "/{workspaceId}/addMember/${invitationCode}", 
+                    method = RequestMethod.POST, 
+                    produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseStatus(value = HttpStatus.OK)
+	public void addMember(@PathVariable("invitationCode") final String invitationCode) {
+		workspaceService.addMember(invitationCode);
+	}
+
 	@RequestMapping(value = "/{workspaceId}/member/{username:.*}", 
 	                method = RequestMethod.DELETE, 
 	                produces = MediaType.APPLICATION_JSON_VALUE)

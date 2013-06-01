@@ -47,32 +47,32 @@ public class WorkspaceControllerIT extends IntegrationTest {
     
     @Test
     public void testFindWorkspaceByOwner() throws IOException, URISyntaxException {
-    	URIBuilder builder = new URIBuilder();
+    	final URIBuilder builder = new URIBuilder();
     	builder.setScheme(SCHEMA).setHost(HOST).setPath(BASE_PATH + WORKSPACE_PATH)
     	    .setParameter("type", "OWNER");
-    	URI uri = builder.build();
+    	final URI uri = builder.build();
         //given
-        HttpGet httpGet = new HttpGet(uri);
+        final HttpGet httpGet = new HttpGet(uri);
 		
         //when
-        HttpResponse response = getClient().execute(httpGet);
+        final HttpResponse response = getClient().execute(httpGet);
  
         //then
         Assert.assertEquals(HttpStatus.OK.value(), response.getStatusLine().getStatusCode());
-        String responseData = EntityUtils.toString(response.getEntity());
+        final String responseData = EntityUtils.toString(response.getEntity());
         Assert.assertTrue(responseData.contains("\"title\":\"ABX Agency\""));
     }
 
     @Test
-    public void testAddMember() throws IOException {
+    public void testInvitation() throws IOException {
         //given
-        HttpPost httpPost = new HttpPost(URL_WORKSPACE + "/1/member");
+        final HttpPost httpPost = new HttpPost(URL_WORKSPACE + "/1/invite");
         httpPost.addHeader(new BasicHeader("Content-Type", "application/json"));
-        StringEntity httpEntity = new StringEntity("{\"username\":\"dev3@shareta.sk\"}");
+        final StringEntity httpEntity = new StringEntity("{\"username\":\"dev3@shareta.sk\"}");
         httpPost.setEntity(httpEntity);
         
         //when
-        HttpResponse response = getClient().execute(httpPost);
+        final HttpResponse response = getClient().execute(httpPost);
 
         //then
         Assert.assertEquals(HttpStatus.OK.value(), response.getStatusLine().getStatusCode());
@@ -81,20 +81,20 @@ public class WorkspaceControllerIT extends IntegrationTest {
     @Test
     public void testUpdateWorkspace() throws IOException {
         //given
-    	HttpPut httpPut = new HttpPut(URL_WORKSPACE);
+    	final HttpPut httpPut = new HttpPut(URL_WORKSPACE);
         httpPut.addHeader(new BasicHeader("Content-Type", "application/json"));
-        StringEntity httpEntity = new StringEntity("{\"id\":1," +
+        final StringEntity httpEntity = new StringEntity("{\"id\":1," +
                                                     "\"title\":\"Test Title\"," +
                                                     "\"owner\":{\"username\":\"dev1@shareta.sk\"}" +
                                                     "}");
         httpPut.setEntity(httpEntity);
         
         //when
-        HttpResponse response = getClient().execute(httpPut);
+        final HttpResponse response = getClient().execute(httpPut);
 
         //then
         Assert.assertEquals(HttpStatus.OK.value(), response.getStatusLine().getStatusCode());
-        String responseData = EntityUtils.toString(response.getEntity());
+        final String responseData = EntityUtils.toString(response.getEntity());
         Assert.assertTrue(responseData.contains("\"title\":\"Test Title\""));
     }
     
@@ -102,11 +102,11 @@ public class WorkspaceControllerIT extends IntegrationTest {
     @Test
     public void testDelete() throws IOException {
         //given
-    	HttpDelete httpDelete = new HttpDelete(URL_WORKSPACE + "/2");
+    	final HttpDelete httpDelete = new HttpDelete(URL_WORKSPACE + "/2");
         httpDelete.addHeader(new BasicHeader("Content-Type", "application/json"));
         
         //when
-        HttpResponse response = getClient().execute(httpDelete);
+        final HttpResponse response = getClient().execute(httpDelete);
  
         //then
         Assert.assertEquals(HttpStatus.OK.value(), response.getStatusLine().getStatusCode());

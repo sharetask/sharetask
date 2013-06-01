@@ -19,11 +19,11 @@
 package org.sharetask.repository;
 
 import org.sharetask.entity.Invitation;
-import org.sharetask.repository.base.BaseJpaRepository;
 
 /**
  * @author Michal Bocek
  * @since 1.0.0
  */
-public interface InvitationRepository extends BaseJpaRepository<Invitation, Long>, InvitationRepositoryCustom {
+public interface InvitationRepositoryCustom {
+	Invitation findByInvitationCode(final String invitationCode);
 }

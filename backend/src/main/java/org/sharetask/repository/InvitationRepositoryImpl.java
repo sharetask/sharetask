@@ -18,12 +18,25 @@
  */
 package org.sharetask.repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+
 import org.sharetask.entity.Invitation;
-import org.sharetask.repository.base.BaseJpaRepository;
 
 /**
  * @author Michal Bocek
  * @since 1.0.0
  */
-public interface InvitationRepository extends BaseJpaRepository<Invitation, Long>, InvitationRepositoryCustom {
+public class InvitationRepositoryImpl implements InvitationRepositoryCustom {
+
+	@PersistenceContext
+	private EntityManager entityManager;
+
+	@Override
+	public Invitation findByInvitationCode(final String invitationCode) {
+		final TypedQuery<Invitation> query = entityManager.createNamedQuery(Invitation.QUERY_NAME_FIND_BY_CODE, Invitation.class);
+		query.setParameter("invitationCode", invitationCode);
+		return query.getSingleResult();
+	}
 }

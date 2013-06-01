@@ -27,6 +27,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -42,12 +44,18 @@ import org.sharetask.api.Constants;
 @ToString
 @Entity
 @Table(name = "INVITATION")
+@NamedQueries(value = { 
+		@NamedQuery(name = Invitation.QUERY_NAME_FIND_BY_CODE, query = Invitation.QUERY_FIND_BY_CODE)   
+	})
 public class Invitation extends BaseImmutableEntity implements Serializable {
 
 	private static final long serialVersionUID = Constants.VERSION;
 
+	public static final String QUERY_NAME_FIND_BY_CODE = "Invitation.findByInvitationCode";
+	public static final String QUERY_FIND_BY_CODE = "SELECT i FROM Invitation i WHERE i.invitationCode = :invitationCode";
+	
 	public static enum InvitationType {
-		ADD_WORKSPACE_MEMBER, ADD_TASK_ASSIGNEE;
+		ADD_WORKSPACE_MEMBER;
 	}
 
 	@Id

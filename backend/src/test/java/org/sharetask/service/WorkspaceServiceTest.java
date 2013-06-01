@@ -86,11 +86,21 @@ public class WorkspaceServiceTest extends DbUnitTest {
 	}
 	
 	/**
-	 * Test method for {@link org.sharetask.api.WorkspaceService#addMember(Long, Long)}.
+	 * Test method for {@link org.sharetask.api.WorkspaceService#addMember(String)}.
 	 */
 	@Test
 	public void testAddMember() {
-		workspaceService.addMember(100L, "test2@test.com");
+		workspaceService.addMember("XXXYYY");
+		final Workspace workspace = workspaceRepository.findOne(100L);
+		Assert.assertThat(workspace.getMembers().size(), CoreMatchers.is(2));
+	}
+	
+	/**
+	 * Test method for {@link org.sharetask.api.WorkspaceService#invite(Long, String)}.
+	 */
+	@Test
+	public void testInvite() {
+		workspaceService.invite(100L, "test2@test.com");
 		final List<Invitation> findAll = invitationRepository.findAll();
 		boolean result = false;
 		for (final Invitation invitation : findAll) {
