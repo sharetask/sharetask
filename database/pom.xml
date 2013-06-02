@@ -157,17 +157,37 @@
 			</build>
 		</profile>
 		<profile>
-			<id>test-deploy</id>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
+			<id>prod</id>
 			<properties>
 				<liquibase.context>production</liquibase.context>
 				<liquibase.database.jdbc.driver>com.mysql.jdbc.Driver</liquibase.database.jdbc.driver>
-				<liquibase.database.jdbc.url>jdbc:mysql://localhost:3306/test</liquibase.database.jdbc.url>
+				<liquibase.database.jdbc.url>jdbc:mysql://localhost:3306/web</liquibase.database.jdbc.url>
 				<liquibase.database.jdbc.user>root</liquibase.database.jdbc.user>
 				<liquibase.database.jdbc.password>Password01</liquibase.database.jdbc.password>
 			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>id.install</id>
+								<phase>install</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<target>
+										<exec executable="pwd">
+										</exec>
+									</target>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>			
   		</profile>
 	</profiles>
 </project>
