@@ -16,9 +16,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.sharetask.controller;
+package org.sharetask.controller.handler;
 
-import org.sharetask.service.UserAlreadyExists;
+import java.util.Set;
+
+import org.hibernate.validator.method.MethodConstraintViolation;
+import org.hibernate.validator.method.MethodConstraintViolationException;
+import org.sharetask.controller.json.ValidationError;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -30,14 +34,20 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @since 1.0.0
  */
 @ControllerAdvice
-public class UserAlreadyExistsExceptionHandler {
+public class MethodConstraintViolationExceptionHandler {
     
     @ExceptionHandler
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ResponseBody
-	public String handlException(final UserAlreadyExists error) {
-    	// TODO parse exception
-		return "Bad request (UserAlreadyExists): " + error.getMessage();
+	public ValidationError handlException(final MethodConstraintViolationException error) {
+		final ValidationError validationError = new ValidationError();
+		final Set<MethodConstraintViolation<?>> violations = error.getConstraintViolations();
+		for (final MethodConstraintViolation<?> methodConstraintViolation : violations) {
+			final String path = methodConstraintViolation.getPropertyPath().toString();
+			final String template = methodConstraintViolation.getMessageTemplate();
+			validationError.addError(path, template);
+		}
+		return validationError;
 	}
     
 }

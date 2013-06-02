@@ -16,28 +16,30 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.sharetask.controller;
+package org.sharetask.controller.json;
 
-import org.hibernate.validator.method.MethodConstraintViolationException;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import java.util.HashMap;
+import java.util.Map;
+
+import lombok.Getter;
+import lombok.ToString;
 
 /**
  * @author Michal Bocek
  * @since 1.0.0
  */
-@ControllerAdvice
-public class MethodConstraintViolationExceptionHandler {
-    
-    @ExceptionHandler
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    @ResponseBody
-	public String handlException(final MethodConstraintViolationException error) {
-    	// TODO parse exception
-		return "Bad request (MethodConstraintViolationException): " + error.getMessage();
+@ToString
+public class ValidationError extends ResponseError {
+	
+	@Getter
+	private final Map<String, String> fieldErrors;
+	
+	public ValidationError() {
+		super(ErrorType.VALIDATION, null);
+		fieldErrors = new HashMap<String, String>();
 	}
-    
+	
+	public void addError(final String fieldName, final String message) {
+		fieldErrors.put(fieldName, message);
+	}
 }

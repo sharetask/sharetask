@@ -16,26 +16,34 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.sharetask.api;
+package org.sharetask.controller.json;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-
-import org.sharetask.api.dto.UserDTO;
-import org.sharetask.api.dto.UserInfoDTO;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.validation.annotation.Validated;
+import lombok.Getter;
+import lombok.ToString;
 
 /**
  * @author Michal Bocek
  * @since 1.0.0
  */
-@Validated
-public interface UserService extends UserDetailsService {
+@ToString
+public class ResponseError {
+	
+	public static enum ErrorType {
+		VALIDATION, USER_ALREADY_EXISTS;
+	}
 
-	UserDTO create(@NotNull @Valid final UserDTO userDTO);
-
-	UserInfoDTO update(@NotNull @Valid final UserInfoDTO userInfoDTO);
-
-	UserInfoDTO read(@NotNull final String username);
+	@Getter
+	private final ErrorType type;
+	
+	@Getter
+	private final String message;
+	
+	public ResponseError(final ErrorType type, final String message) {
+		this.type = type;
+		this.message = message;
+	}
+	
+	public ResponseError(final ErrorType type) {
+		this(type, null);
+	}
 }

@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import lombok.Getter;
@@ -37,10 +38,12 @@ import org.sharetask.entity.Role;
 @ToString(exclude = "password")
 public class UserDTO {
 
+	@NotNull
 	@Size(min = 6, max = 255)
 	@Getter @Setter
 	private String username;
 	
+	@NotNull
 	@Size(min = 8, max = 255)
 	@Getter @Setter
 	private String password;
@@ -48,10 +51,12 @@ public class UserDTO {
 	@Getter @Setter
 	private Boolean enabled = Boolean.FALSE;
 
+	@NotNull
 	@Size(min = 1, max = 255)
 	@Getter @Setter
 	private String name;
 	
+	@NotNull
 	@Size(min = 1, max = 255)
 	@Getter @Setter
 	private String surName;
@@ -64,15 +69,15 @@ public class UserDTO {
 	private Date updatedOn;
 	
 	public void addRole(final Role role) {
-		this.roles.add(role);
+		roles.add(role);
 	}
 	
 	public Date getCreatedOn() {
-		return this.createdOn == null ? null : (Date)this.createdOn.clone();
+		return createdOn == null ? null : (Date)createdOn.clone();
 	}
 	
 	public Date getUpdatedOn() {
-		return this.updatedOn == null ? null : (Date)this.updatedOn.clone();
+		return updatedOn == null ? null : (Date)updatedOn.clone();
 	}
 	
 	public void setCreatedOn(final Date createdOn) {

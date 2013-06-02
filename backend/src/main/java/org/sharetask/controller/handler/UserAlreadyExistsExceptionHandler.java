@@ -16,26 +16,29 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.sharetask.api;
+package org.sharetask.controller.handler;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-
-import org.sharetask.api.dto.UserDTO;
-import org.sharetask.api.dto.UserInfoDTO;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.validation.annotation.Validated;
+import org.sharetask.controller.json.ResponseError;
+import org.sharetask.controller.json.ResponseError.ErrorType;
+import org.sharetask.service.UserAlreadyExists;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * @author Michal Bocek
  * @since 1.0.0
  */
-@Validated
-public interface UserService extends UserDetailsService {
-
-	UserDTO create(@NotNull @Valid final UserDTO userDTO);
-
-	UserInfoDTO update(@NotNull @Valid final UserInfoDTO userInfoDTO);
-
-	UserInfoDTO read(@NotNull final String username);
+@ControllerAdvice
+public class UserAlreadyExistsExceptionHandler {
+    
+    @ExceptionHandler
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ResponseBody
+	public ResponseError handlException(final UserAlreadyExists error) {
+    	// TODO parse exception
+		return new ResponseError(ErrorType.USER_ALREADY_EXISTS);
+	}    
 }
