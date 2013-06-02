@@ -693,7 +693,8 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 			$scope.loadWorkspaces();
 		}
 	}])
-	.controller('AdminCtrl', ['$scope', '$location', '$rootScope', 'Workspace', 'LocalStorage', 'ErrorHandling', function($scope, $location, $rootScope, Workspace, LocalStorage, ErrorHandling) {
+	.controller('AdminCtrl', ['$scope', '$location', '$rootScope', '$timeout', 'Workspace', 'LocalStorage', 'ErrorHandling', function($scope, $location, $rootScope, $timeout, Workspace, LocalStorage, ErrorHandling) {
+		$scope.newMember = {processing: false, result: 0};
 		
 		/**
 		 * Loading all workspaces from server.
@@ -782,17 +783,18 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 		 */
 		$scope.inviteMember = function() {
 			console.log("Invite new member (member: %o) to workspace (id: %s)", $scope.newMember, $scope.selectedWorkspace.id);
-			// FIXME Change call after implementation of back-end operation.
-			/*
+			$scope.newMember.processing = true;
 			Workspace.inviteMember({workspaceId: $scope.selectedWorkspace.id, user: $scope.newMember}, function(data, status) {
 					console.log("Workspace inviteMember success! data: %o, status: %o", data, status);
-					$scope.newMember = '';
+					$scope.newMember.processing = false;
+					$scope.newMember.result = 1;
+					$scope.newMember.username = '';
 					$scope.setEditMode('');
 				}, function(data, status) {
 					console.log("Workspace inviteMember error!");
+					$scope.newMember.result = -1;
 					ErrorHandling.handle(data, status);
 				});
-			*/
 		};
 		
 		/**

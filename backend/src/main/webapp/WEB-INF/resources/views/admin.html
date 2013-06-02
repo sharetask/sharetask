@@ -60,15 +60,22 @@
 								<div class="tab-pane" id="workspaceMembers">
 									<legend>Members</legend>
 									<p><button class="btn btn-inverse" ng-click="setEditMode('WORKSPACE-INVITE-MEMBER')"><i class="icon-plus icon-white"></i> Invite a member</button></p>
+									<div class="alert alert-success" ng-class="{'hidden':newMember.result == -1 || newMember.result == 0}">
+										<a class="close" ng-click="newMember.result = 0">&times;</a>
+										<strong>Success</strong> User was successfully invited to this workspace.
+									</div>
+									<div class="alert alert-error" ng-class="{'hidden':newMember.result == 1 || newMember.result == 0}">
+										<a class="close" ng-click="newMember.result = 0">&times;</a>
+										<strong>Error</strong> Error inviting new user to this workspace.
+									</div>
 									<div ng-class="{'hidden':attrEditMode != 'WORKSPACE-INVITE-MEMBER'}" style="margin-bottom:20px;padding:20px;border:1px solid #000;">
 										<form name="formWorkspaceInviteMember" novalidate class="css-form">
 											<legend>Invite new member</legend>
 											<label>e-mail</label>
 											<input class="span4" type="text" placeholder="type member's e-mail..." ng-model="newMember.username" required /><br />
-											<button class="btn btn-inverse" ng-click="inviteMember()" ng-disabled="formWorkspaceInviteMember.$invalid">Invite</button>
+											<button class="btn btn-inverse" ng-click="inviteMember()" ng-disabled="formWorkspaceInviteMember.$invalid" ng-class="{'disabled':newMember.processing}">Invite<span ng-show="newMember.processing"> processing...</span></button>
 										</form>
 									</div>
-									
 									<table class="table table-bordered table-striped table-hover">
 									<thead>
 										<tr>

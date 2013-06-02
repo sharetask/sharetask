@@ -87,9 +87,8 @@ shareTaskApp.service('Workspace', function($resource, $http) {
 	};
 	
 	this.inviteMember = function(input, success, error) {
-		// FIXME Change call after implementation of back-end operation.
-		console.log("invite new member (user: %o) to workspace (id: %o)", input.user, input.workspaceId);
-		return $http.post("/sharetask/api/workspace/"+input.workspaceId+"/member", {username: input.user.username}).success(success).error(error);
+		console.log("Invite new member (user: %o) to workspace (id: %o)", input.user, input.workspaceId);
+		return $http.post("/sharetask/api/workspace/"+input.workspaceId+"/invite", {username: input.user.username}).success(success).error(error);
 	};
 	
 	this.removeMember = function(input, success, error) {
