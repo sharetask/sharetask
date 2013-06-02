@@ -24,13 +24,11 @@ import javax.validation.constraints.NotNull;
 import org.sharetask.api.dto.UserDTO;
 import org.sharetask.api.dto.UserInfoDTO;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.validation.annotation.Validated;
 
 /**
  * @author Michal Bocek
  * @since 1.0.0
  */
-@Validated
 public interface UserService extends UserDetailsService {
 
 	UserDTO create(@NotNull @Valid final UserDTO userDTO);

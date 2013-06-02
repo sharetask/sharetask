@@ -244,7 +244,7 @@
 								<home>${catalina.home}</home>
 								<!-- <log>cargo.log</log> -->
 								<systemProperties>
-									<definition.database.jdbc.url>jdbc:hsqldb:file:/tmp/db-integration/sharetask;shutdown=true</definition.database.jdbc.url>
+									<database.jdbc.url>jdbc:hsqldb:file:/tmp/db-integration/sharetask;shutdown=true</database.jdbc.url>
 									<spring.profiles.active>${spring.profile}</spring.profiles.active>
 									<user.timezone>GMT</user.timezone>
 								</systemProperties>
@@ -298,7 +298,7 @@
 				</plugins>			
 			</build>
 			<properties>
-				<definition.database.jdbc.url>jdbc:hsqldb:file:/tmp/db-integration/sharetask;shutdown=true</definition.database.jdbc.url>
+				<database.jdbc.url>jdbc:hsqldb:file:/tmp/db-integration/sharetask;shutdown=true</database.jdbc.url>
 				<spring.profile>integration</spring.profile>
 			</properties>
 		</profile>
