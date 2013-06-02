@@ -831,7 +831,23 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 			$scope.loadWorkspaces();
 		}
 	}])
-	.controller('UserCtrl', ['$scope', '$location', '$rootScope', 'Workspace', 'LocalStorage', function($scope, $location, $rootScope, Workspace, LocalStorage) {
+	.controller('UserCtrl', ['$scope', '$location', '$rootScope', 'User', 'LocalStorage', function($scope, $location, $rootScope, User, LocalStorage) {
+
+		/**
+		 * Update user's profile
+		 * User's data are stored to server.
+		 */
+		$scope.update = function() {
+			console.log("Update user's (username: %s) profile to (user: %o)", $scope.loggedUser.username, $scope.loggedUser);
+			// TODO - under construction
+			User.update({user: $scope.loggedUser}, function(data, status) {
+					console.log("User update success! data: %o, status: %o", data, status);
+					
+				}, function(data, status) {
+					console.log("User update error!");
+					ErrorHandling.handle(data, status);
+				});
+		};
 		
 		// get logged user from local storage
 		$rootScope.loggedUser = LocalStorage.get('logged-user');
@@ -843,7 +859,8 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 			$location.path("/");
 		}
 		else {
-			
+			$rootScope.loggedUser.processing = false;
+			$rootScope.loggedUser.result = 0;
 		}
 	}])
 	;
