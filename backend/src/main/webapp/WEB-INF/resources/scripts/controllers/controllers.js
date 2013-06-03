@@ -693,7 +693,8 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 			$scope.loadWorkspaces();
 		}
 	}])
-	.controller('AdminCtrl', ['$scope', '$location', '$rootScope', 'Workspace', 'LocalStorage', 'ErrorHandling', function($scope, $location, $rootScope, Workspace, LocalStorage, ErrorHandling) {
+	.controller('AdminCtrl', ['$scope', '$location', '$rootScope', '$timeout', 'Workspace', 'LocalStorage', 'ErrorHandling', function($scope, $location, $rootScope, $timeout, Workspace, LocalStorage, ErrorHandling) {
+		$scope.newMember = {processing: false, result: 0};
 		
 		/**
 		 * Loading all workspaces from server.
@@ -782,17 +783,18 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 		 */
 		$scope.inviteMember = function() {
 			console.log("Invite new member (member: %o) to workspace (id: %s)", $scope.newMember, $scope.selectedWorkspace.id);
-			// FIXME Change call after implementation of back-end operation.
-			/*
+			$scope.newMember.processing = true;
 			Workspace.inviteMember({workspaceId: $scope.selectedWorkspace.id, user: $scope.newMember}, function(data, status) {
 					console.log("Workspace inviteMember success! data: %o, status: %o", data, status);
-					$scope.newMember = '';
+					$scope.newMember.processing = false;
+					$scope.newMember.result = 1;
+					$scope.newMember.username = '';
 					$scope.setEditMode('');
 				}, function(data, status) {
 					console.log("Workspace inviteMember error!");
+					$scope.newMember.result = -1;
 					ErrorHandling.handle(data, status);
 				});
-			*/
 		};
 		
 		/**
@@ -829,7 +831,23 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 			$scope.loadWorkspaces();
 		}
 	}])
-	.controller('UserCtrl', ['$scope', '$location', '$rootScope', 'Workspace', 'LocalStorage', function($scope, $location, $rootScope, Workspace, LocalStorage) {
+	.controller('UserCtrl', ['$scope', '$location', '$rootScope', 'User', 'LocalStorage', function($scope, $location, $rootScope, User, LocalStorage) {
+
+		/**
+		 * Update user's profile
+		 * User's data are stored to server.
+		 */
+		$scope.update = function() {
+			console.log("Update user's (username: %s) profile to (user: %o)", $scope.loggedUser.username, $scope.loggedUser);
+			// TODO - under construction
+			User.update({user: $scope.loggedUser}, function(data, status) {
+					console.log("User update success! data: %o, status: %o", data, status);
+					
+				}, function(data, status) {
+					console.log("User update error!");
+					ErrorHandling.handle(data, status);
+				});
+		};
 		
 		// get logged user from local storage
 		$rootScope.loggedUser = LocalStorage.get('logged-user');
@@ -841,7 +859,8 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 			$location.path("/");
 		}
 		else {
-			
+			$rootScope.loggedUser.processing = false;
+			$rootScope.loggedUser.result = 0;
 		}
 	}])
 	;
