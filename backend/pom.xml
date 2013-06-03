@@ -75,6 +75,7 @@
 					<forkMode>once</forkMode>
 					<systemPropertyVariables>
 						<spring.profiles.active>${spring.profile}</spring.profiles.active>
+						<database.jdbc.url>${database.jdbc.url}</database.jdbc.url>
 					</systemPropertyVariables>
 					<!-- reportFormat>xml</reportFormat-->
 				</configuration>

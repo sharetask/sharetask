@@ -44,7 +44,7 @@
  					<propertyFileWillOverride>true</propertyFileWillOverride>
  					<propertyFile>${target.directory}/classes/liquibase.properties</propertyFile>
 				</configuration>
-			</plugin>			
+			</plugin>
 		</plugins>
 	</build>
 
@@ -110,9 +110,6 @@
 		</profile>
 		<profile>
 			<id>integration</id>
-			<activation>
-				<activeByDefault></activeByDefault>
-			</activation>
 			<properties>
 				<database.path>/tmp/db-integration</database.path>
 				<liquibase.context>integration</liquibase.context>
@@ -162,11 +159,29 @@
 				<liquibase.context>production</liquibase.context>
 				<liquibase.database.jdbc.driver>com.mysql.jdbc.Driver</liquibase.database.jdbc.driver>
 				<liquibase.database.jdbc.url>jdbc:mysql://localhost:3306/web</liquibase.database.jdbc.url>
-				<liquibase.database.jdbc.user>root</liquibase.database.jdbc.user>
-				<liquibase.database.jdbc.password>Password01</liquibase.database.jdbc.password>
 			</properties>
 			<build>
 				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-assembly-plugin</artifactId>
+						<configuration>
+							<!-- <appendAssemblyId>false</appendAssemblyId> -->
+							<finalName>${artifactId}</finalName>
+							<descriptors>
+								<descriptor>src/main/assembly/distribution.xml</descriptor>
+							</descriptors>
+						</configuration>
+						<executions>
+							<execution>
+								<id>make-assembly</id> <!-- this is used for inheritance merges -->
+								<phase>package</phase> <!-- bind to the packaging phase -->
+								<goals>
+									<goal>single</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-antrun-plugin</artifactId>
@@ -179,7 +194,7 @@
 								</goals>
 								<configuration>
 									<target>
-										<exec executable="pwd">
+										<exec executable="cmd">
 										</exec>
 									</target>
 								</configuration>
