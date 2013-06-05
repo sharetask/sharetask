@@ -23,10 +23,11 @@
 			<!-- workspace menu -->
 			<div id="workspace-menu">
 				<div class="navbar">
-					<div class="navbar-inner">
-						<div class="container" style="width:auto;">
-							<span class="brand">Workspaces</span>
-							<ul id="workspaceList" class="nav">
+					<div class="navbar-inner" style="padding-left:0;">
+						<div class="container">
+							<ul class="nav">
+								<li class="cursor-pointer" style="background:rgba(255,255,255,0.2);margin-right:15px;"><a ng-click="setView('PANEL-TASK-FILTER')"><i class="icon-white" ng-class="{'icon-chevron-left':viewPanelTaskFilter, 'icon-chevron-right':!viewPanelTaskFilter}"></i></a></li>
+								<li><span class="brand">Workspaces</span></li>
 								<li class="cursor-pointer"><a ng-click="setEditMode('NEW-WORKSPACE')"><i class="icon-plus icon-white"></i></a></li>
 								<li ng-class="{'hidden':taskEditMode != 'NEW-WORKSPACE'}">
 									<form name="formWorkspaceAdd" novalidate class="css-form">
@@ -49,13 +50,15 @@
 				</div>
 			</div>
 			<!-- divider -->
+			<!--
 			<div class="panel-task-divider" ng-class="{'left':!viewPanelTaskFilter}" ng-click="setView('PANEL-TASK-FILTER')">
 				<div class="panel-task-divider-inner cursor-pointer" title="show / hide left panel"><b ng-class="{'caret-left':viewPanelTaskFilter, 'caret-right':!viewPanelTaskFilter}"></b></div>
 			</div>
+			-->
 			<!-- task filter panel -->
-			<div class="panel-task-filter" ng-class="{'hide2':!viewPanelTaskFilter}">
-				<div class="panel-task-filter-inner">
-					<div class="panel-task-filter-content">
+			<div class="sidebar" ng-class="{'hide2':!viewPanelTaskFilter}">
+				<div class="sidebar-inner">
+					<div class="sidebar-content">
 						<div class="tile" ng-class="{'active':'MY_PENDING'==filter.queue}" ng-click="setTaskFilterQueue('MY_PENDING')">
 							<div class="header"></div>
 							<div class="footer">Pending<span class="pull-right">{{allTasks | queueTasksCount: 'MY_PENDING'}}</span></div>
@@ -88,7 +91,7 @@
 					<div class="header" ng-class="{'large':taskEditMode == 'NEW-TASK'}">
 						<div class="queue-name">
 							<div class="queue-name-inner">
-								<div class="title pull-left cursor-pointer" ng-click="changeTaskQueue()">{{filter.queue | taskQueueName}} <small>({{allTasks | queueTasksCount:filter.queue}})</small></div>
+								<div class="title pull-left cursor-pointer" ng-click="changeTaskQueue()">{{filter.queue | taskQueueName}}<small>({{allTasks | queueTasksCount:filter.queue}})</small></div>
 								<!--<div class="input-append pull-right">
 									<input class="span2" type="text" placeholder="type search phrase..." ng-model="filter.searchString" />
 									<button class="btn btn-inverse" ng-click="filterTasks()"><i class="icon-search icon-white"></i></button>
@@ -98,7 +101,7 @@
 						<div class="queue-controls">
 							<div class="queue-controls-inner">
 								<div class="btn-group">
-									<button class="btn btn-inverse dropdown-toggle" data-toggle="dropdown">Sort by {{filter.orderBy | orderName}} <span class="caret"></span></button>
+									<button class="btn dropdown-toggle" data-toggle="dropdown"><i class="icon-sort"></i> {{filter.orderBy | orderName}} <span class="caret"></span></button>
 									<ul class="dropdown-menu">
 										<li ng-click="setTaskOrdering('TASK_TITLE')"><a>Name</a></li>
 										<li ng-click="setTaskOrdering('TASK_DUE_DATE')"><a>Due date</a></li>
@@ -144,7 +147,7 @@
 								<div class="task-list-item-inner">
 									<div class="row-full">
 										<div class="span1">
-											<div class="st-checkbox" ng-click="task.checked = !task.checked" ng-class="{'selected checked':task.id == selectedTask.id && task.checked, 'checked':task.checked}" stop-event="click"><i class="icon-ok icon-white" ng-class="{'hidden':!task.checked}"></i></div>
+											<div class="st-checkbox" ng-click="task.checked = !task.checked" ng-class="{'selected checked':task.id == selectedTask.id && task.checked, 'checked':task.checked}" stop-event="click"><!--<i class="icon-ok icon-white" ng-class="{'hidden':!task.checked}"></i>--></div>
 										</div>
 										<div class="span11">
 											<div class="row-full">
@@ -155,7 +158,7 @@
 											</div>
 											<div class="row-full">
 												<div class="span8">
-													<div class="tag" ng-repeat="tag in task.tags"><span class="text" ng-class="{'selected':tag == filter.tag}">{{tag}}</span><span class="remove cursor-pointer" ng-click="removeTag(task.id, tag)" stop-event="click">x</span></div>
+													<div class="tag small" ng-repeat="tag in task.tags"><span class="text" ng-class="{'selected':tag == filter.tag}">{{tag}}</span><!--<span class="remove cursor-pointer" ng-click="removeTag(task.id, tag)" stop-event="click">x</span>--></div>
 												</div>
 												<div class="span4" style="text-align:right;"><i class="icon-comment" ng-class="{'icon-white':task.id == selectedTask.id}"></i> {{task.commentsCount}}</div>
 											</div>
@@ -243,7 +246,7 @@
 						<div style="margin-top:5px;">
 							<span class="label label-success" style="background:#656565;">Created on<br /><br /><strong>{{selectedTask.createdOn | date:'mediumDate'}}</strong></span>
 							<span class="label cursor-pointer" ng-class="{'priority-low':selectedTask.priority == 'LOW','priority-medium':selectedTask.priority == 'MEDIUM','priority-high':selectedTask.priority == 'HIGH'}" ng-click="changeTaskPriority()">Priority<br /><br /><strong>{{selectedTask.priority}}</strong></span>
-							<span class="label label-warning cursor-pointer" style="background:#656565;" ng-click="setView('TASK-DUE-DATE-PICKER')">Due date<br /><br /><strong>{{selectedTask.dueDate | date:'mediumDate'}}</strong></span>
+							<span class="label label-success cursor-pointer" style="background:#656565;" ng-click="setView('TASK-DUE-DATE-PICKER')">Due date<br /><br /><strong>{{selectedTask.dueDate | date:'mediumDate'}}</strong></span>
 							<jqui-datepicker model="selectedTask.dueDate" selected="viewTaskDueDatePicker=false" options="datePickerOptions" ng-class="{'hidden':!viewTaskDueDatePicker}"></jqui-datepicker>
 						</div>
 						<!-- task tags -->

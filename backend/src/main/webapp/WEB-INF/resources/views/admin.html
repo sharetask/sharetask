@@ -20,11 +20,13 @@
 			<!-- application menu -->
 			<sharetask-menu></sharetask-menu>
 			<!-- administration -->
-			<div id="adminLeftPane" class="adminLeftPane">
-				<div class="adminLeftPaneContent">
-					<div style="padding:5px">
-						<button class="btn btn-inverse" ng-click="setEditMode('WORKSPACE-ADD')"><i class="icon-plus icon-white"></i> Add</button>
-						<br /><br />
+			<div class="sidebar admin">
+				<div class="sidebar-inner">
+					<div class="sidebar-content">
+						<div class="tile active" ng-click="setEditMode('WORKSPACE-ADD')">
+							<div class="header"></div>
+							<div class="footer"><i class="icon-plus icon-white"></i> Add</div>
+						</div>
 						<div class="tile" ng-repeat="workspace in workspaces" ng-class="{'active':workspace.id==selectedWorkspace.id}" ng-click="setSelectedWorkspace(workspace.id)">
 							<div class="header"></div>
 							<div class="footer">{{workspace.title}}</div>
@@ -43,18 +45,28 @@
 							<div class="tab-content">
 								<!-- workspace update form -->
 								<div class="tab-pane active" id="workspaceData">
-									<legend>{{selectedWorkspace.title}}</legend>
-									<label>Name</label>
-									<input class="span5" type="text" placeholder="type workspace name..." ng-model="selectedWorkspace.title" />
-									<label>Description</label>
-									<textarea class="span5" rows="3" placeholder="type workspace description..." ng-model="selectedWorkspace.description"></textarea>
-									<label>Owner</label>
-									<div class="input-append">
-										<input type="text" placeholder="type owner name..." value="{{selectedWorkspace.owner.name}} {{selectedWorkspace.owner.surName}}" disabled="disabled" />
-										<button class="btn" ng-click="">Forward ownership</button>
-									</div>
-									<br />
-									<button class="btn btn-inverse" ng-click="updateWorkspace()">Save</button>
+									<form name="formWorkspaceUpdate" novalidate class="css-form">
+										<legend>{{selectedWorkspace.title}}</legend>
+										<div class="alert alert-success" ng-class="{'hidden':updateWorkspaceData.result == -1 || updateWorkspaceData.result == 0}">
+											<a class="close" ng-click="updateWorkspaceData.result = 0">&times;</a>
+											<strong>Success</strong> Workspace was successfully updated.
+										</div>
+										<div class="alert alert-error" ng-class="{'hidden':updateWorkspaceData.result == 1 || updateWorkspaceData.result == 0}">
+											<a class="close" ng-click="updateWorkspaceData.result = 0">&times;</a>
+											<strong>Error</strong> Error updating workspace.
+										</div>
+										<label>Name</label>
+										<input class="span5" type="text" placeholder="type workspace name..." ng-model="selectedWorkspace.title" required />
+										<label>Description</label>
+										<textarea class="span5" rows="3" placeholder="type workspace description..." ng-model="selectedWorkspace.description"></textarea>
+										<label>Owner</label>
+										<div class="input-append">
+											<input type="text" placeholder="type owner name..." value="{{selectedWorkspace.owner.name}} {{selectedWorkspace.owner.surName}}" disabled="disabled" />
+											<button class="btn" ng-click="">Forward ownership</button>
+										</div>
+										<br />
+										<button class="btn btn-inverse" ng-click="updateWorkspace()" ng-disabled="formWorkspaceUpdate.$invalid || updateWorkspaceData.processing">Save<span ng-show="updateWorkspaceData.processing"> processing...</span></button>
+									</form>
 								</div>
 								<!-- workspace members -->
 								<div class="tab-pane" id="workspaceMembers">
@@ -73,7 +85,7 @@
 											<legend>Invite new member</legend>
 											<label>e-mail</label>
 											<input class="span4" type="text" placeholder="type member's e-mail..." ng-model="newMember.username" required /><br />
-											<button class="btn btn-inverse" ng-click="inviteMember()" ng-disabled="formWorkspaceInviteMember.$invalid" ng-class="{'disabled':newMember.processing}">Invite<span ng-show="newMember.processing"> processing...</span></button>
+											<button class="btn btn-inverse" ng-click="inviteMember()" ng-disabled="formWorkspaceInviteMember.$invalid || newMember.processing">Invite<span ng-show="newMember.processing"> processing...</span></button>
 										</form>
 									</div>
 									<table class="table table-bordered table-striped table-hover">
@@ -115,7 +127,7 @@
 							<input class="span5" type="text" placeholder="type title..." ng-model="newWorkspace.title" required /><br />
 							<label>Description</label>
 							<textarea class="span5" rows="3" placeholder="type description..." ng-model="newWorkspace.description"></textarea><br />
-							<button class="btn btn-inverse" ng-click="addWorkspace()" ng-disabled="formWorkspaceAdd.$invalid">Add</button>
+							<button class="btn btn-inverse" ng-click="addWorkspace()" ng-disabled="formWorkspaceAdd.$invalid || addWorkspaceData.processing">Add<span ng-show="addWorkspaceData.processing"> processing...</span></button>
 						</form>
 					</div>
 				</div>

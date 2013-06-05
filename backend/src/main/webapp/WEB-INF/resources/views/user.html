@@ -34,12 +34,12 @@
 								<div class="tab-pane active" id="userProfile">
 									<form name="formUserUpdate" novalidate class="css-form">
 										<legend>User profile</legend>
-										<div class="alert alert-success" ng-class="{'hidden':loggedUser.result == -1 || loggedUser.result == 0}">
-											<a class="close" ng-click="loggedUser.result = 0">&times;</a>
+										<div class="alert alert-success" ng-class="{'hidden':updateUserProfile.result == -1 || updateUserProfile.result == 0}">
+											<a class="close" ng-click="updateUserProfile.result = 0">&times;</a>
 											<strong>Success</strong> User profile was successfully updated.
 										</div>
-										<div class="alert alert-error" ng-class="{'hidden':loggedUser.result == 1 || loggedUser.result == 0}">
-											<a class="close" ng-click="loggedUser.result = 0">&times;</a>
+										<div class="alert alert-error" ng-class="{'hidden':updateUserProfile.result == 1 || updateUserProfile.result == 0}">
+											<a class="close" ng-click="updateUserProfile.result = 0">&times;</a>
 											<strong>Error</strong> Error updating user's profile.
 										</div>
 										<label>First name</label>
@@ -53,7 +53,7 @@
 										<input class="span5" type="text" placeholder="type new password..." ng-model="loggedUser.newPassword1" /><br />
 										<label>New password (check)</label>
 										<input class="span5" type="text" placeholder="retype new password..." ng-model="loggedUser.newPassword2" /><br />
-										<button class="btn btn-inverse" ng-click="update()" ng-disabled="formUserUpdate.$invalid" ng-class="{'disabled':loggedUser.processing}">Save<span ng-show="loggedUser.processing"> processing...</span></button>
+										<button class="btn btn-inverse" ng-click="update()" ng-disabled="formUserUpdate.$invalid || loggedUser.newPassword1 != loggedUser.newPassword2 || updateUserProfile.processing">Save<span ng-show="updateUserProfile.processing"> processing...</span></button>
 									</form>
 								</div>
 								<!-- user settings -->

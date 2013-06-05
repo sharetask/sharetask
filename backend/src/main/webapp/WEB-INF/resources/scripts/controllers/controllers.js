@@ -72,6 +72,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 		$scope.taskEditMode = '';
 		$scope.filter = {'queue': 'MY_PENDING', 'tag': '', 'searchString': '', 'orderBy': 'TASK_DUE_DATE'};
 		$scope.tags = [];
+		$rootScope.currentPage = "tasks";
 		//$scope.dateOptions = {format: 'dd/mm/yyyy'};
 		$scope.datePickerOptions = { dateFormat: "M d, yy" };
 		var taskFilter = $filter('filterTasks');
@@ -280,13 +281,21 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 		 * Filter tasks.
 		 * Presented tasks are filtered and ordered according current filter settings.
 		 */
-		$scope.filterTasks = function() {
-			console.log("Filter tasks: %o", $scope.filter);
+		$scope.filterTasks = function(selectedTaskId) {
+			console.log("Filter tasks: %o, selectedTaskId: %s", $scope.filter, selectedTaskId);
 			$scope.tasks = taskFilter($scope.filter, this.allTasks);
 			$scope.tasks = $filter('orderBy')(this.tasks, this.orderTasks);
 			// set selected task
-			if (!jQuery.isEmptyObject($scope.tasks)) {
+			if (!jQuery.isEmptyObject($scope.tasks) && isNaN(selectedTaskId)) {
 				$scope.setSelectedTask($scope.tasks[0].id);
+			}
+			else if (!jQuery.isEmptyObject($scope.tasks) && !isNaN(selectedTaskId)) {
+				var tasks = $.grep($scope.tasks, function(e) {
+					return e.id == selectedTaskId;
+				});
+				if (!jQuery.isEmptyObject(tasks)) {
+					$scope.setSelectedTask(tasks[0].id);
+				}
 			}
 			else {
 				$scope.selectedTask = null;
@@ -444,6 +453,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 			result[0].title = task.title;
 			result[0].description = task.description;
 			result[0].tags = task.tags;
+			delete(result[0].comments);
 			Task.update({workspaceId: $scope.selectedWorkspace.id, task: $scope.selectedTask}, function(data, status) {
 					console.log("Task update success! data: %o, status: %o", data, status);
 				}, function(data, status) {
@@ -491,16 +501,23 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 		 */
 		$scope.addTask = function() {
 			console.log("Add new task (taskTitle: %s)", $scope.newTaskTitle);
-			// FIXME Remove setting comments after solving issue #2
-			var task = {title: $scope.newTaskTitle, createdBy: $rootScope.loggedUser.username, createdOn: new Date(), priority: 'MEDIUM', comments: []};
+			var createdByObj = {username: $rootScope.loggedUser.username};
+			var assigneeObj = {username: $rootScope.loggedUser.username};
+			var task = {title: $scope.newTaskTitle, createdBy: createdByObj, assignee: assigneeObj, createdOn: new Date(), priority: 'MEDIUM'};
 			console.log("Task: %o", task);
 			Task.create({workspaceId: $scope.selectedWorkspace.id, task: task}, function(data, status) {
 					console.log("Task create success! data: %o, status: %o", data, status);
-					$scope.allTasks.push(data);
-					LocalStorage.store('workspace-' + $scope.selectedWorkspace.id, $scope.allTasks);
-					$scope.filterTasks();
-					$scope.newTaskTitle = '';
-					$scope.setEditMode('');
+					Task.forward({workspaceId: $scope.selectedWorkspace.id, taskId: data.id, username: $rootScope.loggedUser.username}, function(data, status) {
+							console.log("Task forward success! data: %o, status: %o", data, status);
+							$scope.allTasks.push(data);
+							LocalStorage.store('workspace-' + $scope.selectedWorkspace.id, $scope.allTasks);
+							$scope.filterTasks(data.id);
+							$scope.newTaskTitle = '';
+							$scope.setEditMode('');
+						}, function(data, status) {
+							console.log("Task forward error!");
+							ErrorHandling.handle(data, status);
+						});
 				}, function(data, status) {
 					console.log("Task create error!");
 					ErrorHandling.handle(data, status);
@@ -694,7 +711,10 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 		}
 	}])
 	.controller('AdminCtrl', ['$scope', '$location', '$rootScope', '$timeout', 'Workspace', 'LocalStorage', 'ErrorHandling', function($scope, $location, $rootScope, $timeout, Workspace, LocalStorage, ErrorHandling) {
+		$scope.updateWorkspaceData = {processing: false, result: 0};
 		$scope.newMember = {processing: false, result: 0};
+		$scope.addWorkspaceData = {processing: false, result: 0};
+		$rootScope.currentPage = "admin";
 		
 		/**
 		 * Loading all workspaces from server.
@@ -733,6 +753,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 		 */
 		$scope.addWorkspace = function() {
 			console.log("Add new workspace (workspace: %o)", $scope.newWorkspace);
+			$scope.addWorkspaceData.processing = true;
 			$scope.newWorkspace.owner = {username: $rootScope.loggedUser.username};
 			//var workspace = {title: $scope.newWorkspaceTitle, owner: {username: $rootScope.loggedUser.username}};
 			console.log("Workspace: %o", $scope.newWorkspace);
@@ -740,11 +761,15 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 					console.log("Workspace create success! data: %o, status: %o", data, status);
 					$scope.workspaces.push(data);
 					$scope.setSelectedWorkspace(data.id);
+					$scope.addWorkspaceData.result = 1;
+					$scope.addWorkspaceData.processing = false;
 					$scope.newWorkspace = null;
 					$scope.setEditMode('');
 				}, function(data, status) {
 					console.log("Workspace create error!");
 					ErrorHandling.handle(data, status);
+					$scope.addWorkspaceData.result = -1;
+					$scope.addWorkspaceData.processing = false;
 				});
 		};
 		
@@ -754,11 +779,16 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 		 */
 		$scope.updateWorkspace = function() {
 			console.log("Update workspace (workspace: %o)", $scope.selectedWorkspace);
+			$scope.updateWorkspaceData.processing = true;
 			Workspace.update({workspace: $scope.selectedWorkspace}, function(data, status) {
 					console.log("Workspace update success! data: %o, status: %o", data, status);
+					$scope.updateWorkspaceData.result = 1;
+					$scope.updateWorkspaceData.processing = false;
 				}, function(data, status) {
 					console.log("Workspace update error!");
 					ErrorHandling.handle(data, status);
+					$scope.updateWorkspaceData.result = -1;
+					$scope.updateWorkspaceData.processing = false;
 				});
 		};
 		
@@ -786,13 +816,14 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 			$scope.newMember.processing = true;
 			Workspace.inviteMember({workspaceId: $scope.selectedWorkspace.id, user: $scope.newMember}, function(data, status) {
 					console.log("Workspace inviteMember success! data: %o, status: %o", data, status);
-					$scope.newMember.processing = false;
 					$scope.newMember.result = 1;
+					$scope.newMember.processing = false;
 					$scope.newMember.username = '';
 					$scope.setEditMode('');
 				}, function(data, status) {
 					console.log("Workspace inviteMember error!");
 					$scope.newMember.result = -1;
+					$scope.newMember.processing = false;
 					ErrorHandling.handle(data, status);
 				});
 		};
@@ -831,21 +862,32 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 			$scope.loadWorkspaces();
 		}
 	}])
-	.controller('UserCtrl', ['$scope', '$location', '$rootScope', 'User', 'LocalStorage', function($scope, $location, $rootScope, User, LocalStorage) {
-
+	.controller('UserCtrl', ['$scope', '$location', '$rootScope', 'User', 'ErrorHandling', 'LocalStorage', function($scope, $location, $rootScope, User, ErrorHandling, LocalStorage) {
+		$scope.updateUserProfile = {processing: false, result: 0};
+		$rootScope.currentPage = "user";
+		
 		/**
 		 * Update user's profile
 		 * User's data are stored to server.
 		 */
 		$scope.update = function() {
 			console.log("Update user's (username: %s) profile to (user: %o)", $scope.loggedUser.username, $scope.loggedUser);
+			$scope.updateUserProfile.processing = true;
+			$scope.loggedUser.password = $scope.loggedUser.newPassword1;
+			delete($scope.loggedUser.newPassword1);
+			delete($scope.loggedUser.newPassword2);
 			// TODO - under construction
 			User.update({user: $scope.loggedUser}, function(data, status) {
 					console.log("User update success! data: %o, status: %o", data, status);
-					
+					$scope.updateUserProfile.result = 1;
+					$scope.updateUserProfile.processing = false;
+					$rootScope.loggedUser = data;
+					LocalStorage.store('logged-user', $rootScope.loggedUser);
 				}, function(data, status) {
 					console.log("User update error!");
 					ErrorHandling.handle(data, status);
+					$scope.updateUserProfile.result = -1;
+					$scope.updateUserProfile.processing = false;
 				});
 		};
 		
@@ -859,8 +901,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 			$location.path("/");
 		}
 		else {
-			$rootScope.loggedUser.processing = false;
-			$rootScope.loggedUser.result = 0;
+			
 		}
 	}])
 	;
