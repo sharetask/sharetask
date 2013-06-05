@@ -109,7 +109,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 			workspaceRepository.save(workspace);
 		}
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.sharetask.api.WorkspaceService#addMember(java.lang.Long, java.lang.String)
 	 */
@@ -121,7 +121,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 		invitation.setType(InvitationType.ADD_WORKSPACE_MEMBER);
 		invitation.setUsername(username);
 		invitation.setEntityId(workspaceId);
-		invitation.setInvitationCode(HashCodeUtil.getHashCode(workspaceId + username));
+		invitation.setInvitationCode(HashCodeUtil.getHashCode(System.currentTimeMillis() + workspaceId + username));
 		final Invitation storedInitation = invitationRepository.save(invitation);
 		//send invitation notification
 		mailService.sendInvitation(DTOConverter.convert(storedInitation, InvitationDTO.class));
@@ -136,12 +136,12 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 	public void removeMember(final Long workspaceId, final String username) {
 		final User user = userRepository.read(username);
 		final Workspace workspace = workspaceRepository.read(workspaceId);
-		
+
 		// add member to workspace
 		if (workspace.getMembers().contains(user)) {
 			workspace.removeMember(user);
 			workspaceRepository.save(workspace);
-		}		
+		}
 	}
 
 	/* (non-Javadoc)
@@ -151,8 +151,8 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 	public List<WorkspaceDTO> findByOwner(final String username) {
 		final List<Workspace> workspaces = workspaceRepository.findByOwnerUsername(username);
 		return DTOConverter.convertList(workspaces, WorkspaceDTO.class);
-	}	
-	
+	}
+
 	/* (non-Javadoc)
 	 * @see org.sharetask.api.WorkspaceService#findByMember(java.lang.String)
 	 */
@@ -193,7 +193,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 		}
 		return DTOConverter.convertList(workspaces, WorkspaceDTO.class);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.sharetask.api.WorkspaceService#delete(java.lang.Long)
 	 */

@@ -18,9 +18,6 @@
  */
 package org.sharetask.service;
 
-import java.nio.charset.Charset;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -36,13 +33,13 @@ import org.sharetask.entity.User;
 import org.sharetask.repository.UserRepository;
 import org.sharetask.security.UserDetailsImpl;
 import org.sharetask.utility.DTOConverter;
+import org.sharetask.utility.HashCodeUtil;
 import org.springframework.security.authentication.dao.SaltSource;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.codec.Hex;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,17 +54,17 @@ public class UserServiceImpl implements UserService {
 
 	@Inject
 	private UserRepository userRepository;
-	 
+
 	@Inject
 	private PasswordEncoder passwordEncoder;
-	
+
 	@Inject
 	private SaltSource saltSource;
-	
+
 	private static class UserDetailBuilder {
 
 		private final User user;
-		
+
 		public UserDetailBuilder(final User user) {
 			this.user = user;
 		}
@@ -91,7 +88,7 @@ public class UserServiceImpl implements UserService {
 			return userDetails;
 		}
 	}
-	
+
 	@Override
 	public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
 		final User user = userRepository.findByUsername(username);
@@ -103,7 +100,7 @@ public class UserServiceImpl implements UserService {
 		}
 		return userDetails;
 	}
-	
+
 	@Transactional
 	@Override
 	public UserDTO create(final UserDTO userDTO) {
@@ -112,22 +109,22 @@ public class UserServiceImpl implements UserService {
 		user.setUsername(userDTO.getUsername());
 		user.setName(userDTO.getName());
 		user.setSurName(userDTO.getSurName());
-		
+
 		if (userRepository.findByUsername(userDTO.getUsername()) != null) {
 			throw new UserAlreadyExists();
 		}
-		
+
 		user.setEmail(user.getUsername());
 		final Collection<Role> roles = new ArrayList<Role>();
 		user.setEnabled(true);
-		
+
 		roles.add(Role.ROLE_USER);
 		user.setRoles(roles);
-		
+
 		// salt create
 		final String salt = getSalt(userDTO.getUsername());
 		user.setSalt(salt);
-		
+
 		final UserDetails userDetails = new UserDetailsImpl(user.getUsername(), "password", salt,
 				new ArrayList<GrantedAuthority>());
 		user.setPassword(passwordEncoder.encodePassword(userDTO.getPassword(),
@@ -135,18 +132,11 @@ public class UserServiceImpl implements UserService {
 		final User storedUser = userRepository.save(user);
 		return DTOConverter.convert(storedUser,  UserDTO.class);
 	}
-	
+
 	private String getSalt(final String username) {
-		try {
-			final MessageDigest mda = MessageDigest.getInstance("SHA-512");
-			final String baseSalt = System.currentTimeMillis() + username;
-			final byte [] digest = mda.digest(baseSalt.getBytes(Charset.forName("UTF-8")));
-			return new String(Hex.encode(digest));
-		} catch (final NoSuchAlgorithmException e) {
-			throw new UnsupportedOperationException(e);
-		}
+		return HashCodeUtil.getHashCode(System.currentTimeMillis() + username);
 	}
-	
+
 	@Transactional
 	@Override
 	public UserInfoDTO update(final UserInfoDTO userInfoDTO) {
@@ -156,7 +146,7 @@ public class UserServiceImpl implements UserService {
 		final User storedUser = userRepository.save(user);
 		return DTOConverter.convert(storedUser, UserInfoDTO.class);
 	}
-	
+
 	@Override
 	public UserInfoDTO read(final String username) {
 		final User user = userRepository.read(username);
