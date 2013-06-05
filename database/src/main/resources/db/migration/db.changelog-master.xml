@@ -4,6 +4,13 @@
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
 						http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
 
+	<preConditions>
+		<or>
+			<dbms type="hsqldb" />
+			<dbms type="mysql" />
+		</or>
+	</preConditions>
+    
 	<changeSet id="create: tag for version 1.0" author="mbocek">
 		<tagDatabase tag="version_1.0"/>
 	</changeSet>

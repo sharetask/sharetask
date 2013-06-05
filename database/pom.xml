@@ -155,11 +155,6 @@
 		</profile>
 		<profile>
 			<id>prod</id>
-			<properties>
-				<liquibase.context>production</liquibase.context>
-				<liquibase.database.jdbc.driver>com.mysql.jdbc.Driver</liquibase.database.jdbc.driver>
-				<liquibase.database.jdbc.url>jdbc:mysql://localhost:3306/web</liquibase.database.jdbc.url>
-			</properties>
 			<build>
 				<plugins>
 					<plugin>
@@ -208,8 +203,11 @@
 			<id>prod-db-deploy</id>
 			<properties>
 				<liquibase.context>production</liquibase.context>
+				<liquibase.context>production</liquibase.context>
 				<liquibase.database.jdbc.driver>com.mysql.jdbc.Driver</liquibase.database.jdbc.driver>
-				<liquibase.database.jdbc.url>jdbc:mysql://localhost:3306/web</liquibase.database.jdbc.url>
+				<liquibase.database.jdbc.url>jdbc:mysql://${env.OPENSHIFT_MYSQL_DB_HOST}:${env.OPENSHIFT_MYSQL_DB_PORT}/web</liquibase.database.jdbc.url>
+				<liquibase.database.jdbc.user>${env.OPENSHIFT_MYSQL_DB_USERNAME}</liquibase.database.jdbc.user>
+				<liquibase.database.jdbc.password>${env.OPENSHIFT_MYSQL_DB_PASSWORD}</liquibase.database.jdbc.password>
 			</properties>
 		</profile>
 	</profiles>

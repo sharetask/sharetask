@@ -13,10 +13,27 @@
 				<constraints nullable="false"/>
 			</column>
 		</createTable>
+	
+		<modifySql dbms="mysql">
+			<append value="ENGINE=INNODB CHARSET=UTF8 COLLATE utf8_general_ci" />
+		</modifySql>
+	</changeSet>
+
+	<changeSet id="create: roles primary key" author="mbocek">
+		<preConditions>
+			<not>
+				<dbms type="mysql" />
+			</not>
+		</preConditions>
 		<addPrimaryKey tableName="USER_ROLE" columnNames="USER_NAME,ROLE"
 			constraintName="PK_USER_ROLE" />
 	</changeSet>
 	
+	<changeSet id="create: roles primary key mysql" author="mbocek" dbms="mysql">
+		<addPrimaryKey tableName="USER_ROLE" columnNames="USER_NAME(255),ROLE(255)"
+			constraintName="PK_USER_ROLE" />
+	</changeSet>
+
 	<changeSet id="create: user" author="mbocek">
 		<createTable tableName="USER" remarks="Table for storing user information">
 			<column name="USER_NAME" type="VARCHAR(255)" remarks="User identifiert">
@@ -48,6 +65,12 @@
 			</column>
 		</createTable>
 		
+		<modifySql dbms="mysql">
+			<append value="ENGINE=INNODB CHARSET=UTF8 COLLATE utf8_general_ci" />
+		</modifySql>
+	</changeSet>
+
+	<changeSet id="create: user foreignkeys" author="mbocek">
 		<addForeignKeyConstraint baseColumnNames="USER_NAME" baseTableName="USER_ROLE"
 			constraintName="FK_ROLE_USER" deferrable="false" initiallyDeferred="false"
 			onDelete="NO ACTION" onUpdate="NO ACTION" 
@@ -64,6 +87,10 @@
 				<constraints nullable="false"/>
 			</column>
 		</createTable>
+
+		<modifySql dbms="mysql">
+			<append value="ENGINE=INNODB CHARSET=UTF8 COLLATE utf8_general_ci" />
+		</modifySql>
 	</changeSet> 
 	
 	<changeSet id="create: event_value" author="mbocek">
@@ -95,6 +122,10 @@
 				<constraints nullable="false"/>
 			</column>
 		</createTable>
+
+		<modifySql dbms="mysql">
+			<append value="ENGINE=INNODB CHARSET=UTF8 COLLATE utf8_general_ci" />
+		</modifySql>
 	</changeSet>
 
 	<changeSet id="create: event" author="mbocek">
@@ -115,12 +146,17 @@
 				<constraints nullable="false" />
 			</column>
 		</createTable>
-		
+
+		<modifySql dbms="mysql">
+			<append value="ENGINE=INNODB CHARSET=UTF8 COLLATE utf8_general_ci" />
+		</modifySql>
+	</changeSet>
+
+	<changeSet id="create: event foreignkey" author="mbocek">
 		<addForeignKeyConstraint constraintName="FK_EVENT_VALUE"
 			baseTableName="EVENT_VALUE" baseColumnNames="EVENT_ID"
 			referencedTableName="EVENT" referencedColumnNames="ID" />
 	</changeSet>
-
 
 	<changeSet id="create: task" author="mbocek">
 		<createTable tableName="TASK" remarks="Table for storing tasks">
@@ -160,6 +196,12 @@
 			</column>
 		</createTable>
 
+		<modifySql dbms="mysql">
+			<append value="ENGINE=INNODB CHARSET=UTF8 COLLATE utf8_general_ci" />
+		</modifySql>
+	</changeSet>
+
+	<changeSet id="create: task foreignkey" author="mbocek">
 		<addForeignKeyConstraint constraintName="FK_TASK_EVENT"
 			baseTableName="EVENT" baseColumnNames="TASK_ID"
 			referencedTableName="TASK" referencedColumnNames="ID" />
@@ -172,7 +214,7 @@
 			baseTableName="TASK" baseColumnNames="ASSIGNEE_USER_NAME"
 			referencedTableName="USER" referencedColumnNames="USER_NAME" />
 	</changeSet>
-		
+			
 	<changeSet id="create: workspace" author="mbocek">
 		<createTable tableName="WORKSPACE" remarks="Table for storing information about workspace">
 			<column autoIncrement="true" name="ID" type="BIGINT" remarks="Primary key">
@@ -199,6 +241,12 @@
 			</column>
 		</createTable>
 		
+		<modifySql dbms="mysql">
+			<append value="ENGINE=INNODB CHARSET=UTF8 COLLATE utf8_general_ci" />
+		</modifySql>
+	</changeSet>
+
+	<changeSet id="create: workspace foreignkey" author="mbocek">
 		<addForeignKeyConstraint constraintName="FK_WORKSPACE_USER"
 			baseTableName="WORKSPACE" baseColumnNames="OWNER_USER_NAME"
 			referencedTableName="USER" referencedColumnNames="USER_NAME" />
@@ -214,14 +262,32 @@
 			</column>
 		</createTable>
 		
+		<modifySql dbms="mysql">
+			<append value="ENGINE=INNODB CHARSET=UTF8 COLLATE utf8_general_ci" />
+		</modifySql>
+	</changeSet>
+
+	<changeSet id="create: workspace_member foreignkey" author="mbocek" >
 		<addForeignKeyConstraint constraintName="FK_WORKSPACE_MEMBER_WORKSPACE"
 			baseTableName="WORKSPACE_MEMBER" baseColumnNames="WORKSPACE_ID"
 			referencedTableName="WORKSPACE" referencedColumnNames="ID" />
 		<addForeignKeyConstraint constraintName="FK_WORKSPACE_MEMBER_USER"
 			baseTableName="WORKSPACE_MEMBER" baseColumnNames="USER_NAME"
 			referencedTableName="USER" referencedColumnNames="USER_NAME" />
+	</changeSet>
 
+	<changeSet id="create: workspace_member primarykey" author="mbocek" >
+		<preConditions>
+			<not>
+				<dbms type="mysql" />
+			</not>
+		</preConditions>
 		<addPrimaryKey tableName="WORKSPACE_MEMBER" columnNames="WORKSPACE_ID,USER_NAME"
+			constraintName="PK_WORKSPACE_MEMBER" />
+	</changeSet>
+
+	<changeSet id="create: workspace_member primarykey mysql" author="mbocek" dbms="mysql">
+		<addPrimaryKey tableName="WORKSPACE_MEMBER" columnNames="WORKSPACE_ID,USER_NAME(255)"
 			constraintName="PK_WORKSPACE_MEMBER" />
 	</changeSet>
 	
@@ -249,5 +315,9 @@
 				<constraints nullable="false" />
 			</column>
 		</createTable>
+
+		<modifySql dbms="mysql">
+			<append value="ENGINE=INNODB CHARSET=UTF8 COLLATE utf8_general_ci" />
+		</modifySql>
 	</changeSet>	
 </databaseChangeLog>
