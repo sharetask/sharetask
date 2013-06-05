@@ -80,7 +80,9 @@
 							<div class="footer">Completed<span class="pull-right">{{allTasks | queueTasksCount: 'MY_COMPLETED'}}</span></div>
 						</div>
 						<br />
-						<div class="tag cursor-pointer" ng-repeat="tag in tags" ng-class="{'hidden':!viewPanelTaskFilter}" data-drag="true" data-jqyoui-options="{appendTo:'body', revert:'invalid', helper:'clone'}" ng-model="tag" jqyoui-draggable=""><span class="text" ng-class="{'selected':tag == filter.tag}" ng-click="setTaskFilterTag(tag)">{{tag}}</span></div>
+						<div style="padding:5px;">
+							<div class="tag cursor-pointer" ng-repeat="tag in tags" ng-class="{'hidden':!viewPanelTaskFilter}" data-drag="true" data-jqyoui-options="{appendTo:'body', revert:'invalid', helper:'clone'}" ng-model="tag" jqyoui-draggable=""><span class="text" ng-class="{'selected':tag == filter.tag}" ng-click="setTaskFilterTag(tag)">{{tag}}</span></div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -101,7 +103,7 @@
 						<div class="queue-controls">
 							<div class="queue-controls-inner">
 								<div class="btn-group">
-									<button class="btn dropdown-toggle" data-toggle="dropdown"><i class="icon-sort"></i> {{filter.orderBy | orderName}} <span class="caret"></span></button>
+									<button class="btn dropdown-toggle" data-toggle="dropdown">by {{filter.orderBy | orderName}} <span class="caret"></span></button>
 									<ul class="dropdown-menu">
 										<li ng-click="setTaskOrdering('TASK_TITLE')"><a>Name</a></li>
 										<li ng-click="setTaskOrdering('TASK_DUE_DATE')"><a>Due date</a></li>
@@ -147,7 +149,7 @@
 								<div class="task-list-item-inner">
 									<div class="row-full">
 										<div class="span1">
-											<div class="st-checkbox" ng-click="task.checked = !task.checked" ng-class="{'selected checked':task.id == selectedTask.id && task.checked, 'checked':task.checked}" stop-event="click"><!--<i class="icon-ok icon-white" ng-class="{'hidden':!task.checked}"></i>--></div>
+											<div class="st-checkbox cursor-pointer" ng-click="task.checked = !task.checked" ng-class="{'selected checked':task.id == selectedTask.id && task.checked, 'checked':task.checked}" stop-event="click"><!--<i class="icon-ok icon-white" ng-class="{'hidden':!task.checked}"></i>--></div>
 										</div>
 										<div class="span11">
 											<div class="row-full">
