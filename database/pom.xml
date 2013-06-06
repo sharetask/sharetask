@@ -182,14 +182,14 @@
 						<artifactId>maven-antrun-plugin</artifactId>
 						<dependencies>
 							<dependency>
-								<groupId>ant</groupId>
+								<groupId>org.apache.ant</groupId>
 								<artifactId>ant-jsch</artifactId>
-								<version>1.6.5</version>
+								<version>1.9.1</version>
 							</dependency>
 							<dependency>
-								<groupId>jsch</groupId>
+								<groupId>com.jcraft</groupId>
 								<artifactId>jsch</artifactId>
-								<version>0.1.29</version>
+								<version>0.1.50</version>
 							</dependency>
 						</dependencies>						
 						<executions>
@@ -201,23 +201,41 @@
 								</goals>
 								<configuration>
 									<target>
+										<echo>Get data dir.</echo>
 										<sshexec host="${openshift.host}" 
 										         username="${openshift.username}" 
-										         command="echo $OPENSHIFT_DATA_DIR"
+										         command="echo $OPENSHIFT_DATA_DIR" 
+										         keyfile="${user.home}/.ssh/id_rsa"
 										         outputproperty="openshift.data.dir" />
-
-										<sshexec host="${openshift.host}" 
-										         username="${openshift.username}"
-										         command="rm -rf ${openshift.data.dir}/deploy; mkdir ${openshift.data.dir}/deploy" />
-										<scp file="target/database-distribution.tar.gz" 
-										     todir="${openshift.username}@${openshift.host}:${openshift.data.dir}/deploy"/>
+										<script language="javascript"> 
+											<![CDATA[ 
+												var myproperty = project.getProperty("openshift.data.dir");
+												project.setProperty("openshift.data.dir", myproperty.trim()) 
+											]]>
+										</script>
 										
+										<echo>Clean up</echo>
 										<sshexec host="${openshift.host}" 
-										         username="${openshift.username}"
-										         command="tar -xvvf ${openshift.data.dir}/depoy/database-distribution.tar.gz" />
+										         username="${openshift.username}" 
+										         keyfile="${user.home}/.ssh/id_rsa"
+										         command="rm -rf ${openshift.data.dir}deploy;mkdir ${openshift.data.dir}deploy" />
+										
+										<echo>Copy data</echo>
+										<scp file="target/database-distribution.tar.gz"
+										     todir="${openshift.username}@${openshift.host}:${openshift.data.dir}deploy" 
+										     keyfile="${user.home}/.ssh/id_rsa" />
+										
+										<echo>Extract data</echo>
 										<sshexec host="${openshift.host}" 
+										         username="${openshift.username}" 
+										         keyfile="${user.home}/.ssh/id_rsa"
+										         command="cd ${openshift.data.dir}deploy;tar -xvvf database-distribution.tar.gz" />
+										         
+										<echo>deploy datatbase</echo>
+										<sshexec host="${openshift.host}"
 										         username="${openshift.username}"
-										         command="cd ${openshift.data.dir}/depoy/database; mvn -pl database -P prod-db-deploy process-resources liquibase:update; rm -rf ${openshift.data.dir}/deploy" />
+										         keyfile="${user.home}/.ssh/id_rsa"
+										         command="cd ${openshift.data.dir}deploy/database; mvn -pl database -P prod-db-deploy process-resources liquibase:update; rm -rf ${openshift.data.dir}deploy" />
 									</target>
 								</configuration>
 							</execution>
