@@ -454,13 +454,14 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 			result[0].description = task.description;
 			result[0].tags = task.tags;
 			delete(result[0].comments);
-			Task.update({workspaceId: $scope.selectedWorkspace.id, task: $scope.selectedTask}, function(data, status) {
+			Task.update({workspaceId: $scope.selectedWorkspace.id, task: task}, function(data, status) {
 					console.log("Task update success! data: %o, status: %o", data, status);
 				}, function(data, status) {
 					console.log("Task update error!");
 					ErrorHandling.handle(data, status);
 				});
 			LocalStorage.store('workspace-' + $scope.selectedWorkspace.id, $scope.allTasks);
+			$scope.setSelectedTask(task.id);
 		};
 		
 		/**
