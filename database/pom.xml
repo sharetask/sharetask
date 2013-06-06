@@ -177,9 +177,21 @@
 							</execution>
 						</executions>
 					</plugin>
-					<!-- <plugin>
+					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-antrun-plugin</artifactId>
+						<dependencies>
+							<dependency>
+								<groupId>ant</groupId>
+								<artifactId>ant-jsch</artifactId>
+								<version>1.6.5</version>
+							</dependency>
+							<dependency>
+								<groupId>jsch</groupId>
+								<artifactId>jsch</artifactId>
+								<version>0.1.29</version>
+							</dependency>
+						</dependencies>						
 						<executions>
 							<execution>
 								<id>id.install</id>
@@ -189,13 +201,28 @@
 								</goals>
 								<configuration>
 									<target>
-										<exec executable="ls">
-										</exec>
+										<sshexec host="${openshift.host}" 
+										         username="${openshift.username}" 
+										         command="echo $OPENSHIFT_DATA_DIR"
+										         outputproperty="openshift.data.dir" />
+
+										<sshexec host="${openshift.host}" 
+										         username="${openshift.username}"
+										         command="rm -rf ${openshift.data.dir}/deploy; mkdir ${openshift.data.dir}/deploy" />
+										<scp file="target/database-distribution.tar.gz" 
+										     todir="${openshift.username}@${openshift.host}:${openshift.data.dir}/deploy"/>
+										
+										<sshexec host="${openshift.host}" 
+										         username="${openshift.username}"
+										         command="tar -xvvf ${openshift.data.dir}/depoy/database-distribution.tar.gz" />
+										<sshexec host="${openshift.host}" 
+										         username="${openshift.username}"
+										         command="cd ${openshift.data.dir}/depoy/database; mvn -pl database -P prod-db-deploy process-resources liquibase:update; rm -rf ${openshift.data.dir}/deploy" />
 									</target>
 								</configuration>
 							</execution>
 						</executions>
-					</plugin>-->
+					</plugin>
 				</plugins>
 			</build>			
   		</profile>
