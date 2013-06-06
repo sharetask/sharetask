@@ -47,8 +47,8 @@ h1,h2,h3,h4,h5,h6 {margin:5px 0;line-height:0;}
 
 .navbar {margin-bottom:0;}
 .navbar-inverse .navbar-inner {background:#FF5A00;}
-.navbar-inverse .nav > li > a:hover {background:rgba(0,0,0,0.4);}
-.navbar-inverse .nav > li.active > a {background:rgba(0,0,0,0.4);}
+.navbar-inverse .nav > li > a:hover {background:rgba(0,0,0,0.2);}
+.navbar-inverse .nav > li.active > a {background:rgba(0,0,0,0.2);}
 .navbar .nav > li > a {padding:7px 15px;}
 .navbar .brand {padding:7px 20px;font-size:18px;font-weight:500;}
 .navbar .brand.small {font-size:15px;}
@@ -81,6 +81,14 @@ h1,h2,h3,h4,h5,h6 {margin:5px 0;line-height:0;}
 }
 
 .nav-tabs > .active > a, .nav-tabs > .active > a:hover, .nav-tabs > .active > a:focus {color:#565656;}
+
+textarea:focus, input[type="text"]:focus, input[type="password"]:focus, input[type="datetime"]:focus, input[type="datetime-local"]:focus, input[type="date"]:focus, input[type="month"]:focus, input[type="time"]:focus, input[type="week"]:focus, input[type="number"]:focus, input[type="email"]:focus, input[type="url"]:focus, input[type="search"]:focus, input[type="tel"]:focus, input[type="color"]:focus, .uneditable-input:focus {
+    border-color: rgba(255, 90, 0, 0.8);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(255, 90, 0, 0.6);
+    outline: 0 none;
+}
+
+
 a {color:#FF5A00;}
 a:hover, a:focus {color:#565656;}
 
@@ -110,10 +118,10 @@ a:hover, a:focus {color:#565656;}
 
 
 .tag {color:#000;display:inline-block;margin-right:5px;margin-bottom:5px;z-index:10;}
-.tag.small {}
 .tag .text {background:#fff;border:1px solid #565656;display:inline-block;padding:0 7px;line-height:17px;font-size:11px;}
-.tag.small .text {line-height:17px;border:1px solid #565656;}
-.tag .remove {background:#565656;border:1px solid #565656;display:inline-block;padding:0 5px;line-height:17px;font-size:11px;color:#fff;}
+.tag.large .text {line-height:22px;font-size:13px;}
+.tag .remove {background:#565656;border:1px solid #565656;display:inline-block;padding:0 6px;line-height:17px;font-size:11px;color:#fff;}
+.tag.large .remove {line-height:22px;font-size:13px;}
 .tag .selected {background:#FF5A00;border:1px solid #fff;color:#fff;}
 .priority-low {background:#999;}
 .priority-medium {background:#D9A86C;}
