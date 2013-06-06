@@ -30,7 +30,7 @@
 		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-${applicationVersion}/css/bootswatch.min.css" />">
 		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-${applicationVersion}/css/jquery.ui.datepicker.css" />">
 		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-${applicationVersion}/css/sharetask.css" />">
-		<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css">
+		<link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css">
 	</head>
 	<body>
 		<div ng-view></div>

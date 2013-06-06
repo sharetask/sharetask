@@ -26,8 +26,8 @@
 					<div class="navbar-inner" style="padding-left:0;">
 						<div class="container">
 							<ul class="nav">
-								<li class="cursor-pointer" style="background:rgba(255,255,255,0.2);margin-right:15px;"><a ng-click="setView('PANEL-TASK-FILTER')"><i class="icon-white" ng-class="{'icon-chevron-left':viewPanelTaskFilter, 'icon-chevron-right':!viewPanelTaskFilter}"></i></a></li>
-								<li><span class="brand">Workspaces</span></li>
+								<li class="cursor-pointer" style="background:rgba(255,255,255,0.2);margin-right:15px;"><a ng-click="setView('PANEL-TASK-FILTER')" title="show / hide left sidebar"><i class="icon-white" ng-class="{'icon-chevron-left':viewPanelTaskFilter, 'icon-chevron-right':!viewPanelTaskFilter}"></i></a></li>
+								<li><span class="brand small">Workspaces</span></li>
 								<li class="cursor-pointer"><a ng-click="setEditMode('NEW-WORKSPACE')"><i class="icon-plus icon-white"></i></a></li>
 								<li ng-class="{'hidden':taskEditMode != 'NEW-WORKSPACE'}">
 									<form name="formWorkspaceAdd" novalidate class="css-form">
@@ -37,11 +37,11 @@
 										</div>
 									</form>
 								</li>
-								<li class="cursor-pointer" ng-repeat="workspace in workspaces" ng-class="{'hidden':taskEditMode == 'NEW-WORKSPACE'}"><a ng-click="setSelectedWorkspace(workspace)">{{workspace.title}}</a></li>
+								<li class="cursor-pointer" ng-repeat="workspace in workspaces" ng-class="{'hidden':taskEditMode == 'NEW-WORKSPACE','active':workspace.id == selectedWorkspace.id}"><a ng-click="setSelectedWorkspace(workspace)">{{workspace.title}}</a></li>
 							</ul>
 							<ul class="nav pull-right">
 								<div class="input-append" style="padding-top:2px;">
-									<input class="span2" type="text" placeholder="type search phrase..." ng-model="filter.searchString" ui-keypress="{enter:'filterTasks()'}" />
+									<input class="span3" type="text" placeholder="type search phrase..." ng-model="filter.searchString" ui-keypress="{enter:'filterTasks()'}" />
 									<button class="btn btn-inverse" ng-click="filterTasks()"><i class="icon-search icon-white"></i></button>
 								</div>
 							</ul>
@@ -93,11 +93,7 @@
 					<div class="header" ng-class="{'large':taskEditMode == 'NEW-TASK'}">
 						<div class="queue-name">
 							<div class="queue-name-inner">
-								<div class="title pull-left cursor-pointer" ng-click="changeTaskQueue()">{{filter.queue | taskQueueName}}<small>({{allTasks | queueTasksCount:filter.queue}})</small></div>
-								<!--<div class="input-append pull-right">
-									<input class="span2" type="text" placeholder="type search phrase..." ng-model="filter.searchString" />
-									<button class="btn btn-inverse" ng-click="filterTasks()"><i class="icon-search icon-white"></i></button>
-								</div>-->
+								<div class="title pull-left cursor-pointer" ng-click="changeTaskQueue()">{{filter.queue | taskQueueName}} Tasks <small>({{allTasks | queueTasksCount:filter.queue}})</small></div>
 							</div>
 						</div>
 						<div class="queue-controls">
@@ -162,37 +158,12 @@
 												<div class="span8">
 													<div class="tag small" ng-repeat="tag in task.tags"><span class="text" ng-class="{'selected':tag == filter.tag}">{{tag}}</span><!--<span class="remove cursor-pointer" ng-click="removeTag(task.id, tag)" stop-event="click">x</span>--></div>
 												</div>
-												<div class="span4" style="text-align:right;"><i class="icon-comment" ng-class="{'icon-white':task.id == selectedTask.id}"></i> {{task.commentsCount}}</div>
+												<div class="span4" style="text-align:right;"><i class="icon-comment"></i><!--<i class="icon-comment" ng-class="{'icon-white':task.id == selectedTask.id}"></i>--> {{task.commentsCount}}</div>
 											</div>
 										</div>
 									</div>
 								</div>
 							</div>
-							<!--
-							<div class="navbar">
-								<div class="navbar-inner thick light inline" ng-repeat="task in tasks | orderBy:orderTasks" ng-class="{'selected':task.id == selectedTask.id}" ng-click="setSelectedTask(task.id)" data-drop="true" jqyoui-droppable="{onDrop:'addTaskTagDragDrop'}">
-									<div class="row-full">
-										<div class="span1">
-											<div class="st-checkbox" ng-click="task.checked = !task.checked" ng-class="{'selected checked':task.id == selectedTask.id && task.checked, 'checked':task.checked}" stop-event="click"><i class="icon-ok icon-white" ng-class="{'hidden':!task.checked}"></i></div>
-										</div>
-										<div class="span11">
-											<div class="row-full">
-												<div class="span8">
-													<strong>{{task.title}}</strong>
-												</div>
-												<div class="span4" style="text-align:right;"><small>{{task.dueDate | date:'mediumDate'}}</small></div>
-											</div>
-											<div class="row-full">
-												<div class="span8">
-													<div class="tag" ng-repeat="tag in task.tags"><span class="text" ng-class="{'selected':tag == filter.tag}">{{tag}}</span><span class="remove cursor-pointer" ng-click="removeTag(task.id, tag)" stop-event="click">x</span></div>
-												</div>
-												<div class="span4" style="text-align:right;"><i class="icon-comment" ng-class="{'icon-white':task.id == selectedTask.id}"></i> {{task.commentsCount}}</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							-->
 						</div>
 					</div>
 				</div>
@@ -253,8 +224,8 @@
 						</div>
 						<!-- task tags -->
 						<div style="margin-top:5px;">
-							<div class="tag" ng-repeat="tag in selectedTask.tags"><span class="text">{{tag}}</span><span class="remove cursor-pointer" ng-click="removeTag(selectedTask.id, tag)">x</span></div>
-							<span class="tag cursor-pointer" ng-click="setEditMode('ADD-TAG')"><span class="remove cursor-pointer"><i class="icon-plus icon-white"></i></span></span>
+							<div class="tag large" ng-repeat="tag in selectedTask.tags"><span class="text">{{tag}}</span><span class="remove cursor-pointer" ng-click="removeTag(selectedTask.id, tag)">x</span></div>
+							<span class="tag large cursor-pointer" ng-click="setEditMode('ADD-TAG')"><span class="remove cursor-pointer"><i class="icon-plus icon-white"></i></span></span>
 							<div ng-class="{'hidden':taskEditMode != 'ADD-TAG'}">
 								<form name="formTaskAddLabel" novalidate class="css-form">
 									<div class="input-append">
@@ -276,22 +247,37 @@
 							</div>
 						</div>
 						<br />
-						<!-- task comments -->
-						<form name="formTaskAddComment" novalidate class="css-form">
-							<div class="row-full input-append">
-								<input class="span10" type="text" placeholder="type new comment..." ng-model="newTaskComment.comment" required />
-								<button class="btn btn-inverse span2" ng-click="addTaskComment()" ng-disabled="formTaskAddComment.$invalid">Add</button>
-							</div>
-						</form>
-						<div class="notice" ng-repeat="comment in selectedTask.comments" ng-class="{'author':comment.createdBy == selectedTask.createdBy}">
-							<div class="row-full">
-								<div class="span2"></div>
-								<div class="span10">
-									<div class="row-full header">
-										<div class="pull-left">{{comment.createdBy.name}} {{comment.createdBy.surName}}</div>
-										<div class="pull-right"><small>{{comment.createdOn | date:'medium'}}</small></div>
+						
+						<ul class="nav nav-tabs">
+							<li class="active"><a href="#comments" data-toggle="tab">Comments</a></li>
+							<li><a href="#subtasks" data-toggle="tab">Subtasks</a></li>
+						</ul>
+						<div class="tabbable">
+							<div class="tab-content">
+								<!-- task comments -->
+								<div class="tab-pane active" id="comments">
+									<form name="formTaskAddComment" novalidate class="css-form">
+										<div class="row-full input-append">
+											<input class="span10" type="text" placeholder="type new comment..." ng-model="newTaskComment.comment" required />
+											<button class="btn btn-inverse span2" ng-click="addTaskComment()" ng-disabled="formTaskAddComment.$invalid">Add</button>
+										</div>
+									</form>
+									<div class="notice" ng-repeat="comment in selectedTask.comments" ng-class="{'author':comment.createdBy == selectedTask.createdBy}">
+										<div class="row-full">
+											<div class="span2"></div>
+											<div class="span10">
+												<div class="row-full header">
+													<div class="pull-left">{{comment.createdBy.name}} {{comment.createdBy.surName}}</div>
+													<div class="pull-right"><small>{{comment.createdOn | date:'medium'}}</small></div>
+												</div>
+												<div class="row-full body">{{comment.message}}</div>
+											</div>
+										</div>
 									</div>
-									<div class="row-full body">{{comment.message}}</div>
+								</div>
+								<!-- subtasks -->
+								<div class="tab-pane" id="subtasks">
+									Subtasks not implemented yet.
 								</div>
 							</div>
 						</div>
