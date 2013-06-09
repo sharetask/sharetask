@@ -407,7 +407,7 @@
 						<artifactId>maven-antrun-plugin</artifactId>
 						<executions>
 							<execution>
-								<id>id.install</id>
+								<id>id.process-resources</id>
 								<phase>process-resources</phase>
 								<goals>
 									<goal>run</goal>
