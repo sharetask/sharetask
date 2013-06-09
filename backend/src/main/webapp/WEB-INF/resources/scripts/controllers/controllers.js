@@ -22,13 +22,14 @@
 angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 	controller('AuthCtrl', ['$scope', '$location', '$rootScope', 'User', 'LocalStorage', function($scope, $location, $rootScope, User, LocalStorage) {
 		
-		$scope.errorStatus = 0;
+		$scope.loginData = {processing: false, result: 0};
 		
 		// get logged user from local storage
 		$rootScope.loggedUser = LocalStorage.get('logged-user');
 		console.log("Logged user: %o", $rootScope.loggedUser);
 		
 		// redirect to tasks page if user is already logged in
+		// FIXME - user should be authenticate again
 		if (!jQuery.isEmptyObject($rootScope.loggedUser)) {
 			console.log("User (user: %o) is already logged in. Redirect to tasks page.", $rootScope.loggedUser);
 			$location.path("/tasks");
@@ -40,25 +41,72 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
 		 */
 		$scope.login = function() {
 			console.log("Login user (username: %s) with password (password: %s)", $scope.user.username, $scope.user.password);
+			$scope.loginData.processing = true;
 			User.authenticate({username: $scope.user.username, password: $scope.user.password}, function(data, status) {
 					console.log("User auth success! data: %o, status: %o", data, status);
 					// get user profile info
 					User.get({username: $scope.user.username}, function(data, status) {
 							console.log("User get success! data: %o, status: %o", data, status);
 							$rootScope.loggedUser = data;
+							$rootScope.loggedUser.password = $scope.user.password;
 							LocalStorage.store('logged-user', $rootScope.loggedUser);
 							$location.path("/tasks");
 						}, function(data, status) {
 							console.log("Auth error! data: %o, status: %o", data, status);
+							$scope.user = {};
 							$rootScope.loggedUser = {};
 							LocalStorage.remove('logged-user');
-							$scope.errorStatus = status;
 						});
+					$scope.loginData.result = 1;
+					$scope.loginData.processing = false;
 				}, function(data, status) {
 					console.log("User auth error! data: %o, status: %o", data, status);
+					$scope.user = {};
 					$rootScope.loggedUser = {};
 					LocalStorage.remove('logged-user');
-					$scope.errorStatus = status;
+					$scope.loginData.result = -1;
+					$scope.loginData.processing = false;
+				});
+		};
+	}])
+	.controller('RegisterCtrl', ['$scope', '$location', '$rootScope', 'User', 'LocalStorage', function($scope, $location, $rootScope, User, LocalStorage) {
+		
+		$scope.newAccountData = {processing: false, result: 0};
+		
+		/**
+		 * Register user.
+		 * User is redirected to tasks page.
+		 */
+		$scope.register = function() {
+			console.log("Register user (username: %s)", $scope.newAccount.username);
+			$scope.newAccountData.processing = true;
+			$scope.newAccount.password = $scope.newAccount.password1;
+			delete($scope.newAccount.password1);
+			delete($scope.newAccount.password2);
+			User.create({user: $scope.newAccount}, function(data, status) {
+					console.log("User create success! data: %o, status: %o", data, status);
+					// authenticate user
+					User.authenticate({username: $scope.newAccount.username, password: $scope.newAccount.password}, function(data, status) {
+							console.log("User auth success! data: %o, status: %o", data, status);
+							$rootScope.loggedUser = {username: $scope.newAccount.username, name: $scope.newAccount.name, surName: $scope.newAccount.surName, password: $scope.newAccount.password};
+							LocalStorage.store('logged-user', $rootScope.loggedUser);
+							$location.path("/tasks");
+							$scope.newAccountData.result = 1;
+							$scope.newAccountData.processing = false;
+						}, function(data, status) {
+							console.log("User auth error! data: %o, status: %o", data, status);
+							$rootScope.loggedUser = {};
+							LocalStorage.remove('logged-user');
+							$scope.newAccountData.result = -1;
+							$scope.newAccountData.processing = false;
+						});
+				}, function(data, status) {
+					console.log("User create error! data: %o, status: %o", data, status);
+					$scope.newAccountData.result = -1;
+					$scope.newAccountData.processing = false;
+					if (data.type === 'USER_ALREADY_EXISTS') {
+						$scope.newAccountData.result = -2;
+					}
 				});
 		};
 	}])

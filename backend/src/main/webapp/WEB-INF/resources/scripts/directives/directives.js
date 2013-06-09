@@ -141,10 +141,10 @@ angular.module('shareTaskApp.directives', []).
 			}
 		};
 	})
-	.directive('sharetaskMenu', function() {
+	.directive('webMenu', function() {
 		return {
 			restrict: 'E',
-			templateUrl: 'resources-1.0.0/views/components/menu.html',
+			templateUrl: 'resources-1.0.0/views/components/web-menu.html',
 			link: function(scope, element, attrs) {
 				console.log("scope: %o, element: %o, attrs: %o", scope, element, attrs);
 			},
@@ -162,4 +162,93 @@ angular.module('shareTaskApp.directives', []).
 			}]
 		};
 	})
+	.directive('appMenu', function() {
+		return {
+			restrict: 'E',
+			templateUrl: 'resources-1.0.0/views/components/app-menu.html',
+			link: function(scope, element, attrs) {
+				console.log("scope: %o, element: %o, attrs: %o", scope, element, attrs);
+			},
+			controller: ['$rootScope', '$scope', '$element', '$attrs', '$transclude', '$location', 'LocalStorage', function($rootScope, $scope, $element, $attrs, $transclude, $location, LocalStorage) {
+				
+				$scope.currentPage = $rootScope.currentPage;
+				console.log("current page: %o", $rootScope.currentPage);
+				
+				$scope.logout = function() {
+					console.log("Logout user: %s", $rootScope.loggedUser.username);
+					$rootScope.loggedUser = {};
+					LocalStorage.remove('logged-user');
+					$location.path("/");
+				};
+			}]
+		};
+	})
+	/*
+	.directive('checkStrength', function () {
+	    return {
+			replace: false,
+			restrict: 'EACM',
+			link: function (scope, iElement, iAttrs) {
+
+	        	var strength = {
+	                colors: ['#F00', '#F90', '#FF0', '#9F0', '#0F0'],
+	                mesureStrength: function (p) {
+
+	                    var _force = 0;                    
+	                    var _regex = '/[$-/:-?{-~!"^_`\[\]]/g';
+	                                          
+	                    var _lowerLetters = /[a-z]+/.test(p);                    
+	                    var _upperLetters = /[A-Z]+/.test(p);
+	                    var _numbers = /[0-9]+/.test(p);
+	                    var _symbols = _regex.test(p);
+	                                          
+	                    var _flags = [_lowerLetters, _upperLetters, _numbers, _symbols];                    
+	                    var _passedMatches = $.grep(_flags, function (el) { return el === true; }).length;                                          
+	                    
+	                    _force += 2 * p.length + ((p.length >= 10) ? 1 : 0);
+	                    _force += _passedMatches * 10;
+	                        
+	                    // penality (short password)
+	                    _force = (p.length <= 6) ? Math.min(_force, 10) : _force;                                      
+	                    
+	                    // penality (poor variety of characters)
+	                    _force = (_passedMatches == 1) ? Math.min(_force, 10) : _force;
+	                    _force = (_passedMatches == 2) ? Math.min(_force, 20) : _force;
+	                    _force = (_passedMatches == 3) ? Math.min(_force, 40) : _force;
+	                    
+	                    return _force;
+
+	                },
+	                getColor: function (s) {
+
+	                    var idx = 0;
+	                    if (s <= 10) { idx = 0; }
+	                    else if (s <= 20) { idx = 1; }
+	                    else if (s <= 30) { idx = 2; }
+	                    else if (s <= 40) { idx = 3; }
+	                    else { idx = 4; }
+
+	                    return { idx: idx + 1, col: this.colors[idx] };
+
+	                }
+	            };
+
+	            scope.$watch(iAttrs.checkStrength, function () {
+	                if (scope.pw === '') {
+	                    iElement.css({ "display": "none"  });
+	                } else {
+	                    var c = strength.getColor(strength.mesureStrength(scope.pw));
+	                    iElement.css({ "display": "inline" });
+	                    iElement.children('li')
+	                        .css({ "background": "#DDD" })
+	                        .slice(0, c.idx)
+	                        .css({ "background": c.col });
+	                }
+	            });
+
+	        },
+	        template: '<li class="point"></li><li class="point"></li><li class="point"></li><li class="point"></li><li class="point"></li>'
+	    };
+	})
+	*/
 	;

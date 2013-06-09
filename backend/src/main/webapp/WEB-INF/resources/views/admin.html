@@ -18,7 +18,7 @@
 -->
 		<div ng-controller="AdminCtrl" ng-cloak>
 			<!-- application menu -->
-			<sharetask-menu></sharetask-menu>
+			<app-menu></app-menu>
 			<!-- administration -->
 			<div class="sidebar admin">
 				<div class="sidebar-inner">
@@ -34,7 +34,7 @@
 					</div>
 				</div>
 			</div>
-			<div id="adminMainPane" class="adminMainPane">
+			<div class="adminMainPane">
 				<div class="adminMainPaneContent">
 					<div style="padding:10px 20px" ng-class="{'hidden':attrEditMode == 'WORKSPACE-ADD'}">
 						<ul class="nav nav-tabs">
