@@ -1,0 +1,112 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.sharetask</groupId>
+		<artifactId>parent</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>openshift</artifactId>
+	<packaging>pom</packaging>
+	<name>ShareTask: openshift</name>
+
+	<profiles>
+		<profile>
+			<id>prod</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>id.process-resources</id>
+								<phase>process-resources</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<target>
+										<macrodef name = "git">
+										    <attribute name = "command" />
+										    <attribute name = "dir" default = "" />
+										    <element name = "args" optional = "true" />
+										    <sequential>
+										        <echo message = "git @{command}" />
+										        <exec executable = "git" dir = "@{dir}">
+										            <arg value = "@{command}" />
+										            <args/>
+										        </exec>
+										    </sequential>
+										</macrodef>
+										<git command = "clone">
+										    <args>
+										        <arg value = "ssh://519a84425973ca82930000ca@web-sharetask.rhcloud.com/~/git/web.git/" />
+										        <arg value = "${target.directory}/web" />
+										    </args>
+										</git>
+									</target>
+								</configuration>
+							</execution>
+							<execution>
+								<id>id.package</id>
+								<phase>package</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<target>
+										<copy todir="${target.directory}/web">
+											<fileset dir="${basedir}/..">
+												<include name="pom.xml" />
+												<include name="database/pom.xml" />
+												<include name="database/src/main/**/*" />
+											</fileset>
+										</copy>
+										<copy todir="${target.directory}/web/webapps">
+											<fileset dir="${basedir}/..">
+												<include name="backend/${target.directory}/sharetask-${project.version}.war" />
+											</fileset>
+										</copy>
+									</target>
+								</configuration>
+							</execution>
+							<execution>
+								<id>id.install</id>
+								<phase>install</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<target>
+										<macrodef name = "git">
+										    <attribute name = "command" />
+										    <attribute name = "dir" default = "" />
+										    <element name = "args" optional = "true" />
+										    <sequential>
+										        <echo message = "git @{command}" />
+										        <exec executable = "git" dir = "@{dir}">
+										            <arg value = "@{command}" />
+										            <args/>
+										        </exec>
+										    </sequential>
+										</macrodef>
+ 										<git command = "add" dir = "${target.directory}/web" />
+										<git command = "commit" dir = "${target.directory}/web">
+										    <args>
+										        <arg value = "-m" />
+										        <arg value = "deploy new version" />
+										    </args>
+										</git>
+										<git command = "push" dir = "${target.directory}/web" />									
+									</target>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+</project>
