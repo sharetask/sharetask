@@ -32,7 +32,7 @@
 		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-${applicationVersion}/css/sharetask.css" />">
 		<link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css">
 	</head>
-	<body>
+	<body ng-cloak>
 		<div ng-view></div>
 		<!-- In production use:
 		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
@@ -52,10 +52,11 @@
 			// Declare app level module which depends on filters, and services
 			angular.module('shareTaskApp', ['shareTaskApp.filters', 'shareTaskApp.services', 'shareTaskApp.directives', 'shareTaskApp.controllers']).
 				config(['$routeProvider', function($routeProvider) {
-					$routeProvider.when('/', {templateUrl: '<c:url value="/resources-${applicationVersion}/views/index.html" />'/*, controller: 'AppCtrl'*/});
-					$routeProvider.when('/tasks', {templateUrl: '<c:url value="/resources-${applicationVersion}/views/tasks.html" />'/*, controller: 'AppCtrl'*/});
-					$routeProvider.when('/admin', {templateUrl: '<c:url value="/resources-${applicationVersion}/views/admin.html" />'/*, controller: 'AdminCtrl'*/});
-					$routeProvider.when('/user', {templateUrl: '<c:url value="/resources-${applicationVersion}/views/user.html" />'/*, controller: 'UserCtrl'*/});
+					$routeProvider.when('/', {templateUrl: '<c:url value="/resources-${applicationVersion}/views/index.html" />'});
+					$routeProvider.when('/register', {templateUrl: '<c:url value="/resources-${applicationVersion}/views/register.html" />'});
+					$routeProvider.when('/tasks', {templateUrl: '<c:url value="/resources-${applicationVersion}/views/tasks.html" />'});
+					$routeProvider.when('/admin', {templateUrl: '<c:url value="/resources-${applicationVersion}/views/admin.html" />'});
+					$routeProvider.when('/user', {templateUrl: '<c:url value="/resources-${applicationVersion}/views/user.html" />'});
 					$routeProvider.otherwise({redirectTo: '/'});
 				}]);
 		</script>

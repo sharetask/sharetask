@@ -35,7 +35,7 @@ shareTaskApp.service('User', ['$rootScope', '$location', 'LocalStorage', '$resou
 		return $http.get("/sharetask/api/user/"+input.username, {}).success(success).error(error);
 	};
 	
-	this.update = function(input, success, error) {
+	this.create = function(input, success, error) {
 		console.log("Create user (user: %o)", input.user);
 		return $http.post("/sharetask/api/user", input.user).success(success).error(error);
 	};

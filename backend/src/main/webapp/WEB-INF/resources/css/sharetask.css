@@ -44,6 +44,7 @@
 .row-full .span0 {width:0;*width:0;display:none;}
 
 h1,h2,h3,h4,h5,h6 {margin:5px 0;line-height:0;}
+h4 {font-size:135%;/*font-weight:bold;*/}
 
 .navbar {margin-bottom:0;}
 .navbar .nav > li > a:hover {background:rgba(255,255,255,0.4);color:#fff;}
