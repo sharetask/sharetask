@@ -67,6 +67,7 @@
 			</activation>
 			<properties>
 				<liquibase.context>development</liquibase.context>
+				<liquibase.verbose>true</liquibase.verbose>
 			</properties>
 			<build>
 				<plugins>
@@ -107,6 +108,7 @@
 			<id>integration</id>
 			<properties>
 				<liquibase.context>integration</liquibase.context>
+				<liquibase.verbose>true</liquibase.verbose>
 			</properties>
 			<build>
 				<plugins>
@@ -150,6 +152,7 @@
 			<id>prod-db-deploy</id>
 			<properties>
 				<liquibase.context>production</liquibase.context>
+				<liquibase.verbose>true</liquibase.verbose>
 			</properties>
 		</profile>
 	</profiles>
