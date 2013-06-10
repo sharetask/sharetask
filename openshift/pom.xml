@@ -92,7 +92,11 @@
 										        </exec>
 										    </sequential>
 										</macrodef>
- 										<git command = "add ." dir = "${target.directory}/web" />
+ 										<git command = "add" dir = "${target.directory}/web">
+ 										    <args>
+										        <arg value = "." />
+										    </args>
+										</git>
 										<git command = "commit" dir = "${target.directory}/web">
 										    <args>
 										        <arg value = "-m" />
