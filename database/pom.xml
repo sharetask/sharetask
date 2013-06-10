@@ -66,12 +66,7 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
-				<database.path>/tmp/db</database.path>
 				<liquibase.context>development</liquibase.context>
-				<liquibase.database.jdbc.driver>org.hsqldb.jdbcDriver</liquibase.database.jdbc.driver>
-				<liquibase.database.jdbc.url>jdbc:hsqldb:file:${database.path}/sharetask;shutdown=true</liquibase.database.jdbc.url>
-				<liquibase.database.jdbc.user>sa</liquibase.database.jdbc.user>
-				<liquibase.database.jdbc.password></liquibase.database.jdbc.password>
 			</properties>
 			<build>
 				<plugins>
@@ -87,7 +82,7 @@
 								</goals>
 								<configuration>
 									<target>
-										<delete dir="${database.path}"/>
+										<delete dir="${definition.database.path}"/>
 									</target>
 								</configuration>
 							</execution>
@@ -111,12 +106,7 @@
 		<profile>
 			<id>integration</id>
 			<properties>
-				<database.path>/tmp/db-integration</database.path>
 				<liquibase.context>integration</liquibase.context>
-				<liquibase.database.jdbc.driver>org.hsqldb.jdbcDriver</liquibase.database.jdbc.driver>
-				<liquibase.database.jdbc.url>jdbc:hsqldb:file:${database.path}/sharetask;shutdown=true</liquibase.database.jdbc.url>
-				<liquibase.database.jdbc.user>sa</liquibase.database.jdbc.user>
-				<liquibase.database.jdbc.password></liquibase.database.jdbc.password>
 			</properties>
 			<build>
 				<plugins>
@@ -132,7 +122,7 @@
 								</goals>
 								<configuration>
 									<target>
-										<delete dir="${database.path}"/>
+										<delete dir="${definition.database.path}"/>
 									</target>
 								</configuration>
 							</execution>
@@ -154,14 +144,12 @@
 			</build>
 		</profile>
 		<profile>
+			<id>prod</id>
+		</profile>
+		<profile>
 			<id>prod-db-deploy</id>
 			<properties>
 				<liquibase.context>production</liquibase.context>
-				<liquibase.context>production</liquibase.context>
-				<liquibase.database.jdbc.driver>com.mysql.jdbc.Driver</liquibase.database.jdbc.driver>
-				<liquibase.database.jdbc.url>jdbc:mysql://${env.OPENSHIFT_MYSQL_DB_HOST}:${env.OPENSHIFT_MYSQL_DB_PORT}/web</liquibase.database.jdbc.url>
-				<liquibase.database.jdbc.user>${env.OPENSHIFT_MYSQL_DB_USERNAME}</liquibase.database.jdbc.user>
-				<liquibase.database.jdbc.password>${env.OPENSHIFT_MYSQL_DB_PASSWORD}</liquibase.database.jdbc.password>
 			</properties>
 		</profile>
 	</profiles>

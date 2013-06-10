@@ -21,7 +21,17 @@
 				</includes>
 			</resource>
 			<resource>
+				<filtering>true</filtering>
 				<directory>src/main/resources</directory>
+				<includes>
+					<include>config.properties</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<excludes>
+					<exclude>config.properties</exclude>
+				</excludes>
 			</resource>
 		</resources>
 		<testResources>
@@ -75,7 +85,6 @@
 					<forkMode>once</forkMode>
 					<systemPropertyVariables>
 						<spring.profiles.active>${spring.profile}</spring.profiles.active>
-						<database.jdbc.url>${database.jdbc.url}</database.jdbc.url>
 					</systemPropertyVariables>
 					<!-- reportFormat>xml</reportFormat-->
 				</configuration>
@@ -212,6 +221,7 @@
 			</activation>
 			<properties>
 				<spring.profile>dev</spring.profile>
+				<definition.hibernate.dialect>org.hibernate.dialect.HSQLDialect</definition.hibernate.dialect>
 			</properties>
 		</profile>
 		<profile>
@@ -245,7 +255,6 @@
 								<home>${catalina.home}</home>
 								<!-- <log>cargo.log</log> -->
 								<systemProperties>
-									<database.jdbc.url>jdbc:hsqldb:file:/tmp/db-integration/sharetask;shutdown=true</database.jdbc.url>
 									<spring.profiles.active>${spring.profile}</spring.profiles.active>
 									<user.timezone>GMT</user.timezone>
 								</systemProperties>
@@ -299,8 +308,16 @@
 				</plugins>			
 			</build>
 			<properties>
-				<database.jdbc.url>jdbc:hsqldb:file:/tmp/db-integration/sharetask;shutdown=true</database.jdbc.url>
 				<spring.profile>integration</spring.profile>
+				<definition.hibernate.dialect>org.hibernate.dialect.HSQLDialect</definition.hibernate.dialect>
+			</properties>
+		</profile>
+		<profile>
+			<id>prod</id>
+			<properties>
+				<spring.profile>prod</spring.profile>
+				<maven.test.skip>true</maven.test.skip>
+				<definition.hibernate.dialect>org.hibernate.dialect.MySQLInnoDBDialect</definition.hibernate.dialect>
 			</properties>
 		</profile>
 	</profiles>

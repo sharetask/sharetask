@@ -400,10 +400,48 @@
 
 	<profiles>	
 		<profile>
+			<id>dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<definition.database.path>/tmp/db</definition.database.path>
+				<definition.database.jdbc.driver>org.hsqldb.jdbcDriver</definition.database.jdbc.driver>
+				<definition.database.jdbc.url>jdbc:hsqldb:file:${definition.database.path}/sharetask;shutdown=true</definition.database.jdbc.url>
+				<definition.database.jdbc.user>sa</definition.database.jdbc.user>
+				<definition.database.jdbc.password></definition.database.jdbc.password>
+			</properties>
+		</profile>
+		<profile>
+			<id>integration</id>
+			<properties>
+				<definition.database.path>/tmp/db-integration</definition.database.path>
+				<definition.database.jdbc.driver>org.hsqldb.jdbcDriver</definition.database.jdbc.driver>
+				<definition.database.jdbc.url>jdbc:hsqldb:file:${definition.database.path}/sharetask;shutdown=true</definition.database.jdbc.url>
+				<definition.database.jdbc.user>sa</definition.database.jdbc.user>
+				<definition.database.jdbc.password></definition.database.jdbc.password>
+			</properties>
+		</profile>
+		<profile>
 			<id>prod-db-deploy</id>
 			<modules>
 				<module>database</module>
 			</modules>
+			<properties>
+				<definition.database.jdbc.driver>com.mysql.jdbc.Driver</definition.database.jdbc.driver>
+				<definition.database.jdbc.url>jdbc:mysql://${env.OPENSHIFT_MYSQL_DB_HOST}:${env.OPENSHIFT_MYSQL_DB_PORT}/web?useUnicode=true&amp;characterEncoding=UTF-8</definition.database.jdbc.url>
+				<definition.database.jdbc.user>${env.OPENSHIFT_MYSQL_DB_USERNAME}</definition.database.jdbc.user>
+				<definition.database.jdbc.password>${env.OPENSHIFT_MYSQL_DB_PASSWORD}</definition.database.jdbc.password>
+			</properties>
+		</profile>
+		<profile>
+			<id>prod</id>
+			<properties>
+				<definition.database.jdbc.driver>com.mysql.jdbc.Driver</definition.database.jdbc.driver>
+				<definition.database.jdbc.url>jdbc:mysql://${env.OPENSHIFT_MYSQL_DB_HOST}:${env.OPENSHIFT_MYSQL_DB_PORT}/web?useUnicode=true&amp;characterEncoding=UTF-8</definition.database.jdbc.url>
+				<definition.database.jdbc.user>${env.OPENSHIFT_MYSQL_DB_USERNAME}</definition.database.jdbc.user>
+				<definition.database.jdbc.password>${env.OPENSHIFT_MYSQL_DB_PASSWORD}</definition.database.jdbc.password>
+			</properties>
 		</profile>
 	</profiles>
 

@@ -62,6 +62,7 @@
 												<include name="pom.xml" />
 												<include name="database/pom.xml" />
 												<include name="database/src/main/**/*" />
+												<include name="openshift/pom.xml" />
 											</fileset>
 										</copy>
 										<copy todir="${target.directory}/web/webapps">
