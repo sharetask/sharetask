@@ -19,6 +19,18 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-antrun-plugin</artifactId>
+						<dependencies>
+							<dependency>
+								<groupId>org.apache.ant</groupId>
+								<artifactId>ant-jsch</artifactId>
+								<version>1.9.1</version>
+							</dependency>
+							<dependency>
+								<groupId>com.jcraft</groupId>
+								<artifactId>jsch</artifactId>
+								<version>0.1.50</version>
+							</dependency>
+						</dependencies>	
 						<executions>
 							<execution>
 								<id>id.process-resources</id>
@@ -62,23 +74,52 @@
 								</goals>
 								<configuration>
 									<target>
-										<copy todir="${target.directory}/web" verbose="true" overwrite="true">
-											<fileset dir="${basedir}/..">
-												<include name="pom.xml" />
-												<include name="database/pom.xml" />
-												<include name="database/src/main/**/*" />
-												<include name="backend/pom.xml" />
-												<include name="openshift/pom.xml" />
-											</fileset>
-										</copy>
 										<copy file="${basedir}/../backend/${target.directory}/sharetask-${project.version}.war" 
 										      tofile="${basedir}/${target.directory}/web/webapps/ROOT.war" verbose="true" overwrite="true">
 										</copy>
 									</target>
 								</configuration>
 							</execution>
+							<!-- deploy database -->
 							<execution>
-								<id>id.install</id>
+								<id>id.install-database</id>
+								<phase>install</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<target>
+										<echo>Get data dir.</echo>
+										<sshexec host="${openshift.host}" username="${openshift.username}" command="echo $OPENSHIFT_DATA_DIR"
+											keyfile="${user.home}/.ssh/id_rsa" outputproperty="openshift.data.dir" />
+										<script language="javascript">
+											<![CDATA[
+											var myproperty = project.getProperty("openshift.data.dir");
+											project.setProperty("openshift.data.dir", myproperty.trim())
+											]]>
+										</script>
+							
+										<echo>Clean up</echo>
+										<sshexec host="${openshift.host}" username="${openshift.username}" keyfile="${user.home}/.ssh/id_rsa"
+											command="rm -rf ${openshift.data.dir}deploy;mkdir ${openshift.data.dir}deploy" />
+							
+										<echo>Copy data</echo>
+										<scp file="${basedir}../database/${target.directory}/database-distribution.tar.gz" todir="${openshift.username}@${openshift.host}:${openshift.data.dir}deploy"
+											keyfile="${user.home}/.ssh/id_rsa" />
+							
+										<echo>Extract data</echo>
+										<sshexec host="${openshift.host}" username="${openshift.username}" keyfile="${user.home}/.ssh/id_rsa"
+											command="cd ${openshift.data.dir}deploy;tar -xvvf database-distribution.tar.gz" />
+							
+										<echo>deploy datatbase</echo>
+										<sshexec host="${openshift.host}" username="${openshift.username}" keyfile="${user.home}/.ssh/id_rsa"
+											command="cd ${openshift.data.dir}deploy/database; mvn -pl database -P prod-db-deploy process-resources liquibase:update; rm -rf ${openshift.data.dir}deploy" />
+									</target>
+								</configuration>
+							</execution>		
+							<!-- deploy application -->
+							<execution>
+								<id>id.install-application</id>
 								<phase>install</phase>
 								<goals>
 									<goal>run</goal>

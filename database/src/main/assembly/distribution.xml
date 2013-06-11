@@ -15,6 +15,7 @@
 				<include>database/pom.xml</include>
 				<include>database/src/main/**/*</include>
 				<include>backend/pom.xml</include>
+				<include>openshift/pom.xml</include>
 			</includes>
 		</fileSet>
 	</fileSets>
