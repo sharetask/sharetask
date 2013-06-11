@@ -48,7 +48,7 @@
 										</git>
 										<git command = "rm">
 										    <args>
-										        <arg value = "${target.directory}/web/webapps/*.war" />
+										        <arg value = "${target.directory}/web/webapps/ROOT.war" />
 										    </args>
 										</git>
 									</target>
@@ -71,10 +71,8 @@
 												<include name="openshift/pom.xml" />
 											</fileset>
 										</copy>
-										<copy todir="${target.directory}/web/webapps">
-											<fileset dir="${basedir}/..">
-												<include name="backend/${target.directory}/sharetask-${project.version}.war" />
-											</fileset>
+										<copy file="${basedir}/../backend/${target.directory}/sharetask-${project.version}.war" 
+										      tofile="${target.directory}/web/webapps/ROOT.war" >
 										</copy>
 									</target>
 								</configuration>
