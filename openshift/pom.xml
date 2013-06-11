@@ -46,6 +46,11 @@
 										        <arg value = "${target.directory}/web" />
 										    </args>
 										</git>
+										<git command = "rm">
+										    <args>
+										        <arg value = "webapps/*.war" />
+										    </args>
+										</git>
 									</target>
 								</configuration>
 							</execution>
