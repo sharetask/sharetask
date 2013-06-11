@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd" [
+	<!ENTITY CONVERSION_PATTERN "&#37;d [&#37;t] &#37;-5p &#37;c - &#37;m&#37;n">
+]>
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<appender name="app-info" class="org.apache.log4j.RollingFileAppender">
+		<param name="Append" value="false" />
+		<param name="File" value="${definition.directory.log}/app_info.log" />
+		<param name="Threshold" value="INFO" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="&CONVERSION_PATTERN;" />
+		</layout>
+	</appender>
+
+	<appender name="app-warn" class="org.apache.log4j.RollingFileAppender">
+		<param name="Append" value="false" />
+		<param name="File" value="${definition.directory.log}/app_warn.log" />
+		<param name="Threshold" value="WARN" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="&CONVERSION_PATTERN;" />
+		</layout>
+	</appender>
+
+	<root>
+		<priority value="INFO" />
+		<appender-ref ref="app-info" />
+		<appender-ref ref="app-warn" />
+	</root>
+</log4j:configuration>

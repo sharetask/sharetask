@@ -31,6 +31,7 @@
 				<directory>src/main/resources</directory>
 				<excludes>
 					<exclude>config.properties</exclude>
+					<exclude>environment/**</exclude>
 				</excludes>
 			</resource>
 		</resources>
@@ -45,6 +46,27 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>environment</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/${target.directory}/classes</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/src/main/resources/${definition.evironment.path}</directory>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>			
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>aspectj-maven-plugin</artifactId>
@@ -118,6 +140,10 @@
 						<systemProperty>
 							<name>user.timezone</name>
 							<value>GMT</value>
+						</systemProperty>
+						<systemProperty>
+							<name>definition.directory.log</name>
+							<value>${basedir}/target</value>
 						</systemProperty>
 					</systemProperties> 
 				</configuration>
@@ -222,6 +248,7 @@
 			<properties>
 				<spring.profile>dev</spring.profile>
 				<definition.hibernate.dialect>org.hibernate.dialect.HSQLDialect</definition.hibernate.dialect>
+				<definition.evironment.path>environment/dev</definition.evironment.path>
 			</properties>
 		</profile>
 		<profile>
@@ -257,6 +284,7 @@
 								<systemProperties>
 									<spring.profiles.active>${spring.profile}</spring.profiles.active>
 									<user.timezone>GMT</user.timezone>
+									<definition.directory.log>${basedir}/target</definition.directory.log>
 								</systemProperties>
 							</container>
 							<type>existing</type>
@@ -310,6 +338,7 @@
 			<properties>
 				<spring.profile>integration</spring.profile>
 				<definition.hibernate.dialect>org.hibernate.dialect.HSQLDialect</definition.hibernate.dialect>
+				<definition.evironment.path>environment/integration</definition.evironment.path>
 			</properties>
 		</profile>
 		<profile>
@@ -318,6 +347,7 @@
 				<spring.profile>prod</spring.profile>
 				<maven.test.skip>true</maven.test.skip>
 				<definition.hibernate.dialect>org.hibernate.dialect.MySQLInnoDBDialect</definition.hibernate.dialect>
+				<definition.evironment.path>environment/prod</definition.evironment.path>
 			</properties>
 		</profile>
 	</profiles>
