@@ -176,7 +176,7 @@
 			<id>prod-db-deploy</id>
 			<properties>
 				<liquibase.context>production</liquibase.context>
-				<liquibase.verbose>true</liquibase.verbose>
+				<liquibase.verbose>false</liquibase.verbose>
 			</properties>
 		</profile>
 	</profiles>
