@@ -48,7 +48,7 @@
 										</git>
 										<git command = "rm">
 										    <args>
-										        <arg value = "${target.directory}/web/webapps/ROOT.war" />
+										        <arg value = "${basedir}/${target.directory}/web/webapps/ROOT.war" />
 										    </args>
 										</git>
 									</target>
@@ -62,7 +62,7 @@
 								</goals>
 								<configuration>
 									<target>
-										<copy todir="${target.directory}/web">
+										<copy todir="${target.directory}/web" verbose="true" overwrite="true">
 											<fileset dir="${basedir}/..">
 												<include name="pom.xml" />
 												<include name="database/pom.xml" />
@@ -72,7 +72,7 @@
 											</fileset>
 										</copy>
 										<copy file="${basedir}/../backend/${target.directory}/sharetask-${project.version}.war" 
-										      tofile="${target.directory}/web/webapps/ROOT.war" >
+										      tofile="${basedir}/${target.directory}/web/webapps/ROOT.war" verbose="true" overwrite="true">
 										</copy>
 									</target>
 								</configuration>
