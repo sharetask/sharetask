@@ -60,7 +60,7 @@
 										</git>
 										<git command = "rm">
 										    <args>
-										        <arg value = "${basedir}/${target.directory}/web/webapps/ROOT.war" />
+										        <arg value = "${target.directory}/web/webapps/ROOT.war" />
 										    </args>
 										</git>
 									</target>
