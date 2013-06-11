@@ -104,7 +104,7 @@
 											command="rm -rf ${openshift.data.dir}deploy;mkdir ${openshift.data.dir}deploy" />
 							
 										<echo>Copy data</echo>
-										<scp file="${basedir}../database/${target.directory}/database-distribution.tar.gz" todir="${openshift.username}@${openshift.host}:${openshift.data.dir}deploy"
+										<scp file="${basedir}/../database/${target.directory}/database-distribution.tar.gz" todir="${openshift.username}@${openshift.host}:${openshift.data.dir}deploy"
 											keyfile="${user.home}/.ssh/id_rsa" />
 							
 										<echo>Extract data</echo>
