@@ -438,9 +438,9 @@
 			<id>prod</id>
 			<properties>
 				<definition.database.jdbc.driver>com.mysql.jdbc.Driver</definition.database.jdbc.driver>
-				<definition.database.jdbc.url>jdbc:mysql://${env.OPENSHIFT_MYSQL_DB_HOST}:${env.OPENSHIFT_MYSQL_DB_PORT}/${env.OPENSHIFT_APP_NAME}?useUnicode=true&amp;characterEncoding=UTF-8</definition.database.jdbc.url>
-				<definition.database.jdbc.user>${env.OPENSHIFT_MYSQL_DB_USERNAME}</definition.database.jdbc.user>
-				<definition.database.jdbc.password>${env.OPENSHIFT_MYSQL_DB_PASSWORD}</definition.database.jdbc.password>
+				<definition.database.jdbc.url>jdbc:mysql://${OPENSHIFT_MYSQL_DB_HOST}:${OPENSHIFT_MYSQL_DB_PORT}/${OPENSHIFT_APP_NAME}?useUnicode=true&amp;characterEncoding=UTF-8</definition.database.jdbc.url>
+				<definition.database.jdbc.user>${OPENSHIFT_MYSQL_DB_USERNAME}</definition.database.jdbc.user>
+				<definition.database.jdbc.password>${OPENSHIFT_MYSQL_DB_PASSWORD}</definition.database.jdbc.password>
 			</properties>
 		</profile>
 	</profiles>
