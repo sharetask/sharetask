@@ -95,9 +95,6 @@ a:hover, a:focus {color:#565656;}
 .tag .remove {background:#565656;border:1px solid #565656;display:inline-block;padding:0 6px;line-height:17px;font-size:11px;color:#fff;}
 .tag.large .remove {line-height:22px;font-size:13px;}
 .tag .selected {background:#FF5A00;border:1px solid #fff;color:#fff;}
-.priority-low {background:#999;}
-.priority-medium {background:#D9A86C;}
-.priority-high {background:#D94436;}
 
 .hidden {display:none;}
 /*
@@ -204,3 +201,17 @@ body {margin:0;padding:0;-webkit-text-size-adjust:100%;}
 .datepicker {font-size:1.1em;margin:5px;}
 
 form {margin:0;padding:0;}
+
+.editbox {margin-top:5px;padding:5px 0;}
+.editbox.border-visible {border:1px solid #ddd;padding:5px;}
+.editbox.border-invisible {border:1px solid #fff;}
+.editbox:hover {border:1px solid #FF5A00;background:url("../img/icon-edit.png") top right no-repeat;}
+
+.slabel {display:inline-block;font-size:90%;line-height:16px;min-width:80px;border:1px solid #aaa;border-top:7px solid #aaa;padding:5px;margin:5px 1px 10px 0;}
+.priority-low {border-top:7px solid #999;}
+.priority-medium {border-top:7px solid #1763A6;}
+.priority-high {border-top:7px solid #D94436;}
+
+.brand-img {background:url("../img/bg-cityscapes.jpg") top right no-repeat;background-size:cover;height:300px;}
+.brand-login {background:rgba(0,0,0,0.85);margin-top:15px;padding:15px;color:#fff;}
+.brand-login h4 {color:#fff;}

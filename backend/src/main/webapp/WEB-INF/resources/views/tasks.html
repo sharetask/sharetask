@@ -204,26 +204,33 @@
 							<button class="btn btn-inverse" ng-click="deleteTask(false)">Yes</button>
 							<button class="btn" ng-click="setEditMode('')">No</button>
 						</div>
-						<!-- task title, author -->
-						<div style="margin:10px 0;color:#1763A6;">
-							<div class="cursor-pointer" style="font-size:23px;" ng-class="{'hidden':taskEditMode == 'TITLE'}" ng-click="setEditMode('TITLE')">{{selectedTask.title}}</div>
-							<div ng-class="{'hidden':taskEditMode != 'TITLE'}">
-								<div class="input-append">
-									<input type="text" ng-model="selectedTask.title" ui-keypress="{enter:'updateTask(selectedTask)', esc:'setEditMode(\'\')'}" focus="editing" />
-									<button class="btn btn-inverse" ng-click="updateTask(selectedTask)">OK</button>
-								</div>
+						<!-- task title -->
+						<div class="editbox border-invisible" style="margin:10px 0;" ng-class="{'hidden':taskEditMode == 'TITLE'}">
+							<div class="cursor-pointer" style="font-size:23px;color:#1763A6;" ng-click="setEditMode('TITLE')">{{selectedTask.title}}</div>
+						</div>
+						<div ng-class="{'hidden':taskEditMode != 'TITLE'}" style="margin:10px 0 0 0;">
+							<div class="input-append">
+								<input type="text" ng-model="selectedTask.title" ui-keypress="{enter:'updateTask(selectedTask)', esc:'setEditMode(\'\')'}" focus="editing" />
+								<button class="btn btn-inverse" ng-click="updateTask(selectedTask)">OK</button>
 							</div>
 						</div>
+						<!-- task author -->
 						<p>by {{selectedTask.createdBy.name}} {{selectedTask.createdBy.surName}}</p>
 						<!-- task created on, priority, due date -->
 						<div style="margin-top:5px;">
-							<span class="label label-success" style="background:#656565;">Created on<br /><br /><strong>{{selectedTask.createdOn | date:'mediumDate'}}</strong></span>
-							<span class="label cursor-pointer" ng-class="{'priority-low':selectedTask.priority == 'LOW','priority-medium':selectedTask.priority == 'MEDIUM','priority-high':selectedTask.priority == 'HIGH'}" ng-click="changeTaskPriority()">Priority<br /><br /><strong>{{selectedTask.priority}}</strong></span>
-							<span class="label label-success cursor-pointer" style="background:#656565;" ng-click="setView('TASK-DUE-DATE-PICKER')">Due date<br /><br /><strong>{{selectedTask.dueDate | date:'mediumDate'}}</strong></span>
+							<span class="slabel">
+								Created on<br /><br />
+								<strong>{{selectedTask.createdOn | date:'mediumDate'}}</strong>
+							</span>
+							<span class="slabel cursor-pointer" ng-click="changeTaskPriority()" ng-class="{'priority-low':selectedTask.priority == 'LOW','priority-medium':selectedTask.priority == 'MEDIUM','priority-high':selectedTask.priority == 'HIGH'}">
+								Priority<br /><br />
+								<strong>{{selectedTask.priority}}</strong>
+							</span>
+							<span class="slabel cursor-pointer" ng-click="setView('TASK-DUE-DATE-PICKER')">Due date<br /><br /><strong>{{selectedTask.dueDate | date:'mediumDate'}}</strong></span>
 							<jqui-datepicker model="selectedTask.dueDate" selected="viewTaskDueDatePicker=false" options="datePickerOptions" ng-class="{'hidden':!viewTaskDueDatePicker}"></jqui-datepicker>
 						</div>
 						<!-- task tags -->
-						<div style="margin-top:5px;">
+						<div style="margin:5px 0 10px 0;">
 							<div class="tag large" ng-repeat="tag in selectedTask.tags"><span class="text">{{tag}}</span><span class="remove cursor-pointer" ng-click="removeTag(selectedTask.id, tag)">x</span></div>
 							<span class="tag large cursor-pointer" ng-click="setEditMode('ADD-TAG')"><span class="remove cursor-pointer"><i class="icon-plus icon-white"></i></span></span>
 							<div ng-class="{'hidden':taskEditMode != 'ADD-TAG'}">
@@ -236,18 +243,18 @@
 							</div>
 						</div>
 						<!-- task description -->
-						<div style="margin-top:5px;padding:5px;border:1px solid #ddd;">
+						<div class="editbox border-visible" ng-class="{'hidden':taskEditMode == 'DESCRIPTION'}">
+							<div class="cursor-pointer" ng-click="setEditMode('DESCRIPTION')">{{selectedTask.description}}</div>
+							<button class="btn" ng-class="{'hidden':selectedTask.description != '' && selectedTask.description != null}" ng-click="setEditMode('DESCRIPTION')">Add description</button>
+						</div>
+						<div ng-class="{'hidden':taskEditMode != 'DESCRIPTION'}" style="margin-top:5px;">
 							<div class="row-full">
-								<div class="cursor-pointer" ng-class="{'hidden':taskEditMode == 'DESCRIPTION'}" ng-click="setEditMode('DESCRIPTION')">{{selectedTask.description}}</div>
-								<button class="btn" ng-class="{'hidden':selectedTask.description != '' && selectedTask.description != null}" ng-click="setEditMode('DESCRIPTION')">Add description</button>
-								<div ng-class="{'hidden':taskEditMode != 'DESCRIPTION'}">
-									<textarea class="span12" style="height:80px;margin-bottom:1px;" ng-model="selectedTask.description" ui-keypress="{esc:'setEditMode(\'\')'}">{{selectedTask.description}}</textarea><br />
-									<button class="btn btn-inverse" ng-click="updateTask(selectedTask)">Save changes</button>
-								</div>
+								<textarea class="span12" style="height:80px;margin-bottom:1px;" ng-model="selectedTask.description" ui-keypress="{esc:'setEditMode(\'\')'}">{{selectedTask.description}}</textarea><br />
+								<button class="btn btn-inverse" ng-click="updateTask(selectedTask)">Save changes</button>
 							</div>
 						</div>
 						<br />
-						
+						<!-- task comments, subtasks -->
 						<ul class="nav nav-tabs">
 							<li class="active"><a href="#comments" data-toggle="tab">Comments</a></li>
 							<li><a href="#subtasks" data-toggle="tab">Subtasks</a></li>

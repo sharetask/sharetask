@@ -17,22 +17,28 @@
  * under the License.
 -->
 		<div ng-controller="AuthCtrl">
-			<div style="margin-top:10%;">
-				<div class="row">
-					<div class="span4 offset4">
-						<h4>Don't have ShareTa.sk ID?</h4><br />
-						<a href="#/register" class="btn btn-inverse">Create new account</a><br />
-						<br /><br />
-						<h4>Sign in to ShareTa.sk</h4><br />
-						<form name="formLogin" novalidate class="css-form">
-							<div class="alert alert-error" ng-class="{'hidden':loginData.result == 1 || loginData.result == 0}">
-								<a class="close" ng-click="loginData.result = 0">&times;</a>
-								<strong>Error</strong> Bad user name or password.
+			<!-- application menu -->
+			<web-menu></web-menu>
+			<div class="panel-full">
+				<div class="panel-full-inside">
+					<div class="brand-img">
+						<div class="row">
+							<div class="span4 offset8 brand-login">
+								<h4>Don't have ShareTa.sk ID?</h4><br />
+								<a href="#/register" class="btn btn-inverse">Create new account</a><br />
+								<br /><br />
+								<h4>Sign in to ShareTa.sk</h4><br />
+								<form name="formLogin" novalidate class="css-form">
+									<div class="alert alert-error" ng-class="{'hidden':loginData.result == 1 || loginData.result == 0}">
+										<a class="close" ng-click="loginData.result = 0">&times;</a>
+										<strong>Error</strong> Bad user name or password.
+									</div>
+									<input class="span4" type="text" placeholder="username" ng-model="user.username" ui-keypress="{enter:'login()'}" required /><br />
+									<input class="span4" type="password" placeholder="password" ng-model="user.password" ui-keypress="{enter:'login()'}" required /><br />
+									<button class="btn btn-inverse" ng-click="login()" ng-disabled="formLogin.$invalid || loginData.processing">Login<span ng-show="loginData.processing"> processing...</span></button>
+								</form>
 							</div>
-							<input class="span4" type="text" placeholder="username" ng-model="user.username" ui-keypress="{enter:'login()'}" required /><br />
-							<input class="span4" type="password" placeholder="password" ng-model="user.password" ui-keypress="{enter:'login()'}" required /><br />
-							<button class="btn btn-inverse" ng-click="login()" ng-disabled="formLogin.$invalid || loginData.processing">Login<span ng-show="loginData.processing"> processing...</span></button>
-						</form>
+						</div>
 					</div>
 				</div>
 			</div>
