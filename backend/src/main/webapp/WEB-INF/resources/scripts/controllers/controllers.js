@@ -19,7 +19,7 @@
 'use strict';
 
 /* Controllers */
-angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop']).
+angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap']).
 	controller('AuthCtrl', ['$scope', '$location', '$rootScope', 'User', 'LocalStorage', function($scope, $location, $rootScope, User, LocalStorage) {
 		
 		$scope.loginData = {processing: false, result: 0};

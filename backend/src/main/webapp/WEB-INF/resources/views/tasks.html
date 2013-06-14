@@ -148,9 +148,10 @@
 											<div class="st-checkbox cursor-pointer" ng-click="task.checked = !task.checked" ng-class="{'selected checked':task.id == selectedTask.id && task.checked, 'checked':task.checked}" stop-event="click"><!--<i class="icon-ok icon-white" ng-class="{'hidden':!task.checked}"></i>--></div>
 										</div>
 										<div class="span11">
-											<div class="row-full">
-												<div class="span8">
-													<strong>{{task.title}}</strong>
+											<div class="row-full" style="margin-bottom:7px;">
+												<div class="span8 text">
+													<strong>{{task.title}}</strong><br />
+													<small>{{task.description}}</small>
 												</div>
 												<div class="span4" style="text-align:right;"><small>{{task.dueDate | date:'mediumDate'}}</small></div>
 											</div>
@@ -173,7 +174,7 @@
 				<div class="panel-task-detail-inner">
 					<div class="panel-task-detail-content" ng-class="{'hidden':selectedTask == null}">
 						<!-- action buttons -->
-						<div class="task-detail-action">
+						<div class="task-detail-action" ng-class="{'selected':taskEditMode == 'COMPLETE-TASK' || taskEditMode == 'FORWARD-TASK' || taskEditMode == 'DELETE-TASK'}">
 							<button class="btn btn-inverse" ng-click="setEditMode('COMPLETE-TASK')" ng-class="{'hidden':selectedTask.state == 'FINISHED'}">Complete</button>
 							<button class="btn" ng-click="setEditMode('FORWARD-TASK')" ng-class="{'hidden':selectedTask.state == 'FINISHED'}">Forward</button>
 							<button class="btn" ng-click="setEditMode('DELETE-TASK')">Delete</button>
@@ -206,7 +207,7 @@
 						</div>
 						<!-- task title -->
 						<div class="editbox border-invisible" style="margin:10px 0;" ng-class="{'hidden':taskEditMode == 'TITLE'}">
-							<div class="cursor-pointer" style="font-size:23px;color:#1763A6;" ng-click="setEditMode('TITLE')">{{selectedTask.title}}</div>
+							<div class="cursor-pointer" style="font-size:23px;color:#FF5A00;" ng-click="setEditMode('TITLE')">{{selectedTask.title}}</div>
 						</div>
 						<div ng-class="{'hidden':taskEditMode != 'TITLE'}" style="margin:10px 0 0 0;">
 							<div class="input-append">
@@ -215,7 +216,7 @@
 							</div>
 						</div>
 						<!-- task author -->
-						<p>by {{selectedTask.createdBy.name}} {{selectedTask.createdBy.surName}}</p>
+						<p>by <span popover-title="{{selectedTask.createdBy.name}} {{selectedTask.createdBy.surName}}" popover="I appeared on mouse enter!" popover-trigger="mouseenter" popover-placement="right">{{selectedTask.createdBy.name}} {{selectedTask.createdBy.surName}}</span></p>
 						<!-- task created on, priority, due date -->
 						<div style="margin-top:5px;">
 							<span class="slabel">
