@@ -149,9 +149,9 @@
 											</div>
 											<div class="row-full">
 												<div class="span8">
-													<div class="tag small" ng-repeat="tag in task.tags"><span class="text" ng-class="{'selected':tag == filter.tag}">{{tag}}</span><!--<span class="remove cursor-pointer" ng-click="removeTag(task.id, tag)" stop-event="click">x</span>--></div>
+													<div class="tag small" ng-repeat="tag in task.tags"><span class="text" ng-class="{'selected':tag == filter.tag}">{{tag}}</span></div>
 												</div>
-												<div class="span4" style="text-align:right;"><i class="icon-comment"></i><!--<i class="icon-comment" ng-class="{'icon-white':task.id == selectedTask.id}"></i>--> {{task.commentsCount}}</div>
+												<div class="span4" style="text-align:right;"><i class="icon-comments"></i> {{task.commentsCount}}</div>
 											</div>
 										</div>
 									</div>
@@ -252,8 +252,8 @@
 						<br />
 						<!-- task comments, subtasks -->
 						<ul class="nav nav-tabs">
-							<li class="active"><a href="#comments" data-toggle="tab">{{'_Comments_' | i18n}}</a></li>
-							<li><a href="#subtasks" data-toggle="tab">{{'_Subtasks_' | i18n}}</a></li>
+							<li class="active"><a href="#comments" data-toggle="tab"><i class="icon-comments"></i> {{'_Comments_' | i18n}}</a></li>
+							<li><a href="#subtasks" data-toggle="tab"><i class="icon-list-ul"></i> {{'_Subtasks_' | i18n}}</a></li>
 						</ul>
 						<div class="tabbable">
 							<div class="tab-content">
