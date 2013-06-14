@@ -25,42 +25,42 @@
 				<div class="panel-full-inside">
 					<div style="padding:10px 20px;">
 						<ul class="nav nav-tabs">
-							<li class="active"><a href="#userProfile" data-toggle="tab">Profile</a></li>
-							<li><a href="#userSettings" data-toggle="tab">Settings</a></li>
+							<li class="active"><a href="#userProfile" data-toggle="tab">{{'_Profile_' | i18n}}</a></li>
+							<li><a href="#userSettings" data-toggle="tab">{{'_Settings_' | i18n}}</a></li>
 						</ul>
 						<div class="tabbable">
 							<div class="tab-content">
 								<!-- user profile update form -->
 								<div class="tab-pane active" id="userProfile">
 									<form name="formUserUpdate" novalidate class="css-form">
-										<legend>User profile</legend>
+										<legend>{{'_UserProfile_' | i18n}}</legend>
 										<div class="alert alert-success" ng-class="{'hidden':updateUserProfile.result == -1 || updateUserProfile.result == 0}">
 											<a class="close" ng-click="updateUserProfile.result = 0">&times;</a>
-											<strong>Success</strong> User profile was successfully updated.
+											<strong>{{'_Success_' | i18n}}</strong> {{'_ResultUserProfileUpdateOk_' | i18n}}
 										</div>
 										<div class="alert alert-error" ng-class="{'hidden':updateUserProfile.result == 1 || updateUserProfile.result == 0}">
 											<a class="close" ng-click="updateUserProfile.result = 0">&times;</a>
-											<strong>Error</strong> Error updating user's profile.
+											<strong>{{'_Error_' | i18n}}</strong> {{'_ResultUserProfileUpdateError_' | i18n}}
 										</div>
-										<label>First name</label>
-										<input class="span5" type="text" placeholder="type first name..." ng-model="loggedUser.name" required /><br />
-										<label>Last name</label>
-										<input class="span5" type="text" placeholder="type last name..." ng-model="loggedUser.surName" required /><br />
-										<label>e-mail</label>
-										<input class="span5" type="text" placeholder="type e-mail address..." ng-model="loggedUser.username" required /><br />
+										<label>{{'_FirstName_' | i18n}}</label>
+										<input class="span5" type="text" placeholder="{{'_PlaceholderFirstName_' | i18n}}" ng-model="loggedUser.name" required /><br />
+										<label>{{'_LastName_' | i18n}}</label>
+										<input class="span5" type="text" placeholder="{{'_PlaceholderLastName_' | i18n}}" ng-model="loggedUser.surName" required /><br />
+										<label>{{'_Mail_' | i18n}}</label>
+										<input class="span5" type="text" placeholder="{{'_PlaceholderMail_' | i18n}}" ng-model="loggedUser.username" required /><br />
 										<br />
-										<label>New password</label>
-										<input class="span5" type="text" placeholder="type new password..." ng-model="loggedUser.newPassword1" /><br />
-										<label>New password (check)</label>
-										<input class="span5" type="text" placeholder="retype new password..." ng-model="loggedUser.newPassword2" /><br />
-										<button class="btn btn-inverse" ng-click="update()" ng-disabled="formUserUpdate.$invalid || loggedUser.newPassword1 != loggedUser.newPassword2 || updateUserProfile.processing">Save<span ng-show="updateUserProfile.processing"> processing...</span></button>
+										<label>{{'_NewPassword_' | i18n}}</label>
+										<input class="span5" type="text" placeholder="{{'_PlaceholderNewPassword_' | i18n}}" ng-model="loggedUser.newPassword1" /><br />
+										<label>{{'_NewPasswordCheck_' | i18n}}</label>
+										<input class="span5" type="text" placeholder="{{'_PlaceholderNewPasswordCheck_' | i18n}}" ng-model="loggedUser.newPassword2" /><br />
+										<button class="btn btn-inverse" ng-click="update()" ng-disabled="formUserUpdate.$invalid || loggedUser.newPassword1 != loggedUser.newPassword2 || updateUserProfile.processing">{{'_Save_' | i18n}}<span ng-show="updateUserProfile.processing"> {{'_Processing_' | i18n}}</span></button>
 									</form>
 								</div>
 								<!-- user settings -->
 								<div class="tab-pane" id="userSettings">
 									<form name="formUserSettings" novalidate class="css-form">
-										<legend>User settings</legend>
-										No settings available yet.
+										<legend>{{'_UserSettings_' | i18n}}</legend>
+										{{'_NoSettingsAvailable_' | i18n}}
 									</form>
 								</div>
 							</div>

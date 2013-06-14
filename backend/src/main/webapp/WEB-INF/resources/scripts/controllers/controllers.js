@@ -19,8 +19,8 @@
 'use strict';
 
 /* Controllers */
-angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap']).
-	controller('AuthCtrl', ['$scope', '$location', '$rootScope', 'User', 'LocalStorage', function($scope, $location, $rootScope, User, LocalStorage) {
+angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 'localization']).
+	controller('AuthCtrl', ['$scope', '$location', '$rootScope', 'localize', 'User', 'LocalStorage', function($scope, $location, $rootScope, localize, User, LocalStorage) {
 		
 		$scope.loginData = {processing: false, result: 0};
 		
@@ -69,7 +69,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap'])
 				});
 		};
 	}])
-	.controller('RegisterCtrl', ['$scope', '$location', '$rootScope', 'User', 'LocalStorage', function($scope, $location, $rootScope, User, LocalStorage) {
+	.controller('RegisterCtrl', ['$scope', '$location', '$rootScope', 'localize', 'User', 'LocalStorage', function($scope, $location, $rootScope, localize, User, LocalStorage) {
 		
 		$scope.newAccountData = {processing: false, result: 0};
 		
@@ -110,7 +110,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap'])
 				});
 		};
 	}])
-	.controller('AppCtrl', ['$scope', '$location', '$rootScope', '$filter', 'Workspace', 'Task', 'User', 'LocalStorage', 'ErrorHandling', function($scope, $location, $rootScope, $filter, Workspace, Task, User, LocalStorage, ErrorHandling) {
+	.controller('AppCtrl', ['$scope', '$location', '$rootScope', '$filter', 'localize', 'Workspace', 'Task', 'User', 'LocalStorage', 'ErrorHandling', function($scope, $location, $rootScope, $filter, localize, Workspace, Task, User, LocalStorage, ErrorHandling) {
 		
 		$scope.errorMessageOnTaskList = '';
 		$scope.viewPanelTaskFilter = true;
@@ -759,7 +759,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap'])
 			$scope.loadWorkspaces();
 		}
 	}])
-	.controller('AdminCtrl', ['$scope', '$location', '$rootScope', '$timeout', 'Workspace', 'LocalStorage', 'ErrorHandling', function($scope, $location, $rootScope, $timeout, Workspace, LocalStorage, ErrorHandling) {
+	.controller('AdminCtrl', ['$scope', '$location', '$rootScope', '$timeout', 'localize', 'Workspace', 'LocalStorage', 'ErrorHandling', function($scope, $location, $rootScope, $timeout, localize, Workspace, LocalStorage, ErrorHandling) {
 		$scope.updateWorkspaceData = {processing: false, result: 0};
 		$scope.newMember = {processing: false, result: 0};
 		$scope.addWorkspaceData = {processing: false, result: 0};
@@ -911,7 +911,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap'])
 			$scope.loadWorkspaces();
 		}
 	}])
-	.controller('UserCtrl', ['$scope', '$location', '$rootScope', 'User', 'ErrorHandling', 'LocalStorage', function($scope, $location, $rootScope, User, ErrorHandling, LocalStorage) {
+	.controller('UserCtrl', ['$scope', '$location', '$rootScope', 'localize', 'User', 'ErrorHandling', 'LocalStorage', function($scope, $location, $rootScope, localize, User, ErrorHandling, LocalStorage) {
 		$scope.updateUserProfile = {processing: false, result: 0};
 		$rootScope.currentPage = "user";
 		

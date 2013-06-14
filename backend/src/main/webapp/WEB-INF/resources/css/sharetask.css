@@ -200,8 +200,8 @@ form {margin:0;padding:0;}
 .priority-medium {border-top:7px solid #FF5A00;}
 .priority-high {border-top:7px solid #D94436;}
 
-.brand-img {background:url("../img/bg-cityscapes.jpg") top right no-repeat;background-size:cover;height:300px;}
-.brand-login {background:rgba(0,0,0,0.85);margin-top:15px;padding:15px;color:#fff;}
+.brand-img {background:url("../img/bg-cityscapes.jpg") top right no-repeat;background-size:cover;height:360px;}
+.brand-login {background:rgba(0,0,0,0.8);margin-top:15px;padding:15px;color:#fff;}
 .brand-login h4 {color:#fff;}
 
 .popover {background:#565656;border:none;}

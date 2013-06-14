@@ -123,19 +123,28 @@ angular.module('shareTaskApp.filters', []).
 	.filter('orderName', ['Workspace', function(Workspace) {
 		return function(input) {
 			//console.log("orderName: %o", input);
-			if (input == "TASK_DUE_DATE") { return "Due date"; }
-			else if (input == "TASK_TITLE") { return "Name"; }
-			else if (input == "TASK_AUTHOR") { return "Author"; }
+			if (input == "TASK_DUE_DATE") { return "_ByDueDate_"; }
+			else if (input == "TASK_TITLE") { return "_ByName_"; }
+			else if (input == "TASK_AUTHOR") { return "_ByAuthor_"; }
 		};
 	}])
 	.filter('taskQueueName', ['Workspace', function(Workspace) {
 		return function(input) {
 			//console.log("orderName: %o", input);
-			if (input == "MY_PENDING") { return "Pending"; }
-			else if (input == "MY_TODAY") { return "Today"; }
-			else if (input == "MY_OVERDUE") { return "Overdue"; }
-			else if (input == "MY_HIGH_PRIORITY") { return "High Priority"; }
-			else if (input == "MY_COMPLETED") { return "Completed"; }
+			if (input == "MY_PENDING") { return "_PendingTasks_"; }
+			else if (input == "MY_TODAY") { return "_TodayTasks_"; }
+			else if (input == "MY_OVERDUE") { return "_OverdueTasks_"; }
+			else if (input == "MY_HIGH_PRIORITY") { return "_HighPriorityTasks_"; }
+			else if (input == "MY_COMPLETED") { return "_CompletedTasks_"; }
+		};
+	}])
+	.filter('priorityName', ['Workspace', function(Workspace) {
+		return function(input) {
+			//console.log("priorityName: %o", input);
+			if (input == "LOW") { return "_Low_"; }
+			else if (input === "MEDIUM") { return "_Standard_"; }
+			else if (input === "HIGH") { return "_High_"; }
+			else if (input === undefined) { return "__"; }
 		};
 	}])
 	;

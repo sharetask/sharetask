@@ -22,16 +22,16 @@
 			<div class="container" style="width:auto;">
 				<span class="brand">ShareTa.sk</span>
 				<ul class="nav">
-					<li ng-class="{'active':currentPage == 'tasks'}"><a href="#/tasks"><i class="icon-tasks icon-white"></i> Tasks</a></li>
+					<li ng-class="{'active':currentPage == 'tasks'}"><a href="#/tasks"><i class="icon-tasks icon-white"></i> {{'_Tasks_' | i18n}}</a></li>
 				</ul>
 				<ul class="nav pull-right">
-					<li ng-class="{'active':currentPage == 'admin'}"><a href="#/admin"><i class="icon-wrench icon-white"></i> Administration</a></li>
+					<li ng-class="{'active':currentPage == 'admin'}"><a href="#/admin"><i class="icon-wrench icon-white"></i> {{'_Administration_' | i18n}}</a></li>
 					<li id="fat-menu" class="dropdown" ng-class="{'active':currentPage == 'user'}">
 						<a id="dropUser" role="button" class="dropdown-toggle cursor-pointer" data-toggle="dropdown"><i class="icon-user icon-white"></i> {{loggedUser.name}} {{loggedUser.surName}} <b class="caret"></b></a>
 						<ul class="dropdown-menu" role="menu" aria-labelledby="dropUser">
-							<li><a role="menuitem" tabindex="-1" href="#/user">My settings</a></li>
+							<li><a role="menuitem" tabindex="-1" href="#/user">{{'_MySettings_' | i18n}}</a></li>
 							<li class="divider"></li>
-							<li><a class="cursor-pointer" role="menuitem" tabindex="-1" ng-click="logout()"><i class="icon-off"></i> Logout</a></li>
+							<li><a class="cursor-pointer" role="menuitem" tabindex="-1" ng-click="logout()"><i class="icon-off"></i> {{'_Logout_' | i18n}}</a></li>
 						</ul>
 					</li>
 				</ul>
