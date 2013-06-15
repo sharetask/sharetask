@@ -40,4 +40,5 @@
 	
 	<!-- 	<mvc:default-servlet-handler /> -->
 	<mvc:view-controller path="/" view-name="index"/>
+	<mvc:view-controller path="/app-info" view-name="app-info"/>
 </beans>
