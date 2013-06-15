@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd" [
 	<!ENTITY CONVERSION_PATTERN "&#37;d [&#37;t] &#37;-5p &#37;c - &#37;m&#37;n">
-	<!ENTITY LOGGING_DIRECTORY "/var/lib/openshift/51b8e43ce0b8cd73d700014f/jbossews/logs/ ">
+	<!ENTITY LOGGING_DIRECTORY "/var/lib/openshift/51b8e43ce0b8cd73d700014f/jbossews/logs/">
 ]>
 
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
 
 	<appender name="app-info" class="org.apache.log4j.RollingFileAppender">
 		<param name="Append" value="false" />
-		<param name="File" value="&LOGGING_DIRECTORY;/app_info.log" />
+		<param name="File" value="&LOGGING_DIRECTORY;app_info.log" />
 		<param name="Threshold" value="INFO" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="&CONVERSION_PATTERN;" />
@@ -17,7 +17,7 @@
 
 	<appender name="app-warn" class="org.apache.log4j.RollingFileAppender">
 		<param name="Append" value="false" />
-		<param name="File" value="&LOGGING_DIRECTORY;/app_warn.log" />
+		<param name="File" value="&LOGGING_DIRECTORY;app_warn.log" />
 		<param name="Threshold" value="WARN" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="&CONVERSION_PATTERN;" />
