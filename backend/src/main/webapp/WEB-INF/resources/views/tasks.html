@@ -125,14 +125,20 @@
 							</div>
 						</div>
 					</div>
-					<!-- tasks -->
+					<!-- task list -->
 					<div class="task-list" ng-class="{'small':taskEditMode == 'NEW-TASK'}">
 						<div class="task-list-inner">
 							<!-- error message -->
-							<div class="alert alert-error" ng-class="{'hidden':errorMessageOnTaskList == ''}">
+							<div class="alert alert-error no-margins" ng-class="{'hidden':errorMessageOnTaskList == ''}">
 								<a class="close" ng-click="errorMessageOnTaskList = ''">&times;</a>
 								{{errorMessageOnTaskList}}
 							</div>
+							<!-- there are new tasks message -->
+							<div class="alert alert-warning no-margins" ng-class="{'hidden':newTasks.length == 0}">
+								<span ng-show="newTasks.length == 1">{{'_MsgNewTask_' | i18n}}</span><span ng-show="newTasks.length > 1">{{'_MsgNewTasks_' | i18n}}</span>: <span ng-repeat="newTask in newTasks">{{newTask.title}}<span ng-show="!$last">, </span><span ng-show="$last">.</span></span>
+								<small><a class="cursor-pointer" ng-click="loadTasks()">{{'_RefreshTasks_' | i18n}}</a></small>
+							</div>
+							<!-- tasks -->
 							<div class="task-list-item" ng-repeat="task in tasks | orderBy:orderTasks" ng-class="{'selected':task.id == selectedTask.id}" ng-click="setSelectedTask(task.id)" data-drop="true" jqyoui-droppable="{onDrop:'addTaskTagDragDrop'}">
 								<div class="task-list-item-inner">
 									<div class="row-full">

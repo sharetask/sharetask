@@ -110,7 +110,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 				});
 		};
 	}])
-	.controller('AppCtrl', ['$scope', '$location', '$rootScope', '$filter', 'localize', 'Workspace', 'Task', 'User', 'LocalStorage', 'ErrorHandling', function($scope, $location, $rootScope, $filter, localize, Workspace, Task, User, LocalStorage, ErrorHandling) {
+	.controller('AppCtrl', ['$scope', '$location', '$rootScope', '$filter', '$timeout', 'localize', 'Workspace', 'Task', 'User', 'LocalStorage', 'ErrorHandling', function($scope, $location, $rootScope, $filter, $timeout, localize, Workspace, Task, User, LocalStorage, ErrorHandling) {
 		
 		$scope.errorMessageOnTaskList = '';
 		$scope.viewPanelTaskFilter = true;
@@ -120,6 +120,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		$scope.taskEditMode = '';
 		$scope.filter = {'queue': 'MY_PENDING', 'tag': '', 'searchString': '', 'orderBy': 'TASK_DUE_DATE'};
 		$scope.tags = [];
+		$scope.newTasks = [];
 		$rootScope.currentPage = "tasks";
 		//$scope.dateOptions = {format: 'dd/mm/yyyy'};
 		$scope.datePickerOptions = { dateFormat: "M d, yy" };
@@ -255,6 +256,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 			console.log("Load all active tasks for workspace (id: %s)", $scope.selectedWorkspace.id);
 			Workspace.getActiveTasks({workspaceId: $scope.selectedWorkspace.id}, function(data, status) {
 					console.log("Workspace getActiveTasks success! data: %o, status: %o", data, status);
+					$scope.newTasks = [];
 					$scope.allTasks = data;
 					$scope.setTaskFilterQueue($scope.filter.queue);
 				}, function(data, status) {
@@ -744,6 +746,39 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 			}
 		};
 		
+		/**
+		 * Timer for synchronization of tasks.
+		 * Timer is fired regularly on background.
+		 */
+		$scope.syncTasks = function() {
+			console.log("Starting SyncTasksTimer job");
+			$scope.syncTasksTimer = $timeout(function() {
+				console.log("SyncTasksTimer job fired");
+				$scope.newTasks = [];
+				console.log("Load all active tasks for workspace (id: %s)", $scope.selectedWorkspace.id);
+				Workspace.getActiveTasks({workspaceId: $scope.selectedWorkspace.id}, function(data, status) {
+						console.log("Workspace getActiveTasks success! data: %o, status: %o", data, status);
+						angular.forEach(data, function(task1) {
+							var found = false;
+							angular.forEach($scope.tasks, function(task2) {
+								if (task1.id === task2.id) {
+									found = true;
+								}
+							});
+							if (!found) {
+								$scope.newTasks.push(task1);
+							}
+						});
+						console.log("There are these new tasks: %o", $scope.newTasks);
+					}, function(data, status) {
+						console.log("Workspace getActiveTasks error!");
+						ErrorHandling.handle(data, status);
+				});
+	        	$scope.syncTasks();
+			}, 60000);
+	        console.log("SyncTasksTimer (timer: %o) started", $scope.syncTasksTimer);
+		};
+		
 		
 		// get logged user from local storage
 		$rootScope.loggedUser = LocalStorage.get('logged-user');
@@ -757,6 +792,8 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		else {
 			// Loading all workspaces from server.
 			$scope.loadWorkspaces();
+			// start sync for tasks
+			$scope.syncTasks();
 		}
 	}])
 	.controller('AdminCtrl', ['$scope', '$location', '$rootScope', '$timeout', 'localize', 'Workspace', 'LocalStorage', 'ErrorHandling', function($scope, $location, $rootScope, $timeout, localize, Workspace, LocalStorage, ErrorHandling) {

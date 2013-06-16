@@ -210,3 +210,7 @@ form {margin:0;padding:0;}
 .popover.right .arrow:after {border-right-color:#565656;}
 .popover.bottom .arrow:after {border-bottom-color:#565656;}
 .popover.left .arrow:after {border-left-color:#565656;}
+
+.no-margins {margin:0;}
+.alert a {color:#fff;text-decoration:underline;}
+.alert a:hover {color:#000;}
