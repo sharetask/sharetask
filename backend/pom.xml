@@ -25,6 +25,7 @@
 				<directory>src/main/resources</directory>
 				<includes>
 					<include>config.properties</include>
+					<include>application.properties</include>
 				</includes>
 			</resource>
 			<resource>
@@ -111,6 +112,22 @@
 					<!-- reportFormat>xml</reportFormat-->
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>buildnumber-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>validate</phase>
+						<goals>
+							<goal>create</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<doCheck>false</doCheck>
+					<doUpdate>false</doUpdate>
+				</configuration>				
+			</plugin>
 			
 			<!-- ========================================================================= -->
 			<!-- A simple Jetty test server at http://localhost:8080/sharetask             -->
@@ -151,6 +168,16 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+						</manifest>
+						<manifestEntries>
+							<Implementation-Build>${buildNumber}</Implementation-Build>
+						</manifestEntries>
+					</archive>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -249,6 +276,7 @@
 				<spring.profile>dev</spring.profile>
 				<definition.hibernate.dialect>org.hibernate.dialect.HSQLDialect</definition.hibernate.dialect>
 				<definition.evironment.path>environment/dev</definition.evironment.path>
+				<definition.buildNumber>0</definition.buildNumber>
 			</properties>
 		</profile>
 		<profile>
@@ -339,6 +367,7 @@
 				<spring.profile>integration</spring.profile>
 				<definition.hibernate.dialect>org.hibernate.dialect.HSQLDialect</definition.hibernate.dialect>
 				<definition.evironment.path>environment/integration</definition.evironment.path>
+				<definition.buildNumber>0</definition.buildNumber>
 			</properties>
 		</profile>
 		<profile>
@@ -348,6 +377,7 @@
 				<maven.test.skip>true</maven.test.skip>
 				<definition.hibernate.dialect>org.hibernate.dialect.MySQLInnoDBDialect</definition.hibernate.dialect>
 				<definition.evironment.path>environment/prod</definition.evironment.path>
+				<definition.buildNumber>${BUILD_NUMBER}</definition.buildNumber>
 			</properties>
 		</profile>
 	</profiles>
