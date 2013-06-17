@@ -183,6 +183,42 @@ angular.module('shareTaskApp.directives', []).
 			}]
 		};
 	})
+	.directive('calendar', function() {
+		return {
+			restrict: 'E',
+			templateUrl: 'resources-1.0.0/views/components/calendar.html',
+			scope: {tasks:'=model'},
+			link: function(scope, element, attrs) {
+				console.log("Calendar - scope: %o, element: %o, attrs: %o", scope, element, attrs);
+			},
+			controller: ['$rootScope', '$scope', '$element', '$attrs', '$transclude', '$location', 'LocalStorage', function($rootScope, $scope, $element, $attrs, $transclude, $location, LocalStorage) {
+				console.log("Calendar - scope: %o, element: %o, attrs: %o", $scope, $element, $attrs);
+				
+				$scope.todayDate = new Date();
+				$scope.todayDay = $scope.todayDate.getDay();
+				console.log("Calendar - today day: %s", $scope.todayDay);
+				
+				$scope.startDate = new Date(new Date().setDate($scope.todayDate.getDate() - $scope.todayDay + 1));
+				console.log("Calendar - start date: %o", new Date($scope.startDate));
+				
+				$scope.days = [];
+				for (var i = 0; i < 7; i++) {
+					$scope.days.push(new Date(new Date().setDate($scope.startDate.getDate() + i)));
+				}
+				console.log("Calendar - days: %o", $scope.days);
+				
+				$scope.$watch('tasks', function(newModel, oldModel) {
+					console.log("new model, %o", newModel);
+					console.log("old model, %o", oldModel);
+					if (newModel !== undefined && oldModel === undefined) {
+						$scope.tasks = newModel;
+						console.log("Calendar - tasks: %o", $scope.tasks);
+					}
+				});
+				
+			}]
+		};
+	})
 	/*
 	.directive('checkStrength', function () {
 	    return {

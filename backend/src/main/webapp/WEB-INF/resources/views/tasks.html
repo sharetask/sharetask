@@ -103,7 +103,7 @@
 								
 								<button class="btn btn-inverse pull-right" style="margin-left:5px;" ng-click="setEditMode('NEW-TASK')"><i class="icon-plus icon-white"></i></button>
 								<button class="btn pull-right" style="margin-left:5px;" ng-click="loadTasks()"><i class="icon-refresh"></i></button>
-								<div class="btn-group pull-right">
+								<div class="btn-group pull-right" style="margin-left:5px;">
 									<button class="btn dropdown-toggle" data-toggle="dropdown"><i class="icon-list"></i> <span class="caret"></span></button>
 									<ul class="dropdown-menu">
 										<li ng-click="completeTask(true)"><a>{{'_Complete_' | i18n}}</a></li>
@@ -111,7 +111,7 @@
 										<li ng-click="deleteTask(true)"><a>{{'_Delete_' | i18n}}</a></li>
 									</ul>
 								</div>
-								
+								<button class="btn pull-right" ng-click="viewCalendar = !viewCalendar"><i class="icon-calendar"></i></button>
 							</div>
 						</div>
 						<div class="new-task-simple" ng-class="{'hidden':taskEditMode != 'NEW-TASK'}">
@@ -139,7 +139,7 @@
 								<small><a class="cursor-pointer" ng-click="loadTasks()">{{'_RefreshTasks_' | i18n}}</a></small>
 							</div>
 							<!-- tasks -->
-							<div class="task-list-item" ng-repeat="task in tasks | orderBy:orderTasks" ng-class="{'selected':task.id == selectedTask.id}" ng-click="setSelectedTask(task.id)" data-drop="true" jqyoui-droppable="{onDrop:'addTaskTagDragDrop'}">
+							<div class="task-list-item" ng-repeat="task in tasks | orderBy:orderTasks" ng-class="{'selected':task.id == selectedTask.id}" ng-click="setSelectedTask(task.id)" data-drop="true" jqyoui-droppable="{onDrop:'addTaskTagDragDrop'}" ng-show="!viewCalendar">
 								<div class="task-list-item-inner">
 									<div class="row-full">
 										<div class="span1">
@@ -163,6 +163,7 @@
 									</div>
 								</div>
 							</div>
+							<calendar ng-show="viewCalendar" model="tasks"></calendar>
 						</div>
 					</div>
 				</div>

@@ -89,6 +89,9 @@ a:hover, a:focus {color:#565656;}
 .task-list-item strong {font-size:115%;}
 .task-list-item .text {text-overflow:ellipsis;white-space:nowrap;overflow:hidden;}
 
+.calendar {border-top:1px solid #ddd;}
+.calendar-item {border-bottom:1px solid #ddd;}
+
 .label {min-height:50px;}
 
 .tag {color:#000;display:inline-block;margin-right:5px;margin-bottom:5px;z-index:10;}
