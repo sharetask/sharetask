@@ -23,10 +23,10 @@
 <spring:eval expression="@applicationProps['application.version']" var="applicationVersion"/>
 <spring:eval expression="@applicationProps['application.revision']" var="applicationRevision"/>
 
-<!-- Application version: ${applicationVersion} -->
-<!-- Application revision: ${applicationRevision} -->
 <!doctype html>
 <html lang="en" ng-app="shareTaskApp">
+	<!-- Application version: ${applicationVersion} -->
+	<!-- Application revision: ${applicationRevision} -->
 	<head>
 		<meta charset="utf-8">
 		<title>ShareTa.sk</title>
