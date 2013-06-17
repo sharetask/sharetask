@@ -111,6 +111,22 @@
 					<!-- reportFormat>xml</reportFormat-->
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>buildnumber-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>validate</phase>
+						<goals>
+							<goal>create</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<doCheck>true</doCheck>
+					<doUpdate>true</doUpdate>
+				</configuration>				
+			</plugin>
 			
 			<!-- ========================================================================= -->
 			<!-- A simple Jetty test server at http://localhost:8080/sharetask             -->
