@@ -330,7 +330,11 @@
 		"value":"show / hide left sidebar",
 		"description":""
 	},
-	
+	{
+		"key":"_RefreshTasks_",
+		"value":"Refresh tasks",
+		"description":""
+	},
 	
 	
 	
@@ -455,7 +459,16 @@
 	
 	
 	
-	
+	{
+	    "key":"_MsgNewTask_",
+	    "value":"You have new task",
+	    "description":""
+	},
+	{
+	    "key":"_MsgNewTasks_",
+	    "value":"You have new tasks",
+	    "description":""
+	},
 	{
 	    "key":"_NotImplementedSubtasks_",
 	    "value":"Subtasks not implemented yet.",

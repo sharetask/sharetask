@@ -330,7 +330,11 @@
 		"value":"zobrazit / schovat levý panel",
 		"description":""
 	},
-	
+	{
+		"key":"_RefreshTasks_",
+		"value":"Obnovit úkoly",
+		"description":""
+	},
 	
 	
 	
@@ -448,7 +452,16 @@
 	
 	
 	
-	
+	{
+	    "key":"_MsgNewTask_",
+	    "value":"Máte nový úkol",
+	    "description":""
+	},
+	{
+	    "key":"_MsgNewTasks_",
+	    "value":"Máte nové úkoly",
+	    "description":""
+	},
 	{
 	    "key":"_NotImplementedSubtasks_",
 	    "value":"Pod-úkoly nejsou nyní funkční.",
