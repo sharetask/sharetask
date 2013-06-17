@@ -1,4 +1,4 @@
-﻿<!--
+﻿<%--
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -15,7 +15,7 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
--->
+--%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
@@ -23,12 +23,10 @@
 <spring:eval expression="@applicationProps['application.version']" var="applicationVersion"/>
 <spring:eval expression="@applicationProps['application.revision']" var="applicationRevision"/>
 
+<!-- Application version: ${applicationVersion} -->
+<!-- Application revision: ${applicationRevision} -->
 <!doctype html>
 <html lang="en" ng-app="shareTaskApp">
-	<!-- ================================================================= -->
-	<!-- Application version: ${applicationVersion}                        -->
-	<!-- Application revision: ${applicationRevision}                      -->
-	<!-- ================================================================= -->
 	<head>
 		<meta charset="utf-8">
 		<title>ShareTa.sk</title>
