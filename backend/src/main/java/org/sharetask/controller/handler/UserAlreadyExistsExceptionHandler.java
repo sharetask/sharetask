@@ -33,12 +33,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  */
 @ControllerAdvice
 public class UserAlreadyExistsExceptionHandler {
-    
+
     @ExceptionHandler
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ResponseBody
 	public ResponseError handlException(final UserAlreadyExists error) {
-    	// TODO parse exception
 		return new ResponseError(ErrorType.USER_ALREADY_EXISTS);
-	}    
+	}
 }

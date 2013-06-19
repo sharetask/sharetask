@@ -74,10 +74,10 @@ public class TaskServiceImpl implements TaskService {
 	@Transactional
 	@PreAuthorize(Constants.PERIMISSION_WORKSPACE_MEMBER_OR_OWNER)
 	public TaskDTO create(final Long workspaceId, final TaskDTO task) {
-		final Workspace workspace = this.workspaceRepository.read(workspaceId);
+		final Workspace workspace = workspaceRepository.read(workspaceId);
 		final Task taskEntity = DTOConverter.convert(task, Task.class);
 		taskEntity.setWorkspace(workspace);
-		final Task storedTaskEntity = this.taskRepository.save(taskEntity);
+		final Task storedTaskEntity = taskRepository.save(taskEntity);
 		return DTOConverter.convert(storedTaskEntity, TaskDTO.class);
 	}
 
@@ -88,9 +88,9 @@ public class TaskServiceImpl implements TaskService {
 	@Transactional
 	@PreAuthorize(Constants.PERMISSION_TASK_ASSIGNEE_OR_CREATOR)
 	public TaskDTO addComment(final Long taskId, final String message) {
-		final Task task = this.taskRepository.read(taskId);
+		final Task task = taskRepository.read(taskId);
 		task.addComment(new Comment(message));
-		this.taskRepository.save(task);
+		taskRepository.save(task);
 		return DTOConverter.convert(task, TaskDTO.class);
 	}
 
@@ -103,27 +103,26 @@ public class TaskServiceImpl implements TaskService {
 		List<Task> result;
 		switch (taskQueue) {
 			case ALL:
-				result = this.taskRepository.findByWorkspaceId(workspaceId);
+				result = taskRepository.findByWorkspaceId(workspaceId);
 				break;
 			case EXPIRED:
-				result = this.taskRepository.findByDueDateLessThan(new Date());
+				result = taskRepository.findByDueDateLessThan(new Date());
 				break;
 			case HIGH_PRIORITY:
-				result = this.taskRepository.findByPriority(PriorityType.HIGH);
+				result = taskRepository.findByPriority(PriorityType.HIGH);
 				break;
 			case FINISHED:
-				result = this.taskRepository.findByState(StateType.FINISHED);
+				result = taskRepository.findByState(StateType.FINISHED);
 				break;
 			case TODAY:
-				//TODO 
-				result = this.taskRepository.findByDueDate(new Date());
+				result = taskRepository.findByDueDate(new Date());
 				break;
 			default:
 				result = new ArrayList<Task>();
 		}
 		return DTOConverter.convertList(result, TaskDTO.class);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.sharetask.api.TaskService#update(org.sharetask.api.dto.TaskDTO)
 	 */
@@ -131,12 +130,12 @@ public class TaskServiceImpl implements TaskService {
 	@Transactional
 	@PreAuthorize("isAuthenticated() and hasPermission(#task.id, 'isTaskAssignee')")
 	public TaskDTO update(final TaskDTO task) {
-		final Task entity = this.taskRepository.findOne(task.getId());
+		final Task entity = taskRepository.findOne(task.getId());
 		DTOConverter.convert(task, entity);
-		final Task storedEntity = this.taskRepository.save(entity);
+		final Task storedEntity = taskRepository.save(entity);
 		return DTOConverter.convert(storedEntity, TaskDTO.class);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.sharetask.api.TaskService#complete(java.lang.Long)
 	 */
@@ -144,27 +143,27 @@ public class TaskServiceImpl implements TaskService {
 	@Transactional
 	@PreAuthorize(Constants.PERMISSION_TASK_ASSIGNEE)
 	public void complete(final Long taskId) {
-		final Task entity = this.taskRepository.findOne(taskId);
+		final Task entity = taskRepository.findOne(taskId);
 		entity.finish();
-		this.taskRepository.save(entity);
+		taskRepository.save(entity);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.sharetask.api.TaskService#forward(java.lang.Long, java.lang.String)
 	 */
 	@Override
 	@PreAuthorize(Constants.PERMISSION_TASK_ASSIGNEE)
 	public void forward(final Long taskId, final String assignee) {
-		final Task task = this.taskRepository.read(taskId);
+		final Task task = taskRepository.read(taskId);
 
-		final User assigneeUser = this.userRepository.read(assignee);
+		final User assigneeUser = userRepository.read(assignee);
 		if (task.getWorkspace().getMembers().contains(assigneeUser)) {
 			log.debug("Added user {} is member of workspace.", assigneeUser.getUsername());
 			task.setAssignee(assigneeUser);
 		}
-		
+
 		task.addEvent(new Event(EventType.TASK_FORWARDED));
-		this.taskRepository.save(task);
+		taskRepository.save(task);
 	}
 
 	/* (non-Javadoc)
@@ -172,7 +171,7 @@ public class TaskServiceImpl implements TaskService {
 	 */
 	@Override
 	public List<CommentDTO> getComments(final Long taskId) {
-		final Task task = this.taskRepository.read(taskId);
+		final Task task = taskRepository.read(taskId);
 		return DTOConverter.convertList(task.getComments(), CommentDTO.class);
 	}
 
@@ -181,7 +180,7 @@ public class TaskServiceImpl implements TaskService {
 	 */
 	@Override
 	public List<EventDTO> getEvents(final Long taskId) {
-		final Task task = this.taskRepository.read(taskId);
+		final Task task = taskRepository.read(taskId);
 		return DTOConverter.convertList(task.getEvents(), EventDTO.class);
 	}
 
@@ -192,6 +191,6 @@ public class TaskServiceImpl implements TaskService {
 	@Transactional
 	@PreAuthorize(Constants.PERMISSION_TASK_ASSIGNEE_OR_CREATOR)
 	public void delete(final Long taskId) {
-		this.taskRepository.delete(taskId);
+		taskRepository.delete(taskId);
 	}
 }
