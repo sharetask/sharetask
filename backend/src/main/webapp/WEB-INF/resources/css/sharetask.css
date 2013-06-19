@@ -157,7 +157,7 @@ body {margin:0;padding:0;-webkit-text-size-adjust:100%;}
 
 .task-detail-action {padding:5px 0;border-bottom:1px solid #ddd;}
 .task-detail-action.selected {border-bottom:1px solid #fff;}
-.task-detail-action-confirm {padding:10px;border-bottom:1px solid #999;background:#f8f8f8;}
+.task-detail-action-confirm {padding:10px;border-bottom:3px solid #999;background:#f8f8f8;}
 
 .task-list {width:100%;top:80px;bottom:0;overflow:visible;position:absolute;}
 .task-list.small {top:125px;}

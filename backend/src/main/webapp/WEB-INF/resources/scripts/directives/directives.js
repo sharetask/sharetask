@@ -35,14 +35,6 @@ angular.module('shareTaskApp.directives', []).
 			}
 		};
 	})
-	.directive('focus', function() {
-		console.log("focus");
-	    return function(scope, element, attrs) {
-	        scope.$watch(attrs.focus, function(newValue) {
-	            newValue && element[0].focus();
-	        });
-	    };
-	})
 	.directive('shortcut', function() {
 		return {
 			restrict: 'E',
@@ -219,6 +211,19 @@ angular.module('shareTaskApp.directives', []).
 			}]
 		};
 	}])
+	.directive('focus', function() {
+		return {
+			scope: {trigger: '=focus'},
+			link: function(scope, element) {
+				scope.$watch('trigger', function(value) {
+					if(value === true) {
+						element[0].focus();
+						scope.trigger = false;
+					}
+				});
+			}
+		};
+	});
 	/*
 	.directive('checkStrength', function () {
 	    return {

@@ -168,10 +168,12 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 					case 110:
 						// key 'n' pressed - add new task
 						$scope.setEditMode('NEW-TASK');
+						$scope.focusTaskAdd = true;
 						break;
 					case 102:
 						// key 'f' pressed - forward task
 						$scope.setEditMode('FORWARD-TASK');
+						$scope.focusTaskForward = true;
 						break;
 					case 100:
 						// key 'd' pressed - delete task
@@ -184,6 +186,12 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 					case 119:
 						// key 'w' pressed - add new workspace
 						$scope.setEditMode('NEW-WORKSPACE');
+						$scope.focusWorkspaceAdd = true;
+						break;
+					case 115:
+						// key 's' pressed - search
+						// TODO - implement
+						$scope.focusSearch = true;
 						break;
 					case 116:
 						// key 't' pressed - show/hide task filter panel
@@ -196,6 +204,13 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 					case 99:
 						// key 'c' pressed - add new task comment
 						// TODO - implement
+						$scope.focusTaskAddComment = true;
+						break;
+					case 108:
+						// key 'l' pressed - add new task label
+						// TODO - implement
+						$scope.setEditMode('ADD-TAG');
+						$scope.focusTaskAddLabel = true;
 						break;
 				}
 			}
