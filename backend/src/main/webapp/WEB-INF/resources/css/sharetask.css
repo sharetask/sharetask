@@ -125,10 +125,7 @@ body {margin:0;padding:0;-webkit-text-size-adjust:100%;}
 
 #app-menu {height:40px;top:0;width:100%;overflow:visible;position:absolute;}
 #workspace-menu {height:35px;top:40px;width:100%;overflow:visible;position:absolute;}
-/*
-#appFooter {height:40px;bottom:0;width:100%;overflow:visible;position:absolute;background:#9954bb;}
-.appFooterContent {color:#fff;padding-top:10px;}
-*/
+
 .sidebar {top:76px;bottom:0;left:0;width:140px;overflow:visible;position:absolute;background:#565656;color:#fff;}
 .sidebar.admin {top:40px;}
 .sidebar-inner {height:100%;/*border-right:3px solid #ddd;*/}

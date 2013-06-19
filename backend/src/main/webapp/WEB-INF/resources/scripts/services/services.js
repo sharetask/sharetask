@@ -26,23 +26,22 @@ shareTaskApp.service('User', ['$rootScope', '$location', 'LocalStorage', '$resou
 	
 	this.authenticate = function(user, success, error) {
 		console.log("Login user (user: %o)", user);
-		//return $http.post('/sharetask/api/user/login', {username: 'dev1@shareta.sk', password: 'password'}).success(success).error(error);
-		return $http.post('/sharetask/api/user/login', {username: user.username, password: user.password}).success(success).error(error);
+		return $http.post($rootScope.appBaseUrl+"api/user/login", {username: user.username, password: user.password}).success(success).error(error);
 	};
 	
 	this.get = function(input, success, error) {
 		console.log("Getting user (id: %s) from server", input.username);
-		return $http.get("/sharetask/api/user/"+input.username, {}).success(success).error(error);
+		return $http.get($rootScope.appBaseUrl+"api/user/"+input.username, {}).success(success).error(error);
 	};
 	
 	this.create = function(input, success, error) {
 		console.log("Create user (user: %o)", input.user);
-		return $http.post("/sharetask/api/user", input.user).success(success).error(error);
+		return $http.post($rootScope.appBaseUrl+"api/user", input.user).success(success).error(error);
 	};
 	
 	this.update = function(input, success, error) {
 		console.log("Update user (user: %o)", input.user);
-		return $http.put("/sharetask/api/user", input.user).success(success).error(error);
+		return $http.put($rootScope.appBaseUrl+"api/user", input.user).success(success).error(error);
 	};
 	
 	this.logout = function() {
@@ -54,92 +53,92 @@ shareTaskApp.service('User', ['$rootScope', '$location', 'LocalStorage', '$resou
 }]);
 
 
-shareTaskApp.service('Workspace', function($resource, $http) {
+shareTaskApp.service('Workspace', ['$rootScope', '$resource', '$http', function($rootScope, $resource, $http) {
 	
 	this.find = function(input, success, error) {
 		console.log("Getting workspaces from server for type (type: %s)", input.type);
-		return $http.get("/sharetask/api/workspace/", {params: {type: input.type}}).success(success).error(error);
+		return $http.get($rootScope.appBaseUrl+"api/workspace/", {params: {type: input.type}}).success(success).error(error);
 	};
 	
 	this.getActiveTasks = function(input, success, error) {
 		console.log("Getting active tasks for workspace (id: %s) from server", input.workspaceId);
-		return $http.get("/sharetask/api/workspace/"+input.workspaceId+"/task", {params: {taskQueue: 'ALL'}}).success(success).error(error);
+		return $http.get($rootScope.appBaseUrl+"api/workspace/"+input.workspaceId+"/task", {params: {taskQueue: 'ALL'}}).success(success).error(error);
 	};
 	
 	this.getCompletedTasks = function(input, success, error) {
 		console.log("Getting completed tasks for workspace (id: %s) from server", input.workspaceId);
-		return $http.get("/sharetask/api/workspace/"+input.workspaceId+"/task", {params: {taskQueue: 'FINISHED'}}).success(success).error(error);
+		return $http.get($rootScope.appBaseUrl+"api/workspace/"+input.workspaceId+"/task", {params: {taskQueue: 'FINISHED'}}).success(success).error(error);
 	};
 	
 	this.create = function(input, success, error) {
 		console.log("Create workspace (workspace: %o)", input.workspace);
-		return $http.post("/sharetask/api/workspace", input.workspace).success(success).error(error);
+		return $http.post($rootScope.appBaseUrl+"api/workspace", input.workspace).success(success).error(error);
 	};
 	
 	this.update = function(input, success, error) {
 		console.log("Update workspace (workspace: %o)", input.workspace);
-		return $http.put("/sharetask/api/workspace", input.workspace).success(success).error(error);
+		return $http.put($rootScope.appBaseUrl+"api/workspace", input.workspace).success(success).error(error);
 	};
 	
 	this.remove = function(input, success, error) {
 		console.log("Delete workspace (workspace: %o)", input.workspace);
-		return $http.delete("/sharetask/api/workspace/"+input.workspaceId, {}).success(success).error(error);
+		return $http.delete($rootScope.appBaseUrl+"api/workspace/"+input.workspaceId, {}).success(success).error(error);
 	};
 	
 	this.inviteMember = function(input, success, error) {
 		console.log("Invite new member (user: %o) to workspace (id: %o)", input.user, input.workspaceId);
-		return $http.post("/sharetask/api/workspace/"+input.workspaceId+"/invite", {username: input.user.username}).success(success).error(error);
+		return $http.post($rootScope.appBaseUrl+"api/workspace/"+input.workspaceId+"/invite", {username: input.user.username}).success(success).error(error);
 	};
 	
 	this.removeMember = function(input, success, error) {
 		console.log("Delete member (username: %o) from workspace (id: %o)", input.username, input.workspaceId);
-		return $http.delete("/sharetask/api/workspace/"+input.workspaceId+"/member/"+input.username, input.user).success(success).error(error);
+		return $http.delete($rootScope.appBaseUrl+"api/workspace/"+input.workspaceId+"/member/"+input.username, input.user).success(success).error(error);
 	};
-});
+}]);
 
 
-shareTaskApp.service('Task', function($resource, $http) {
+shareTaskApp.service('Task', ['$rootScope', '$resource', '$http', function($rootScope, $resource, $http) {
 	
 	this.create = function(input, success, error) {
 		console.log("Create task (task: %o) on workspace (id: %s)", input.task, input.workspaceId);
-		return $http.post("/sharetask/api/workspace/"+input.workspaceId+"/task", input.task).success(success).error(error);
+		return $http.post($rootScope.appBaseUrl+"api/workspace/"+input.workspaceId+"/task", input.task).success(success).error(error);
 	};
 	
 	this.update = function(input, success, error) {
 		console.log("Update task (task: %o) on workspace (id: %s)", input.task, input.workspaceId);
-		return $http.put("/sharetask/api/workspace/"+input.workspaceId+"/task", input.task).success(success).error(error);
+		return $http.put($rootScope.appBaseUrl+"api/workspace/"+input.workspaceId+"/task", input.task).success(success).error(error);
 	};
 	
 	this.remove = function(input, success, error) {
 		console.log("Delete task (id: %s) on workspace (id: %s)", input.taskId, input.workspaceId);
-		return $http.delete("/sharetask/api/workspace/"+input.workspaceId+"/task/"+input.taskId, {}).success(success).error(error);
+		return $http.delete($rootScope.appBaseUrl+"api/workspace/"+input.workspaceId+"/task/"+input.taskId, {}).success(success).error(error);
 	};
 	
 	this.complete = function(input, success, error) {
 		console.log("Complete task (id: %s) on workspace (id: %s)", input.taskId, input.workspaceId);
-		return $http.post("/sharetask/api/workspace/"+input.workspaceId+"/task/"+input.taskId+"/complete", {}).success(success).error(error);
+		return $http.post($rootScope.appBaseUrl+"api/workspace/"+input.workspaceId+"/task/"+input.taskId+"/complete", {}).success(success).error(error);
 	};
 	
 	this.forward = function(input, success, error) {
 		console.log("Forward task (id: %s) on workspace (id: %s) to user (id: %s)", input.taskId, input.workspaceId, input.username);
-		return $http.post("/sharetask/api/workspace/"+input.workspaceId+"/task/"+input.taskId+"/forward", {assignee: input.username}).success(success).error(error);
+		return $http.post($rootScope.appBaseUrl+"api/workspace/"+input.workspaceId+"/task/"+input.taskId+"/forward", {assignee: input.username}).success(success).error(error);
 	};
 	
 	this.getComments = function(input, success, error) {
 		console.log("Getting task (id: %s) comments from server", input.taskId);
-		return $http.get("/sharetask/api/workspace/"+input.workspaceId+"/task/"+input.taskId+"/comment", {}).success(success).error(error);
+		return $http.get($rootScope.appBaseUrl+"api/workspace/"+input.workspaceId+"/task/"+input.taskId+"/comment", {}).success(success).error(error);
 	};
 	
 	this.addComment = function(input, success, error) {
 		console.log("Adding new comment (comment: %o) to task (id: %s)", input.comment, input.taskId);
-		return $http.post("/sharetask/api/workspace/"+input.workspaceId+"/task/"+input.taskId+"/comment", input.comment).success(success).error(error);
+		return $http.post($rootScope.appBaseUrl+"api/workspace/"+input.workspaceId+"/task/"+input.taskId+"/comment", input.comment).success(success).error(error);
 	};
 	
 	this.getEvents = function(input, callback) {
 		console.log("Getting task (id: %s) events from server", input.taskId);
-		return $http.get("/sharetask/api/workspace/"+input.workspaceId+"/task/"+input.taskId+"/event", {}).success(success).error(error);
+		return $http.get($rootScope.appBaseUrl+"api/workspace/"+input.workspaceId+"/task/"+input.taskId+"/event", {}).success(success).error(error);
 	};
-});
+}]);
 
 
 shareTaskApp.service('Logger', function($log) {

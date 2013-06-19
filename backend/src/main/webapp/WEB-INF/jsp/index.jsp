@@ -55,14 +55,18 @@
 		<script type="text/javascript" src="<c:url value="/resources-${applicationVersion}/scripts/directives/directives.js" />"></script>
 		<script type="text/javascript">
 			// Declare app level module which depends on filters, and services
-			angular.module('shareTaskApp', ['shareTaskApp.filters', 'shareTaskApp.services', 'shareTaskApp.directives', 'shareTaskApp.controllers']).
-				config(['$routeProvider', function($routeProvider) {
+			angular.module('shareTaskApp', ['shareTaskApp.filters', 'shareTaskApp.services', 'shareTaskApp.directives', 'shareTaskApp.controllers'])
+				.config(['$routeProvider', function($routeProvider) {
 					$routeProvider.when('/', {templateUrl: '<c:url value="/resources-${applicationVersion}/views/index.html" />'});
 					$routeProvider.when('/register', {templateUrl: '<c:url value="/resources-${applicationVersion}/views/register.html" />'});
 					$routeProvider.when('/tasks', {templateUrl: '<c:url value="/resources-${applicationVersion}/views/tasks.html" />'});
 					$routeProvider.when('/admin', {templateUrl: '<c:url value="/resources-${applicationVersion}/views/admin.html" />'});
 					$routeProvider.when('/user', {templateUrl: '<c:url value="/resources-${applicationVersion}/views/user.html" />'});
 					$routeProvider.otherwise({redirectTo: '/'});
+				}])
+				.run(['$rootScope', function ($rootScope) {
+					$rootScope.appBaseUrl = '<c:url value="/" />';
+					$rootScope.appVersion = '${applicationVersion}';
 				}]);
 		</script>
 	</body>

@@ -141,10 +141,10 @@ angular.module('shareTaskApp.directives', []).
 			}
 		};
 	})
-	.directive('webMenu', function() {
+	.directive('webMenu', ['$rootScope', function($rootScope) {
 		return {
 			restrict: 'E',
-			templateUrl: 'resources-1.0.0/views/components/web-menu.html',
+			templateUrl: 'resources-'+$rootScope.appVersion+'/views/components/web-menu.html',
 			link: function(scope, element, attrs) {
 				console.log("scope: %o, element: %o, attrs: %o", scope, element, attrs);
 			},
@@ -161,11 +161,11 @@ angular.module('shareTaskApp.directives', []).
 				};
 			}]
 		};
-	})
-	.directive('appMenu', function() {
+	}])
+	.directive('appMenu', ['$rootScope', function($rootScope) {
 		return {
 			restrict: 'E',
-			templateUrl: 'resources-1.0.0/views/components/app-menu.html',
+			templateUrl: 'resources-'+$rootScope.appVersion+'/views/components/app-menu.html',
 			link: function(scope, element, attrs) {
 				console.log("scope: %o, element: %o, attrs: %o", scope, element, attrs);
 			},
@@ -182,11 +182,11 @@ angular.module('shareTaskApp.directives', []).
 				};
 			}]
 		};
-	})
-	.directive('calendar', function() {
+	}])
+	.directive('calendar', ['$rootScope', function($rootScope) {
 		return {
 			restrict: 'E',
-			templateUrl: 'resources-1.0.0/views/components/calendar.html',
+			templateUrl: 'resources-'+$rootScope.appVersion+'/views/components/calendar.html',
 			scope: {tasks:'=model'},
 			link: function(scope, element, attrs) {
 				console.log("Calendar - scope: %o, element: %o, attrs: %o", scope, element, attrs);
@@ -218,7 +218,7 @@ angular.module('shareTaskApp.directives', []).
 				
 			}]
 		};
-	})
+	}])
 	/*
 	.directive('checkStrength', function () {
 	    return {
