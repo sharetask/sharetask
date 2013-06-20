@@ -18,6 +18,7 @@
 		<remember-me />
 
 		<intercept-url pattern="/" access="permitAll" />
+		<intercept-url pattern="/webapp" access="permitAll" />
 		<intercept-url pattern="/resources-#{applicationProps['application.version']}/**" access="permitAll" />
 		<intercept-url pattern="/api/info" access="permitAll" />
 		<intercept-url pattern="/api/user/login/status" access="permitAll" />
