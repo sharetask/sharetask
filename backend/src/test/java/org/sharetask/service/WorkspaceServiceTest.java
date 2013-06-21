@@ -20,6 +20,7 @@ package org.sharetask.service;
 
 import static org.junit.Assert.assertThat;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -28,6 +29,7 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
 import org.sharetask.api.WorkspaceService;
+import org.sharetask.api.dto.UserDTO;
 import org.sharetask.api.dto.UserInfoDTO;
 import org.sharetask.api.dto.WorkspaceDTO;
 import org.sharetask.data.DbUnitTest;
@@ -71,6 +73,13 @@ public class WorkspaceServiceTest extends DbUnitTest {
 		Assert.assertThat(dto.getOwner().getUsername(), CoreMatchers.is("test1@test.com"));
 		Assert.assertThat(dto.getOwner().getName(), CoreMatchers.is("Test1"));
 		Assert.assertThat(dto.getOwner().getSurName(), CoreMatchers.is("Test"));
+		final Collection<UserDTO> members = dto.getMembers();
+		Assert.assertThat(members, CoreMatchers.notNullValue());
+		Assert.assertThat(members.size(), CoreMatchers.is(1));
+		final UserDTO member = members.iterator().next();
+		Assert.assertThat(member.getUsername(), CoreMatchers.is("test1@test.com"));
+		Assert.assertThat(member.getName(), CoreMatchers.is("Test1"));
+		Assert.assertThat(member.getSurName(), CoreMatchers.is("Test"));
 	}
 	
 	/**

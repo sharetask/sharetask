@@ -38,6 +38,7 @@ import org.sharetask.repository.UserRepository;
 import org.sharetask.repository.WorkspaceRepository;
 import org.sharetask.utility.DTOConverter;
 import org.sharetask.utility.HashCodeUtil;
+import org.sharetask.utility.SecurityUtil;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -71,9 +72,11 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 	@Transactional
 	public WorkspaceDTO create(final WorkspaceDTO workspace) {
 		final Workspace workspaceEntity = DTOConverter.convert(workspace, Workspace.class);
-		// load owner
-		final User owner = userRepository.findOne(workspace.getOwner().getUsername());
-		workspaceEntity.setOwner(owner);
+		// store owner of workspace
+		final User user = userRepository.read(SecurityUtil.getCurrentSignedInUsername());
+		workspaceEntity.setOwner(user);
+		// add member to workspace
+		workspaceEntity.addMember(user);
 		// store workspace
 		final Workspace storedWorkspaceEntity = workspaceRepository.save(workspaceEntity);
 		return DTOConverter.convert(storedWorkspaceEntity, WorkspaceDTO.class);
