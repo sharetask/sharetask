@@ -32,6 +32,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -42,8 +44,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 import org.sharetask.api.Constants;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 /**
  * @author Michal Bocek
@@ -94,12 +94,10 @@ public class User implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private Collection<Role> roles = new ArrayList<Role>();;
 	
-	@CreatedDate
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "CREATED_ON", nullable = false)
 	private Date createdOn;
 	
-	@LastModifiedDate
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "UPDATED_ON", nullable = false)
 	private Date updatedOn;
@@ -109,14 +107,25 @@ public class User implements Serializable {
 	}
 
 	public Collection<Role> getRoles() {
-		return Collections.unmodifiableCollection(this.roles);
+		return Collections.unmodifiableCollection(roles);
 	}
 	
 	public Date getCreatedOn() {
-		return this.createdOn == null ? null : (Date)this.createdOn.clone();
+		return createdOn == null ? null : (Date)createdOn.clone();
 	}
 	
 	public Date getUpdatedOn() {
-		return this.updatedOn == null ? null : (Date) this.updatedOn.clone();
+		return updatedOn == null ? null : (Date) updatedOn.clone();
+	}
+	
+	@PrePersist
+	private void preCreate() {
+		createdOn = new Date();
+		updatedOn = new Date();
+	}
+
+	@PreUpdate
+	private void preUpdate() {
+		updatedOn = new Date();
 	}
 }
