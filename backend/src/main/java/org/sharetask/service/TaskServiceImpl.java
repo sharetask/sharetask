@@ -44,6 +44,7 @@ import org.sharetask.repository.TaskRepository;
 import org.sharetask.repository.UserRepository;
 import org.sharetask.repository.WorkspaceRepository;
 import org.sharetask.utility.DTOConverter;
+import org.sharetask.utility.SecurityUtil;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -77,6 +78,11 @@ public class TaskServiceImpl implements TaskService {
 		final Workspace workspace = workspaceRepository.read(workspaceId);
 		final Task taskEntity = DTOConverter.convert(task, Task.class);
 		taskEntity.setWorkspace(workspace);
+		// when assignee isn't set from source it will be assigned as signed in user
+		if (taskEntity.getAssignee() == null) {
+			final User assignee = userRepository.read(SecurityUtil.getCurrentSignedInUsername());
+			taskEntity.setAssignee(assignee);
+		}
 		final Task storedTaskEntity = taskRepository.save(taskEntity);
 		return DTOConverter.convert(storedTaskEntity, TaskDTO.class);
 	}

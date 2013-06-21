@@ -16,28 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.sharetask.repository.base;
+package org.sharetask.utility;
 
-import javax.inject.Inject;
-
-import org.sharetask.entity.User;
-import org.sharetask.repository.UserRepository;
-import org.sharetask.utility.SecurityUtil;
-import org.springframework.data.domain.AuditorAware;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  * @author Michal Bocek
  * @since 1.0.0
  */
-public class AuditorAwareImpl implements AuditorAware<User>{
+public class SecurityUtil {
 
-	@Inject
-	private UserRepository userRepository;
-
-	@Override
-	public User getCurrentAuditor() {
-		final String username = SecurityUtil.getCurrentSignedInUsername();
-		return userRepository.read(username);
+	public static String getCurrentSignedInUsername() {
+		return SecurityContextHolder.getContext().getAuthentication().getName();
 	}
-
 }

@@ -62,12 +62,12 @@ public class TaskServiceTest extends DbUnitTest {
 	 */
 	@Test
 	public void testCreateTask() {
-		TaskDTO task = new TaskDTO();
+		final TaskDTO task = new TaskDTO();
 		task.setTitle("title");
 		task.setDescription("description");
 		task.setDueDate(new Date());
 		task.setPriority("MEDIUM");
-		TaskDTO result = taskService.create(100L, task);
+		final TaskDTO result = taskService.create(100L, task);
 		assertNotNull(result);
 		assertNotNull(result.getId());
 		assertThat(result.getTitle(), equalTo("title"));
@@ -81,6 +81,7 @@ public class TaskServiceTest extends DbUnitTest {
 		assertThat(result.getEventsCount(), equalTo(1));
 		assertThat(result.getState(), equalTo("NEW"));
 		assertTrue(result.getTags() == null);
+		assertThat(result.getAssignee(), CoreMatchers.notNullValue());
 	}
 
 	/**
@@ -88,11 +89,11 @@ public class TaskServiceTest extends DbUnitTest {
 	 */
 	@Test
 	public void testCreateTaskWithoutDueDate() {
-		TaskDTO task = new TaskDTO();
+		final TaskDTO task = new TaskDTO();
 		task.setTitle("title");
 		task.setDescription("description");
 		task.setPriority("MEDIUM");
-		TaskDTO result = taskService.create(100L, task);
+		final TaskDTO result = taskService.create(100L, task);
 		assertNotNull(result);
 		assertNotNull(result.getId());
 		assertThat(result.getTitle(), equalTo("title"));
@@ -112,8 +113,8 @@ public class TaskServiceTest extends DbUnitTest {
 	 */
 	@Test
 	public void testAddComment() {
-		Task task = taskRepository.findOne(100L);
-		TaskDTO taskDTO = taskService.addComment(task.getId(), "Test message");
+		final Task task = taskRepository.findOne(100L);
+		final TaskDTO taskDTO = taskService.addComment(task.getId(), "Test message");
 		assertThat(taskDTO.getCommentsCount(), equalTo(2));
 	}
 
@@ -122,7 +123,7 @@ public class TaskServiceTest extends DbUnitTest {
 	 */
 	@Test
 	public void testFindTaskByQueueAllTasks() {
-		List<TaskDTO> tasks = taskService.findByQueue(100L, TaskQueue.ALL);
+		final List<TaskDTO> tasks = taskService.findByQueue(100L, TaskQueue.ALL);
 		assertThat(tasks.size(), equalTo(2));
 	}
 
@@ -131,7 +132,7 @@ public class TaskServiceTest extends DbUnitTest {
 	 */
 	@Test
 	public void testFindTaskByQueueExpiredTasks() {
-		List<TaskDTO> tasks = taskService.findByQueue(100L, TaskQueue.EXPIRED);
+		final List<TaskDTO> tasks = taskService.findByQueue(100L, TaskQueue.EXPIRED);
 		assertThat(tasks.size(), equalTo(2));
 	}
 
@@ -140,7 +141,7 @@ public class TaskServiceTest extends DbUnitTest {
 	 */
 	@Test
 	public void testFindTaskByQueueHighPriorityTasks() {
-		List<TaskDTO> tasks = taskService.findByQueue(100L, TaskQueue.HIGH_PRIORITY);
+		final List<TaskDTO> tasks = taskService.findByQueue(100L, TaskQueue.HIGH_PRIORITY);
 		assertThat(tasks.size(), equalTo(1));
 	}
 
@@ -149,7 +150,7 @@ public class TaskServiceTest extends DbUnitTest {
 	 */
 	@Test
 	public void testFindTaskByQueueFinshedTasks() {
-		List<TaskDTO> tasks = taskService.findByQueue(100L, TaskQueue.FINISHED);
+		final List<TaskDTO> tasks = taskService.findByQueue(100L, TaskQueue.FINISHED);
 		assertThat(tasks.size(), equalTo(1));
 	}
 
@@ -158,7 +159,7 @@ public class TaskServiceTest extends DbUnitTest {
 	 */
 	@Test
 	public void testFindTaskTodayTasks() {
-		List<TaskDTO> tasks = taskService.findByQueue(100L, TaskQueue.TODAY);
+		final List<TaskDTO> tasks = taskService.findByQueue(100L, TaskQueue.TODAY);
 		assertThat(tasks.size(), equalTo(0));
 	}
 
@@ -167,11 +168,11 @@ public class TaskServiceTest extends DbUnitTest {
 	 */
 	@Test
 	public void testUpdateTask() {
-		Task entity = taskRepository.findOne(100L);
-		String title = entity.getTitle();
-		TaskDTO taskDTO = DTOConverter.convert(entity, TaskDTO.class);
+		final Task entity = taskRepository.findOne(100L);
+		final String title = entity.getTitle();
+		final TaskDTO taskDTO = DTOConverter.convert(entity, TaskDTO.class);
 		taskDTO.setTitle("new Title");
-		TaskDTO newTask = taskService.update(taskDTO);
+		final TaskDTO newTask = taskService.update(taskDTO);
 		assertThat(newTask.getTitle(), not(equalTo(title)));
 		assertThat(newTask.getTitle(), equalTo("new Title"));
 	}
@@ -182,7 +183,7 @@ public class TaskServiceTest extends DbUnitTest {
 	@Test
 	public void testCompleteTask() {
 		taskService.complete(100L);
-		Task task = taskRepository.findOne(100L);
+		final Task task = taskRepository.findOne(100L);
 		assertThat(task.getState(), equalTo(StateType.FINISHED));
 		assertThat(task.getEvents().size(), equalTo(2));
 	}
@@ -193,8 +194,8 @@ public class TaskServiceTest extends DbUnitTest {
 	@Test
 	public void testForwardTask() {
 		taskService.forward(100L, "test3@test.com");
-		Task task = taskRepository.findOne(100L);
-		Collection<Event> events = task.getEvents();
+		final Task task = taskRepository.findOne(100L);
+		final Collection<Event> events = task.getEvents();
 		assertThat(events.toArray(new Event[events.size()])[events.size() - 1].getType(),
 				equalTo(EventType.TASK_FORWARDED));
 		assertThat(task.getAssignee().getUsername(), equalTo("test3@test.com"));
@@ -205,7 +206,7 @@ public class TaskServiceTest extends DbUnitTest {
 	 */
 	@Test
 	public void testGetComments() {
-		List<CommentDTO> comments = taskService.getComments(100L);
+		final List<CommentDTO> comments = taskService.getComments(100L);
 		assertThat(comments.size(), equalTo(1));
 	}
 
@@ -214,7 +215,7 @@ public class TaskServiceTest extends DbUnitTest {
 	 */
 	@Test
 	public void testGetEvents() {
-		List<EventDTO> events = taskService.getEvents(100L);
+		final List<EventDTO> events = taskService.getEvents(100L);
 		assertThat(events.size(), equalTo(1));
 	}
 
@@ -224,7 +225,7 @@ public class TaskServiceTest extends DbUnitTest {
 	@Test
 	public void testDelete() {
 		taskService.delete(100L);
-		Task task = taskRepository.findOne(100L);
+		final Task task = taskRepository.findOne(100L);
 		assertThat(task, CoreMatchers.nullValue());
 	}
 }
