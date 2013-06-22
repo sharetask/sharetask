@@ -215,11 +215,11 @@ angular.module('shareTaskApp.directives', []).
 		return {
 			//scope: {trigger: '=ngModel'},
 			link: function(scope, element, attrs) {
-				console.log("Focus - scope: %o, element: %o, attrs: %o", scope, element, attrs);
-				console.log("Focus - attrs.focus: %s", attrs.focus);
+				//console.log("Focus - scope: %o, element: %o, attrs: %o", scope, element, attrs);
+				//console.log("Focus - attrs.focus: %s", attrs.focus);
 				scope.$watch(attrs.focus, function(value) {
-					console.log("Focus - scope: %o, element: %o, attrs: %o", scope, element, attrs);
-					console.log("Focus - trigger value: %o", value);
+					//console.log("Focus - scope: %o, element: %o, attrs: %o", scope, element, attrs);
+					//console.log("Focus - trigger value: %o", value);
 					if (value === true) {
 						element[0].focus();
 						//scope.trigger = false;

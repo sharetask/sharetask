@@ -210,7 +210,7 @@
 						</div>
 						<div ng-class="{'hidden':taskEditMode != 'TITLE'}" style="margin:10px 0 0 0;">
 							<div class="input-append">
-								<input type="text" ng-model="selectedTask.title" ui-keypress="{enter:'updateTask(selectedTask)', esc:'setEditMode(\'\')'}" focus="editing" />
+								<input type="text" ng-model="selectedTask.title" ui-keypress="{enter:'updateTask(selectedTask)', esc:'setEditMode(\'\')'}" />
 								<button class="btn btn-inverse" ng-click="updateTask(selectedTask)">{{'_Ok_' | i18n}}</button>
 							</div>
 						</div>
