@@ -213,17 +213,22 @@ angular.module('shareTaskApp.directives', []).
 	}])
 	.directive('focus', function() {
 		return {
-			scope: {trigger: '=focus'},
-			link: function(scope, element) {
-				scope.$watch('trigger', function(value) {
-					if(value === true) {
+			//scope: {trigger: '=ngModel'},
+			link: function(scope, element, attrs) {
+				console.log("Focus - scope: %o, element: %o, attrs: %o", scope, element, attrs);
+				console.log("Focus - attrs.focus: %s", attrs.focus);
+				scope.$watch(attrs.focus, function(value) {
+					console.log("Focus - scope: %o, element: %o, attrs: %o", scope, element, attrs);
+					console.log("Focus - trigger value: %o", value);
+					if (value === true) {
 						element[0].focus();
-						scope.trigger = false;
+						//scope.trigger = false;
+						attrs.focus = false;
 					}
 				});
 			}
 		};
-	});
+	})
 	/*
 	.directive('checkStrength', function () {
 	    return {

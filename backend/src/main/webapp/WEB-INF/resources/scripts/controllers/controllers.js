@@ -18,6 +18,8 @@
  */
 'use strict';
 
+//var $jq = jQuery.noConflict();
+
 /* Controllers */
 angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 'localization']).
 	controller('AuthCtrl', ['$scope', '$location', '$rootScope', 'localize', 'User', 'LocalStorage', function($scope, $location, $rootScope, localize, User, LocalStorage) {
@@ -121,6 +123,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		$scope.filter = {'queue': 'MY_PENDING', 'tag': '', 'searchString': '', 'orderBy': 'TASK_DUE_DATE'};
 		$scope.tags = [];
 		$scope.newTasks = [];
+		$scope.newTaskTitle = '';
 		$rootScope.currentPage = "tasks";
 		//$scope.dateOptions = {format: 'dd/mm/yyyy'};
 		$scope.datePickerOptions = { dateFormat: "M d, yy" };
@@ -168,12 +171,12 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 					case 110:
 						// key 'n' pressed - add new task
 						$scope.setEditMode('NEW-TASK');
-						$scope.focusTaskAdd = true;
+						//$scope.focusTaskAdd = true;
 						break;
 					case 102:
 						// key 'f' pressed - forward task
 						$scope.setEditMode('FORWARD-TASK');
-						$scope.focusTaskForward = true;
+						//$scope.focusTaskForward = true;
 						break;
 					case 100:
 						// key 'd' pressed - delete task
@@ -186,12 +189,11 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 					case 119:
 						// key 'w' pressed - add new workspace
 						$scope.setEditMode('NEW-WORKSPACE');
-						$scope.focusWorkspaceAdd = true;
+						//$scope.focusWorkspaceAdd = true;
 						break;
 					case 115:
 						// key 's' pressed - search
-						// TODO - implement
-						$scope.focusSearch = true;
+						setTimeout(function() { $('#inputSearch')[0].focus(); }, 0);
 						break;
 					case 116:
 						// key 't' pressed - show/hide task filter panel
@@ -204,13 +206,14 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 					case 99:
 						// key 'c' pressed - add new task comment
 						// TODO - implement
-						$scope.focusTaskAddComment = true;
+						//$scope.focusTaskAddComment = true;
+						setTimeout(function() { $('#inputTaskAddComment')[0].focus(); }, 0);
 						break;
 					case 108:
 						// key 'l' pressed - add new task label
 						// TODO - implement
 						$scope.setEditMode('ADD-TAG');
-						$scope.focusTaskAddLabel = true;
+						//$scope.focusTaskAddLabel = true;
 						break;
 				}
 			}
@@ -470,6 +473,11 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 			}
 			else {
 				$scope.taskEditMode = mode;
+				// make focus
+				if ($scope.taskEditMode === 'NEW-TASK') { setTimeout(function() { $('#inputTaskAdd')[0].focus(); }, 0); }
+				if ($scope.taskEditMode === 'NEW-WORKSPACE') { setTimeout(function() { $('#inputWorkspaceAdd')[0].focus(); }, 0); }
+				if ($scope.taskEditMode === 'FORWARD-TASK') { setTimeout(function() { $('#inputTaskForward')[0].focus(); }, 0); }
+				if ($scope.taskEditMode === 'ADD-TAG') { setTimeout(function() { $('#inputTaskAddLabel')[0].focus(); }, 0); }
 			}
 		};
 		
@@ -566,13 +574,21 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		 * Task data are stored to server.
 		 */
 		$scope.addTask = function() {
-			console.log("Add new task (taskTitle: %s)", $scope.newTaskTitle);
+			console.log("Add new task (taskTitle: %o)", $scope);
 			var createdByObj = {username: $rootScope.loggedUser.username};
 			var assigneeObj = {username: $rootScope.loggedUser.username};
 			var task = {title: $scope.newTaskTitle, createdBy: createdByObj, assignee: assigneeObj, createdOn: new Date(), priority: 'MEDIUM'};
 			console.log("Task: %o", task);
 			Task.create({workspaceId: $scope.selectedWorkspace.id, task: task}, function(data, status) {
 					console.log("Task create success! data: %o, status: %o", data, status);
+					
+					
+					$scope.allTasks.push(data);
+					LocalStorage.store('workspace-' + $scope.selectedWorkspace.id, $scope.allTasks);
+					$scope.filterTasks(data.id);
+					$scope.newTaskTitle = '';
+					$scope.setEditMode('');
+					/*
 					Task.forward({workspaceId: $scope.selectedWorkspace.id, taskId: data.id, username: $rootScope.loggedUser.username}, function(data, status) {
 							console.log("Task forward success! data: %o, status: %o", data, status);
 							$scope.allTasks.push(data);
@@ -584,6 +600,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 							console.log("Task forward error!");
 							ErrorHandling.handle(data, status);
 						});
+					*/
 				}, function(data, status) {
 					console.log("Task create error!");
 					ErrorHandling.handle(data, status);

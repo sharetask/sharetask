@@ -28,11 +28,11 @@
 							<ul class="nav">
 								<li class="cursor-pointer" style="background:rgba(255,255,255,0.2);margin-right:15px;"><a ng-click="setView('PANEL-TASK-FILTER')" title="{{'_ShowHideLeftSidebar_' | i18n}}"><i class="icon-white" ng-class="{'icon-chevron-left':viewPanelTaskFilter, 'icon-chevron-right':!viewPanelTaskFilter}"></i></a></li>
 								<li><span class="brand small">{{'_Workspaces_' | i18n}}</span></li>
-								<li class="cursor-pointer"><a ng-click="setEditMode('NEW-WORKSPACE'); focusWorkspaceAdd=true"><i class="icon-plus icon-white"></i></a></li>
+								<li class="cursor-pointer"><a ng-click="setEditMode('NEW-WORKSPACE')"><i class="icon-plus icon-white"></i></a></li>
 								<li ng-class="{'hidden':taskEditMode != 'NEW-WORKSPACE'}">
 									<form name="formWorkspaceAdd" novalidate class="css-form">
 										<div class="input-append" style="padding-top:2px;">
-											<input class="span3" type="text" placeholder="{{'_PlaceholderAddWorkspace_' | i18n}}" ng-model="newWorkspaceTitle" required focus="focusWorkspaceAdd" />
+											<input class="span3" type="text" placeholder="{{'_PlaceholderAddWorkspace_' | i18n}}" ng-model="newWorkspaceTitle" required id="inputWorkspaceAdd" />
 											<button class="btn btn-inverse" ng-click="addWorkspace()" ng-disabled="formWorkspaceAdd.$invalid">{{'_Add_' | i18n}}</button>
 										</div>
 									</form>
@@ -41,7 +41,7 @@
 							</ul>
 							<ul class="nav pull-right">
 								<div class="input-append" style="padding-top:2px;">
-									<input class="span3" type="text" placeholder="{{'_PlaceholderSearch_' | i18n}}" ng-model="filter.searchString" ui-keypress="{enter:'filterTasks()'}" focus="focusSearch" />
+									<input class="span3" type="text" placeholder="{{'_PlaceholderSearch_' | i18n}}" ng-model="filter.searchString" ui-keypress="{enter:'filterTasks()'}" id="inputSearch" />
 									<button class="btn btn-inverse" ng-click="filterTasks()"><i class="icon-search icon-white"></i></button>
 								</div>
 							</ul>
@@ -101,7 +101,7 @@
 									</ul>
 								</div>
 								
-								<button class="btn btn-inverse pull-right" style="margin-left:5px;" ng-click="setEditMode('NEW-TASK'); focusTaskAdd=true"><i class="icon-plus icon-white"></i></button>
+								<button class="btn btn-inverse pull-right" style="margin-left:5px;" ng-click="setEditMode('NEW-TASK')"><i class="icon-plus icon-white"></i></button>
 								<button class="btn pull-right" style="margin-left:5px;" ng-click="loadTasks()"><i class="icon-refresh"></i></button>
 								<div class="btn-group pull-right" style="margin-left:5px;">
 									<button class="btn dropdown-toggle" data-toggle="dropdown"><i class="icon-list"></i> <span class="caret"></span></button>
@@ -118,7 +118,7 @@
 							<div class="new-task-simple-inner">
 								<form name="formTaskAdd" novalidate class="css-form">
 									<div class="row-full input-append">
-										<input class="span10" type="text" placeholder="{{'_PlaceholderAddTask_' | i18n}}" ng-model="newTaskTitle" required focus="focusTaskAdd" />
+										<input class="span10" type="text" placeholder="{{'_PlaceholderAddTask_' | i18n}}" ng-model="newTaskTitle" required id="inputTaskAdd" />
 										<button class="btn btn-inverse span2" ng-click="addTask()" ng-disabled="formTaskAdd.$invalid">{{'_Add_' | i18n}}</button>
 									</div>
 								</form>
@@ -175,7 +175,7 @@
 						<!-- action buttons -->
 						<div class="task-detail-action" ng-class="{'selected':taskEditMode == 'COMPLETE-TASK' || taskEditMode == 'FORWARD-TASK' || taskEditMode == 'DELETE-TASK'}">
 							<button class="btn btn-inverse" ng-click="setEditMode('COMPLETE-TASK')" ng-class="{'hidden':selectedTask.state == 'FINISHED'}">{{'_Complete_' | i18n}}</button>
-							<button class="btn" ng-click="setEditMode('FORWARD-TASK'); focusTaskForward = true" ng-class="{'hidden':selectedTask.state == 'FINISHED'}">{{'_Forward_' | i18n}}</button>
+							<button class="btn" ng-click="setEditMode('FORWARD-TASK')" ng-class="{'hidden':selectedTask.state == 'FINISHED'}">{{'_Forward_' | i18n}}</button>
 							<button class="btn" ng-click="setEditMode('DELETE-TASK')">{{'_Delete_' | i18n}}</button>
 						</div>
 						<!-- complete task -->
@@ -188,7 +188,7 @@
 						<div class="task-detail-action-confirm" ng-class="{'hidden':taskEditMode != 'FORWARD-TASK'}">
 							<p>{{'_ForwardConfirmationText_' | i18n}}</p>
 							<div class="input-append">
-								<input type="text" placeholder="search member..." ng-model="search.$" ui-keypress="{enter:'forwardTask()', esc:'setEditMode(\'\')'}" focus="focusTaskForward" />
+								<input type="text" placeholder="search member..." ng-model="search.$" ui-keypress="{enter:'forwardTask()', esc:'setEditMode(\'\')'}" id="inputTaskForward" />
 								<!--<button class="btn btn-inverse" ng-click="forwardTask(forwardUser)">Forward</button>-->
 							</div>
 							<div class="user-panels">
@@ -235,11 +235,11 @@
 						<!-- task tags -->
 						<div style="margin:5px 0 10px 0;">
 							<div class="tag large" ng-repeat="tag in selectedTask.tags"><span class="text">{{tag}}</span><span class="remove cursor-pointer" ng-click="removeTag(selectedTask.id, tag)">x</span></div>
-							<span class="tag large cursor-pointer" ng-click="setEditMode('ADD-TAG'); focusTaskAddLabel=true"><span class="remove cursor-pointer"><i class="icon-plus icon-white"></i></span></span>
+							<span class="tag large cursor-pointer" ng-click="setEditMode('ADD-TAG')"><span class="remove cursor-pointer"><i class="icon-plus icon-white"></i></span></span>
 							<div ng-class="{'hidden':taskEditMode != 'ADD-TAG'}">
 								<form name="formTaskAddLabel" novalidate class="css-form">
 									<div class="input-append">
-										<input type="text" placeholder="{{'_PlaceholderAddTag_' | i18n}}" ng-model="newTag" ui-keypress="{enter:'addTaskTag()', esc:'setEditMode(\'\')'}" focus="focusTaskAddLabel" required />
+										<input type="text" placeholder="{{'_PlaceholderAddTag_' | i18n}}" ng-model="newTag" ui-keypress="{enter:'addTaskTag()', esc:'setEditMode(\'\')'}" id="inputTaskAddLabel" required />
 										<button class="btn btn-inverse" ng-click="addTaskTag()" ng-disabled="formTaskAddLabel.$invalid">{{'_Add_' | i18n}}</button>
 									</div>
 								</form>
@@ -268,7 +268,7 @@
 								<div class="tab-pane active" id="comments">
 									<form name="formTaskAddComment" novalidate class="css-form">
 										<div class="row-full input-append">
-											<input class="span10" type="text" placeholder="{{'_PlaceholderAddComment_' | i18n}}" ng-model="newTaskComment.comment" required focus="focusTaskAddComment" />
+											<input class="span10" type="text" placeholder="{{'_PlaceholderAddComment_' | i18n}}" ng-model="newTaskComment.comment" required id="inputTaskAddComment" />
 											<button class="btn btn-inverse span2" ng-click="addTaskComment()" ng-disabled="formTaskAddComment.$invalid">{{'_Add_' | i18n}}</button>
 										</div>
 									</form>
