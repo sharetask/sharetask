@@ -303,6 +303,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 			}
 			else {
 				$scope.selectedTask = null;
+				$scope.tags = [];
 			}
 		};
 		
@@ -421,6 +422,9 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		 */
 		$scope.addTaskTag = function() {
 			console.log("Add new tag to task, id: %s, tag: %s", $scope.selectedTask.id, $scope.newTag);
+			if ($scope.selectedTask.tags === null) {
+				$scope.selectedTask.tags = [];
+			}
 			$scope.selectedTask.tags.push($scope.newTag);
 			$scope.updateTask($scope.selectedTask);
 			$scope.setTags();
