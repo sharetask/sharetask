@@ -22,7 +22,7 @@
 var shareTaskApp = angular.module('shareTaskApp.services', ['ngResource']);
 
 
-shareTaskApp.service('User', ['$rootScope', '$location', 'LocalStorage', '$resource', '$http', function($rootScope, $location, LocalStorage, $resource, $http) {
+shareTaskApp.service('User', ['$rootScope', '$location', '$window', 'LocalStorage', '$resource', '$http', function($rootScope, $location, $window, LocalStorage, $resource, $http) {
 	
 	this.authenticate = function(user, success, error) {
 		console.log("Login user (user: %o)", user);
@@ -48,7 +48,7 @@ shareTaskApp.service('User', ['$rootScope', '$location', 'LocalStorage', '$resou
 		console.log("Logout user: %s", $rootScope.loggedUser.username);
 		$rootScope.loggedUser = {};
 		LocalStorage.remove('logged-user');
-		$location.path("/");
+		$window.location.href = $rootScope.appBaseUrl;
 	};
 }]);
 

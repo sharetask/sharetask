@@ -30,6 +30,7 @@
 	<head>
 		<meta charset="utf-8">
 		<title>ShareTa.sk</title>
+		<link rel="shortcut icon" href="<c:url value="/resources-webapp-${applicationVersion}/favicon.ico" />" />
 		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-webapp-${applicationVersion}/css/bootswatch.min.css" />">
 		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-webapp-${applicationVersion}/css/jquery.ui.datepicker.css" />">
 		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-webapp-${applicationVersion}/css/sharetask.css" />">
@@ -58,7 +59,7 @@
 			angular.module('shareTaskApp', ['shareTaskApp.filters', 'shareTaskApp.services', 'shareTaskApp.directives', 'shareTaskApp.controllers'])
 				.config(['$routeProvider', function($routeProvider) {
 					$routeProvider.when('/', {templateUrl: '<c:url value="/resources-webapp-${applicationVersion}/views/index.html" />'});
-					$routeProvider.when('/register', {templateUrl: '<c:url value="/resources-webapp-${applicationVersion}/views/register.html" />'});
+					//$routeProvider.when('/register', {templateUrl: '<c:url value="/resources-webapp-${applicationVersion}/views/register.html" />'});
 					$routeProvider.when('/tasks', {templateUrl: '<c:url value="/resources-webapp-${applicationVersion}/views/tasks.html" />'});
 					$routeProvider.when('/admin', {templateUrl: '<c:url value="/resources-webapp-${applicationVersion}/views/admin.html" />'});
 					$routeProvider.when('/user', {templateUrl: '<c:url value="/resources-webapp-${applicationVersion}/views/user.html" />'});

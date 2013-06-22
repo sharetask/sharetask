@@ -133,27 +133,6 @@ angular.module('shareTaskApp.directives', []).
 			}
 		};
 	})
-	.directive('webMenu', ['$rootScope', function($rootScope) {
-		return {
-			restrict: 'E',
-			templateUrl: 'resources-webapp-'+$rootScope.appVersion+'/views/components/web-menu.html',
-			link: function(scope, element, attrs) {
-				console.log("scope: %o, element: %o, attrs: %o", scope, element, attrs);
-			},
-			controller: ['$rootScope', '$scope', '$element', '$attrs', '$transclude', '$location', 'LocalStorage', function($rootScope, $scope, $element, $attrs, $transclude, $location, LocalStorage) {
-				
-				$scope.currentPage = $rootScope.currentPage;
-				console.log("current page: %o", $rootScope.currentPage);
-				
-				$scope.logout = function() {
-					console.log("Logout user: %s", $rootScope.loggedUser.username);
-					$rootScope.loggedUser = {};
-					LocalStorage.remove('logged-user');
-					$location.path("/");
-				};
-			}]
-		};
-	}])
 	.directive('appMenu', ['$rootScope', function($rootScope) {
 		return {
 			restrict: 'E',
@@ -161,7 +140,7 @@ angular.module('shareTaskApp.directives', []).
 			link: function(scope, element, attrs) {
 				console.log("scope: %o, element: %o, attrs: %o", scope, element, attrs);
 			},
-			controller: ['$rootScope', '$scope', '$element', '$attrs', '$transclude', '$location', 'LocalStorage', function($rootScope, $scope, $element, $attrs, $transclude, $location, LocalStorage) {
+			controller: ['$rootScope', '$scope', '$element', '$attrs', '$transclude', '$location', '$window', 'LocalStorage', function($rootScope, $scope, $element, $attrs, $transclude, $location, $window, LocalStorage) {
 				
 				$scope.currentPage = $rootScope.currentPage;
 				console.log("current page: %o", $rootScope.currentPage);
@@ -170,7 +149,8 @@ angular.module('shareTaskApp.directives', []).
 					console.log("Logout user: %s", $rootScope.loggedUser.username);
 					$rootScope.loggedUser = {};
 					LocalStorage.remove('logged-user');
-					$location.path("/");
+					//$location.path("/");
+					$window.location.href = $rootScope.appBaseUrl;
 				};
 			}]
 		};

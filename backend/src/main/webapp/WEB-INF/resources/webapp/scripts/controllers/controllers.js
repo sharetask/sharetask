@@ -22,7 +22,7 @@
 
 /* Controllers */
 angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 'localization']).
-	controller('AuthCtrl', ['$scope', '$location', '$rootScope', 'localize', 'User', 'LocalStorage', function($scope, $location, $rootScope, localize, User, LocalStorage) {
+	controller('AuthCtrl', ['$scope', '$location', '$rootScope', '$window', 'localize', 'User', 'LocalStorage', function($scope, $location, $rootScope, $window, localize, User, LocalStorage) {
 		
 		$scope.loginData = {processing: false, result: 0};
 		
@@ -71,48 +71,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 				});
 		};
 	}])
-	.controller('RegisterCtrl', ['$scope', '$location', '$rootScope', 'localize', 'User', 'LocalStorage', function($scope, $location, $rootScope, localize, User, LocalStorage) {
-		
-		$scope.newAccountData = {processing: false, result: 0};
-		
-		/**
-		 * Register user.
-		 * User is redirected to tasks page.
-		 */
-		$scope.register = function() {
-			console.log("Register user (username: %s)", $scope.newAccount.username);
-			$scope.newAccountData.processing = true;
-			$scope.newAccount.password = $scope.newAccount.password1;
-			delete($scope.newAccount.password1);
-			delete($scope.newAccount.password2);
-			User.create({user: $scope.newAccount}, function(data, status) {
-					console.log("User create success! data: %o, status: %o", data, status);
-					// authenticate user
-					User.authenticate({username: $scope.newAccount.username, password: $scope.newAccount.password}, function(data, status) {
-							console.log("User auth success! data: %o, status: %o", data, status);
-							$rootScope.loggedUser = {username: $scope.newAccount.username, name: $scope.newAccount.name, surName: $scope.newAccount.surName, password: $scope.newAccount.password};
-							LocalStorage.store('logged-user', $rootScope.loggedUser);
-							$location.path("/tasks");
-							$scope.newAccountData.result = 1;
-							$scope.newAccountData.processing = false;
-						}, function(data, status) {
-							console.log("User auth error! data: %o, status: %o", data, status);
-							$rootScope.loggedUser = {};
-							LocalStorage.remove('logged-user');
-							$scope.newAccountData.result = -1;
-							$scope.newAccountData.processing = false;
-						});
-				}, function(data, status) {
-					console.log("User create error! data: %o, status: %o", data, status);
-					$scope.newAccountData.result = -1;
-					$scope.newAccountData.processing = false;
-					if (data.type === 'USER_ALREADY_EXISTS') {
-						$scope.newAccountData.result = -2;
-					}
-				});
-		};
-	}])
-	.controller('AppCtrl', ['$scope', '$location', '$rootScope', '$filter', '$timeout', 'localize', 'Workspace', 'Task', 'User', 'LocalStorage', 'ErrorHandling', function($scope, $location, $rootScope, $filter, $timeout, localize, Workspace, Task, User, LocalStorage, ErrorHandling) {
+	.controller('AppCtrl', ['$scope', '$location', '$rootScope', '$filter', '$timeout', '$window', 'localize', 'Workspace', 'Task', 'User', 'LocalStorage', 'ErrorHandling', function($scope, $location, $rootScope, $filter, $timeout, $window, localize, Workspace, Task, User, LocalStorage, ErrorHandling) {
 		
 		$scope.errorMessageOnTaskList = '';
 		$scope.viewPanelTaskFilter = true;
@@ -827,7 +786,8 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		// redirect to login page if user is not logged in
 		if (jQuery.isEmptyObject($rootScope.loggedUser) || jQuery.isEmptyObject($rootScope.loggedUser.username)) {
 			console.log("Unauthenticated access. Redirect to login page.");
-			$location.path("/");
+			//$location.path("/");
+			$window.location.href = $rootScope.appBaseUrl;
 		}
 		else {
 			// Loading all workspaces from server.
@@ -836,7 +796,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 			$scope.syncTasks();
 		}
 	}])
-	.controller('AdminCtrl', ['$scope', '$location', '$rootScope', '$timeout', 'localize', 'Workspace', 'LocalStorage', 'ErrorHandling', function($scope, $location, $rootScope, $timeout, localize, Workspace, LocalStorage, ErrorHandling) {
+	.controller('AdminCtrl', ['$scope', '$location', '$rootScope', '$timeout', '$window', 'localize', 'Workspace', 'LocalStorage', 'ErrorHandling', function($scope, $location, $rootScope, $timeout, $window, localize, Workspace, LocalStorage, ErrorHandling) {
 		$scope.updateWorkspaceData = {processing: false, result: 0};
 		$scope.newMember = {processing: false, result: 0};
 		$scope.addWorkspaceData = {processing: false, result: 0};
@@ -981,14 +941,15 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		// redirect to login page if user is not logged in
 		if (jQuery.isEmptyObject($rootScope.loggedUser) || jQuery.isEmptyObject($rootScope.loggedUser.username)) {
 			console.log("Unauthenticated access. Redirect to login page.");
-			$location.path("/");
+			//$location.path("/");
+			$window.location.href = $rootScope.appBaseUrl;
 		}
 		else {
 			// Loading all workspaces from server.
 			$scope.loadWorkspaces();
 		}
 	}])
-	.controller('UserCtrl', ['$scope', '$location', '$rootScope', 'localize', 'User', 'ErrorHandling', 'LocalStorage', function($scope, $location, $rootScope, localize, User, ErrorHandling, LocalStorage) {
+	.controller('UserCtrl', ['$scope', '$location', '$rootScope', '$window', 'localize', 'User', 'ErrorHandling', 'LocalStorage', function($scope, $location, $rootScope, $window, localize, User, ErrorHandling, LocalStorage) {
 		$scope.updateUserProfile = {processing: false, result: 0};
 		$rootScope.currentPage = "user";
 		
@@ -1024,7 +985,8 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		// redirect to login page if user is not logged in
 		if (jQuery.isEmptyObject($rootScope.loggedUser) || jQuery.isEmptyObject($rootScope.loggedUser.username)) {
 			console.log("Unauthenticated access. Redirect to login page.");
-			$location.path("/");
+			//$location.path("/");
+			$window.location.href = $rootScope.appBaseUrl;
 		}
 		else {
 			
