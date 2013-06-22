@@ -297,7 +297,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 			$scope.filterTasks();
 			if (!jQuery.isEmptyObject($scope.tasks)) {
 				// set selected task
-				$scope.setSelectedTask($scope.tasks[0].id);
+				//$scope.setSelectedTask($scope.tasks[0].id);
 				// set tags
 				$scope.setTags();
 			}
