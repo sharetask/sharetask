@@ -1,0 +1,134 @@
+<!--
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements. See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership. The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+		<div ng-controller="AdminCtrl" ng-cloak>
+			<!-- application menu -->
+			<app-menu></app-menu>
+			<!-- administration -->
+			<div class="sidebar admin">
+				<div class="sidebar-inner">
+					<div class="sidebar-content">
+						<div class="tile active" ng-click="setEditMode('WORKSPACE-ADD')">
+							<div class="header"></div>
+							<div class="footer"><i class="icon-plus icon-white"></i> {{'_Add_' | i18n}}</div>
+						</div>
+						<div class="tile" ng-repeat="workspace in workspaces" ng-class="{'active':workspace.id==selectedWorkspace.id}" ng-click="setSelectedWorkspace(workspace.id)">
+							<div class="header"></div>
+							<div class="footer">{{workspace.title}}</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="adminMainPane">
+				<div class="adminMainPaneContent">
+					<div style="padding:10px 20px" ng-class="{'hidden':attrEditMode == 'WORKSPACE-ADD'}">
+						<ul class="nav nav-tabs">
+							<li class="active"><a href="#workspaceData" data-toggle="tab">{{'_Workspace_' | i18n}}</a></li>
+							<li><a href="#workspaceMembers" data-toggle="tab">{{'_Members_' | i18n}}</a></li>
+						</ul>
+						<div class="tabbable">
+							<div class="tab-content">
+								<!-- workspace update form -->
+								<div class="tab-pane active" id="workspaceData">
+									<form name="formWorkspaceUpdate" novalidate class="css-form">
+										<legend>{{selectedWorkspace.title}}</legend>
+										<div class="alert alert-success" ng-class="{'hidden':updateWorkspaceData.result == -1 || updateWorkspaceData.result == 0}">
+											<a class="close" ng-click="updateWorkspaceData.result = 0">&times;</a>
+											<strong>{{'_Success_' | i18n}}</strong> {{'_ResultWorkspaceUpdateOk_' | i18n}}
+										</div>
+										<div class="alert alert-error" ng-class="{'hidden':updateWorkspaceData.result == 1 || updateWorkspaceData.result == 0}">
+											<a class="close" ng-click="updateWorkspaceData.result = 0">&times;</a>
+											<strong>{{'_Error_' | i18n}}</strong> {{'_ResultWorkspaceUpdateError_' | i18n}}
+										</div>
+										<label>{{'_Name_' | i18n}}</label>
+										<input class="span5" type="text" placeholder="{{'_PlaceholderWorkspaceName_' | i18n}}" ng-model="selectedWorkspace.title" required />
+										<label>{{'_Description_' | i18n}}</label>
+										<textarea class="span5" rows="3" placeholder="{{'_PlaceholderWorkspaceDescription_' | i18n}}" ng-model="selectedWorkspace.description"></textarea>
+										<label>{{'_Owner_' | i18n}}</label>
+										<div class="input-append">
+											<input type="text" placeholder="type owner name..." value="{{selectedWorkspace.owner.name}} {{selectedWorkspace.owner.surName}}" disabled="disabled" />
+											<button class="btn" ng-click="">{{'_ForwardOwnership_' | i18n}}</button>
+										</div>
+										<br />
+										<button class="btn btn-inverse" ng-click="updateWorkspace()" ng-disabled="formWorkspaceUpdate.$invalid || updateWorkspaceData.processing">{{'_Save_' | i18n}}<span ng-show="updateWorkspaceData.processing"> {{'_Processing_' | i18n}}</span></button>
+									</form>
+								</div>
+								<!-- workspace members -->
+								<div class="tab-pane" id="workspaceMembers">
+									<legend>{{'_Members_' | i18n}}</legend>
+									<p><button class="btn btn-inverse" ng-click="setEditMode('WORKSPACE-INVITE-MEMBER')"><i class="icon-plus icon-white"></i> {{'_InviteMember_' | i18n}}</button></p>
+									<div class="alert alert-success" ng-class="{'hidden':newMember.result == -1 || newMember.result == 0}">
+										<a class="close" ng-click="newMember.result = 0">&times;</a>
+										<strong>{{'_Success_' | i18n}}</strong> {{'_ResultWorkspaceInviteOk_' | i18n}}
+									</div>
+									<div class="alert alert-error" ng-class="{'hidden':newMember.result == 1 || newMember.result == 0}">
+										<a class="close" ng-click="newMember.result = 0">&times;</a>
+										<strong>{{'_Error_' | i18n}}</strong> {{'_ResultWorkspaceInviteError_' | i18n}}
+									</div>
+									<div ng-class="{'hidden':attrEditMode != 'WORKSPACE-INVITE-MEMBER'}" style="margin-bottom:20px;padding:20px;border:1px solid #000;">
+										<form name="formWorkspaceInviteMember" novalidate class="css-form">
+											<legend>{{'_InviteNewMember_' | i18n}}</legend>
+											<label>{{'_Mail_' | i18n}}</label>
+											<input class="span4" type="text" placeholder="{{'_PlaceholderMembersMail_' | i18n}}" ng-model="newMember.username" required /><br />
+											<button class="btn btn-inverse" ng-click="inviteMember()" ng-disabled="formWorkspaceInviteMember.$invalid || newMember.processing">{{'_Invite_' | i18n}}<span ng-show="newMember.processing"> {{'_Processing_' | i18n}}</span></button>
+										</form>
+									</div>
+									<table class="table table-bordered table-striped table-hover">
+									<thead>
+										<tr>
+											<th>#</th>
+											<th>{{'_Role_' | i18n}}</th>
+											<th>{{'_PersonName_' | i18n}}</th>
+											<th>{{'_Username_' | i18n}}</th>
+											<th>{{'_Actions_' | i18n}}</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>1</td>
+											<td>{{'_Owner_' | i18n}}</td>
+											<td>{{selectedWorkspace.owner.name}} {{selectedWorkspace.owner.surName}}</td>
+											<td>{{selectedWorkspace.owner.username}}</td>
+											<td></td>
+										</tr>
+										<tr ng-repeat="member in selectedWorkspace.members">
+											<td>{{$index + 2}}</td>
+											<td>{{'_Member_' | i18n}}</td>
+											<td>{{member.name}} {{member.surName}}</td>
+											<td>{{member.username}}</td>
+											<td><button class="btn" ng-click="removeMember(member.username)">{{'_Delete_' | i18n}}</button></td>
+										</tr>
+									</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div style="padding:10px 20px" ng-class="{'hidden':attrEditMode != 'WORKSPACE-ADD'}">
+						<form name="formWorkspaceAdd" novalidate class="css-form">
+							<legend>{{'_AddNewWorkspace_' | i18n}}</legend>
+							<label>{{'_Name_' | i18n}}</label>
+							<input class="span5" type="text" placeholder="{{'_PlaceholderWorkspaceName_' | i18n}}" ng-model="newWorkspace.title" required /><br />
+							<label>{{'_Description_' | i18n}}</label>
+							<textarea class="span5" rows="3" placeholder="{{'_PlaceholderWorkspaceDescription_' | i18n}}" ng-model="newWorkspace.description"></textarea><br />
+							<button class="btn btn-inverse" ng-click="addWorkspace()" ng-disabled="formWorkspaceAdd.$invalid || addWorkspaceData.processing">{{'_Add_' | i18n}}<span ng-show="addWorkspaceData.processing"> {{'_Processing_' | i18n}}</span></button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>

@@ -36,7 +36,8 @@
 	<!-- ================================================================= -->
 	<!-- Resource resolve                                                  -->
 	<!-- ================================================================= -->
-	<mvc:resources mapping="/resources-#{applicationProps['application.version']}/**" location="/WEB-INF/resources/" />
+	<mvc:resources mapping="/resources-webapp-#{applicationProps['application.version']}/**" location="/WEB-INF/resources/webapp/" />
+	<mvc:resources mapping="/resources-web-#{applicationProps['application.version']}/**" location="/WEB-INF/resources/web/" />
 	
 	<!-- 	<mvc:default-servlet-handler /> -->
 	<mvc:view-controller path="/" view-name="web/index"/>

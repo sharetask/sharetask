@@ -136,7 +136,7 @@ angular.module('shareTaskApp.directives', []).
 	.directive('webMenu', ['$rootScope', function($rootScope) {
 		return {
 			restrict: 'E',
-			templateUrl: 'resources-'+$rootScope.appVersion+'/views/components/web-menu.html',
+			templateUrl: 'resources-webapp-'+$rootScope.appVersion+'/views/components/web-menu.html',
 			link: function(scope, element, attrs) {
 				console.log("scope: %o, element: %o, attrs: %o", scope, element, attrs);
 			},
@@ -157,7 +157,7 @@ angular.module('shareTaskApp.directives', []).
 	.directive('appMenu', ['$rootScope', function($rootScope) {
 		return {
 			restrict: 'E',
-			templateUrl: 'resources-'+$rootScope.appVersion+'/views/components/app-menu.html',
+			templateUrl: 'resources-webapp-'+$rootScope.appVersion+'/views/components/app-menu.html',
 			link: function(scope, element, attrs) {
 				console.log("scope: %o, element: %o, attrs: %o", scope, element, attrs);
 			},
@@ -178,7 +178,7 @@ angular.module('shareTaskApp.directives', []).
 	.directive('calendar', ['$rootScope', function($rootScope) {
 		return {
 			restrict: 'E',
-			templateUrl: 'resources-'+$rootScope.appVersion+'/views/components/calendar.html',
+			templateUrl: 'resources-webapp-'+$rootScope.appVersion+'/views/components/calendar.html',
 			scope: {tasks:'=model'},
 			link: function(scope, element, attrs) {
 				console.log("Calendar - scope: %o, element: %o, attrs: %o", scope, element, attrs);
