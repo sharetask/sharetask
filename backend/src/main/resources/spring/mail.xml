@@ -17,6 +17,9 @@
 
 	<beans profile="prod">  
 		<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+			<property name="host" value="${definition.mail.host}"/>
+			<property name="username" value="${definition.mail.username}"/>
+			<property name="password" value="${definition.mail.password}"/>
 		</bean>
 	</beans>
 
