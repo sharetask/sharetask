@@ -86,10 +86,10 @@ public class UserController {
 		final UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(login.getUsername(), 
 				login.getPassword());
 		try {
-			final Authentication auth = this.authenticationManager.authenticate(token);
+			final Authentication auth = authenticationManager.authenticate(token);
 			SecurityContextHolder.getContext().setAuthentication(auth);
-			this.repository.saveContext(SecurityContextHolder.getContext(), request, response);
-			this.rememberMeServices.loginSuccess(request, response, auth);
+			repository.saveContext(SecurityContextHolder.getContext(), request, response);
+			rememberMeServices.loginSuccess(request, response, auth);
 			response.setStatus(HttpStatus.OK.value());
 		} catch (final BadCredentialsException ex) {
 			response.setStatus(HttpStatus.UNAUTHORIZED.value());
@@ -105,20 +105,27 @@ public class UserController {
 		}
 	}
 
+	@RequestMapping(value = "/password", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseStatus(value = HttpStatus.OK)
+	public void passwordChange(@RequestBody final UserPassword user) {
+		userService.changePassword(user.getPassword());
+	}
+	
 	@RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
 	@ResponseBody public UserDTO create(@RequestBody final UserDTO user) {
-		return this.userService.create(user);
+		return userService.create(user);
 	}
 	
+
 	@RequestMapping(method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
 	@ResponseBody public UserInfoDTO update(@RequestBody final UserInfoDTO user) {
-		return this.userService.update(user);
+		return userService.update(user);
 	}
 	
 	@RequestMapping(value = "/{username:.*}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody public UserInfoDTO get(@PathVariable("username") final String username) {
-		return this.userService.read(username);
+		return userService.read(username);
 	}
 }

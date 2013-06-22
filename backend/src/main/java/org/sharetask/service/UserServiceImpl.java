@@ -34,6 +34,7 @@ import org.sharetask.repository.UserRepository;
 import org.sharetask.security.UserDetailsImpl;
 import org.sharetask.utility.DTOConverter;
 import org.sharetask.utility.HashCodeUtil;
+import org.sharetask.utility.SecurityUtil;
 import org.springframework.security.authentication.dao.SaltSource;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.security.core.GrantedAuthority;
@@ -101,8 +102,8 @@ public class UserServiceImpl implements UserService {
 		return userDetails;
 	}
 
-	@Transactional
 	@Override
+	@Transactional
 	public UserDTO create(final UserDTO userDTO) {
 		log.info("Registering user: {}", userDTO);
 		final User user = new User();
@@ -137,8 +138,8 @@ public class UserServiceImpl implements UserService {
 		return HashCodeUtil.getHashCode(System.currentTimeMillis() + username);
 	}
 
-	@Transactional
 	@Override
+	@Transactional
 	public UserInfoDTO update(final UserInfoDTO userInfoDTO) {
 		final User user = userRepository.read(userInfoDTO.getUsername());
 		user.setName(userInfoDTO.getName());
@@ -152,4 +153,16 @@ public class UserServiceImpl implements UserService {
 		final User user = userRepository.read(username);
 		return DTOConverter.convert(user, UserInfoDTO.class);
 	}
+	
+	@Override
+	@Transactional
+	public void changePassword(final String password) {
+		final String username = SecurityUtil.getCurrentSignedInUsername();
+		final User user = userRepository.read(username);
+		final UserDetails userDetails = new UserDetailsImpl(user.getUsername(), "password", user.getSalt(),
+				new ArrayList<GrantedAuthority>());
+		user.setPassword(passwordEncoder.encodePassword(password, saltSource.getSalt(userDetails)));
+		userRepository.save(user);
+	}
+	
 }

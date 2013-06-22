@@ -36,4 +36,6 @@ public interface UserService extends UserDetailsService {
 	UserInfoDTO update(@NotNull @Valid final UserInfoDTO userInfoDTO);
 
 	UserInfoDTO read(@NotNull final String username);
+	
+	void changePassword(@NotNull final String password);
 }
