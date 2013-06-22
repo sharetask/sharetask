@@ -101,7 +101,7 @@ angular.module('shareTaskApp.filters', []).
 						}
 					}
 					else if (queueName == "MY_OVERDUE") {
-						if (new Date() > new Date(task.dueDate) && task.state != "FINISHED" && task.state != "TERMINATED" && task.state != "FAILED") {
+						if (task.dueDate !== null && new Date() > new Date(task.dueDate) && task.state != "FINISHED" && task.state != "TERMINATED" && task.state != "FAILED") {
 							count++;
 						}
 					}
