@@ -53,6 +53,7 @@ angular.module('localization', [])
             getLocalizedString: function(value) {
                 // default the result to an empty string
                 var result = '';
+                //console.log("LOCALIZE value: %o", value);
 
                 // make sure the dictionary has valid data
                 if ((localize.dictionary !== []) && (localize.dictionary.length > 0)) {

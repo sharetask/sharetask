@@ -30,6 +30,7 @@
 	<head>
 		<meta charset="utf-8">
 		<title>ShareTa.sk</title>
+		<link rel="shortcut icon" href="<c:url value="/resources-${applicationVersion}/favicon.ico" />" />
 		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-${applicationVersion}/css/bootswatch.min.css" />">
 		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-${applicationVersion}/css/jquery.ui.datepicker.css" />">
 		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-${applicationVersion}/css/sharetask.css" />">

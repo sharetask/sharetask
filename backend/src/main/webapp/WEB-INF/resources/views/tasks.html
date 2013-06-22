@@ -37,7 +37,18 @@
 										</div>
 									</form>
 								</li>
-								<li class="cursor-pointer" ng-repeat="workspace in workspaces" ng-class="{'hidden':taskEditMode == 'NEW-WORKSPACE','active':workspace.id == selectedWorkspace.id}"><a ng-click="setSelectedWorkspace(workspace)">{{workspace.title}}</a></li>
+								<li class="cursor-pointer active" ng-show="taskEditMode != 'NEW-WORKSPACE'"><a>{{selectedWorkspace.title}}</a></li>
+								<li class="cursor-pointer" ng-repeat="workspace in workspaces" ng-show="taskEditMode != 'NEW-WORKSPACE' && workspace.id != selectedWorkspace.id && $index < 2"><a ng-click="setSelectedWorkspace(workspace)">{{workspace.title}}</a></li>
+								
+								<li id="fat-menu" class="dropdown" ng-show="taskEditMode != 'NEW-WORKSPACE' && workspaces.length > 2">
+									<a id="nextWorkspaces" role="button" class="dropdown-toggle cursor-pointer" data-toggle="dropdown">{{'_NextWorkspaces_' | i18n}} <b class="caret"></b></a>
+									<ul class="dropdown-menu" role="menu" aria-labelledby="nextWorkspaces">
+										<li ng-repeat="workspace in workspaces" ng-class="{'active':workspace.id == selectedWorkspace.id}" ng-show="workspace.id != selectedWorkspace.id && $index >= 2"><a role="menuitem" tabindex="-1" ng-click="setSelectedWorkspace(workspace)">{{workspace.title}}</a></li>
+									</ul>
+								</li>
+								
+								
+								
 							</ul>
 							<ul class="nav pull-right">
 								<div class="input-append" style="padding-top:2px;">
@@ -226,7 +237,7 @@
 								{{'_Priority_' | i18n}}<br /><br />
 								<strong>{{selectedTask.priority | priorityName | i18n}}</strong>
 							</span>
-							<span class="slabel cursor-pointer" ng-click="setView('TASK-DUE-DATE-PICKER')">
+							<span class="slabel cursor-pointer" ng-click="setView('TASK-DUE-DATE-PICKER')" ng-show="selectedTask.dueDate != null">
 								{{'_DueDate_' | i18n}}<br /><br />
 								<strong>{{selectedTask.dueDate | date:'mediumDate'}}</strong>
 							</span>
@@ -235,6 +246,7 @@
 						<!-- task tags -->
 						<div style="margin:5px 0 10px 0;">
 							<div class="tag large" ng-repeat="tag in selectedTask.tags"><span class="text">{{tag}}</span><span class="remove cursor-pointer" ng-click="removeTag(selectedTask.id, tag)">x</span></div>
+							<span ng-show="selectedTask.tags.length == 0"><small>{{'_MsgNoTaskTags_' | i18n}}</small></span>
 							<span class="tag large cursor-pointer" ng-click="setEditMode('ADD-TAG')"><span class="remove cursor-pointer"><i class="icon-plus icon-white"></i></span></span>
 							<div ng-class="{'hidden':taskEditMode != 'ADD-TAG'}">
 								<form name="formTaskAddLabel" novalidate class="css-form">
@@ -247,12 +259,13 @@
 						</div>
 						<!-- task description -->
 						<div class="editbox border-visible" ng-class="{'hidden':taskEditMode == 'DESCRIPTION'}">
-							<div class="cursor-pointer" ng-click="setEditMode('DESCRIPTION')">{{selectedTask.description}}</div>
-							<button class="btn" ng-class="{'hidden':selectedTask.description != '' && selectedTask.description != null}" ng-click="setEditMode('DESCRIPTION')">Add description</button>
+							<div class="cursor-pointer" ng-click="setEditMode('DESCRIPTION')" ng-show="selectedTask.description != null">{{selectedTask.description}}</div>
+							<div class="cursor-pointer" ng-click="setEditMode('DESCRIPTION')" ng-show="selectedTask.description == null">{{'_MsgNoTaskDescription_' | i18n}}</div>
+							<!-- <button class="btn" ng-class="{'hidden':selectedTask.description != '' && selectedTask.description != null}" ng-click="setEditMode('DESCRIPTION')">Add description</button> -->
 						</div>
 						<div ng-class="{'hidden':taskEditMode != 'DESCRIPTION'}" style="margin-top:5px;">
 							<div class="row-full">
-								<textarea class="span12" style="height:80px;margin-bottom:1px;" ng-model="selectedTask.description" ui-keypress="{esc:'setEditMode(\'\')'}">{{selectedTask.description}}</textarea><br />
+								<textarea class="span12" style="height:80px;margin-bottom:1px;" ng-model="selectedTask.description" placeholder="{{'_PlaceholderAddDescription_' | i18n}}" ui-keypress="{esc:'setEditMode(\'\')'}" id="inputTaskEditDescription">{{selectedTask.description}}</textarea><br />
 								<button class="btn btn-inverse" ng-click="updateTask(selectedTask)">Save changes</button>
 							</div>
 						</div>

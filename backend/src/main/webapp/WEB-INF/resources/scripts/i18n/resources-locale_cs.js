@@ -30,6 +30,11 @@
 		"description":""
 	},
 	{
+		"key":"_NextWorkspaces_",
+		"value":"Další projekty",
+		"description":""
+	},
+	{
 		"key":"_Pending_",
 		"value":"Nevyřešené",
 		"description":""
@@ -375,6 +380,11 @@
 	    "description":""
 	},
 	{
+	    "key":"_PlaceholderAddDescription_",
+	    "value":"napište popis úkolu...",
+	    "description":""
+	},
+	{
 	    "key":"_PlaceholderAddComment_",
 	    "value":"napište komentář...",
 	    "description":""
@@ -460,6 +470,16 @@
 	{
 	    "key":"_MsgNewTasks_",
 	    "value":"Máte nové úkoly",
+	    "description":""
+	},
+	{
+	    "key":"_MsgNoTaskTags_",
+	    "value":"přidejte štítek...",
+	    "description":""
+	},
+	{
+	    "key":"_MsgNoTaskDescription_",
+	    "value":"přidejte popis úkolu...",
 	    "description":""
 	},
 	{

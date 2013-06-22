@@ -126,6 +126,7 @@ angular.module('shareTaskApp.filters', []).
 			if (input == "TASK_DUE_DATE") { return "_ByDueDate_"; }
 			else if (input == "TASK_TITLE") { return "_ByName_"; }
 			else if (input == "TASK_AUTHOR") { return "_ByAuthor_"; }
+			else if (input === undefined || input === null) { return "__"; }
 		};
 	}])
 	.filter('taskQueueName', ['Workspace', function(Workspace) {
@@ -136,6 +137,7 @@ angular.module('shareTaskApp.filters', []).
 			else if (input == "MY_OVERDUE") { return "_OverdueTasks_"; }
 			else if (input == "MY_HIGH_PRIORITY") { return "_HighPriorityTasks_"; }
 			else if (input == "MY_COMPLETED") { return "_CompletedTasks_"; }
+			else if (input === undefined || input === null) { return "__"; }
 		};
 	}])
 	.filter('priorityName', ['Workspace', function(Workspace) {
@@ -144,7 +146,7 @@ angular.module('shareTaskApp.filters', []).
 			if (input == "LOW") { return "_Low_"; }
 			else if (input === "MEDIUM") { return "_Standard_"; }
 			else if (input === "HIGH") { return "_High_"; }
-			else if (input === undefined) { return "__"; }
+			else if (input === undefined || input === null) { return "__"; }
 		};
 	}])
 	;

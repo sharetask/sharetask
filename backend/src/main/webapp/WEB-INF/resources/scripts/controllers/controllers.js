@@ -128,6 +128,9 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		//$scope.dateOptions = {format: 'dd/mm/yyyy'};
 		$scope.datePickerOptions = { dateFormat: "M d, yy" };
 		var taskFilter = $filter('filterTasks');
+		//var i18nFilter = $filter('i18n');
+		//$scope.nextWorkspacesTitle = i18nFilter('_NextWorkspaces_');
+		//console.log("nextWorkspacesTitle: %o", $scope.nextWorkspacesTitle);
 		
 		/**
 		 * Logout user.
@@ -478,6 +481,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 				if ($scope.taskEditMode === 'NEW-WORKSPACE') { setTimeout(function() { $('#inputWorkspaceAdd')[0].focus(); }, 0); }
 				if ($scope.taskEditMode === 'FORWARD-TASK') { setTimeout(function() { $('#inputTaskForward')[0].focus(); }, 0); }
 				if ($scope.taskEditMode === 'ADD-TAG') { setTimeout(function() { $('#inputTaskAddLabel')[0].focus(); }, 0); }
+				if ($scope.taskEditMode === 'DESCRIPTION') { setTimeout(function() { $('#inputTaskEditDescription')[0].focus(); }, 0); }
 			}
 		};
 		

@@ -30,6 +30,11 @@
 		"description":""
 	},
 	{
+		"key":"_NextWorkspaces_",
+		"value":"Next workspaces",
+		"description":""
+	},
+	{
 		"key":"_Pending_",
 		"value":"Pending",
 		"description":""
@@ -380,6 +385,11 @@
 	    "description":""
 	},
 	{
+	    "key":"_PlaceholderAddDescription_",
+	    "value":"type task description...",
+	    "description":""
+	},
+	{
 	    "key":"_PlaceholderAddComment_",
 	    "value":"type new comment...",
 	    "description":""
@@ -467,6 +477,16 @@
 	{
 	    "key":"_MsgNewTasks_",
 	    "value":"You have new tasks",
+	    "description":""
+	},
+	{
+	    "key":"_MsgNoTaskTags_",
+	    "value":"add new label...",
+	    "description":""
+	},
+	{
+	    "key":"_MsgNoTaskDescription_",
+	    "value":"add task description...",
 	    "description":""
 	},
 	{
