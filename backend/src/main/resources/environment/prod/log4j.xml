@@ -6,7 +6,7 @@
 
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
 
-	<appender name="app-info" class="org.apache.log4j.RollingFileAppender">
+	<appender name="app-info" class="org.apache.log4j.rolling.RollingFileAppender">
 		<param name="Append" value="true" />
 		<param name="File" value="&LOGGING_DIRECTORY;app_info.log" />
 		<param name="Threshold" value="INFO" />
@@ -18,7 +18,7 @@
 		</layout>
 	</appender>
 
-	<appender name="app-warn" class="org.apache.log4j.RollingFileAppender">
+	<appender name="app-warn" class="org.apache.log4j.rolling.RollingFileAppender">
 		<param name="Append" value="true" />
 		<param name="File" value="&LOGGING_DIRECTORY;app_warn.log" />
 		<param name="Threshold" value="WARN" />
