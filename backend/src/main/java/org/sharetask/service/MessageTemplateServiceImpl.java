@@ -55,6 +55,7 @@ public class MessageTemplateServiceImpl implements TemplateMessageService {
 
 	{
 		templates.put(TemplateList.WORKSPACE_INVITATION, "templates/workspace_invitation");
+		templates.put(TemplateList.USER_REGISTRATION_INVITATION, "templates/registered_user_invitation");
 	};
 
 	/*

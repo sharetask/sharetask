@@ -24,6 +24,7 @@
 		<intercept-url pattern="/api/info" access="permitAll" />
 		<intercept-url pattern="/api/user/login/status" access="permitAll" />
 		<intercept-url pattern="/api/user/login" access="permitAll" />
+		<intercept-url pattern="/api/user/confirm" access="permitAll" />
 		<intercept-url pattern="/api/user" method="POST" access="permitAll" />
 		<intercept-url pattern="/api/user/logout" access="permitAll" />
 		<intercept-url pattern="/**" access="isAuthenticated()" />

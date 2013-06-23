@@ -19,6 +19,7 @@
 package org.sharetask.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,7 +30,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -47,7 +51,7 @@ import org.sharetask.api.Constants;
 @NamedQueries(value = { 
 		@NamedQuery(name = Invitation.QUERY_NAME_FIND_BY_CODE, query = Invitation.QUERY_FIND_BY_CODE)   
 	})
-public class Invitation extends BaseImmutableEntity implements Serializable {
+public class Invitation implements Serializable {
 
 	private static final long serialVersionUID = Constants.VERSION;
 
@@ -55,7 +59,7 @@ public class Invitation extends BaseImmutableEntity implements Serializable {
 	public static final String QUERY_FIND_BY_CODE = "SELECT i FROM Invitation i WHERE i.invitationCode = :invitationCode";
 	
 	public static enum InvitationType {
-		ADD_WORKSPACE_MEMBER;
+		ADD_WORKSPACE_MEMBER, USER_REGISTRATION;
 	}
 
 	@Id
@@ -78,4 +82,22 @@ public class Invitation extends BaseImmutableEntity implements Serializable {
 	@Getter @Setter
 	@Column(name = "ENTITY_ID", nullable = false)
 	private Long entityId;
+	
+	@Setter
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "CREATED_ON", nullable = false)
+	private Date createdOn;
+
+	@Getter @Setter
+	@Column(name = "CREATED_BY")
+	private String createdBy;
+	
+	public Date getCreatedOn() {
+		return createdOn == null ? null : (Date)createdOn.clone();
+	}
+	
+	@PrePersist
+	private void preCreate() {
+		createdOn = new Date();
+	}
 }

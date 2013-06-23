@@ -85,7 +85,7 @@ public class UserServiceTest extends DbUnitTest {
 		userDTO.setSurName("Test Surname");
 		try {
 			this.userService.create(userDTO );
-		} catch (final UserAlreadyExists e) {
+		} catch (final UserAlreadyExistsException e) {
 			fail("User " + userDTO.getUsername() + " already exists!");
 		}
 		

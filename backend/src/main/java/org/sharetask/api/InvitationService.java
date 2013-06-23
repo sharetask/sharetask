@@ -16,16 +16,36 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.sharetask.service;
+package org.sharetask.api;
 
-import org.sharetask.api.Constants;
+import javax.validation.constraints.NotNull;
+
+import org.sharetask.api.dto.InvitationDTO;
 
 /**
- * Runtime exception for signalization of already existing user.
  * @author Michal Bocek
  * @since 1.0.0
  */
-public class UserAlreadyExists extends RuntimeException {
+public interface InvitationService {
 
-	private static final long serialVersionUID = Constants.VERSION;
+	/**
+	 * Send invitation for registered user.
+	 * @param username
+	 */
+	void inviteRegisteredUser(@NotNull final String username);
+	
+	/**
+	 * Send invitation when user is added to workspace.
+	 * @param workspaceId
+	 * @param username
+	 */
+	void inviteWorkspaceMember(@NotNull final Long workspaceId, @NotNull final String username);
+	
+	/**
+	 * Remove invitation from invitation table.
+	 * @param code
+	 * @return
+	 */
+	InvitationDTO confirmInvitation(@NotNull final String code);
+
 }

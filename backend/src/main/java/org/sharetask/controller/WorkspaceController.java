@@ -22,6 +22,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.sharetask.api.InvitationService;
 import org.sharetask.api.WorkspaceQueryType;
 import org.sharetask.api.WorkspaceService;
 import org.sharetask.api.dto.WorkspaceDTO;
@@ -48,6 +49,9 @@ public class WorkspaceController {
 	@Inject
 	private WorkspaceService workspaceService;
 	
+	@Inject
+	private InvitationService invitationService;
+	
 	@RequestMapping(method = RequestMethod.POST, 
 	                produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody public WorkspaceDTO create(@RequestBody final WorkspaceDTO workspace) {
@@ -67,7 +71,7 @@ public class WorkspaceController {
 	@ResponseStatus(value = HttpStatus.OK)
 	public void invite(@PathVariable("workspaceId") final Long workspaceId, 
 	                   @RequestBody final User user) {
- 		workspaceService.invite(workspaceId, user.getUsername());
+ 		invitationService.inviteWorkspaceMember(workspaceId, user.getUsername());
 	}
 	
 	@RequestMapping(value = "/{workspaceId}/addMember/${invitationCode}", 

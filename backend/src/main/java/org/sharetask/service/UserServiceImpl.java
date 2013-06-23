@@ -22,10 +22,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.inject.Inject;
+import javax.validation.constraints.NotNull;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.sharetask.api.InvitationService;
 import org.sharetask.api.UserService;
+import org.sharetask.api.dto.InvitationDTO;
 import org.sharetask.api.dto.UserDTO;
 import org.sharetask.api.dto.UserInfoDTO;
 import org.sharetask.entity.Role;
@@ -61,6 +64,9 @@ public class UserServiceImpl implements UserService {
 
 	@Inject
 	private SaltSource saltSource;
+
+	@Inject 
+	private InvitationService invitationService; 
 
 	private static class UserDetailBuilder {
 
@@ -112,12 +118,12 @@ public class UserServiceImpl implements UserService {
 		user.setSurName(userDTO.getSurName());
 
 		if (userRepository.findByUsername(userDTO.getUsername()) != null) {
-			throw new UserAlreadyExists();
+			throw new UserAlreadyExistsException();
 		}
 
 		user.setEmail(user.getUsername());
 		final Collection<Role> roles = new ArrayList<Role>();
-		user.setEnabled(true);
+		user.setEnabled(false);
 
 		roles.add(Role.ROLE_USER);
 		user.setRoles(roles);
@@ -131,6 +137,7 @@ public class UserServiceImpl implements UserService {
 		user.setPassword(passwordEncoder.encodePassword(userDTO.getPassword(),
 				saltSource.getSalt(userDetails)));
 		final User storedUser = userRepository.save(user);
+		invitationService.inviteRegisteredUser(userDTO.getUsername());
 		return DTOConverter.convert(storedUser,  UserDTO.class);
 	}
 
@@ -162,6 +169,15 @@ public class UserServiceImpl implements UserService {
 		final UserDetails userDetails = new UserDetailsImpl(user.getUsername(), "password", user.getSalt(),
 				new ArrayList<GrantedAuthority>());
 		user.setPassword(passwordEncoder.encodePassword(password, saltSource.getSalt(userDetails)));
+		userRepository.save(user);
+	}
+
+	@Override
+	@Transactional
+	public void confirmInvitation(@NotNull final String code) {
+		final InvitationDTO invitation = invitationService.confirmInvitation(code);
+		final User user = userRepository.read(invitation.getEmail());
+		user.setEnabled(true);
 		userRepository.save(user);
 	}
 	

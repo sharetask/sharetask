@@ -284,7 +284,7 @@
 				<constraints nullable="false" />
 			</column>
 			<column name="ENTITY_ID" type="BIGINT" remarks="Referenced entity id" >
-				<constraints nullable="false" />
+				<constraints nullable="true" />
 			</column>
 			<column name="CREATED_BY" type="VARCHAR(255)" remarks="User indentifiert who created record">
 				<constraints nullable="false" />

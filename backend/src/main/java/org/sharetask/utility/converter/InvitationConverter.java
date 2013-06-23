@@ -49,7 +49,7 @@ public class InvitationConverter implements CustomConverter {
 	private InvitationDTO convert(final Invitation source) {
 		final InvitationDTO invitationDTO = new InvitationDTO();
 		invitationDTO.setEmail(source.getUsername());
-		invitationDTO.setInvitingUser(source.getCreatedBy().getUsername());
+		invitationDTO.setInvitingUser(source.getCreatedBy());
 		invitationDTO.setInvitationCode(source.getInvitationCode());
 		invitationDTO.setEntityId(source.getEntityId());
 		invitationDTO.setInvitationType(source.getType().name());

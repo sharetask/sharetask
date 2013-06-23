@@ -29,6 +29,7 @@ import org.sharetask.api.MailService;
 import org.sharetask.api.TemplateMessageService;
 import org.sharetask.api.TemplateMessageService.TemplateList;
 import org.sharetask.api.dto.InvitationDTO;
+import org.sharetask.entity.Invitation.InvitationType;
 import org.sharetask.entity.User;
 import org.sharetask.entity.Workspace;
 import org.sharetask.repository.UserRepository;
@@ -70,7 +71,15 @@ public class MailServiceImpl implements MailService {
 		final SimpleMailMessage msg = new SimpleMailMessage(templateMessage);
 		msg.setTo(invitation.getEmail());
 		final Map<String, Object> model = prepareInvitationMode(invitation);
-		msg.setText(templateMessageService.prepareMessage(TemplateList.WORKSPACE_INVITATION, model, null));
+		final InvitationType invitationType = InvitationType.valueOf(invitation.getInvitationType());
+		switch (invitationType) {
+			case ADD_WORKSPACE_MEMBER:
+				msg.setText(templateMessageService.prepareMessage(TemplateList.WORKSPACE_INVITATION, model, null));
+				break;
+			case USER_REGISTRATION:
+				msg.setText(templateMessageService.prepareMessage(TemplateList.USER_REGISTRATION_INVITATION, model, null));
+				break;
+		}
 		try {
 			mailSender.send(msg);
 		} catch (final MailException ex) {
@@ -79,6 +88,26 @@ public class MailServiceImpl implements MailService {
 	}
 	
 	private Map<String, Object> prepareInvitationMode(final InvitationDTO invitation) {
+		final InvitationType invitationType = InvitationType.valueOf(invitation.getInvitationType());
+		Map<String, Object> result = null; 
+		switch (invitationType){
+			case ADD_WORKSPACE_MEMBER:
+				result = prepareAddWorkspaceMember(invitation);
+				break;
+			case USER_REGISTRATION:
+				result = prepareUserRegistration(invitation);
+				break;
+		}
+		return result;
+	}
+
+	private Map<String, Object> prepareUserRegistration(final InvitationDTO invitation) {
+		final Map<String, Object> model = new HashMap<String, Object>();
+		model.put("confimationLink", applicationUrl + "/api/user/confirm?code=" + invitation.getInvitationCode());
+		return model;
+	}
+
+	private Map<String, Object> prepareAddWorkspaceMember(final InvitationDTO invitation) {
 		final Map<String, Object> model = new HashMap<String, Object>();
 		final User invitingUser = userRepository.findOne(invitation.getInvitingUser());
 		model.put("userName", invitingUser.getName());

@@ -24,20 +24,16 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.sharetask.api.Constants;
-import org.sharetask.api.MailService;
+import org.sharetask.api.InvitationService;
 import org.sharetask.api.WorkspaceQueryType;
 import org.sharetask.api.WorkspaceService;
 import org.sharetask.api.dto.InvitationDTO;
 import org.sharetask.api.dto.WorkspaceDTO;
-import org.sharetask.entity.Invitation;
-import org.sharetask.entity.Invitation.InvitationType;
 import org.sharetask.entity.User;
 import org.sharetask.entity.Workspace;
-import org.sharetask.repository.InvitationRepository;
 import org.sharetask.repository.UserRepository;
 import org.sharetask.repository.WorkspaceRepository;
 import org.sharetask.utility.DTOConverter;
-import org.sharetask.utility.HashCodeUtil;
 import org.sharetask.utility.SecurityUtil;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -59,11 +55,8 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 	@Inject
 	private UserRepository userRepository;
 
-	@Inject
-	private MailService mailService;
-
-	@Inject
-	private InvitationRepository invitationRepository;
+	@Inject 
+	private InvitationService invitationService; 
 
 	/* (non-Javadoc)
 	 * @see org.sharetask.api.WorkspaceService#create(org.sharetask.api.dto.WorkspaceDTO)
@@ -102,32 +95,15 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 	@Override
 	@Transactional
 	public void addMember(final String invitationCode) {
-		final Invitation invitation = invitationRepository.findByInvitationCode(invitationCode);
+		final InvitationDTO invitation = invitationService.confirmInvitation(invitationCode);
 		final Workspace workspace = workspaceRepository.read(invitation.getEntityId());
-		final User user = userRepository.read(invitation.getUsername());
+		final User user = userRepository.read(invitation.getEmail());
 
 		// add member to workspace
 		if (!workspace.getMembers().contains(user.getUsername())) {
 			workspace.addMember(user);
 			workspaceRepository.save(workspace);
 		}
-	}
-
-	/* (non-Javadoc)
-	 * @see org.sharetask.api.WorkspaceService#addMember(java.lang.Long, java.lang.String)
-	 */
-	@Override
-	@Transactional
-	@PreAuthorize(Constants.PERIMISSION_WORKSPACE_OWNER)
-	public void invite(final Long workspaceId, final String username) {
-		final Invitation invitation = new Invitation();
-		invitation.setType(InvitationType.ADD_WORKSPACE_MEMBER);
-		invitation.setUsername(username);
-		invitation.setEntityId(workspaceId);
-		invitation.setInvitationCode(HashCodeUtil.getHashCode(System.currentTimeMillis() + workspaceId + username));
-		final Invitation storedInitation = invitationRepository.save(invitation);
-		//send invitation notification
-		mailService.sendInvitation(DTOConverter.convert(storedInitation, InvitationDTO.class));
 	}
 
 	/* (non-Javadoc)

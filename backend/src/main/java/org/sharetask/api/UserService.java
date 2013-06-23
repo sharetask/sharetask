@@ -38,4 +38,6 @@ public interface UserService extends UserDetailsService {
 	UserInfoDTO read(@NotNull final String username);
 	
 	void changePassword(@NotNull final String password);
+	
+	void confirmInvitation(@NotNull final String code);
 }

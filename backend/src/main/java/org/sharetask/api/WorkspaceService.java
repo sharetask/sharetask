@@ -55,13 +55,6 @@ public interface WorkspaceService {
 	void addMember(@NotNull final String invitationCode);
 	
 	/**
-	 * Invite user to sharetask.
-	 * @param workspaceId
-	 * @param username
-	 */
-	void invite(@NotNull final Long workspaceId, @NotNull final String username);
-	
-	/**
 	 * Remove member from specified workspace.
 	 * @param workspaceId
 	 * @param userId

@@ -16,28 +16,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.sharetask.controller.handler;
+package org.sharetask.service;
 
-import org.sharetask.controller.json.ResponseError;
-import org.sharetask.controller.json.ResponseError.ErrorType;
-import org.sharetask.service.UserAlreadyExistsException;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.sharetask.api.Constants;
 
 /**
+ * Runtime exception for signalization of already existing user.
  * @author Michal Bocek
  * @since 1.0.0
  */
-@ControllerAdvice
-public class UserAlreadyExistsExceptionHandler {
+public class UserAlreadyExistsException extends RuntimeException {
 
-    @ExceptionHandler
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    @ResponseBody
-	public ResponseError handlException(final UserAlreadyExistsException error) {
-		return new ResponseError(ErrorType.USER_ALREADY_EXISTS);
-	}
+	private static final long serialVersionUID = Constants.VERSION;
 }

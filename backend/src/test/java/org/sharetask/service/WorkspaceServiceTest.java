@@ -28,6 +28,7 @@ import javax.inject.Inject;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
+import org.sharetask.api.InvitationService;
 import org.sharetask.api.WorkspaceService;
 import org.sharetask.api.dto.UserDTO;
 import org.sharetask.api.dto.UserInfoDTO;
@@ -53,6 +54,9 @@ public class WorkspaceServiceTest extends DbUnitTest {
 	
 	@Inject
 	private InvitationRepository invitationRepository;
+	
+	@Inject
+	private InvitationService invitationService;
 	
 	@Inject
 	private UserRepository userRepository;
@@ -109,7 +113,7 @@ public class WorkspaceServiceTest extends DbUnitTest {
 	 */
 	@Test
 	public void testInvite() {
-		workspaceService.invite(100L, "test2@test.com");
+		invitationService.inviteWorkspaceMember(100L, "test2@test.com");
 		final List<Invitation> findAll = invitationRepository.findAll();
 		boolean result = false;
 		for (final Invitation invitation : findAll) {

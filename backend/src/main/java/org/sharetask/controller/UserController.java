@@ -44,6 +44,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -127,5 +128,11 @@ public class UserController {
 	@RequestMapping(value = "/{username:.*}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody public UserInfoDTO get(@PathVariable("username") final String username) {
 		return userService.read(username);
+	}
+	
+	@RequestMapping(value = "/confirm", method = RequestMethod.GET)
+	public String invite(@RequestParam("code") final String code) {
+		userService.confirmInvitation(code);
+		return "redirect:/";
 	}
 }
