@@ -16,19 +16,23 @@
  * specific language governing permissions and limitations
  * under the License.
 --%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<spring:eval expression="@applicationProps['application.version']" var="applicationVersion"/>
-<spring:eval expression="@applicationProps['application.revision']" var="applicationRevision"/>
+<spring:eval expression="@applicationProps['application.version']" var="applicationVersion" />
+<spring:eval expression="@applicationProps['application.revision']" var="applicationRevision" />
 
 <!doctype html>
 <html lang="en" ng-app="shareTaskApp">
 	<!-- Application version: ${applicationVersion} -->
 	<!-- Application revision: ${applicationRevision} -->
 	<head>
-		<meta charset="utf-8">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta name="description" content="">
+		<meta name="keywords" content="">
+		<meta name="author" content="">
 		<title>ShareTa.sk</title>
 		<link rel="shortcut icon" href="<c:url value="/resources-web-${applicationVersion}/favicon.ico" />" />
 		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-web-${applicationVersion}/css/bootswatch.min.css" />">
@@ -48,6 +52,14 @@
 		<script type="text/javascript" src="<c:url value="/resources-web-${applicationVersion}/scripts/vendor/angular/angular-resource.min.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-web-${applicationVersion}/scripts/vendor/angular/angular-ui.min.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-web-${applicationVersion}/scripts/vendor/angular/ui-bootstrap-tpls-0.3.0.min.js" />"></script>
+		<c:choose>
+			<c:when test="${fn:length(pageContext.request.locale.country) == 0}">
+				<script type="text/javascript" src="<c:url value="/resources-web-${applicationVersion}/scripts/vendor/angular/i18n/angular-locale_${fn:toLowerCase(pageContext.request.locale.language)}.js" />"></script>
+			</c:when>
+			<c:otherwise>
+				<script type="text/javascript" src="<c:url value="/resources-web-${applicationVersion}/scripts/vendor/angular/i18n/angular-locale_${fn:toLowerCase(pageContext.request.locale.language)}-${fn:toLowerCase(pageContext.request.locale.country)}.js" />"></script>
+			</c:otherwise>
+		</c:choose>
 		<script type="text/javascript" src="<c:url value="/resources-web-${applicationVersion}/scripts/vendor/localize/localize.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-web-${applicationVersion}/scripts/services/services.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-web-${applicationVersion}/scripts/filters/filters.js" />"></script>
@@ -61,9 +73,10 @@
 					$routeProvider.when('/register', {templateUrl: '<c:url value="/resources-web-${applicationVersion}/views/register.html" />'});
 					$routeProvider.otherwise({redirectTo: '/'});
 				}])
-				.run(['$rootScope', function ($rootScope) {
+				.run(['$rootScope', '$window', function ($rootScope, $window) {
 					$rootScope.appBaseUrl = '<c:url value="/" />';
 					$rootScope.appVersion = '${applicationVersion}';
+					$rootScope.appLocale = {language: '<c:out value="${pageContext.request.locale.language}" />', country: '<c:out value="${pageContext.request.locale.country}" />'};
 				}]);
 		</script>
 	</body>

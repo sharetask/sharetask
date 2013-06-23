@@ -45,7 +45,7 @@ angular.module('shareTaskApp.directives', [])
 	.directive('webMenu', ['$rootScope', function($rootScope) {
 		return {
 			restrict: 'E',
-			templateUrl: 'resources-webapp-'+$rootScope.appVersion+'/views/components/web-menu.html',
+			templateUrl: 'resources-web-'+$rootScope.appVersion+'/views/components/web-menu.html',
 			link: function(scope, element, attrs) {
 				//console.log("scope: %o, element: %o, attrs: %o", scope, element, attrs);
 			},
