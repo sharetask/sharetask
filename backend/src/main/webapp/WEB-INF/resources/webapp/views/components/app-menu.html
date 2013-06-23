@@ -18,8 +18,9 @@
 -->
 <div id="app-menu">
 	<div class="navbar navbar-inverse">
-		<div class="navbar-inner">
+		<div class="navbar-inner" style="padding-left:0;">
 			<div class="container" style="width:auto;">
+				<img class="pull-left" src="resources-webapp-{{appVersion}}/img/sharetask-menu-logo.png" width="40" height="40" />
 				<span class="brand">ShareTa.sk</span>
 				<ul class="nav">
 					<li ng-class="{'active':currentPage == 'tasks'}"><a href="#/tasks"><i class="icon-list icon-white"></i> {{'_Tasks_' | i18n}}</a></li>
