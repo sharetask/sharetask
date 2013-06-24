@@ -158,6 +158,7 @@ public class TaskServiceImpl implements TaskService {
 	 * @see org.sharetask.api.TaskService#forward(java.lang.Long, java.lang.String)
 	 */
 	@Override
+	@Transactional
 	@PreAuthorize(Constants.PERMISSION_TASK_ASSIGNEE)
 	public void forward(final Long taskId, final String assignee) {
 		final Task task = taskRepository.read(taskId);

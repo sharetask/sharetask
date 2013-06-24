@@ -121,7 +121,7 @@ shareTaskApp.service('Task', ['$rootScope', '$resource', '$http', function($root
 	
 	this.forward = function(input, success, error) {
 		console.log("Forward task (id: %s) on workspace (id: %s) to user (id: %s)", input.taskId, input.workspaceId, input.username);
-		return $http.post($rootScope.appBaseUrl+"api/workspace/"+input.workspaceId+"/task/"+input.taskId+"/forward", {assignee: input.username}).success(success).error(error);
+		return $http.post($rootScope.appBaseUrl+"api/workspace/"+input.workspaceId+"/task/"+input.taskId+"/forward", {username: input.username}).success(success).error(error);
 	};
 	
 	this.getComments = function(input, success, error) {
