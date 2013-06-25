@@ -4,14 +4,15 @@
 	<!ENTITY LOGGING_DIRECTORY "${definition.directory.log}">
 ]>
 
-<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="true">
 
 	<appender name="app-info" class="org.apache.log4j.rolling.RollingFileAppender">
 		<param name="Append" value="true" />
 		<param name="File" value="&LOGGING_DIRECTORY;app_info.log" />
 		<param name="Threshold" value="INFO" />
+		<param name="encoding" value="UTF-8" />
 		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
-			<param name="FileNamePattern" value="&LOGGING_DIRECTORY;app_info.%d.gz" />
+			<param name="FileNamePattern" value="&LOGGING_DIRECTORY;app_info.%d.log.gz" />
 		</rollingPolicy>
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="&CONVERSION_PATTERN;" />
@@ -22,8 +23,9 @@
 		<param name="Append" value="true" />
 		<param name="File" value="&LOGGING_DIRECTORY;app_warn.log" />
 		<param name="Threshold" value="WARN" />
+		<param name="encoding" value="UTF-8" />
 		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
-			<param name="FileNamePattern" value="&LOGGING_DIRECTORY;app_warn.%d.gz" />
+			<param name="FileNamePattern" value="&LOGGING_DIRECTORY;app_warn.%d.log.gz" />
 		</rollingPolicy>
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="&CONVERSION_PATTERN;" />
