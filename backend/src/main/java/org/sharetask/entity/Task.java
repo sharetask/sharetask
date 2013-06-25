@@ -56,7 +56,7 @@ import com.google.common.collect.ImmutableList;
  * @author Michal Bocek
  * @since 1.0.0
  */
-@ToString
+@ToString(exclude = "workspace")
 @Entity
 @Table(name = "TASK")
 @NamedQueries(value = { 
@@ -132,7 +132,7 @@ public class Task extends BaseEntity implements Serializable {
 	}
 	
 	public Date getDueDate() {
-		return this.dueDate == null ? null : (Date)this.dueDate.clone();
+		return dueDate == null ? null : (Date)dueDate.clone();
 	}
 	
 	public void setDueDate(final Date dueDate) {
@@ -140,19 +140,19 @@ public class Task extends BaseEntity implements Serializable {
 	}
 	
 	public List<Event> getEvents() {
-		return ImmutableList.copyOf(this.events);
+		return ImmutableList.copyOf(events);
 	}
 
 	public final void addEvent(final Event event) {
-		this.events.add(event);
+		events.add(event);
 	}
 
 	public List<Comment> getComments() {
-		return ImmutableList.copyOf(this.comments);
+		return ImmutableList.copyOf(comments);
 	}
 
 	public final void addComment(final Comment comment) {
-		this.comments.add(comment);
+		comments.add(comment);
 	}
 
 	public void finish() {
