@@ -23,6 +23,7 @@
 
 <spring:eval expression="@applicationProps['application.version']" var="applicationVersion" />
 <spring:eval expression="@applicationProps['application.revision']" var="applicationRevision" />
+<spring:eval expression="@applicationProps['log.level']" var="logLevel" />
 
 <!doctype html>
 <html lang="en" ng-app="shareTaskApp">
@@ -71,16 +72,16 @@
 			angular.module('shareTaskApp', ['shareTaskApp.filters', 'shareTaskApp.services', 'shareTaskApp.directives', 'shareTaskApp.controllers'])
 				.config(['$routeProvider', function($routeProvider) {
 					$routeProvider.when('/', {templateUrl: '<c:url value="/resources-webapp-${applicationVersion}/views/index.html" />'});
-					//$routeProvider.when('/register', {templateUrl: '<c:url value="/resources-webapp-${applicationVersion}/views/register.html" />'});
 					$routeProvider.when('/tasks', {templateUrl: '<c:url value="/resources-webapp-${applicationVersion}/views/tasks.html" />'});
 					$routeProvider.when('/admin', {templateUrl: '<c:url value="/resources-webapp-${applicationVersion}/views/admin.html" />'});
 					$routeProvider.when('/user', {templateUrl: '<c:url value="/resources-webapp-${applicationVersion}/views/user.html" />'});
 					$routeProvider.otherwise({redirectTo: '/'});
 				}])
-				.run(['$rootScope', function ($rootScope) {
+				.run(['$rootScope', 'Logger', function ($rootScope, Logger) {
 					$rootScope.appBaseUrl = '<c:url value="/" />';
 					$rootScope.appVersion = '${applicationVersion}';
 					$rootScope.appLocale = {language: '<c:out value="${pageContext.request.locale.language}" />', country: '<c:out value="${pageContext.request.locale.country}" />'};
+					Logger.init('${logLevel}');
 				}]);
 		</script>
 	</body>

@@ -22,7 +22,7 @@
 angular.module('shareTaskApp.filters', []).
 	filter('filterTasks', ['Workspace', function(Workspace) {
 		return function(filter, tasks) {
-			console.log("filter: %o", filter);
+			Log.debug("filter: %o", filter);
 			var newTasks = [];
 			angular.forEach(tasks, function(task) {
 				
@@ -86,7 +86,7 @@ angular.module('shareTaskApp.filters', []).
 	}])
 	.filter('queueTasksCount', ['Workspace', function(Workspace) {
 		return function(tasks, queueName) {
-			//console.log("queueTasksCount: queueName: %s", queueName);
+			//Log.debug("queueTasksCount: queueName: %s", queueName);
 			var count = 0;
 			if (!jQuery.isEmptyObject(tasks)) {
 				angular.forEach(tasks, function(task) {
@@ -122,7 +122,7 @@ angular.module('shareTaskApp.filters', []).
 	}])
 	.filter('orderName', ['Workspace', function(Workspace) {
 		return function(input) {
-			//console.log("orderName: %o", input);
+			//Log.debug("orderName: %o", input);
 			if (input == "TASK_DUE_DATE") { return "_ByDueDate_"; }
 			else if (input == "TASK_TITLE") { return "_ByName_"; }
 			else if (input == "TASK_AUTHOR") { return "_ByAuthor_"; }
@@ -131,7 +131,7 @@ angular.module('shareTaskApp.filters', []).
 	}])
 	.filter('taskQueueName', ['Workspace', function(Workspace) {
 		return function(input) {
-			//console.log("orderName: %o", input);
+			//Log.debug("orderName: %o", input);
 			if (input == "MY_PENDING") { return "_PendingTasks_"; }
 			else if (input == "MY_TODAY") { return "_TodayTasks_"; }
 			else if (input == "MY_OVERDUE") { return "_OverdueTasks_"; }
@@ -142,7 +142,7 @@ angular.module('shareTaskApp.filters', []).
 	}])
 	.filter('priorityName', ['Workspace', function(Workspace) {
 		return function(input) {
-			//console.log("priorityName: %o", input);
+			//Log.debug("priorityName: %o", input);
 			if (input == "LOW") { return "_Low_"; }
 			else if (input === "MEDIUM") { return "_Standard_"; }
 			else if (input === "HIGH") { return "_High_"; }

@@ -125,8 +125,8 @@ angular.module('shareTaskApp.directives', []).
 				}
 				
 				scope.$watch(model, function(newModel, oldModel) {
-					//console.log("new model, %o", new Date(newModel));
-					//console.log("old model, %o", oldModel);
+					//Log.debug("new model, %o", new Date(newModel));
+					//Log.debug("old model, %o", oldModel);
 					//dpCtrl.setDate(new Date(newModel));
 					dpCtrl.datepicker("setDate", new Date(newModel));
 				});
@@ -138,15 +138,15 @@ angular.module('shareTaskApp.directives', []).
 			restrict: 'E',
 			templateUrl: 'resources-webapp-'+$rootScope.appVersion+'/views/components/app-menu.html',
 			link: function(scope, element, attrs) {
-				console.log("scope: %o, element: %o, attrs: %o", scope, element, attrs);
+				Log.debug("scope: %o, element: %o, attrs: %o", scope, element, attrs);
 			},
 			controller: ['$rootScope', '$scope', '$element', '$attrs', '$transclude', '$location', '$window', 'LocalStorage', function($rootScope, $scope, $element, $attrs, $transclude, $location, $window, LocalStorage) {
 				
 				$scope.currentPage = $rootScope.currentPage;
-				console.log("current page: %o", $rootScope.currentPage);
+				Log.debug("current page: %o", $rootScope.currentPage);
 				
 				$scope.logout = function() {
-					console.log("Logout user: %s", $rootScope.loggedUser.username);
+					Log.debug("Logout user: %s", $rootScope.loggedUser.username);
 					$rootScope.loggedUser = {};
 					LocalStorage.remove('logged-user');
 					//$location.path("/");
@@ -161,30 +161,30 @@ angular.module('shareTaskApp.directives', []).
 			templateUrl: 'resources-webapp-'+$rootScope.appVersion+'/views/components/calendar.html',
 			scope: {tasks:'=model'},
 			link: function(scope, element, attrs) {
-				console.log("Calendar - scope: %o, element: %o, attrs: %o", scope, element, attrs);
+				Log.debug("Calendar - scope: %o, element: %o, attrs: %o", scope, element, attrs);
 			},
 			controller: ['$rootScope', '$scope', '$element', '$attrs', '$transclude', '$location', 'LocalStorage', function($rootScope, $scope, $element, $attrs, $transclude, $location, LocalStorage) {
-				console.log("Calendar - scope: %o, element: %o, attrs: %o", $scope, $element, $attrs);
+				Log.debug("Calendar - scope: %o, element: %o, attrs: %o", $scope, $element, $attrs);
 				
 				$scope.todayDate = new Date();
 				$scope.todayDay = $scope.todayDate.getDay();
-				console.log("Calendar - today day: %s", $scope.todayDay);
+				Log.debug("Calendar - today day: %s", $scope.todayDay);
 				
 				$scope.startDate = new Date(new Date().setDate($scope.todayDate.getDate() - $scope.todayDay + 1));
-				console.log("Calendar - start date: %o", new Date($scope.startDate));
+				Log.debug("Calendar - start date: %o", new Date($scope.startDate));
 				
 				$scope.days = [];
 				for (var i = 0; i < 7; i++) {
 					$scope.days.push(new Date(new Date().setDate($scope.startDate.getDate() + i)));
 				}
-				console.log("Calendar - days: %o", $scope.days);
+				Log.debug("Calendar - days: %o", $scope.days);
 				
 				$scope.$watch('tasks', function(newModel, oldModel) {
-					console.log("new model, %o", newModel);
-					console.log("old model, %o", oldModel);
+					Log.debug("new model, %o", newModel);
+					Log.debug("old model, %o", oldModel);
 					if (newModel !== undefined && oldModel === undefined) {
 						$scope.tasks = newModel;
-						console.log("Calendar - tasks: %o", $scope.tasks);
+						Log.debug("Calendar - tasks: %o", $scope.tasks);
 					}
 				});
 				
@@ -195,11 +195,11 @@ angular.module('shareTaskApp.directives', []).
 		return {
 			//scope: {trigger: '=ngModel'},
 			link: function(scope, element, attrs) {
-				//console.log("Focus - scope: %o, element: %o, attrs: %o", scope, element, attrs);
-				//console.log("Focus - attrs.focus: %s", attrs.focus);
+				//Log.debug("Focus - scope: %o, element: %o, attrs: %o", scope, element, attrs);
+				//Log.debug("Focus - attrs.focus: %s", attrs.focus);
 				scope.$watch(attrs.focus, function(value) {
-					//console.log("Focus - scope: %o, element: %o, attrs: %o", scope, element, attrs);
-					//console.log("Focus - trigger value: %o", value);
+					//Log.debug("Focus - scope: %o, element: %o, attrs: %o", scope, element, attrs);
+					//Log.debug("Focus - trigger value: %o", value);
 					if (value === true) {
 						element[0].focus();
 						//scope.trigger = false;

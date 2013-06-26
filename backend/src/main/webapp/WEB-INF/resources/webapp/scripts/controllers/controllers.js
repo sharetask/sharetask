@@ -18,22 +18,20 @@
  */
 'use strict';
 
-//var $jq = jQuery.noConflict();
-
 /* Controllers */
-angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 'localization']).
-	controller('AuthCtrl', ['$scope', '$location', '$rootScope', '$window', 'localize', 'User', 'LocalStorage', function($scope, $location, $rootScope, $window, localize, User, LocalStorage) {
+angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 'localization'])
+	.controller('AuthCtrl', ['$scope', '$location', '$rootScope', '$window', 'localize', 'User', 'LocalStorage', 'Logger', function($scope, $location, $rootScope, $window, localize, User, LocalStorage, Logger) {
 		
 		$scope.loginData = {processing: false, result: 0};
 		
 		// get logged user from local storage
 		$rootScope.loggedUser = LocalStorage.get('logged-user');
-		console.log("Logged user: %o", $rootScope.loggedUser);
+		Log.debug("Logged user: %o", $rootScope.loggedUser);
 		
 		// redirect to tasks page if user is already logged in
 		// FIXME - user should be authenticate again
 		if (!jQuery.isEmptyObject($rootScope.loggedUser)) {
-			console.log("User (user: %o) is already logged in. Redirect to tasks page.", $rootScope.loggedUser);
+			Log.debug("User (user: %o) is already logged in. Redirect to tasks page.", $rootScope.loggedUser);
 			$location.path("/tasks");
 		}
 		
@@ -42,19 +40,19 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		 * User is redirected to tasks page.
 		 */
 		$scope.login = function() {
-			console.log("Login user (username: %s) with password (password: %s)", $scope.user.username, $scope.user.password);
+			Log.debug("Login user (username: %s) with password (password: %s)", $scope.user.username, $scope.user.password);
 			$scope.loginData.processing = true;
 			User.authenticate({username: $scope.user.username, password: $scope.user.password}, function(data, status) {
-					console.log("User auth success! data: %o, status: %o", data, status);
+					Log.debug("User auth success! data: %o, status: %o", data, status);
 					// get user profile info
 					User.get({username: $scope.user.username}, function(data, status) {
-							console.log("User get success! data: %o, status: %o", data, status);
+							Log.debug("User get success! data: %o, status: %o", data, status);
 							$rootScope.loggedUser = data;
 							$rootScope.loggedUser.password = $scope.user.password;
 							LocalStorage.store('logged-user', $rootScope.loggedUser);
 							$location.path("/tasks");
 						}, function(data, status) {
-							console.log("Auth error! data: %o, status: %o", data, status);
+							Log.debug("Auth error! data: %o, status: %o", data, status);
 							$scope.user = {};
 							$rootScope.loggedUser = {};
 							LocalStorage.remove('logged-user');
@@ -62,7 +60,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 					$scope.loginData.result = 1;
 					$scope.loginData.processing = false;
 				}, function(data, status) {
-					console.log("User auth error! data: %o, status: %o", data, status);
+					Log.debug("User auth error! data: %o, status: %o", data, status);
 					$scope.user = {};
 					$rootScope.loggedUser = {};
 					LocalStorage.remove('logged-user');
@@ -71,7 +69,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 				});
 		};
 	}])
-	.controller('AppCtrl', ['$scope', '$location', '$rootScope', '$filter', '$timeout', '$window', 'localize', 'Workspace', 'Task', 'User', 'LocalStorage', 'ErrorHandling', function($scope, $location, $rootScope, $filter, $timeout, $window, localize, Workspace, Task, User, LocalStorage, ErrorHandling) {
+	.controller('AppCtrl', ['$scope', '$location', '$rootScope', '$filter', '$timeout', '$window', 'localize', 'Workspace', 'Task', 'User', 'LocalStorage', 'ErrorHandling', 'Logger', function($scope, $location, $rootScope, $filter, $timeout, $window, localize, Workspace, Task, User, LocalStorage, ErrorHandling, Logger) {
 		
 		$scope.errorMessageOnTaskList = '';
 		$scope.viewPanelTaskFilter = true;
@@ -89,7 +87,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		var taskFilter = $filter('filterTasks');
 		//var i18nFilter = $filter('i18n');
 		//$scope.nextWorkspacesTitle = i18nFilter('_NextWorkspaces_');
-		//console.log("nextWorkspacesTitle: %o", $scope.nextWorkspacesTitle);
+		//Log.debug("nextWorkspacesTitle: %o", $scope.nextWorkspacesTitle);
 		
 		/**
 		 * Logout user.
@@ -106,7 +104,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		 */
 		/*
 		$scope.setActiveWorkspace = function(id) {
-			console.log("Setting active workspace (id: %s)", id);
+			Log.debug("Setting active workspace (id: %s)", id);
 			$scope.$broadcast('EVENT_SET_ACTIVE_WORKSPACE', {workspaceId: id});
 		};
 		*/
@@ -116,7 +114,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		 */
 		/*
 		$scope.$on('EVENT_SET_ACTIVE_WORKSPACE', function(event, data) {
-			console.log("Received broadcast message 'EVENT_SET_ACTIVE_WORKSPACE' (data: %o)", data);
+			Log.debug("Received broadcast message 'EVENT_SET_ACTIVE_WORKSPACE' (data: %o)", data);
 			$scope.selectedWorkspaceId = data.workspaceId;
 			$scope.loadTasks();
 		});
@@ -128,7 +126,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		 */
 		$scope.keyPressed = function(e) {
 			if (e.target.tagName === 'BODY') {
-				console.log("key pressed: %o", e);
+				Log.debug("key pressed: %o", e);
 				switch (e.which) {
 					case 110:
 						// key 'n' pressed - add new task
@@ -185,16 +183,16 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		 * Loading all workspaces from server.
 		 */
 		$scope.loadWorkspaces = function() {
-			console.log("Load all workspaces");
+			Log.debug("Load all workspaces");
 			Workspace.find({type: 'MEMBER'}, function(data, status) {
-					console.log("Workspace find success! data: %o, status: %o", data, status);
+					Log.debug("Workspace find success! data: %o, status: %o", data, status);
 					if (data.length) {
 						$scope.workspaces = data;
 						$scope.selectedWorkspace = data[0];
 						$scope.loadTasks();
 					}
 				}, function(data, status) {
-					console.log("Workspace find error!");
+					Log.debug("Workspace find error!");
 					ErrorHandling.handle(data, status);
 				});
 		};
@@ -205,16 +203,16 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		 * Workspace data are stored to server.
 		 */
 		$scope.addWorkspace = function() {
-			console.log("Add new workspace (workspaceTitle: %s)", $scope.newWorkspaceTitle);
+			Log.debug("Add new workspace (workspaceTitle: %s)", $scope.newWorkspaceTitle);
 			var workspace = {title: $scope.newWorkspaceTitle, owner: {username: $rootScope.loggedUser.username}};
-			console.log("Workspace: %o", workspace);
+			Log.debug("Workspace: %o", workspace);
 			Workspace.create({workspace: workspace}, function(data, status) {
-					console.log("Workspace create success! data: %o, status: %o", data, status);
+					Log.debug("Workspace create success! data: %o, status: %o", data, status);
 					$scope.workspaces.push(data);
 					$scope.newWorkspaceTitle = '';
 					$scope.setEditMode('');
 				}, function(data, status) {
-					console.log("Workspace create error!");
+					Log.debug("Workspace create error!");
 					ErrorHandling.handle(data, status);
 				});
 		};
@@ -224,7 +222,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		 * @param {object} workspace - Workspace.
 		 */
 		$scope.setSelectedWorkspace = function(workspace) {
-			console.log("Set selected workspace (workspace: %o)", workspace);
+			Log.debug("Set selected workspace (workspace: %o)", workspace);
 			$scope.selectedWorkspace = workspace;
 			$scope.loadTasks();
 		};
@@ -233,14 +231,15 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		 * Load all active tasks for selected workspace.
 		 */
 		$scope.loadTasks = function() {
-			console.log("Load all active tasks for workspace (id: %s)", $scope.selectedWorkspace.id);
+			Log.debug("Load all active tasks for workspace (id: %s)", $scope.selectedWorkspace.id);
 			Workspace.getActiveTasks({workspaceId: $scope.selectedWorkspace.id}, function(data, status) {
-					console.log("Workspace getActiveTasks success! data: %o, status: %o", data, status);
+					Log.debug("Workspace getActiveTasks success! data: %o, status: %o", data, status);
+					//Logger.debug("Workspace getActiveTasks success! data: %o, status: %o", data, status);
 					$scope.newTasks = [];
 					$scope.allTasks = data;
 					$scope.setTaskFilterQueue($scope.filter.queue);
 				}, function(data, status) {
-					console.log("Workspace getActiveTasks error!");
+					Log.debug("Workspace getActiveTasks error!");
 					ErrorHandling.handle(data, status);
 			});
 		};
@@ -251,7 +250,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		 * @param {string} queue - Queue name.
 		 */
 		$scope.setTaskFilterQueue = function(queue) {
-			console.log("Set filter queue: %s", queue);
+			Log.debug("Set filter queue: %s", queue);
 			$scope.filter.queue = queue;
 			$scope.filterTasks();
 			if (!jQuery.isEmptyObject($scope.tasks)) {
@@ -281,7 +280,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 				}
 			});
 			$scope.tags = taskTags;
-			console.log("Tags parsed for queue: %o", $scope.tags);
+			Log.debug("Tags parsed for queue: %o", $scope.tags);
 		};
 		
 		/**
@@ -291,7 +290,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		 * @param {string} tag - Tag name.
 		 */
 		$scope.setTaskFilterTag = function(tag) {
-			console.log("Set filter tag: %s", tag);
+			Log.debug("Set filter tag: %s", tag);
 			if (tag == $scope.filter.tag) {
 				$scope.filter.tag = '';
 			}
@@ -313,7 +312,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		 * Presented tasks are filtered and ordered according current filter settings.
 		 */
 		$scope.filterTasks = function(selectedTaskId) {
-			console.log("Filter tasks: %o, selectedTaskId: %s", $scope.filter, selectedTaskId);
+			Log.debug("Filter tasks: %o, selectedTaskId: %s", $scope.filter, selectedTaskId);
 			$scope.tasks = taskFilter($scope.filter, this.allTasks);
 			$scope.tasks = $filter('orderBy')(this.tasks, this.orderTasks);
 			// set selected task
@@ -339,7 +338,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		 * @param {string} orderBy - Order by name.
 		 */
 		$scope.setTaskOrdering = function(orderBy) {
-			console.log("Set task ordering to: %s", orderBy);
+			Log.debug("Set task ordering to: %s", orderBy);
 			$scope.filter.orderBy = orderBy;
 			$scope.filterTasks();
 		};
@@ -349,18 +348,18 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		 * @param {number} taskId - Task ID.
 		 */
 		$scope.setSelectedTask = function(taskId) {
-			console.log("Set selected task (id: %s)", taskId);
+			Log.debug("Set selected task (id: %s)", taskId);
 			var tasks = $.grep($scope.tasks, function(e) {
 				return e.id == taskId;
 			});
 			$scope.selectedTask = tasks[0];
-			console.log("Selected task: %o", $scope.selectedTask);
+			Log.debug("Selected task: %o", $scope.selectedTask);
 			// get task comments
 			Task.getComments({workspaceId: $scope.selectedWorkspace.id, taskId: $scope.selectedTask.id}, function(data, status) {
-					console.log("Task getComments success! data: %o, status: %o", data, status);
+					Log.debug("Task getComments success! data: %o, status: %o", data, status);
 					$scope.selectedTask.comments = data;
 				}, function(data, status) {
-					console.log("Task getComments error!");
+					Log.debug("Task getComments error!");
 					ErrorHandling.handle(data, status);
 				});
 		};
@@ -380,7 +379,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		 * Task is stored to server.
 		 */
 		$scope.addTaskTag = function() {
-			console.log("Add new tag to task, id: %s, tag: %s", $scope.selectedTask.id, $scope.newTag);
+			Log.debug("Add new tag to task, id: %s, tag: %s", $scope.selectedTask.id, $scope.newTag);
 			if ($scope.selectedTask.tags === null) {
 				$scope.selectedTask.tags = [];
 			}
@@ -396,10 +395,10 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		 * Task is stored to server.
 		 */
 		$scope.addTaskTagDragDrop = function(event, ui) {
-			console.log("Add new tag to task, id: %s, tag: %s", this.task.id, ui.draggable.context.textContent);
-			console.log("onDropFunc (event: %o, ui: %o)", event, ui);
-			console.log("onDropFunc (draggable context: %o)", ui.draggable.context.textContent);
-			console.log("onDropFunc (task.tags: %o)", this.task);
+			Log.debug("Add new tag to task, id: %s, tag: %s", this.task.id, ui.draggable.context.textContent);
+			Log.debug("onDropFunc (event: %o, ui: %o)", event, ui);
+			Log.debug("onDropFunc (draggable context: %o)", ui.draggable.context.textContent);
+			Log.debug("onDropFunc (task.tags: %o)", this.task);
 			// add tag
 			this.task.tags.push(ui.draggable.context.textContent);
 			// update task
@@ -413,18 +412,18 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		 * @param {string} tag - Tag name.
 		 */
 		$scope.removeTag = function(taskId, tag) {
-			console.log("Remove task tag, id: %s, tag: %s", taskId, tag);
+			Log.debug("Remove task tag, id: %s, tag: %s", taskId, tag);
 			// get task
 			var task = $.grep($scope.tasks, function(e) {
 				return e.id == taskId;
 			});
 			// remove tag from task
 			var newTags = $.grep(task[0].tags, function(e) {
-				console.log("%s : %o", tag, e);
+				Log.debug("%s : %o", tag, e);
 				return e != tag;
 			});
 			task[0].tags = newTags;
-			console.log("new tags: %o", task[0].tags);
+			Log.debug("new tags: %o", task[0].tags);
 		};
 		
 		/**
@@ -433,7 +432,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		 * @param {string} mode - Edit mode.
 		 */
 		$scope.setEditMode = function(mode) {
-			console.log("Switch edit mode to: %s", mode);
+			Log.debug("Switch edit mode to: %s", mode);
 			if (mode == this.taskEditMode) {
 				$scope.taskEditMode = "";
 			}
@@ -454,26 +453,26 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		 * @param {string} element - Element name.
 		 */
 		$scope.setView = function(element) {
-			console.log("Set view for element: %s", element);
+			Log.debug("Set view for element: %s", element);
 			if (element == 'PANEL-TASK-FILTER') {
 				//$scope.viewPanelTaskFilter === true ? $scope.viewPanelTaskFilter = false : $scope.viewPanelTaskFilter = true;
 				$scope.viewPanelTaskFilter = !$scope.viewPanelTaskFilter;
-				console.log("viewPanelTaskFilter set to: %s", $scope.viewPanelTaskFilter);
+				Log.debug("viewPanelTaskFilter set to: %s", $scope.viewPanelTaskFilter);
 			}
 			if (element == 'TASK-DUE-DATE-PICKER') {
 				if ($scope.selectedTask.state == 'FINISHED') {
-					console.log("Task (id: %s) already completed", $scope.selectedTask.id);
+					Log.debug("Task (id: %s) already completed", $scope.selectedTask.id);
 					return;
 				}
 				$scope.viewTaskDueDatePicker = !$scope.viewTaskDueDatePicker;
 				$scope.viewTaskCreatedDatePicker = false;
-				console.log("viewTaskDueDatePicker set to: %s", $scope.viewTaskDueDatePicker);
+				Log.debug("viewTaskDueDatePicker set to: %s", $scope.viewTaskDueDatePicker);
 			}
 			/*
 			if (element == 'TASK-CREATED-DATE-PICKER') {
 				$scope.viewTaskCreatedDatePicker = !$scope.viewTaskCreatedDatePicker;
 				$scope.viewTaskDueDatePicker = false;
-				console.log("viewTaskCreatedDatePicker set to: %s", $scope.viewTaskCreatedDatePicker);
+				Log.debug("viewTaskCreatedDatePicker set to: %s", $scope.viewTaskCreatedDatePicker);
 			}
 			*/
 		};
@@ -484,7 +483,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		 * @param {object} task - Task.
 		 */
 		$scope.updateTask = function(task) {
-			console.log("Update task data (task: %o)", task);
+			Log.debug("Update task data (task: %o)", task);
 			$scope.taskEditMode = '';
 			$scope.selectedTask = task;
 			var result = $.grep(this.tasks, function(e) {
@@ -495,9 +494,9 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 			result[0].tags = task.tags;
 			delete(result[0].comments);
 			Task.update({workspaceId: $scope.selectedWorkspace.id, task: task}, function(data, status) {
-					console.log("Task update success! data: %o, status: %o", data, status);
+					Log.debug("Task update success! data: %o, status: %o", data, status);
 				}, function(data, status) {
-					console.log("Task update error!");
+					Log.debug("Task update error!");
 					ErrorHandling.handle(data, status);
 				});
 			LocalStorage.store('workspace-' + $scope.selectedWorkspace.id, $scope.allTasks);
@@ -508,7 +507,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		 * Changing task queue filter.
 		 */
 		$scope.changeTaskQueue = function() {
-			console.log("Change task filter queue (queue: %s)", $scope.filter.queue);
+			Log.debug("Change task filter queue (queue: %s)", $scope.filter.queue);
 			if ($scope.filter.queue == 'MY_PENDING') { $scope.setTaskFilterQueue('MY_TODAY'); }
 			else if ($scope.filter.queue == 'MY_TODAY') { $scope.setTaskFilterQueue('MY_OVERDUE'); }
 			else if ($scope.filter.queue == 'MY_OVERDUE') { $scope.setTaskFilterQueue('MY_HIGH_PRIORITY'); }
@@ -524,9 +523,9 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 			if ($scope.selectedTask == null) {
 				return;
 			}
-			console.log("Change task priority (id: %s, priority: %s)", $scope.selectedTask.id, $scope.selectedTask.priority);
+			Log.debug("Change task priority (id: %s, priority: %s)", $scope.selectedTask.id, $scope.selectedTask.priority);
 			if ($scope.selectedTask.state == 'FINISHED') {
-				console.log("Task (id: %s) already completed", $scope.selectedTask.id);
+				Log.debug("Task (id: %s) already completed", $scope.selectedTask.id);
 				return;
 			}
 			if ($scope.selectedTask.priority == 'LOW') { $scope.selectedTask.priority = 'MEDIUM'; }
@@ -541,13 +540,13 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		 * Task data are stored to server.
 		 */
 		$scope.addTask = function() {
-			console.log("Add new task (taskTitle: %o)", $scope);
+			Log.debug("Add new task (taskTitle: %o)", $scope);
 			var createdByObj = {username: $rootScope.loggedUser.username};
 			var assigneeObj = {username: $rootScope.loggedUser.username};
 			var task = {title: $scope.newTaskTitle, createdBy: createdByObj, assignee: assigneeObj, createdOn: new Date(), priority: 'MEDIUM'};
-			console.log("Task: %o", task);
+			Log.debug("Task: %o", task);
 			Task.create({workspaceId: $scope.selectedWorkspace.id, task: task}, function(data, status) {
-					console.log("Task create success! data: %o, status: %o", data, status);
+					Log.debug("Task create success! data: %o, status: %o", data, status);
 					
 					
 					$scope.allTasks.push(data);
@@ -557,19 +556,19 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 					$scope.setEditMode('');
 					/*
 					Task.forward({workspaceId: $scope.selectedWorkspace.id, taskId: data.id, username: $rootScope.loggedUser.username}, function(data, status) {
-							console.log("Task forward success! data: %o, status: %o", data, status);
+							Log.debug("Task forward success! data: %o, status: %o", data, status);
 							$scope.allTasks.push(data);
 							LocalStorage.store('workspace-' + $scope.selectedWorkspace.id, $scope.allTasks);
 							$scope.filterTasks(data.id);
 							$scope.newTaskTitle = '';
 							$scope.setEditMode('');
 						}, function(data, status) {
-							console.log("Task forward error!");
+							Log.debug("Task forward error!");
 							ErrorHandling.handle(data, status);
 						});
 					*/
 				}, function(data, status) {
-					console.log("Task create error!");
+					Log.debug("Task create error!");
 					ErrorHandling.handle(data, status);
 				});
 		};
@@ -579,13 +578,13 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		 * Task data are stored to server.
 		 */
 		$scope.forwardTask = function(user) {
-			console.log("Forward task (id: %s) to user (user: %o)", $scope.selectedTask.id, user);
+			Log.debug("Forward task (id: %s) to user (user: %o)", $scope.selectedTask.id, user);
 			if ($scope.selectedTask.state == 'FINISHED') {
-				console.log("Task (id: %s) already completed", $scope.selectedTask.id);
+				Log.debug("Task (id: %s) already completed", $scope.selectedTask.id);
 				return;
 			}
 			Task.forward({workspaceId: $scope.selectedWorkspace.id, taskId: $scope.selectedTask.id, username: user.username}, function(data, status) {
-					console.log("Task forward success! data: %o, status: %o", data, status);
+					Log.debug("Task forward success! data: %o, status: %o", data, status);
 					var task = $.grep($scope.tasks, function(e) {
 						return e.id == $scope.selectedTask.id;
 					});
@@ -596,7 +595,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 					$scope.setSelectedTask($scope.tasks[0].id);
 					$scope.setEditMode('');
 				}, function(data, status) {
-					console.log("Task forward error!");
+					Log.debug("Task forward error!");
 					ErrorHandling.handle(data, status);
 				});
 		};
@@ -607,12 +606,12 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		 * Task data are stored to server.
 		 */
 		$scope.deleteTask = function(bulk) {
-			console.log("Delete task (bulk: %s)", bulk);
+			Log.debug("Delete task (bulk: %s)", bulk);
 			if (!bulk) {
 				// delete selected task
-				console.log("Delete task (id: %s)", $scope.selectedTask.id);
+				Log.debug("Delete task (id: %s)", $scope.selectedTask.id);
 				Task.remove({workspaceId: $scope.selectedWorkspace.id, taskId: $scope.selectedTask.id}, function(data, status) {
-						console.log("Task remove success! data: %o, status: %o", data, status);
+						Log.debug("Task remove success! data: %o, status: %o", data, status);
 						var tasks = $.grep($scope.allTasks, function(e) {
 							return e.id != $scope.selectedTask.id;
 						});
@@ -624,7 +623,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 						}
 						$scope.setEditMode('');
 					}, function(data, status) {
-						console.log("Task remove error!");
+						Log.debug("Task remove error!");
 						ErrorHandling.handle(data, status);
 						$scope.errorMessageOnTaskList = 'Error deleting task "'+$scope.selectedTask.title+'".';
 					});
@@ -635,9 +634,9 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 					return e.checked == true;
 				});
 				angular.forEach(checkedTasks, function(value, key) {
-					console.log("Delete task (id: %s)", value.id);
+					Log.debug("Delete task (id: %s)", value.id);
 					Task.remove({workspaceId: $scope.selectedWorkspace.id, taskId: value.id}, function(data, status) {
-							console.log("Task remove success! data: %o, status: %o", data, status);
+							Log.debug("Task remove success! data: %o, status: %o", data, status);
 							var tasks = $.grep($scope.allTasks, function(e) {
 								return e.id != $scope.selectedTask.id;
 							});
@@ -649,7 +648,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 							}
 							$scope.setEditMode('');
 						}, function(data, status) {
-							console.log("Task remove error!");
+							Log.debug("Task remove error!");
 							ErrorHandling.handle(data, status);
 							$scope.errorMessageOnTaskList = 'Error deleting selected tasks.';
 						});
@@ -664,16 +663,16 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		 * Task data are stored to server.
 		 */
 		$scope.completeTask = function(bulk) {
-			console.log("Complete task (bulk: %s)", bulk);
+			Log.debug("Complete task (bulk: %s)", bulk);
 			if ($scope.selectedTask.state == 'FINISHED') {
-				console.log("Task (id: %s) already completed", $scope.selectedTask.id);
+				Log.debug("Task (id: %s) already completed", $scope.selectedTask.id);
 				return;
 			}
 			if (!bulk) {
 				// complete selected task
-				console.log("Complete task (id: %s)", $scope.selectedTask.id);
+				Log.debug("Complete task (id: %s)", $scope.selectedTask.id);
 				Task.complete({workspaceId: $scope.selectedWorkspace.id, taskId: $scope.selectedTask.id}, function(data, status) {
-						console.log("Task complete success! data: %o, status: %o", data, status);
+						Log.debug("Task complete success! data: %o, status: %o", data, status);
 						var task = $.grep($scope.tasks, function(e) {
 							return e.id == $scope.selectedTask.id;
 						});
@@ -687,7 +686,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 						}
 						$scope.setEditMode('');
 					}, function(data, status) {
-						console.log("Task complete error!");
+						Log.debug("Task complete error!");
 						ErrorHandling.handle(data, status);
 					});
 			}
@@ -698,9 +697,9 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 				});
 				angular.forEach(checkedTasks, function(value, key) {
 					if (value.state != 'FINISHED') {
-						console.log("Complete task (id: %s)", value.id);
+						Log.debug("Complete task (id: %s)", value.id);
 						Task.complete({workspaceId: $scope.selectedWorkspace.id, taskId: value.id}, function(data, status) {
-								console.log("Task complete success! data: %o, status: %o", data, status);
+								Log.debug("Task complete success! data: %o, status: %o", data, status);
 								var task = $.grep($scope.tasks, function(e) {
 									return e.id == value.id;
 								});
@@ -714,7 +713,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 								}
 								$scope.setEditMode('');
 							}, function(data, status) {
-								console.log("Task complete error!");
+								Log.debug("Task complete error!");
 								ErrorHandling.handle(data, status);
 							});
 					}
@@ -728,10 +727,10 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		 * New comment is stored to server.
 		 */
 		$scope.addTaskComment = function() {
-			console.log("Add new comment (comment: %o) to task (id: %s)", $scope.newTaskComment, $scope.selectedTask.id);
+			Log.debug("Add new comment (comment: %o) to task (id: %s)", $scope.newTaskComment, $scope.selectedTask.id);
 			if (!jQuery.isEmptyObject($scope.newTaskComment)) {
 				Task.addComment({workspaceId: $scope.selectedWorkspace.id, taskId: $scope.selectedTask.id, comment: $scope.newTaskComment}, function(data, status) {
-						console.log("Task addComment success! data: %o, status: %o", data, status);
+						Log.debug("Task addComment success! data: %o, status: %o", data, status);
 						var createdBy = {username: $rootScope.loggedUser.username, name: $rootScope.loggedUser.name, surName: $rootScope.loggedUser.surName};
 						$scope.newTaskComment.createdBy = createdBy;
 						$scope.newTaskComment.createdOn = new Date();
@@ -739,7 +738,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 						$scope.selectedTask.comments.push($scope.newTaskComment);
 						$scope.newTaskComment = null;
 					}, function(data, status) {
-						console.log("Task addComment error!");
+						Log.debug("Task addComment error!");
 						ErrorHandling.handle(data, status);
 					});
 			}
@@ -750,13 +749,13 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		 * Timer is fired regularly on background.
 		 */
 		$scope.syncTasks = function() {
-			console.log("Starting SyncTasksTimer job");
+			Log.debug("Starting SyncTasksTimer job");
 			$scope.syncTasksTimer = $timeout(function() {
-				console.log("SyncTasksTimer job fired");
+				Log.debug("SyncTasksTimer job fired");
 				$scope.newTasks = [];
-				console.log("Load all active tasks for workspace (id: %s)", $scope.selectedWorkspace.id);
+				Log.debug("Load all active tasks for workspace (id: %s)", $scope.selectedWorkspace.id);
 				Workspace.getActiveTasks({workspaceId: $scope.selectedWorkspace.id}, function(data, status) {
-						console.log("Workspace getActiveTasks success! data: %o, status: %o", data, status);
+						Log.debug("Workspace getActiveTasks success! data: %o, status: %o", data, status);
 						angular.forEach(data, function(task1) {
 							var found = false;
 							angular.forEach($scope.tasks, function(task2) {
@@ -768,24 +767,24 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 								$scope.newTasks.push(task1);
 							}
 						});
-						console.log("There are these new tasks: %o", $scope.newTasks);
+						Log.debug("There are these new tasks: %o", $scope.newTasks);
 					}, function(data, status) {
-						console.log("Workspace getActiveTasks error!");
+						Log.debug("Workspace getActiveTasks error!");
 						ErrorHandling.handle(data, status);
 				});
 	        	$scope.syncTasks();
 			}, 60000);
-	        console.log("SyncTasksTimer (timer: %o) started", $scope.syncTasksTimer);
+	        Log.debug("SyncTasksTimer (timer: %o) started", $scope.syncTasksTimer);
 		};
 		
 		
 		// get logged user from local storage
 		$rootScope.loggedUser = LocalStorage.get('logged-user');
-		console.log("Logged user: %o", $rootScope.loggedUser);
+		Log.debug("Logged user: %o", $rootScope.loggedUser);
 		
 		// redirect to login page if user is not logged in
 		if (jQuery.isEmptyObject($rootScope.loggedUser) || jQuery.isEmptyObject($rootScope.loggedUser.username)) {
-			console.log("Unauthenticated access. Redirect to login page.");
+			Log.debug("Unauthenticated access. Redirect to login page.");
 			//$location.path("/");
 			$window.location.href = $rootScope.appBaseUrl;
 		}
@@ -806,15 +805,15 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		 * Loading all workspaces from server.
 		 */
 		$scope.loadWorkspaces = function() {
-			console.log("Load all workspaces");
+			Log.debug("Load all workspaces");
 			Workspace.find({type: 'OWNER'}, function(data, status) {
-					console.log("Workspace find success! data: %o, status: %o", data, status);
+					Log.debug("Workspace find success! data: %o, status: %o", data, status);
 					if (data.length) {
 						$scope.workspaces = data;
 						$scope.selectedWorkspace = data[0];
 					}
 				}, function(data, status) {
-					console.log("Workspace find error!");
+					Log.debug("Workspace find error!");
 					ErrorHandling.handle(data, status);
 				});
 		};
@@ -824,13 +823,13 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		 * @param {number} id - Workspace ID.
 		 */
 		$scope.setSelectedWorkspace = function(id) {
-			console.log("Set selected workspace (id: %s)", id);
+			Log.debug("Set selected workspace (id: %s)", id);
 			var workspace = $.grep($scope.workspaces, function(e) {
 				return e.id == id;
 			});
 			$scope.selectedWorkspace = workspace[0];
 			$scope.setEditMode('');
-			console.log("Selected workspace: %o", $scope.selectedWorkspace);
+			Log.debug("Selected workspace: %o", $scope.selectedWorkspace);
 		};
 		
 		/**
@@ -838,13 +837,13 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		 * Workspace data are stored to server.
 		 */
 		$scope.addWorkspace = function() {
-			console.log("Add new workspace (workspace: %o)", $scope.newWorkspace);
+			Log.debug("Add new workspace (workspace: %o)", $scope.newWorkspace);
 			$scope.addWorkspaceData.processing = true;
 			$scope.newWorkspace.owner = {username: $rootScope.loggedUser.username};
 			//var workspace = {title: $scope.newWorkspaceTitle, owner: {username: $rootScope.loggedUser.username}};
-			console.log("Workspace: %o", $scope.newWorkspace);
+			Log.debug("Workspace: %o", $scope.newWorkspace);
 			Workspace.create({workspace: $scope.newWorkspace}, function(data, status) {
-					console.log("Workspace create success! data: %o, status: %o", data, status);
+					Log.debug("Workspace create success! data: %o, status: %o", data, status);
 					$scope.workspaces.push(data);
 					$scope.setSelectedWorkspace(data.id);
 					$scope.addWorkspaceData.result = 1;
@@ -852,7 +851,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 					$scope.newWorkspace = null;
 					$scope.setEditMode('');
 				}, function(data, status) {
-					console.log("Workspace create error!");
+					Log.debug("Workspace create error!");
 					ErrorHandling.handle(data, status);
 					$scope.addWorkspaceData.result = -1;
 					$scope.addWorkspaceData.processing = false;
@@ -864,14 +863,14 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		 * Workspace data are stored to server.
 		 */
 		$scope.updateWorkspace = function() {
-			console.log("Update workspace (workspace: %o)", $scope.selectedWorkspace);
+			Log.debug("Update workspace (workspace: %o)", $scope.selectedWorkspace);
 			$scope.updateWorkspaceData.processing = true;
 			Workspace.update({workspace: $scope.selectedWorkspace}, function(data, status) {
-					console.log("Workspace update success! data: %o, status: %o", data, status);
+					Log.debug("Workspace update success! data: %o, status: %o", data, status);
 					$scope.updateWorkspaceData.result = 1;
 					$scope.updateWorkspaceData.processing = false;
 				}, function(data, status) {
-					console.log("Workspace update error!");
+					Log.debug("Workspace update error!");
 					ErrorHandling.handle(data, status);
 					$scope.updateWorkspaceData.result = -1;
 					$scope.updateWorkspaceData.processing = false;
@@ -884,7 +883,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		 * @param {string} mode - Edit mode.
 		 */
 		$scope.setEditMode = function(mode) {
-			console.log("Switch edit mode to: %s", mode);
+			Log.debug("Switch edit mode to: %s", mode);
 			if (mode == this.attrEditMode) {
 				$scope.attrEditMode = "";
 			}
@@ -898,16 +897,16 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		 * New member data are stored to server.
 		 */
 		$scope.inviteMember = function() {
-			console.log("Invite new member (member: %o) to workspace (id: %s)", $scope.newMember, $scope.selectedWorkspace.id);
+			Log.debug("Invite new member (member: %o) to workspace (id: %s)", $scope.newMember, $scope.selectedWorkspace.id);
 			$scope.newMember.processing = true;
 			Workspace.inviteMember({workspaceId: $scope.selectedWorkspace.id, user: $scope.newMember}, function(data, status) {
-					console.log("Workspace inviteMember success! data: %o, status: %o", data, status);
+					Log.debug("Workspace inviteMember success! data: %o, status: %o", data, status);
 					$scope.newMember.result = 1;
 					$scope.newMember.processing = false;
 					$scope.newMember.username = '';
 					$scope.setEditMode('');
 				}, function(data, status) {
-					console.log("Workspace inviteMember error!");
+					Log.debug("Workspace inviteMember error!");
 					$scope.newMember.result = -1;
 					$scope.newMember.processing = false;
 					ErrorHandling.handle(data, status);
@@ -919,28 +918,28 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		 * Workspace member data are stored to server.
 		 */
 		$scope.removeMember = function(username) {
-			console.log("Remove member (username: %s) from workspace (id: %s)", username, $scope.selectedWorkspace.id);
+			Log.debug("Remove member (username: %s) from workspace (id: %s)", username, $scope.selectedWorkspace.id);
 			Workspace.removeMember({workspaceId: $scope.selectedWorkspace.id, username: username}, function(data, status) {
-					console.log("Workspace removeMember success! data: %o, status: %o", data, status);
+					Log.debug("Workspace removeMember success! data: %o, status: %o", data, status);
 					// remove member from local workspace
 					var newMembers = $.grep($scope.selectedWorkspace.members, function(e) {
 						return e.username != username;
 					});
 					$scope.selectedWorkspace.members = newMembers;
-					console.log("new members: %o", $scope.selectedWorkspace.members);
+					Log.debug("new members: %o", $scope.selectedWorkspace.members);
 				}, function(data, status) {
-					console.log("Workspace removeMember error!");
+					Log.debug("Workspace removeMember error!");
 					ErrorHandling.handle(data, status);
 				});
 		};
 		
 		// get logged user from local storage
 		$rootScope.loggedUser = LocalStorage.get('logged-user');
-		console.log("Logged user: %o", $rootScope.loggedUser);
+		Log.debug("Logged user: %o", $rootScope.loggedUser);
 		
 		// redirect to login page if user is not logged in
 		if (jQuery.isEmptyObject($rootScope.loggedUser) || jQuery.isEmptyObject($rootScope.loggedUser.username)) {
-			console.log("Unauthenticated access. Redirect to login page.");
+			Log.debug("Unauthenticated access. Redirect to login page.");
 			//$location.path("/");
 			$window.location.href = $rootScope.appBaseUrl;
 		}
@@ -958,20 +957,20 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		 * User's data are stored to server.
 		 */
 		$scope.update = function() {
-			console.log("Update user's (username: %s) profile to (user: %o)", $scope.loggedUser.username, $scope.loggedUser);
+			Log.debug("Update user's (username: %s) profile to (user: %o)", $scope.loggedUser.username, $scope.loggedUser);
 			$scope.updateUserProfile.processing = true;
 			$scope.loggedUser.password = $scope.loggedUser.newPassword1;
 			delete($scope.loggedUser.newPassword1);
 			delete($scope.loggedUser.newPassword2);
 			// TODO - under construction
 			User.update({user: $scope.loggedUser}, function(data, status) {
-					console.log("User update success! data: %o, status: %o", data, status);
+					Log.debug("User update success! data: %o, status: %o", data, status);
 					$scope.updateUserProfile.result = 1;
 					$scope.updateUserProfile.processing = false;
 					$rootScope.loggedUser = data;
 					LocalStorage.store('logged-user', $rootScope.loggedUser);
 				}, function(data, status) {
-					console.log("User update error!");
+					Log.debug("User update error!");
 					ErrorHandling.handle(data, status);
 					$scope.updateUserProfile.result = -1;
 					$scope.updateUserProfile.processing = false;
@@ -980,11 +979,11 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		
 		// get logged user from local storage
 		$rootScope.loggedUser = LocalStorage.get('logged-user');
-		console.log("Logged user: %o", $rootScope.loggedUser);
+		Log.debug("Logged user: %o", $rootScope.loggedUser);
 		
 		// redirect to login page if user is not logged in
 		if (jQuery.isEmptyObject($rootScope.loggedUser) || jQuery.isEmptyObject($rootScope.loggedUser.username)) {
-			console.log("Unauthenticated access. Redirect to login page.");
+			Log.debug("Unauthenticated access. Redirect to login page.");
 			//$location.path("/");
 			$window.location.href = $rootScope.appBaseUrl;
 		}
