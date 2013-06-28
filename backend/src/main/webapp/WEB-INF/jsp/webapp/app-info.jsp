@@ -39,7 +39,7 @@
                               env.get(envName)));
         }
 		%>	
-		<h1>System proprties:</h1>
+		<h1>System properties:</h1>
 		<% 
 		Properties systemProperties = System.getProperties();
 		Enumeration enuProp = systemProperties.propertyNames();
