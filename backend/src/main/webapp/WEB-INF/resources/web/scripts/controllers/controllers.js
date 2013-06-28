@@ -19,8 +19,8 @@
 'use strict';
 
 /* Controllers */
-angular.module('shareTaskApp.controllers', ['ui', 'ui.bootstrap', 'localization'])
-	.controller('AuthCtrl', ['$scope', '$location', '$rootScope', '$window', 'localize', 'User', 'LocalStorage', function($scope, $location, $rootScope, $window, localize, User, LocalStorage) {
+angular.module('shareTaskWeb.controllers', [])
+	.controller('AuthCtrl', ['$scope', '$location', '$rootScope', '$window', 'User', 'LocalStorage', function($scope, $location, $rootScope, $window, User, LocalStorage) {
 		
 		$scope.loginData = {processing: false, result: 0};
 		
@@ -58,7 +58,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ui.bootstrap', 'localization'
 				});
 		};
 	}])
-	.controller('RegisterCtrl', ['$scope', '$location', '$rootScope', '$window', 'localize', 'User', 'LocalStorage', function($scope, $location, $rootScope, $window, localize, User, LocalStorage) {
+	.controller('RegisterCtrl', ['$scope', '$location', '$rootScope', '$window', 'User', 'LocalStorage', function($scope, $location, $rootScope, $window, User, LocalStorage) {
 		
 		$scope.newAccountData = {processing: false, result: 0};
 		

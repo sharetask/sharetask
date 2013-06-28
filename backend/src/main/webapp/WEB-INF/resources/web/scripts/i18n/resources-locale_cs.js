@@ -1,12 +1,7 @@
 [
     {
-		"key":"_Tasks_",
-		"value":"Úkoly",
-		"description":""
-	},
-	{
-		"key":"_Administration_",
-		"value":"Administrace",
+		"key":"_Registration_",
+		"value":"Registrace",
 		"description":""
 	},
 	{

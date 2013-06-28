@@ -85,40 +85,6 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		//$scope.dateOptions = {format: 'dd/mm/yyyy'};
 		$scope.datePickerOptions = { dateFormat: "M d, yy" };
 		var taskFilter = $filter('filterTasks');
-		//var i18nFilter = $filter('i18n');
-		//$scope.nextWorkspacesTitle = i18nFilter('_NextWorkspaces_');
-		//Log.debug("nextWorkspacesTitle: %o", $scope.nextWorkspacesTitle);
-		
-		/**
-		 * Logout user.
-		 * User is redirected to login page.
-		 */
-		$scope.logout = function() {
-			User.logout();
-		};
-		
-		/**
-		 * Setting active workspace.
-		 * Event is propagated into Workspace controller for loading workspace tasks from server.
-		 * @param {number} id - Workspace ID.
-		 */
-		/*
-		$scope.setActiveWorkspace = function(id) {
-			Log.debug("Setting active workspace (id: %s)", id);
-			$scope.$broadcast('EVENT_SET_ACTIVE_WORKSPACE', {workspaceId: id});
-		};
-		*/
-		/**
-		 * Receive event 'EVENT_SET_ACTIVE_WORKSPACE' for setting active workspace.
-		 * After receiving of event all workspace tasks are loaded from server.
-		 */
-		/*
-		$scope.$on('EVENT_SET_ACTIVE_WORKSPACE', function(event, data) {
-			Log.debug("Received broadcast message 'EVENT_SET_ACTIVE_WORKSPACE' (data: %o)", data);
-			$scope.selectedWorkspaceId = data.workspaceId;
-			$scope.loadTasks();
-		});
-		*/
 		
 		/**
 		 * Keyboard shortcuts service logic

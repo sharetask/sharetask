@@ -1,12 +1,7 @@
 [
 	{
-		"key":"_Tasks_",
-		"value":"Tasks",
-		"description":""
-	},
-	{
-		"key":"_Administration_",
-		"value":"Administration",
+		"key":"_Registration_",
+		"value":"Registration",
 		"description":""
 	},
 	{

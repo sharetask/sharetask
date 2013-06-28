@@ -19,10 +19,10 @@
 'use strict';
 
 /* Services */
-var shareTaskApp = angular.module('shareTaskApp.services', ['ngResource']);
+var shareTaskWeb = angular.module('shareTaskWeb.services', ['ngResource']);
 
 
-shareTaskApp.service('User', ['$rootScope', '$location', 'LocalStorage', '$resource', '$http', function($rootScope, $location, LocalStorage, $resource, $http) {
+shareTaskWeb.service('User', ['$rootScope', '$location', 'LocalStorage', '$resource', '$http', function($rootScope, $location, LocalStorage, $resource, $http) {
 	
 	this.authenticate = function(user, success, error) {
 		console.log("Login user (user: %o)", user);
@@ -41,7 +41,7 @@ shareTaskApp.service('User', ['$rootScope', '$location', 'LocalStorage', '$resou
 }]);
 
 
-shareTaskApp.service('Logger', function($log) {
+shareTaskWeb.service('Logger', function($log) {
 	
 	this.debug = function() {
 		
@@ -49,7 +49,7 @@ shareTaskApp.service('Logger', function($log) {
 });
 
 
-shareTaskApp.service('ErrorHandling', ['User', function(User) {
+shareTaskWeb.service('ErrorHandling', ['User', function(User) {
 	
 	this.handle = function(data, status) {
 		console.log("Handle error! data: %o, status: %o", data, status);
@@ -61,7 +61,7 @@ shareTaskApp.service('ErrorHandling', ['User', function(User) {
 }]);
 
 
-shareTaskApp.service('LocalStorage', function($resource) {
+shareTaskWeb.service('LocalStorage', function($resource) {
 	
 	var keyPrefix = 'sharetask-storage-';
 	

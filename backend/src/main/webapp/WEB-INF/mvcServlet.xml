@@ -34,6 +34,22 @@
 	</bean>
 	
 	<!-- ================================================================= -->
+	<!-- i18n configuration. Default language is English.                  -->
+	<!-- Change language using ?lang=cs                                    -->
+	<!-- User's language option is saved to cookie.                        -->
+	<!-- ================================================================= -->
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basename" value="classpath:/i18n/messages" />
+		<property name="defaultEncoding" value="UTF-8" />
+	</bean>
+	<mvc:interceptors>
+		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" p:paramName="lang" />
+	</mvc:interceptors>
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+		<property name="defaultLocale" value="en" />
+	</bean>
+	
+	<!-- ================================================================= -->
 	<!-- Resource resolve                                                  -->
 	<!-- ================================================================= -->
 	<mvc:resources mapping="/resources-webapp-#{applicationProps['application.version']}/**" location="/WEB-INF/resources/webapp/" />
@@ -41,6 +57,7 @@
 	
 	<!-- 	<mvc:default-servlet-handler /> -->
 	<mvc:view-controller path="/" view-name="web/index"/>
+	<mvc:view-controller path="/register" view-name="web/register"/>
 	<mvc:view-controller path="/webapp" view-name="webapp/index"/>
 	<mvc:view-controller path="/app-info" view-name="webapp/app-info"/>
 </beans>

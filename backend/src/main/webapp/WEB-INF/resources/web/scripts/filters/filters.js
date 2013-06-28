@@ -19,7 +19,7 @@
 'use strict';
 
 /* Filters */
-angular.module('shareTaskApp.filters', [])
+angular.module('shareTaskWeb.filters', [])
 	.filter('filterTasks', ['Workspace', function(Workspace) {
 		return function(filter, tasks) {
 			console.log("filter: %o", filter);

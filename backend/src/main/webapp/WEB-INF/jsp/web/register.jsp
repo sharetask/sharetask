@@ -55,33 +55,31 @@
 				</div>
 			</div>
 		</div>
-		<div class="panel-full">
+		<!-- registration form -->
+		<div class="panel-full" ng-controller="RegisterCtrl" ng-cloak>
 			<div class="panel-full-inside">
-				<div class="brand-img">
-					<div class="row-full">
-						<div class="span8">
+				<div style="padding:20px 20px 50px 20px;">
+					<form name="formRegistration" novalidate class="css-form">
+						<legend><spring:message code="register.title" /></legend>
+						<div class="alert alert-error" ng-class="{'hidden':newAccountData.result == -2 || newAccountData.result == 1 || newAccountData.result == 0}">
+							<a class="close" ng-click="newAccountData.result = 0">&times;</a>
+							<strong>Error</strong> Error creating your new account.
 						</div>
-						<div class="span4" style="width:330px;right:0;overflow:visible;position:absolute;">
-							<div class="brand-login" ng-controller="AuthCtrl">
-								<h4><spring:message code="account.question" /></h4><br />
-								<a href="<c:url value="/register" />" class="btn btn-inverse"><spring:message code="account.create.button" /></a><br />
-								<br /><br />
-								<h4><spring:message code="login.title" /></h4><br />
-								<form name="formLogin" novalidate class="css-form" ng-cloak>
-									<div class="alert alert-error" ng-class="{'hidden':loginData.result == 1 || loginData.result == 0}">
-										<a class="close" ng-click="loginData.result = 0">&times;</a>
-										<strong>Error</strong> Bad user name or password.
-									</div>
-									<input type="text" placeholder="<spring:message code="login.username.placeholder" />" ng-model="user.username" ui-keypress="{enter:'login()'}" required /><br />
-									<input type="password" placeholder="<spring:message code="login.password.placeholder" />" ng-model="user.password" ui-keypress="{enter:'login()'}" required /><br />
-									<button class="btn btn-inverse" ng-click="login()" ng-disabled="formLogin.$invalid || loginData.processing"><spring:message code="login.button.submit" /></button>
-								</form>
-							</div>
+						<div class="alert alert-error" ng-class="{'hidden':newAccountData.result == -1 || newAccountData.result == 1 || newAccountData.result == 0}">
+							<a class="close" ng-click="newAccountData.result = 0">&times;</a>
+							<strong>Error</strong> This account already exists. Please try another username.
 						</div>
-					</div>
+						<label><spring:message code="register.name" /></label>
+						<input class="span3" type="text" placeholder="<spring:message code="register.firstname.placeholder" />" ng-model="newAccount.name" /> <input class="span3" type="text" placeholder="<spring:message code="register.lastname.placeholder" />" ng-model="newAccount.surName" /><br />
+						<label><spring:message code="register.email" /></label>
+						<input class="span3" type="text" placeholder="<spring:message code="register.email.placeholder" />" ng-model="newAccount.username" required /><br />
+						<label><spring:message code="register.password" /></label>
+						<input class="span3" type="password" placeholder="<spring:message code="register.password.placeholder" />" ng-model="newAccount.password1" required /><br />
+						<label><spring:message code="register.password.check" /></label>
+						<input class="span3" type="password" placeholder="<spring:message code="register.password.check.placeholder" />" ng-model="newAccount.password2" required /><br />
+						<button class="btn btn-inverse" ng-click="register()" ng-disabled="formRegistration.$invalid || newAccount.password1 != newAccount.password2 || newAccountData.processing"><spring:message code="register.button.submit" /><span ng-show="newAccountData.processing"> processing...</span></button>
+					</form>
 				</div>
-			</div>
-			<div style="padding:20px 20px 50px 20px;">
 			</div>
 		</div>
 		<div id="footer">
@@ -95,8 +93,8 @@
 		<script type="text/javascript" src="<c:url value="/resources-web-${applicationVersion}/scripts/vendor/bootstrap/bootstrap.min.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-web-${applicationVersion}/scripts/vendor/angular/angular.min.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-web-${applicationVersion}/scripts/vendor/angular/angular-resource.min.js" />"></script>
-		<!--<script type="text/javascript" src="<c:url value="/resources-web-${applicationVersion}/scripts/vendor/angular/angular-ui.min.js" />"></script>
-		<script type="text/javascript" src="<c:url value="/resources-web-${applicationVersion}/scripts/vendor/angular/ui-bootstrap-tpls-0.3.0.min.js" />"></script>-->
+		<script type="text/javascript" src="<c:url value="/resources-web-${applicationVersion}/scripts/vendor/angular/angular-ui.min.js" />"></script>
+		<script type="text/javascript" src="<c:url value="/resources-web-${applicationVersion}/scripts/vendor/angular/ui-bootstrap-tpls-0.3.0.min.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-web-${applicationVersion}/scripts/services/services.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-web-${applicationVersion}/scripts/filters/filters.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-web-${applicationVersion}/scripts/directives/directives.js" />"></script>

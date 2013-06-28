@@ -19,7 +19,7 @@
 'use strict';
 
 /* Directives */
-angular.module('shareTaskApp.directives', [])
+angular.module('shareTaskWeb.directives', [])
 	.directive('stopEvent', function () {
 		return {
 			restrict: 'A',
