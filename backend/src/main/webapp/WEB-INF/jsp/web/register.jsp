@@ -45,7 +45,7 @@
 			<div class="navbar navbar-inverse">
 				<div class="navbar-inner" style="padding-left:0;">
 					<div class="container" style="width:auto;">
-						<img class="pull-left" src="<c:url value="/resources-web-${applicationVersion}/img/sharetask-menu-logo.png" />" width="40" height="40" />
+						<img class="pull-left" src="<c:url value="/resources-web-${applicationVersion}/img/icon-white-small.png" />" width="40" height="40" hspace="5" />
 						<span class="brand">ShareTa.sk</span>
 						<ul class="nav">
 							<li><a href="<c:url value="/" />"><i class="icon-home icon-white"></i> <spring:message code="menu.home" /></a></li>
