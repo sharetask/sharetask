@@ -74,7 +74,11 @@ angular.module('shareTaskWeb.controllers', [])
 			delete($scope.newAccount.password2);
 			User.create({user: $scope.newAccount}, function(data, status) {
 					console.log("User create success! data: %o, status: %o", data, status);
+					$scope.newAccount = {name: '', surName: '', email: ''};
+					$scope.newAccountData.result = 1;
+					$scope.newAccountData.processing = false;
 					// authenticate user
+					/*
 					User.authenticate({username: $scope.newAccount.username, password: $scope.newAccount.password}, function(data, status) {
 							console.log("User auth success! data: %o, status: %o", data, status);
 							$rootScope.loggedUser = {username: $scope.newAccount.username, name: $scope.newAccount.name, surName: $scope.newAccount.surName, password: $scope.newAccount.password};
@@ -89,6 +93,7 @@ angular.module('shareTaskWeb.controllers', [])
 							$scope.newAccountData.result = -1;
 							$scope.newAccountData.processing = false;
 						});
+					*/
 				}, function(data, status) {
 					console.log("User create error! data: %o, status: %o", data, status);
 					$scope.newAccountData.result = -1;

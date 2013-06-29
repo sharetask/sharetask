@@ -61,22 +61,26 @@
 				<div style="padding:20px 20px 50px 20px;">
 					<form name="formRegistration" novalidate class="css-form">
 						<legend><spring:message code="register.title" /></legend>
+						<div class="alert alert-success" ng-show="newAccountData.result == 1">
+							<a class="close" ng-click="newAccountData.result = 0">&times;</a>
+							<spring:message code="register.msg.success" />
+						</div>
 						<div class="alert alert-error" ng-class="{'hidden':newAccountData.result == -2 || newAccountData.result == 1 || newAccountData.result == 0}">
 							<a class="close" ng-click="newAccountData.result = 0">&times;</a>
-							<strong>Error</strong> Error creating your new account.
+							<spring:message code="register.msg.error" />
 						</div>
 						<div class="alert alert-error" ng-class="{'hidden':newAccountData.result == -1 || newAccountData.result == 1 || newAccountData.result == 0}">
 							<a class="close" ng-click="newAccountData.result = 0">&times;</a>
-							<strong>Error</strong> This account already exists. Please try another username.
+							<spring:message code="register.msg.error.exists" />
 						</div>
 						<label><spring:message code="register.name" /></label>
-						<input class="span3" type="text" placeholder="<spring:message code="register.firstname.placeholder" />" ng-model="newAccount.name" /> <input class="span3" type="text" placeholder="<spring:message code="register.lastname.placeholder" />" ng-model="newAccount.surName" /><br />
+						<input class="span3" type="text" name="firstname" placeholder="<spring:message code="register.firstname.placeholder" />" ng-model="newAccount.name" /> <input class="span3" type="text" name="lastname" placeholder="<spring:message code="register.lastname.placeholder" />" ng-model="newAccount.surName" /><br />
 						<label><spring:message code="register.email" /></label>
-						<input class="span3" type="text" placeholder="<spring:message code="register.email.placeholder" />" ng-model="newAccount.username" required /><br />
+						<input class="span3" type="text" name="mail" placeholder="<spring:message code="register.email.placeholder" />" ng-model="newAccount.username" required /><br />
 						<label><spring:message code="register.password" /></label>
-						<input class="span3" type="password" placeholder="<spring:message code="register.password.placeholder" />" ng-model="newAccount.password1" required /><br />
+						<input class="span3" type="password" name="password" placeholder="<spring:message code="register.password.placeholder" />" ng-model="newAccount.password1" required /><br />
 						<label><spring:message code="register.password.check" /></label>
-						<input class="span3" type="password" placeholder="<spring:message code="register.password.check.placeholder" />" ng-model="newAccount.password2" required /><br />
+						<input class="span3" type="password" name="password" placeholder="<spring:message code="register.password.check.placeholder" />" ng-model="newAccount.password2" required /><br />
 						<button class="btn btn-inverse" ng-click="register()" ng-disabled="formRegistration.$invalid || newAccount.password1 != newAccount.password2 || newAccountData.processing"><spring:message code="register.button.submit" /><span ng-show="newAccountData.processing"> processing...</span></button>
 					</form>
 				</div>
