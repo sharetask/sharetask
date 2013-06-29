@@ -159,16 +159,17 @@
 										<div class="span11">
 											<div class="row-full" style="margin-bottom:7px;">
 												<div class="span8 text">
-													<strong>{{task.title}}</strong><br />
-													<small>{{task.description}}</small>
+													<strong>{{task.title}}</strong><!--<br />
+													<small>{{task.description}}</small>-->
 												</div>
 												<div class="span4" style="text-align:right;"><small>{{task.dueDate | date:'mediumDate'}}</small></div>
 											</div>
 											<div class="row-full">
-												<div class="span8">
+												<div class="span5">
 													<div class="tag small" ng-repeat="tag in task.tags"><span class="text" ng-class="{'selected':tag == filter.tag}">{{tag}}</span></div>
 												</div>
-												<div class="span4" style="text-align:right;"><i class="icon-comments"></i> {{task.commentsCount}}</div>
+												<div class="span5" style="text-align:right;"><small>{{'_By_' | i18n}} {{task.createdBy.name}} {{task.createdBy.surName}}</small></div>
+												<div class="span2" style="text-align:right;"><i class="icon-comments"></i> {{task.commentsCount}}</div>
 											</div>
 										</div>
 									</div>

@@ -72,8 +72,8 @@
 										<a class="close" ng-click="loginData.result = 0">&times;</a>
 										<strong>Error</strong> Bad user name or password.
 									</div>
-									<input type="text" placeholder="<spring:message code="login.username.placeholder" />" ng-model="user.username" ui-keypress="{enter:'login()'}" required /><br />
-									<input type="password" placeholder="<spring:message code="login.password.placeholder" />" ng-model="user.password" ui-keypress="{enter:'login()'}" required /><br />
+									<input type="text" name="username" placeholder="<spring:message code="login.username.placeholder" />" ng-model="user.username" ui-keypress="{enter:'login()'}" required /><br />
+									<input type="password" name="password" placeholder="<spring:message code="login.password.placeholder" />" ng-model="user.password" ui-keypress="{enter:'login()'}" required /><br />
 									<button class="btn btn-inverse" ng-click="login()" ng-disabled="formLogin.$invalid || loginData.processing"><spring:message code="login.button.submit" /></button>
 								</form>
 							</div>
