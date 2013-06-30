@@ -288,13 +288,16 @@
 									</form>
 									<div class="notice" ng-repeat="comment in selectedTask.comments" ng-class="{'author':comment.createdBy == selectedTask.createdBy}">
 										<div class="row-full">
-											<div class="span2"></div>
+											<div class="span2">
+												<img src="http://www.gravatar.com/avatar/{{comment.createdBy.username | hash}}.jpg?s=45" />
+											</div>
 											<div class="span10">
 												<div class="row-full header">
 													<div class="pull-left">{{comment.createdBy.name}} {{comment.createdBy.surName}}</div>
 													<div class="pull-right"><small>{{comment.createdOn | date:'medium'}}</small></div>
 												</div>
 												<div class="row-full body">{{comment.message}}</div>
+												http://www.gravatar.com/avatar/{{'michal.moravek.cz@gmail.com' | hash}}
 											</div>
 										</div>
 									</div>

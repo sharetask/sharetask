@@ -914,9 +914,24 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 			$scope.loadWorkspaces();
 		}
 	}])
-	.controller('UserCtrl', ['$scope', '$location', '$rootScope', '$window', 'localize', 'User', 'ErrorHandling', 'LocalStorage', function($scope, $location, $rootScope, $window, localize, User, ErrorHandling, LocalStorage) {
+	.controller('UserCtrl', ['$scope', '$location', '$rootScope', '$window', 'localize', 'User', 'Gravatar', 'ErrorHandling', 'LocalStorage', function($scope, $location, $rootScope, $window, localize, User, Gravatar, ErrorHandling, LocalStorage) {
 		$scope.updateUserProfile = {processing: false, result: 0};
 		$rootScope.currentPage = "user";
+		$scope.gravatar = {};
+		
+		/**
+		 * Get Gravatar profile data for user.
+		 */
+		$scope.getGravatar = function() {
+			var mailHash = hex_md5($scope.loggedUser.username.toLowerCase());
+			//var mailHash = 'f015937e8b44299ca2effd80afca6453';
+			Gravatar.get({hash: mailHash}, function(data, status) {
+					Log.debug("Gravatar get success! data: %o, status: %o", data, status);
+					$scope.gravatar = data;
+				}, function(data, status) {
+					Log.debug("Gravatar get error! data: %o, status: %o", data, status);
+				});
+		};
 		
 		/**
 		 * Update user's profile
@@ -954,7 +969,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 			$window.location.href = $rootScope.appBaseUrl;
 		}
 		else {
-			
+			$scope.getGravatar();
 		}
 	}])
 	;

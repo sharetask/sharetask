@@ -149,4 +149,10 @@ angular.module('shareTaskApp.filters', []).
 			else if (input === undefined || input === null) { return "__"; }
 		};
 	}])
+	.filter('hash', [function() {
+		return function(input) {
+			//Log.debug("hash: %o", input);
+			return hex_md5(input.toLowerCase());
+		};
+	}])
 	;

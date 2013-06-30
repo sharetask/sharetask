@@ -473,6 +473,11 @@
 	    "description":""
 	},
 	{
+	    "key":"_MsgChangeAvatar_",
+	    "value":"Svého avatara můžete změnit na gravatar.com",
+	    "description":""
+	},
+	{
 	    "key":"_MsgNoTaskTags_",
 	    "value":"přidejte štítek...",
 	    "description":""

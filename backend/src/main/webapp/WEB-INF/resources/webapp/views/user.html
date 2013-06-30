@@ -32,29 +32,37 @@
 							<div class="tab-content">
 								<!-- user profile update form -->
 								<div class="tab-pane active" id="userProfile">
-									<form name="formUserUpdate" novalidate class="css-form">
-										<legend>{{'_UserProfile_' | i18n}}</legend>
-										<div class="alert alert-success" ng-class="{'hidden':updateUserProfile.result == -1 || updateUserProfile.result == 0}">
-											<a class="close" ng-click="updateUserProfile.result = 0">&times;</a>
-											<strong>{{'_Success_' | i18n}}</strong> {{'_ResultUserProfileUpdateOk_' | i18n}}
+									<div class="columns">
+										<div class="column profile">
+											<a href="http://www.gravatar.com/emails" title="{{'_MsgChangeAvatar_' | i18n}}" target="blank"><img src="http://www.gravatar.com/avatar/{{loggedUser.username | hash}}.jpg?s=150" /></a>
+											<em>{{loggedUser.name}} {{loggedUser.surName}}</em>
 										</div>
-										<div class="alert alert-error" ng-class="{'hidden':updateUserProfile.result == 1 || updateUserProfile.result == 0}">
-											<a class="close" ng-click="updateUserProfile.result = 0">&times;</a>
-											<strong>{{'_Error_' | i18n}}</strong> {{'_ResultUserProfileUpdateError_' | i18n}}
+										<div class="column full">
+											<form name="formUserUpdate" novalidate class="css-form">
+												<legend>{{'_UserProfile_' | i18n}}</legend>
+												<div class="alert alert-success" ng-class="{'hidden':updateUserProfile.result == -1 || updateUserProfile.result == 0}">
+													<a class="close" ng-click="updateUserProfile.result = 0">&times;</a>
+													<strong>{{'_Success_' | i18n}}</strong> {{'_ResultUserProfileUpdateOk_' | i18n}}
+												</div>
+												<div class="alert alert-error" ng-class="{'hidden':updateUserProfile.result == 1 || updateUserProfile.result == 0}">
+													<a class="close" ng-click="updateUserProfile.result = 0">&times;</a>
+													<strong>{{'_Error_' | i18n}}</strong> {{'_ResultUserProfileUpdateError_' | i18n}}
+												</div>
+												<label>{{'_FirstName_' | i18n}}</label>
+												<input class="span5" type="text" placeholder="{{'_PlaceholderFirstName_' | i18n}}" ng-model="loggedUser.name" required /><br />
+												<label>{{'_LastName_' | i18n}}</label>
+												<input class="span5" type="text" placeholder="{{'_PlaceholderLastName_' | i18n}}" ng-model="loggedUser.surName" required /><br />
+												<label>{{'_Mail_' | i18n}}</label>
+												<input class="span5" type="text" placeholder="{{'_PlaceholderMail_' | i18n}}" ng-model="loggedUser.username" required /><br />
+												<br />
+												<label>{{'_NewPassword_' | i18n}}</label>
+												<input class="span5" type="text" placeholder="{{'_PlaceholderNewPassword_' | i18n}}" ng-model="loggedUser.newPassword1" /><br />
+												<label>{{'_NewPasswordCheck_' | i18n}}</label>
+												<input class="span5" type="text" placeholder="{{'_PlaceholderNewPasswordCheck_' | i18n}}" ng-model="loggedUser.newPassword2" /><br />
+												<button class="btn btn-inverse" ng-click="update()" ng-disabled="formUserUpdate.$invalid || loggedUser.newPassword1 != loggedUser.newPassword2 || updateUserProfile.processing">{{'_Save_' | i18n}}<span ng-show="updateUserProfile.processing"> {{'_Processing_' | i18n}}</span></button>
+											</form>
 										</div>
-										<label>{{'_FirstName_' | i18n}}</label>
-										<input class="span5" type="text" placeholder="{{'_PlaceholderFirstName_' | i18n}}" ng-model="loggedUser.name" required /><br />
-										<label>{{'_LastName_' | i18n}}</label>
-										<input class="span5" type="text" placeholder="{{'_PlaceholderLastName_' | i18n}}" ng-model="loggedUser.surName" required /><br />
-										<label>{{'_Mail_' | i18n}}</label>
-										<input class="span5" type="text" placeholder="{{'_PlaceholderMail_' | i18n}}" ng-model="loggedUser.username" required /><br />
-										<br />
-										<label>{{'_NewPassword_' | i18n}}</label>
-										<input class="span5" type="text" placeholder="{{'_PlaceholderNewPassword_' | i18n}}" ng-model="loggedUser.newPassword1" /><br />
-										<label>{{'_NewPasswordCheck_' | i18n}}</label>
-										<input class="span5" type="text" placeholder="{{'_PlaceholderNewPasswordCheck_' | i18n}}" ng-model="loggedUser.newPassword2" /><br />
-										<button class="btn btn-inverse" ng-click="update()" ng-disabled="formUserUpdate.$invalid || loggedUser.newPassword1 != loggedUser.newPassword2 || updateUserProfile.processing">{{'_Save_' | i18n}}<span ng-show="updateUserProfile.processing"> {{'_Processing_' | i18n}}</span></button>
-									</form>
+									</div>
 								</div>
 								<!-- user settings -->
 								<div class="tab-pane" id="userSettings">

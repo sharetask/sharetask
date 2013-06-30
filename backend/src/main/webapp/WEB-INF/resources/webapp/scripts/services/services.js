@@ -141,6 +141,15 @@ shareTaskApp.service('Task', ['$rootScope', '$resource', '$http', function($root
 }]);
 
 
+shareTaskApp.service('Gravatar', ['$rootScope', '$http', function($rootScope, $http) {
+	
+	this.get = function(input, success, error) {
+		Log.debug("Getting profile data for user (id: %s) from server", input.hash);
+		return $http.jsonp("http://www.gravatar.com/"+input.hash+".json?callback=JSON_CALLBACK").success(success).error(error);
+	};
+}]);
+
+
 shareTaskApp.service('Logger', ['$rootScope', function($rootScope) {
 	
 	this.init = function(logLevel) {

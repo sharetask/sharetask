@@ -480,6 +480,11 @@
 	    "description":""
 	},
 	{
+	    "key":"_MsgChangeAvatar_",
+	    "value":"Change your avatar at gravatar.com",
+	    "description":""
+	},
+	{
 	    "key":"_MsgNoTaskTags_",
 	    "value":"add new label...",
 	    "description":""
