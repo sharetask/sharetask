@@ -9,7 +9,7 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
 
-	<bean id="dummyJob" class="org.sharetask.service.DummyQuartzJobImpl" />
+<!-- 	<bean id="dummyJob" class="org.sharetask.service.DummyQuartzJobImpl" /> -->
 
 <!-- 	<bean id="dummyJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> -->
 <!-- 		<property name="targetObject" ref="dummyJob" /> -->
