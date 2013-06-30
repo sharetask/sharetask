@@ -277,6 +277,9 @@
 				<definition.hibernate.dialect>org.hibernate.dialect.HSQLDialect</definition.hibernate.dialect>
 				<definition.evironment.path>environment/dev</definition.evironment.path>
 				<definition.buildNumber>0</definition.buildNumber>
+				
+				<definition.quartz.jobStore.driverClass>org.quartz.impl.jdbcjobstore.HSQLDBDelegate</definition.quartz.jobStore.driverClass>
+				<definition.quartz.dataSource.validationQuery>select 1 from INFORMATION_SCHEMA.SYSTEM_USERS</definition.quartz.dataSource.validationQuery>
 			</properties>
 			<dependencies>
 				<dependency>
@@ -374,6 +377,9 @@
 				<definition.hibernate.dialect>org.hibernate.dialect.HSQLDialect</definition.hibernate.dialect>
 				<definition.evironment.path>environment/integration</definition.evironment.path>
 				<definition.buildNumber>0</definition.buildNumber>
+				
+				<definition.quartz.jobStore.driverClass>org.quartz.impl.jdbcjobstore.HSQLDBDelegate</definition.quartz.jobStore.driverClass>
+				<definition.quartz.dataSource.validationQuery>select 1 from INFORMATION_SCHEMA.SYSTEM_USERS</definition.quartz.dataSource.validationQuery>
 			</properties>
 			<dependencies>
 				<dependency>
@@ -390,6 +396,9 @@
 				<definition.hibernate.dialect>org.hibernate.dialect.MySQLInnoDBDialect</definition.hibernate.dialect>
 				<definition.evironment.path>environment/prod</definition.evironment.path>
 				<definition.buildNumber>${BUILD_NUMBER}</definition.buildNumber>
+				
+				<definition.quartz.jobStore.driverClass>org.quartz.impl.jdbcjobstore.StdJDBCDelegate</definition.quartz.jobStore.driverClass>
+				<definition.quartz.dataSource.validationQuery>select 1</definition.quartz.dataSource.validationQuery>
 			</properties>
 			<dependencies>
 				<dependency>
@@ -537,6 +546,10 @@
 		<dependency>
 			<groupId>com.floreysoft</groupId>
 			<artifactId>jmte</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
 		</dependency>
 
 		<dependency>
