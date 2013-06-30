@@ -21,12 +21,14 @@ package org.sharetask.service;
 import lombok.extern.slf4j.Slf4j;
 
 import org.sharetask.api.RunnableQuartzJob;
+import org.springframework.stereotype.Service;
 
 /**
  * @author Michal Bocek
  * @since 1.0.0
  */
 @Slf4j
+@Service("dummyJob")
 public class DummyQuartzJobImpl implements RunnableQuartzJob {
 
 	@Override

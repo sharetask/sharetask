@@ -18,6 +18,8 @@
  */
 package org.sharetask.utility;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.quartz.SchedulerContext;
@@ -29,6 +31,7 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
  * @author Michal Bocek
  * @since 1.0.0
  */
+@Slf4j
 public class GenericQuartzJob extends QuartzJobBean {
 
 	private String batchProcessorName;
@@ -50,7 +53,7 @@ public class GenericQuartzJob extends QuartzJobBean {
 			final RunnableQuartzJob proc = (RunnableQuartzJob) appCtx.getBean(batchProcessorName);
 			proc.doService();
 		} catch (final Exception ex) {
-			ex.printStackTrace();
+			log.error("Unable to execute batch job: " + batchProcessorName, ex);
 			throw new JobExecutionException("Unable to execute batch job: " + batchProcessorName, ex);
 		}
 	}
