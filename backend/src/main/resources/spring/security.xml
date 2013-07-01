@@ -11,7 +11,7 @@
 
 	<util:properties id="applicationProps" location="classpath:application.properties"/>
 
-	<http auto-config="false" use-expressions="true" entry-point-ref="loginUrlAuthenticationEntryPoint">
+	<http auto-config="false" disable-url-rewriting="true" use-expressions="true" entry-point-ref="loginUrlAuthenticationEntryPoint">
 		<!-- <form-login /> login will be done programmatically -->
 		<access-denied-handler error-page="/denied" />
 		<!-- <logout invalidate-session="true" logout-url="/api/user/logout" /> login will be done programmatically -->
