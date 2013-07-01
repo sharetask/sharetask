@@ -69,7 +69,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 				});
 		};
 	}])
-	.controller('AppCtrl', ['$scope', '$location', '$rootScope', '$filter', '$timeout', '$window', 'localize', 'Workspace', 'Task', 'User', 'LocalStorage', 'ErrorHandling', 'Logger', function($scope, $location, $rootScope, $filter, $timeout, $window, localize, Workspace, Task, User, LocalStorage, ErrorHandling, Logger) {
+	.controller('AppCtrl', ['$scope', '$location', '$rootScope', '$filter', '$timeout', '$window', 'localize', 'Workspace', 'Task', 'User', 'LocalStorage', 'ErrorHandling', 'Logger', 'Analytics', function($scope, $location, $rootScope, $filter, $timeout, $window, localize, Workspace, Task, User, LocalStorage, ErrorHandling, Logger, Analytics) {
 		
 		$scope.errorMessageOnTaskList = '';
 		$scope.viewPanelTaskFilter = true;
@@ -85,6 +85,8 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		//$scope.dateOptions = {format: 'dd/mm/yyyy'};
 		$scope.datePickerOptions = { dateFormat: "M d, yy" };
 		var taskFilter = $filter('filterTasks');
+		
+		Analytics.trackPage('/tasks');
 		
 		/**
 		 * Keyboard shortcuts service logic
@@ -157,9 +159,11 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 						$scope.selectedWorkspace = data[0];
 						$scope.loadTasks();
 					}
+					Analytics.trackEvent('Workspaces', 'load', 'success');
 				}, function(data, status) {
 					Log.debug("Workspace find error!");
 					ErrorHandling.handle(data, status);
+					Analytics.trackEvent('Workspaces', 'load', 'error', status);
 				});
 		};
 		

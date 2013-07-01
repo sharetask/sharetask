@@ -24,6 +24,7 @@
 <spring:eval expression="@applicationProps['application.version']" var="applicationVersion" />
 <spring:eval expression="@applicationProps['application.revision']" var="applicationRevision" />
 <spring:eval expression="@applicationProps['log.level']" var="logLevel" />
+<spring:eval expression="@applicationProps['google.analytics.account.app']" var="googleAnalyticsAccount" />
 
 <!doctype html>
 <html lang="en" ng-app="shareTaskApp">
@@ -62,6 +63,7 @@
 				<script type="text/javascript" src="<c:url value="/resources-web-${applicationVersion}/scripts/vendor/angular/i18n/angular-locale_${fn:toLowerCase(pageContext.request.locale.language)}-${fn:toLowerCase(pageContext.request.locale.country)}.js" />"></script>
 			</c:otherwise>
 		</c:choose>
+		<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/vendor/angular/angular-google-analytics.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/vendor/localize/localize.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/vendor/md5-min.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/services/services.js" />"></script>
@@ -70,8 +72,12 @@
 		<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/directives/directives.js" />"></script>
 		<script type="text/javascript">
 			// Declare app level module which depends on filters, and services
-			angular.module('shareTaskApp', ['shareTaskApp.filters', 'shareTaskApp.services', 'shareTaskApp.directives', 'shareTaskApp.controllers'])
-				.config(['$routeProvider', function($routeProvider) {
+			angular.module('shareTaskApp', ['angular-google-analytics', 'shareTaskApp.filters', 'shareTaskApp.services', 'shareTaskApp.directives', 'shareTaskApp.controllers'])
+				.config(['$routeProvider', 'AnalyticsProvider', function($routeProvider, AnalyticsProvider) {
+					// google analytics
+					AnalyticsProvider.setAccount('${googleAnalyticsAccount}');
+					AnalyticsProvider.trackPages(true);
+					// routing
 					$routeProvider.when('/', {templateUrl: '<c:url value="/resources-webapp-${applicationVersion}/views/index.html" />'});
 					$routeProvider.when('/tasks', {templateUrl: '<c:url value="/resources-webapp-${applicationVersion}/views/tasks.html" />'});
 					$routeProvider.when('/admin', {templateUrl: '<c:url value="/resources-webapp-${applicationVersion}/views/admin.html" />'});
