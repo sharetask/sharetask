@@ -51,7 +51,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 							$rootScope.loggedUser.password = $scope.user.password;
 							LocalStorage.store('logged-user', $rootScope.loggedUser);
 							$location.path("/tasks");
-						}, function(data, status) {
+						}, function(data, status, script, func) {
 							Log.debug("Auth error! data: %o, status: %o", data, status);
 							$scope.user = {};
 							$rootScope.loggedUser = {};
@@ -59,7 +59,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 						});
 					$scope.loginData.result = 1;
 					$scope.loginData.processing = false;
-				}, function(data, status) {
+				}, function(data, status, script, func) {
 					Log.debug("User auth error! data: %o, status: %o", data, status);
 					$scope.user = {};
 					$rootScope.loggedUser = {};
@@ -82,6 +82,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		$scope.newTasks = [];
 		$scope.newTaskTitle = '';
 		$rootScope.currentPage = "tasks";
+		$rootScope.errorConsole = {show: false, msgCode: ''};
 		//$scope.dateOptions = {format: 'dd/mm/yyyy'};
 		$scope.datePickerOptions = { dateFormat: "M d, yy" };
 		var taskFilter = $filter('filterTasks');
@@ -160,9 +161,9 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 						$scope.loadTasks();
 					}
 					Analytics.trackEvent('Workspaces', 'load', 'success', status);
-				}, function(data, status) {
+				}, function(data, status, script, func) {
 					Log.debug("Workspace find error!");
-					ErrorHandling.handle(data, status);
+					ErrorHandling.handle(data, status, script, func);
 					Analytics.trackEvent('Workspaces', 'load', 'error', status);
 				});
 		};
@@ -182,9 +183,9 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 					$scope.newWorkspaceTitle = '';
 					$scope.setEditMode('');
 					Analytics.trackEvent('Workspace', 'add', 'success', status);
-				}, function(data, status) {
+				}, function(data, status, script, func) {
 					Log.debug("Workspace create error!");
-					ErrorHandling.handle(data, status);
+					ErrorHandling.handle(data, status, script, func);
 					Analytics.trackEvent('Workspace', 'add', 'error', status);
 				});
 		};
@@ -211,9 +212,9 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 					$scope.allTasks = data;
 					$scope.setTaskFilterQueue($scope.filter.queue);
 					Analytics.trackEvent('Tasks', 'load', 'success', status);
-				}, function(data, status) {
+				}, function(data, status, script, func) {
 					Log.debug("Workspace getActiveTasks error!");
-					ErrorHandling.handle(data, status);
+					ErrorHandling.handle(data, status, script, func);
 					Analytics.trackEvent('Tasks', 'load', 'success', status);
 			});
 		};
@@ -335,9 +336,9 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 			Task.getComments({workspaceId: $scope.selectedWorkspace.id, taskId: $scope.selectedTask.id}, function(data, status) {
 					Log.debug("Task getComments success! data: %o, status: %o", data, status);
 					$scope.selectedTask.comments = data;
-				}, function(data, status) {
+				}, function(data, status, script, func) {
 					Log.debug("Task getComments error!");
-					ErrorHandling.handle(data, status);
+					ErrorHandling.handle(data, status, script, func);
 				});
 		};
 		
@@ -477,9 +478,9 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 			Task.update({workspaceId: $scope.selectedWorkspace.id, task: task}, function(data, status) {
 					Log.debug("Task update success! data: %o, status: %o", data, status);
 					//Analytics.trackEvent('Task', 'update', 'success', status);
-				}, function(data, status) {
+				}, function(data, status, script, func) {
 					Log.debug("Task update error!");
-					ErrorHandling.handle(data, status);
+					ErrorHandling.handle(data, status, script, func);
 					//Analytics.trackEvent('Task', 'update', 'error', status);
 				});
 			LocalStorage.store('workspace-' + $scope.selectedWorkspace.id, $scope.allTasks);
@@ -545,14 +546,14 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 							$scope.filterTasks(data.id);
 							$scope.newTaskTitle = '';
 							$scope.setEditMode('');
-						}, function(data, status) {
+						}, function(data, status, script, func) {
 							Log.debug("Task forward error!");
-							ErrorHandling.handle(data, status);
+							ErrorHandling.handle(data, status, script, func);
 						});
 					*/
-				}, function(data, status) {
+				}, function(data, status, script, func) {
 					Log.debug("Task create error!");
-					ErrorHandling.handle(data, status);
+					ErrorHandling.handle(data, status, script, func);
 					Analytics.trackEvent('Task', 'add', 'error', status);
 				});
 		};
@@ -579,9 +580,9 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 					$scope.setSelectedTask($scope.tasks[0].id);
 					$scope.setEditMode('');
 					Analytics.trackEvent('Task', 'forward', 'success', status);
-				}, function(data, status) {
+				}, function(data, status, script, func) {
 					Log.debug("Task forward error!");
-					ErrorHandling.handle(data, status);
+					ErrorHandling.handle(data, status, script, func);
 					Analytics.trackEvent('Task', 'forward', 'error', status);
 				});
 		};
@@ -609,9 +610,9 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 						}
 						$scope.setEditMode('');
 						Analytics.trackEvent('Task', 'deleteOne', 'success', status);
-					}, function(data, status) {
+					}, function(data, status, script, func) {
 						Log.debug("Task remove error!");
-						ErrorHandling.handle(data, status);
+						ErrorHandling.handle(data, status, script, func);
 						$scope.errorMessageOnTaskList = 'Error deleting task "'+$scope.selectedTask.title+'".';
 						Analytics.trackEvent('Task', 'deleteOne', 'error', status);
 					});
@@ -635,9 +636,9 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 								$scope.setSelectedTask($scope.tasks[0].id);
 							}
 							$scope.setEditMode('');
-						}, function(data, status) {
+						}, function(data, status, script, func) {
 							Log.debug("Task remove error!");
-							ErrorHandling.handle(data, status);
+							ErrorHandling.handle(data, status, script, func);
 							$scope.errorMessageOnTaskList = 'Error deleting selected tasks.';
 						});
 					value.checked = false;
@@ -675,9 +676,9 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 						}
 						$scope.setEditMode('');
 						Analytics.trackEvent('Task', 'completeOne', 'success', status);
-					}, function(data, status) {
+					}, function(data, status, script, func) {
 						Log.debug("Task complete error!");
-						ErrorHandling.handle(data, status);
+						ErrorHandling.handle(data, status, script, func);
 						Analytics.trackEvent('Task', 'completeOne', 'error', status);
 					});
 			}
@@ -703,9 +704,9 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 									$scope.setSelectedTask($scope.tasks[0].id);
 								}
 								$scope.setEditMode('');
-							}, function(data, status) {
+							}, function(data, status, script, func) {
 								Log.debug("Task complete error!");
-								ErrorHandling.handle(data, status);
+								ErrorHandling.handle(data, status, script, func);
 							});
 					}
 					value.checked = false;
@@ -730,9 +731,9 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 						$scope.selectedTask.comments.push($scope.newTaskComment);
 						$scope.newTaskComment = null;
 						Analytics.trackEvent('Task', 'addComment', 'success', status);
-					}, function(data, status) {
+					}, function(data, status, script, func) {
 						Log.debug("Task addComment error!");
-						ErrorHandling.handle(data, status);
+						ErrorHandling.handle(data, status, script, func);
 						Analytics.trackEvent('Task', 'addComment', 'error', status);
 					});
 			}
@@ -762,9 +763,9 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 							}
 						});
 						Log.debug("There are these new tasks: %o", $scope.newTasks);
-					}, function(data, status) {
+					}, function(data, status, script, func) {
 						Log.debug("Workspace getActiveTasks error!");
-						ErrorHandling.handle(data, status);
+						ErrorHandling.handle(data, status, script, func);
 				});
 	        	$scope.syncTasks();
 			}, 60000);
@@ -806,9 +807,9 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 						$scope.workspaces = data;
 						$scope.selectedWorkspace = data[0];
 					}
-				}, function(data, status) {
+				}, function(data, status, script, func) {
 					Log.debug("Workspace find error!");
-					ErrorHandling.handle(data, status);
+					ErrorHandling.handle(data, status, script, func);
 				});
 		};
 		
@@ -844,9 +845,9 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 					$scope.addWorkspaceData.processing = false;
 					$scope.newWorkspace = null;
 					$scope.setEditMode('');
-				}, function(data, status) {
+				}, function(data, status, script, func) {
 					Log.debug("Workspace create error!");
-					ErrorHandling.handle(data, status);
+					ErrorHandling.handle(data, status, script, func);
 					$scope.addWorkspaceData.result = -1;
 					$scope.addWorkspaceData.processing = false;
 				});
@@ -863,9 +864,9 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 					Log.debug("Workspace update success! data: %o, status: %o", data, status);
 					$scope.updateWorkspaceData.result = 1;
 					$scope.updateWorkspaceData.processing = false;
-				}, function(data, status) {
+				}, function(data, status, script, func) {
 					Log.debug("Workspace update error!");
-					ErrorHandling.handle(data, status);
+					ErrorHandling.handle(data, status, script, func);
 					$scope.updateWorkspaceData.result = -1;
 					$scope.updateWorkspaceData.processing = false;
 				});
@@ -899,11 +900,11 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 					$scope.newMember.processing = false;
 					$scope.newMember.username = '';
 					$scope.setEditMode('');
-				}, function(data, status) {
+				}, function(data, status, script, func) {
 					Log.debug("Workspace inviteMember error!");
 					$scope.newMember.result = -1;
 					$scope.newMember.processing = false;
-					ErrorHandling.handle(data, status);
+					ErrorHandling.handle(data, status, script, func);
 				});
 		};
 		
@@ -921,9 +922,9 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 					});
 					$scope.selectedWorkspace.members = newMembers;
 					Log.debug("new members: %o", $scope.selectedWorkspace.members);
-				}, function(data, status) {
+				}, function(data, status, script, func) {
 					Log.debug("Workspace removeMember error!");
-					ErrorHandling.handle(data, status);
+					ErrorHandling.handle(data, status, script, func);
 				});
 		};
 		
@@ -956,7 +957,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 			Gravatar.get({hash: mailHash}, function(data, status) {
 					Log.debug("Gravatar get success! data: %o, status: %o", data, status);
 					$scope.gravatar = data;
-				}, function(data, status) {
+				}, function(data, status, script, func) {
 					Log.debug("Gravatar get error! data: %o, status: %o", data, status);
 				});
 		};
@@ -978,9 +979,9 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 					$scope.updateUserProfile.processing = false;
 					$rootScope.loggedUser = data;
 					LocalStorage.store('logged-user', $rootScope.loggedUser);
-				}, function(data, status) {
+				}, function(data, status, script, func) {
 					Log.debug("User update error!");
-					ErrorHandling.handle(data, status);
+					ErrorHandling.handle(data, status, script, func);
 					$scope.updateUserProfile.result = -1;
 					$scope.updateUserProfile.processing = false;
 				});

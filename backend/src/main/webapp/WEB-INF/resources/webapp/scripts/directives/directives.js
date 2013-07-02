@@ -138,7 +138,7 @@ angular.module('shareTaskApp.directives', []).
 			restrict: 'E',
 			templateUrl: 'resources-webapp-'+$rootScope.appVersion+'/views/components/app-menu.html',
 			link: function(scope, element, attrs) {
-				Log.debug("scope: %o, element: %o, attrs: %o", scope, element, attrs);
+				//Log.debug("scope: %o, element: %o, attrs: %o", scope, element, attrs);
 			},
 			controller: ['$rootScope', '$scope', '$element', '$attrs', '$transclude', '$location', '$window', 'LocalStorage', function($rootScope, $scope, $element, $attrs, $transclude, $location, $window, LocalStorage) {
 				
@@ -155,26 +155,52 @@ angular.module('shareTaskApp.directives', []).
 			}]
 		};
 	}])
-	.directive('error-console', ['$rootScope', function($rootScope) {
+	.directive('errorConsole', ['$rootScope', function($rootScope) {
 		return {
 			restrict: 'E',
 			templateUrl: 'resources-webapp-'+$rootScope.appVersion+'/views/components/error-console.html',
 			link: function(scope, element, attrs) {
-				Log.debug("ErrorConsole - scope: %o, element: %o, attrs: %o", scope, element, attrs);
+				//Log.debug("ErrorConsole - scope: %o, element: %o, attrs: %o", scope, element, attrs);
 			},
 			controller: ['$rootScope', '$scope', '$element', '$attrs', '$transclude', '$location', function($rootScope, $scope, $element, $attrs, $transclude, $location) {
 				Log.debug("ErrorConsole - scope: %o, element: %o, attrs: %o", $scope, $element, $attrs);
+				
+				$scope.opts = {backdropFade: true, dialogFade: true};
 				
 				$scope.open = function () {
 					$scope.shouldBeOpen = true;
 				};
 				
-				$scope.close = function () {
-					$scope.closeMsg = 'I was closed at: ' + new Date();
-					$scope.shouldBeOpen = false;
+				$scope.send = function () {
+					// TODO - send error data to the server
+					
+					$rootScope.errorConsole = {show: false, data: '', status: 0, func: {}};
 				};
 				
-				$scope.opts = {backdropFade: true, dialogFade: true};
+				$scope.close = function () {
+					$scope.shouldBeOpen = false;
+					$rootScope.errorConsole = {show: false, data: '', status: 0, func: {}};
+				};
+				
+				$scope.$watch($attrs.show, function(newModel, oldModel) {
+					Log.debug("ErrorConsole - show: %o, %o", newModel, oldModel);
+					$scope.shouldBeOpen = newModel;
+				});
+				
+				$scope.$watch($attrs.data, function(newModel, oldModel) {
+					Log.debug("ErrorConsole - data: %o, %o", newModel, oldModel);
+					$scope.data = newModel;
+				});
+				
+				$scope.$watch($attrs.status, function(newModel, oldModel) {
+					Log.debug("ErrorConsole - status: %o, %o", newModel, oldModel);
+					$scope.status = newModel;
+				});
+				
+				$scope.$watch($attrs.func, function(newModel, oldModel) {
+					Log.debug("ErrorConsole - func: %o, %o", newModel, oldModel);
+					$scope.func = newModel;
+				});
 			}]
 		};
 	}])
@@ -184,7 +210,7 @@ angular.module('shareTaskApp.directives', []).
 			templateUrl: 'resources-webapp-'+$rootScope.appVersion+'/views/components/calendar.html',
 			scope: {tasks:'=model'},
 			link: function(scope, element, attrs) {
-				Log.debug("Calendar - scope: %o, element: %o, attrs: %o", scope, element, attrs);
+				//Log.debug("Calendar - scope: %o, element: %o, attrs: %o", scope, element, attrs);
 			},
 			controller: ['$rootScope', '$scope', '$element', '$attrs', '$transclude', '$location', 'LocalStorage', function($rootScope, $scope, $element, $attrs, $transclude, $location, LocalStorage) {
 				Log.debug("Calendar - scope: %o, element: %o, attrs: %o", $scope, $element, $attrs);

@@ -134,7 +134,6 @@
 	    "value":"Delete",
 	    "description":""
 	},
-	
 	{
 	    "key":"_CreatedOn_",
 	    "value":"Created on",
@@ -340,6 +339,21 @@
 		"value":"Refresh tasks",
 		"description":""
 	},
+	{
+		"key":"_ErrorConsoleTitle_",
+		"value":"Looks like an error :-(",
+		"description":""
+	},
+	{
+		"key":"_SendError_",
+		"value":"Send error",
+		"description":""
+	},
+	{
+		"key":"_Close_",
+		"value":"Close",
+		"description":""
+	},
 	
 	
 	
@@ -502,6 +516,11 @@
 	{
 	    "key":"_NoSettingsAvailable_",
 	    "value":"No settings available yet.",
+	    "description":""
+	},
+	{
+	    "key":"_MsgUnexpectedError_",
+	    "value":"Unexpected error appears during operation. Please send us this error and we attempt fix it as soon as possible. Thank you for your cooperation.",
 	    "description":""
 	},
 	{

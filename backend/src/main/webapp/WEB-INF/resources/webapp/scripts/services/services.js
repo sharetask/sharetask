@@ -157,12 +157,14 @@ shareTaskApp.service('Logger', ['$rootScope', function($rootScope) {
 		
 		Log['error'] = function () {
 			if (!window.console) return; // prevents errors on IE
-	        console['error'].apply(console, arguments);
+			if (logLevel === 'debug' || logLevel === 'info' || logLevel === 'warn' || logLevel === 'error') {
+				console['error'].apply(console, arguments);
+			}
 		};
 	    
 		Log['warn'] = function () {
 			if (!window.console) return; // prevents errors on IE
-			if (logLevel !== 'error') {
+			if (logLevel === 'debug' || logLevel === 'info' || logLevel === 'warn') {
 				console['warn'].apply(console, arguments);
 			}
 		};
@@ -184,13 +186,16 @@ shareTaskApp.service('Logger', ['$rootScope', function($rootScope) {
 }]);
 
 
-shareTaskApp.service('ErrorHandling', ['User', function(User) {
+shareTaskApp.service('ErrorHandling', ['$rootScope', 'User', function($rootScope, User) {
 	
-	this.handle = function(data, status) {
-		Log.debug("Handle error! data: %o, status: %o", data, status);
+	this.handle = function(data, status, script, func) {
+		Log.debug("Handle error! data: %o, status: %o, function: %o", data, status, func);
 		if (status == 403) {
 			// logout user
 			User.logout();
+		}
+		else {
+			$rootScope.errorConsole = {show: true, data: data, status: status, func: func};
 		}
 	};
 }]);

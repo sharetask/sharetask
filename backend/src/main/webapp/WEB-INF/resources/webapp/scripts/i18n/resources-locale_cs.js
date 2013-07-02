@@ -340,6 +340,25 @@
 		"value":"Obnovit úkoly",
 		"description":""
 	},
+	{
+		"key":"_ErrorConsoleTitle_",
+		"value":"To vypadá jako chyba :-(",
+		"description":""
+	},
+	{
+		"key":"_SendError_",
+		"value":"Odeslat chybu",
+		"description":""
+	},
+	{
+		"key":"_Close_",
+		"value":"Zavřít",
+		"description":""
+	},
+	
+	
+	
+	
 	
 	
 	
@@ -495,6 +514,11 @@
 	{
 	    "key":"_NoSettingsAvailable_",
 	    "value":"Nyní nejsou dostupná žádná nastavení.",
+	    "description":""
+	},
+	{
+	    "key":"_MsgUnexpectedError_",
+	    "value":"Během operace došlo k neočekávané chybě. Prosím, pošlete nám tuto chybu a my se pokusíme o rychlou opravu. Děkujeme za spolupráci.",
 	    "description":""
 	},
 	{

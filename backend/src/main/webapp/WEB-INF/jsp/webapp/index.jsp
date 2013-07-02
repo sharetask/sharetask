@@ -46,7 +46,6 @@
 	</head>
 	<body ng-cloak>
 		<div ng-view></div>
-		<errorConsole></errorConsole>
 		<!-- In production use:
 		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
 		-->
