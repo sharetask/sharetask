@@ -39,16 +39,12 @@
 								</li>
 								<li class="cursor-pointer active" ng-show="taskEditMode != 'NEW-WORKSPACE'"><a>{{selectedWorkspace.title}}</a></li>
 								<li class="cursor-pointer" ng-repeat="workspace in workspaces" ng-show="taskEditMode != 'NEW-WORKSPACE' && workspace.id != selectedWorkspace.id && $index < 2"><a ng-click="setSelectedWorkspace(workspace)">{{workspace.title}}</a></li>
-								
 								<li id="fat-menu" class="dropdown" ng-show="taskEditMode != 'NEW-WORKSPACE' && workspaces.length > 2">
 									<a id="nextWorkspaces" role="button" class="dropdown-toggle cursor-pointer" data-toggle="dropdown">{{'_NextWorkspaces_' | i18n}} <b class="caret"></b></a>
 									<ul class="dropdown-menu" role="menu" aria-labelledby="nextWorkspaces">
 										<li ng-repeat="workspace in workspaces" ng-class="{'active':workspace.id == selectedWorkspace.id}" ng-show="workspace.id != selectedWorkspace.id && $index >= 2"><a role="menuitem" tabindex="-1" ng-click="setSelectedWorkspace(workspace)">{{workspace.title}}</a></li>
 									</ul>
 								</li>
-								
-								
-								
 							</ul>
 							<ul class="nav pull-right">
 								<div class="input-append" style="padding-top:2px;">

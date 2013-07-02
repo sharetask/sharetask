@@ -5,7 +5,8 @@
 angular.module('angular-google-analytics', [])
     .provider('Analytics', function() {
         var created = false,
-            trackRoutes = true,
+            trackRoutes = false,
+            trackEvents = false,
             accountId;
 
           this._logs = [];
@@ -15,8 +16,10 @@ angular.module('angular-google-analytics', [])
               accountId = id;
               return true;
           };
-          this.trackPages = function(doTrack) {
-              trackRoutes = doTrack;
+          this.setTracking = function(doTrackPages, doTrackEvents) {
+              trackRoutes = doTrackPages;
+              trackEvents = doTrackEvents;
+              //console.log("Analytics - trackRoutes: %o, trackEvents: %o", trackRoutes, trackEvents);
               return true;
           };
 
@@ -48,8 +51,9 @@ angular.module('angular-google-analytics', [])
             }
           };
           this._trackEvent = function(category, action, label, value) {
-            if ($window._gaq) {
+            if (trackEvents && $window._gaq) {
               $window._gaq.push(['_trackEvent', category, action, label, value]);
+              Log.debug("Analytics.trackEvent - category: %s, action: %s, label: %s, value: %s", category, action, label, value);
               this._log('trackEvent', arguments);
             }
           };

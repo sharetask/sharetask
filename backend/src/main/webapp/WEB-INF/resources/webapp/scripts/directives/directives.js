@@ -155,6 +155,29 @@ angular.module('shareTaskApp.directives', []).
 			}]
 		};
 	}])
+	.directive('error-console', ['$rootScope', function($rootScope) {
+		return {
+			restrict: 'E',
+			templateUrl: 'resources-webapp-'+$rootScope.appVersion+'/views/components/error-console.html',
+			link: function(scope, element, attrs) {
+				Log.debug("ErrorConsole - scope: %o, element: %o, attrs: %o", scope, element, attrs);
+			},
+			controller: ['$rootScope', '$scope', '$element', '$attrs', '$transclude', '$location', function($rootScope, $scope, $element, $attrs, $transclude, $location) {
+				Log.debug("ErrorConsole - scope: %o, element: %o, attrs: %o", $scope, $element, $attrs);
+				
+				$scope.open = function () {
+					$scope.shouldBeOpen = true;
+				};
+				
+				$scope.close = function () {
+					$scope.closeMsg = 'I was closed at: ' + new Date();
+					$scope.shouldBeOpen = false;
+				};
+				
+				$scope.opts = {backdropFade: true, dialogFade: true};
+			}]
+		};
+	}])
 	.directive('calendar', ['$rootScope', function($rootScope) {
 		return {
 			restrict: 'E',

@@ -159,7 +159,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 						$scope.selectedWorkspace = data[0];
 						$scope.loadTasks();
 					}
-					Analytics.trackEvent('Workspaces', 'load', 'success');
+					Analytics.trackEvent('Workspaces', 'load', 'success', status);
 				}, function(data, status) {
 					Log.debug("Workspace find error!");
 					ErrorHandling.handle(data, status);
@@ -181,9 +181,11 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 					$scope.workspaces.push(data);
 					$scope.newWorkspaceTitle = '';
 					$scope.setEditMode('');
+					Analytics.trackEvent('Workspace', 'add', 'success', status);
 				}, function(data, status) {
 					Log.debug("Workspace create error!");
 					ErrorHandling.handle(data, status);
+					Analytics.trackEvent('Workspace', 'add', 'error', status);
 				});
 		};
 		
@@ -208,9 +210,11 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 					$scope.newTasks = [];
 					$scope.allTasks = data;
 					$scope.setTaskFilterQueue($scope.filter.queue);
+					Analytics.trackEvent('Tasks', 'load', 'success', status);
 				}, function(data, status) {
 					Log.debug("Workspace getActiveTasks error!");
 					ErrorHandling.handle(data, status);
+					Analytics.trackEvent('Tasks', 'load', 'success', status);
 			});
 		};
 		
@@ -233,6 +237,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 				$scope.selectedTask = null;
 				$scope.tags = [];
 			}
+			Analytics.trackEvent('Tasks', 'setFilterQueue', queue);
 		};
 		
 		/**
@@ -275,6 +280,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 			else {
 				$scope.selectedTask = null;
 			}
+			Analytics.trackEvent('Tasks', 'setFilterTag');
 		};
 		
 		/**
@@ -311,6 +317,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 			Log.debug("Set task ordering to: %s", orderBy);
 			$scope.filter.orderBy = orderBy;
 			$scope.filterTasks();
+			Analytics.trackEvent('Tasks', 'setOrdering', orderBy);
 		};
 		
 		/**
@@ -358,6 +365,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 			$scope.setTags();
 			$scope.taskEditMode = '';
 			$scope.newTag = '';
+			Analytics.trackEvent('Task', 'addTag', 'Typed');
 		};
 		
 		/**
@@ -373,6 +381,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 			this.task.tags.push(ui.draggable.context.textContent);
 			// update task
 			$scope.updateTask(this.task);
+			Analytics.trackEvent('Task', 'addTag', 'Drag&Drop');
 		};
 		
 		/**
@@ -394,6 +403,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 			});
 			task[0].tags = newTags;
 			Log.debug("new tags: %o", task[0].tags);
+			Analytics.trackEvent('Task', 'removeTag');
 		};
 		
 		/**
@@ -428,6 +438,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 				//$scope.viewPanelTaskFilter === true ? $scope.viewPanelTaskFilter = false : $scope.viewPanelTaskFilter = true;
 				$scope.viewPanelTaskFilter = !$scope.viewPanelTaskFilter;
 				Log.debug("viewPanelTaskFilter set to: %s", $scope.viewPanelTaskFilter);
+				Analytics.trackEvent('UI', 'showHideTaskFilterSidebar', $scope.viewPanelTaskFilter);
 			}
 			if (element == 'TASK-DUE-DATE-PICKER') {
 				if ($scope.selectedTask.state == 'FINISHED') {
@@ -465,9 +476,11 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 			delete(result[0].comments);
 			Task.update({workspaceId: $scope.selectedWorkspace.id, task: task}, function(data, status) {
 					Log.debug("Task update success! data: %o, status: %o", data, status);
+					//Analytics.trackEvent('Task', 'update', 'success', status);
 				}, function(data, status) {
 					Log.debug("Task update error!");
 					ErrorHandling.handle(data, status);
+					//Analytics.trackEvent('Task', 'update', 'error', status);
 				});
 			LocalStorage.store('workspace-' + $scope.selectedWorkspace.id, $scope.allTasks);
 			$scope.setSelectedTask(task.id);
@@ -502,6 +515,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 			else if ($scope.selectedTask.priority == 'MEDIUM') { $scope.selectedTask.priority = 'HIGH'; }
 			else if ($scope.selectedTask.priority == 'HIGH') { $scope.selectedTask.priority = 'LOW'; }
 			$scope.updateTask($scope.selectedTask);
+			Analytics.trackEvent('Task', 'setPriority');
 		};
 		
 		/**
@@ -517,13 +531,12 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 			Log.debug("Task: %o", task);
 			Task.create({workspaceId: $scope.selectedWorkspace.id, task: task}, function(data, status) {
 					Log.debug("Task create success! data: %o, status: %o", data, status);
-					
-					
 					$scope.allTasks.push(data);
 					LocalStorage.store('workspace-' + $scope.selectedWorkspace.id, $scope.allTasks);
 					$scope.filterTasks(data.id);
 					$scope.newTaskTitle = '';
 					$scope.setEditMode('');
+					Analytics.trackEvent('Task', 'add', 'success', status);
 					/*
 					Task.forward({workspaceId: $scope.selectedWorkspace.id, taskId: data.id, username: $rootScope.loggedUser.username}, function(data, status) {
 							Log.debug("Task forward success! data: %o, status: %o", data, status);
@@ -540,6 +553,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 				}, function(data, status) {
 					Log.debug("Task create error!");
 					ErrorHandling.handle(data, status);
+					Analytics.trackEvent('Task', 'add', 'error', status);
 				});
 		};
 		
@@ -564,9 +578,11 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 					$scope.filterTasks();
 					$scope.setSelectedTask($scope.tasks[0].id);
 					$scope.setEditMode('');
+					Analytics.trackEvent('Task', 'forward', 'success', status);
 				}, function(data, status) {
 					Log.debug("Task forward error!");
 					ErrorHandling.handle(data, status);
+					Analytics.trackEvent('Task', 'forward', 'error', status);
 				});
 		};
 		
@@ -592,10 +608,12 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 							$scope.setSelectedTask($scope.tasks[0].id);
 						}
 						$scope.setEditMode('');
+						Analytics.trackEvent('Task', 'deleteOne', 'success', status);
 					}, function(data, status) {
 						Log.debug("Task remove error!");
 						ErrorHandling.handle(data, status);
 						$scope.errorMessageOnTaskList = 'Error deleting task "'+$scope.selectedTask.title+'".';
+						Analytics.trackEvent('Task', 'deleteOne', 'error', status);
 					});
 			}
 			else {
@@ -624,6 +642,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 						});
 					value.checked = false;
 				});
+				Analytics.trackEvent('Task', 'deleteBulk');
 			}
 		};
 		
@@ -655,9 +674,11 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 							$scope.setSelectedTask($scope.tasks[0].id);
 						}
 						$scope.setEditMode('');
+						Analytics.trackEvent('Task', 'completeOne', 'success', status);
 					}, function(data, status) {
 						Log.debug("Task complete error!");
 						ErrorHandling.handle(data, status);
+						Analytics.trackEvent('Task', 'completeOne', 'error', status);
 					});
 			}
 			else {
@@ -689,6 +710,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 					}
 					value.checked = false;
 				});
+				Analytics.trackEvent('Task', 'completeBulk');
 			}
 		};
 		
@@ -707,9 +729,11 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 						$scope.newTaskComment.message = $scope.newTaskComment.comment;
 						$scope.selectedTask.comments.push($scope.newTaskComment);
 						$scope.newTaskComment = null;
+						Analytics.trackEvent('Task', 'addComment', 'success', status);
 					}, function(data, status) {
 						Log.debug("Task addComment error!");
 						ErrorHandling.handle(data, status);
+						Analytics.trackEvent('Task', 'addComment', 'error', status);
 					});
 			}
 		};

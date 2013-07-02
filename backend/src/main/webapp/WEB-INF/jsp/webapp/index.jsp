@@ -24,7 +24,9 @@
 <spring:eval expression="@applicationProps['application.version']" var="applicationVersion" />
 <spring:eval expression="@applicationProps['application.revision']" var="applicationRevision" />
 <spring:eval expression="@applicationProps['log.level']" var="logLevel" />
-<spring:eval expression="@applicationProps['google.analytics.account.app']" var="googleAnalyticsAccount" />
+<spring:eval expression="@applicationProps['google.analytics.webapp.account']" var="googleAnalyticsAccount" />
+<spring:eval expression="@applicationProps['google.analytics.webapp.track.pages']" var="googleAnalyticsTrackPages" />
+<spring:eval expression="@applicationProps['google.analytics.webapp.track.events']" var="googleAnalyticsTrackEvents" />
 
 <!doctype html>
 <html lang="en" ng-app="shareTaskApp">
@@ -44,6 +46,7 @@
 	</head>
 	<body ng-cloak>
 		<div ng-view></div>
+		<errorConsole></errorConsole>
 		<!-- In production use:
 		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
 		-->
@@ -76,7 +79,7 @@
 				.config(['$routeProvider', 'AnalyticsProvider', function($routeProvider, AnalyticsProvider) {
 					// google analytics
 					AnalyticsProvider.setAccount('${googleAnalyticsAccount}');
-					AnalyticsProvider.trackPages(true);
+					AnalyticsProvider.setTracking('${googleAnalyticsTrackPages}', '${googleAnalyticsTrackEvents}');
 					// routing
 					$routeProvider.when('/', {templateUrl: '<c:url value="/resources-webapp-${applicationVersion}/views/index.html" />'});
 					$routeProvider.when('/tasks', {templateUrl: '<c:url value="/resources-webapp-${applicationVersion}/views/tasks.html" />'});

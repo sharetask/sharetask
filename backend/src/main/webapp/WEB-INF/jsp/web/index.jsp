@@ -23,7 +23,7 @@
 
 <spring:eval expression="@applicationProps['application.version']" var="applicationVersion" />
 <spring:eval expression="@applicationProps['application.revision']" var="applicationRevision" />
-<spring:eval expression="@applicationProps['google.analytics.account.web']" var="googleAnalyticsAccount" />
+<spring:eval expression="@applicationProps['google.analytics.web.account']" var="googleAnalyticsAccount" />
 
 <!doctype html>
 <html lang="en" ng-app="shareTaskWeb">
