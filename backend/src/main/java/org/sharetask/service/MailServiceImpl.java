@@ -26,6 +26,7 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 
 import org.sharetask.api.MailService;
+import org.sharetask.api.NotificationQueueService;
 import org.sharetask.api.TemplateMessageService;
 import org.sharetask.api.TemplateMessageService.TemplateList;
 import org.sharetask.api.dto.InvitationDTO;
@@ -61,6 +62,9 @@ public class MailServiceImpl implements MailService {
 	private UserRepository userRepository;
 
 	@Inject
+	private NotificationQueueService notificationQueueService;
+
+	@Inject
 	private WorkspaceRepository workspaceRepository;
 	
 	@Value("#{applicationProps['applicationUrl']}")
@@ -83,7 +87,8 @@ public class MailServiceImpl implements MailService {
 		try {
 			mailSender.send(msg);
 		} catch (final MailException ex) {
-			log.error("Problem in sending email notification:", ex);
+			log.error("Problem in sending email notification:", ex.getMessage());
+			notificationQueueService.storeInvitation(msg.getFrom(), msg.getTo(), msg.getText());
 		}
 	}
 	

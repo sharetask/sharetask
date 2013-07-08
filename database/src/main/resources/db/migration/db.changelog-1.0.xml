@@ -297,5 +297,58 @@
 		<modifySql dbms="mysql">
 			<append value="ENGINE=INNODB CHARSET=UTF8 COLLATE utf8_general_ci" />
 		</modifySql>
-	</changeSet>	
+	</changeSet>
+	
+	<changeSet id="create: notification queue" author="mbocek">
+		<createTable tableName="NOTIFICATION_QUEUE" remarks="notification queue">
+			<column autoIncrement="true" name="ID" type="BIGINT" remarks="Primary key">
+				<constraints nullable="false" primaryKey="true" primaryKeyName="PK_NOTIFICATION_QUEUE" />
+			</column>
+			<column name="TYPE" type="VARCHAR(50)" remarks="Type of notification">
+				<constraints nullable="false" />
+			</column>
+			<column name="FROM" type="VARCHAR(256)" remarks="Sender infdentifiert">
+				<constraints nullable="false" />
+			</column>
+			<column name="MESSAGE" type="BLOB" remarks="Message">
+				<constraints nullable="false" />
+			</column>
+			<column name="RETRY" type="BIGINT" remarks="Retry count">
+				<constraints nullable="false"/>
+			</column>
+			<column name="PRIORITY" type="BIGINT" remarks="Priority for send">
+				<constraints nullable="false"/>
+			</column>
+			<column name="UPDATED_ON" type="DATETIME" remarks="Date when record was updated">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+
+		<modifySql dbms="mysql">
+			<append value="ENGINE=INNODB CHARSET=UTF8 COLLATE utf8_general_ci" />
+		</modifySql>
+	</changeSet>
+
+	<changeSet id="create: notification queue to" author="mbocek">
+		<createTable tableName="NOTIFICATION_QUEUE_TO" remarks="notification queue to list">
+			<column name="NOTIFICATION_QUEUE_ID" type="BIGINT" remarks="Notification queue reference">
+				<constraints nullable="false"/>
+			</column>
+			<column name="TO" type="VARCHAR(256)" remarks="Recipient">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		
+		<modifySql dbms="mysql">
+			<append value="ENGINE=INNODB CHARSET=UTF8 COLLATE utf8_general_ci" />
+		</modifySql>
+	</changeSet>
+
+	<changeSet id="create: notification_queue_to foreign key and primary key" author="mbocek" >
+		<addForeignKeyConstraint constraintName="FK_NOTIFICATION_QUEUE_TO"
+			baseTableName="NOTIFICATION_QUEUE_TO" baseColumnNames="NOTIFICATION_QUEUE_ID"
+			referencedTableName="NOTIFICATION_QUEUE" referencedColumnNames="ID" />
+		<addPrimaryKey tableName="NOTIFICATION_QUEUE_TO" columnNames="NOTIFICATION_QUEUE_ID,TO"
+			constraintName="PK_NOTIFICATION_QUEUE_TO" />
+	</changeSet>
 </databaseChangeLog>

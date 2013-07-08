@@ -44,7 +44,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Service
 @Transactional(readOnly = true)
-public class InitationServiceImpl implements InvitationService {
+public class InvitationServiceImpl implements InvitationService {
 
 	@Inject
 	private MailService mailService;
@@ -62,7 +62,8 @@ public class InitationServiceImpl implements InvitationService {
 		invitation.setInvitationCode(HashCodeUtil.getHashCode(System.currentTimeMillis() + username));
 		final Invitation storedInitation = invitationRepository.save(invitation);
 		//send invitation notification
-		mailService.sendInvitation(DTOConverter.convert(storedInitation, InvitationDTO.class));
+		final InvitationDTO invitationDTO = DTOConverter.convert(storedInitation, InvitationDTO.class);
+		mailService.sendInvitation(invitationDTO);
 	}
 	
 	@Override
