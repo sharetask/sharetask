@@ -67,7 +67,29 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>			
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>native2ascii-maven-plugin</artifactId>
+				<configuration>
+					<src>src/main/resources/i18n</src>
+					<dest>target/classes/i18n</dest>
+				</configuration>
+				<executions>
+					<execution>
+						<id>native2ascii-utf8</id>
+						<goals>
+							<goal>native2ascii</goal>
+						</goals>
+						<configuration>
+							<encoding>UTF8</encoding>
+							<includes>
+								<include>**/messages*.properties</include>
+							</includes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin> 
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>aspectj-maven-plugin</artifactId>

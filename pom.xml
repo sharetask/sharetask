@@ -128,6 +128,11 @@
 					<artifactId>jetty-maven-plugin</artifactId>
 					<version>8.1.5.v20120716</version>
 				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>native2ascii-maven-plugin</artifactId>
+					<version>1.0-beta-1</version>
+				</plugin>
 
 				<!--Repoting plugins definition -->
 				<plugin>
