@@ -1,5 +1,5 @@
 Hello,
-you are register to ShareTa.sk. After click to hyperlink your account will be enabled ${confimationLink}. 
+you are registered to <a href="${applicationLink}">ShareTa.sk</a>. After click to hyperlink your account will be enabled <a href="${confimationLink}">${confimationLink}</a>. 
 
 Best regards,
 Your ShareTa.sk team.

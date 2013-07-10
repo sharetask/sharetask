@@ -22,6 +22,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -37,8 +39,8 @@ import org.sharetask.repository.UserRepository;
 import org.sharetask.repository.WorkspaceRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 /**
@@ -56,9 +58,6 @@ public class MailServiceImpl implements MailService {
 	private TemplateMessageService templateMessageService;
 
 	@Inject
-	private SimpleMailMessage templateMessage;
-	
-	@Inject
 	private UserRepository userRepository;
 
 	@Inject
@@ -66,35 +65,48 @@ public class MailServiceImpl implements MailService {
 
 	@Inject
 	private WorkspaceRepository workspaceRepository;
-	
-	@Value("#{applicationProps['applicationUrl']}")
+
+	@Value("#{applicationProps['application.url']}")
 	private String applicationUrl;
+
+	@Value("#{applicationProps['application.mail.noreply']}")
+	private String noreplyMail;
 
 	@Override
 	public void sendInvitation(final InvitationDTO invitation) {
-		final SimpleMailMessage msg = new SimpleMailMessage(templateMessage);
-		msg.setTo(invitation.getEmail());
+		final MimeMessage message = mailSender.createMimeMessage();
+		final MimeMessageHelper helper = new MimeMessageHelper(message);
 		final Map<String, Object> model = prepareInvitationMode(invitation);
 		final InvitationType invitationType = InvitationType.valueOf(invitation.getInvitationType());
+		String mailMessage;
+
 		switch (invitationType) {
 			case ADD_WORKSPACE_MEMBER:
-				msg.setText(templateMessageService.prepareMessage(TemplateList.WORKSPACE_INVITATION, model, null));
+				mailMessage = templateMessageService.prepareMessage(TemplateList.WORKSPACE_INVITATION, model, null);
 				break;
 			case USER_REGISTRATION:
-				msg.setText(templateMessageService.prepareMessage(TemplateList.USER_REGISTRATION_INVITATION, model, null));
+				mailMessage = templateMessageService.prepareMessage(TemplateList.USER_REGISTRATION_INVITATION, model, null);
 				break;
+			default:
+				throw new IllegalStateException("Invitation type for sending email isn't implemented!");
 		}
+
 		try {
-			mailSender.send(msg);
+			helper.setFrom(noreplyMail);
+			helper.setTo(invitation.getEmail());
+			helper.setText(mailMessage);
+			mailSender.send(message);
 		} catch (final MailException ex) {
 			log.error("Problem in sending email notification:", ex.getMessage());
-			notificationQueueService.storeInvitation(msg.getFrom(), msg.getTo(), msg.getText());
+			notificationQueueService.storeInvitation(noreplyMail, new String[]{invitation.getEmail()}, mailMessage);
+		} catch (final MessagingException e) {
+			throw new IllegalStateException("Wrong mail message format: ", e);
 		}
 	}
-	
+
 	private Map<String, Object> prepareInvitationMode(final InvitationDTO invitation) {
 		final InvitationType invitationType = InvitationType.valueOf(invitation.getInvitationType());
-		Map<String, Object> result = null; 
+		Map<String, Object> result = null;
 		switch (invitationType){
 			case ADD_WORKSPACE_MEMBER:
 				result = prepareAddWorkspaceMember(invitation);
@@ -109,6 +121,7 @@ public class MailServiceImpl implements MailService {
 	private Map<String, Object> prepareUserRegistration(final InvitationDTO invitation) {
 		final Map<String, Object> model = new HashMap<String, Object>();
 		model.put("confimationLink", applicationUrl + "/api/user/confirm?code=" + invitation.getInvitationCode());
+		model.put("applicationLink", applicationUrl);
 		return model;
 	}
 
@@ -117,7 +130,7 @@ public class MailServiceImpl implements MailService {
 		final User invitingUser = userRepository.findOne(invitation.getInvitingUser());
 		model.put("userName", invitingUser.getName());
 		model.put("userSurName", invitingUser.getSurName());
-		final Workspace workspace = workspaceRepository.findOne(invitation.getEntityId());		
+		final Workspace workspace = workspaceRepository.findOne(invitation.getEntityId());
 		model.put("workspaceName", workspace.getTitle());
 		model.put("confimationLink", applicationUrl + "?code=" + invitation.getInvitationCode());
 		return model;

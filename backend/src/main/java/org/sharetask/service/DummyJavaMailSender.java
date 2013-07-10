@@ -22,8 +22,11 @@ import java.io.InputStream;
 
 import javax.mail.internet.MimeMessage;
 
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -36,12 +39,15 @@ import org.springframework.mail.javamail.MimeMessagePreparator;
 @Slf4j
 public class DummyJavaMailSender implements JavaMailSender {
 
+	@Setter
+	private JavaMailSender innerSender;
+
 	/* (non-Javadoc)
 	 * @see org.springframework.mail.MailSender#send(org.springframework.mail.SimpleMailMessage)
 	 */
 	@Override
 	public void send(final SimpleMailMessage simpleMessage) throws MailException {
-		log.info(String.valueOf(simpleMessage));
+		dumpMimeMessages(new Object[] {simpleMessage});
 	}
 
 	/* (non-Javadoc)
@@ -49,7 +55,7 @@ public class DummyJavaMailSender implements JavaMailSender {
 	 */
 	@Override
 	public void send(final SimpleMailMessage[] simpleMessages) throws MailException {
-		log.info(String.valueOf(simpleMessages));
+		dumpMimeMessages(simpleMessages);
 	}
 
 	/* (non-Javadoc)
@@ -57,7 +63,7 @@ public class DummyJavaMailSender implements JavaMailSender {
 	 */
 	@Override
 	public MimeMessage createMimeMessage() {
-		return null;
+		return innerSender.createMimeMessage();
 	}
 
 	/* (non-Javadoc)
@@ -65,7 +71,7 @@ public class DummyJavaMailSender implements JavaMailSender {
 	 */
 	@Override
 	public MimeMessage createMimeMessage(final InputStream contentStream) throws MailException {
-		return null;
+		return innerSender.createMimeMessage(contentStream);
 	}
 
 	/* (non-Javadoc)
@@ -73,7 +79,7 @@ public class DummyJavaMailSender implements JavaMailSender {
 	 */
 	@Override
 	public void send(final MimeMessage mimeMessage) throws MailException {
-		log.info(String.valueOf(mimeMessage));
+		dumpMimeMessages(new Object[] {mimeMessage});
 	}
 
 	/* (non-Javadoc)
@@ -81,7 +87,7 @@ public class DummyJavaMailSender implements JavaMailSender {
 	 */
 	@Override
 	public void send(final MimeMessage[] mimeMessages) throws MailException {
-		log.info(String.valueOf(mimeMessages));
+		dumpMimeMessages(mimeMessages);
 	}
 
 	/* (non-Javadoc)
@@ -89,7 +95,7 @@ public class DummyJavaMailSender implements JavaMailSender {
 	 */
 	@Override
 	public void send(final MimeMessagePreparator mimeMessagePreparator) throws MailException {
-		log.info(String.valueOf(mimeMessagePreparator));
+		dumpMimeMessages(new Object[] {mimeMessagePreparator});
 	}
 
 	/* (non-Javadoc)
@@ -97,6 +103,12 @@ public class DummyJavaMailSender implements JavaMailSender {
 	 */
 	@Override
 	public void send(final MimeMessagePreparator[] mimeMessagePreparators) throws MailException {
-		log.info(String.valueOf(mimeMessagePreparators));
+		dumpMimeMessages(mimeMessagePreparators);
+	}
+
+	private void dumpMimeMessages(final Object[] objects) {
+		for (final Object object : objects) {
+			log.info(ToStringBuilder.reflectionToString(object, ToStringStyle.MULTI_LINE_STYLE));
+		}
 	}
 }
