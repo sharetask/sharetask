@@ -29,6 +29,9 @@
 	
 	<beans profile="integration">  
 		<bean id="mailSender" class="org.sharetask.service.DummyJavaMailSender">
+			<property name="innerSender">
+				<bean class="org.springframework.mail.javamail.JavaMailSenderImpl" />
+			</property>
 		</bean>
 	</beans>
 </beans>
