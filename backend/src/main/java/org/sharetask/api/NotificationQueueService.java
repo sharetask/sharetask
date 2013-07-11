@@ -35,5 +35,6 @@ public interface NotificationQueueService {
 	 * @param workspace
 	 * @return
 	 */
-	void storeInvitation(@NotNull final String from, @NotNull final String[] to, @NotNull final String msq);
+	void storeInvitation(@NotNull final String from, @NotNull final String[] to, @NotNull final String subject, 
+			@NotNull final String msq);
 }

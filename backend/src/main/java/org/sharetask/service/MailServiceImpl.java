@@ -109,7 +109,7 @@ public class MailServiceImpl implements MailService {
 			mailSender.send(message);
 		} catch (final MailException ex) {
 			log.error("Problem in sending email notification:", ex.getMessage());
-			notificationQueueService.storeInvitation(noreplyMail, new String[]{invitation.getEmail()}, mailMessage);
+			notificationQueueService.storeInvitation(noreplyMail, new String[]{invitation.getEmail()}, mailSubject, mailMessage);
 		} catch (final MessagingException e) {
 			throw new IllegalStateException("Wrong mail message format: ", e);
 		}
