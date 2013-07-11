@@ -63,4 +63,19 @@ angular.module('shareTaskWeb.directives', [])
 			}]
 		};
 	}])
+	.directive('autoFillableField', function() {
+		return {
+			restrict: "A",
+			require: "?ngModel",
+			link: function(scope, element, attrs, ngModel) {
+				setInterval(function() {
+					if (!(element.val()=='' && ngModel.$pristine)) {
+						scope.$apply(function() {
+							ngModel.$setViewValue(element.val());
+						});
+					}
+				}, 300);
+			}
+		};
+	})
 	;
