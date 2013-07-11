@@ -155,4 +155,16 @@ angular.module('shareTaskApp.filters', []).
 			return hex_md5(input.toLowerCase());
 		};
 	}])
+	.filter('urlEncode', [function() {
+		return function(input) {
+			//Log.debug("urlEncode: %o", input);
+			return encodeURIComponent(input);
+		};
+	}])
+	.filter('urlDecode', [function() {
+		return function(input) {
+			//Log.debug("urlDecode: %o", input);
+			return decodeURIComponent(input);
+		};
+	}])
 	;

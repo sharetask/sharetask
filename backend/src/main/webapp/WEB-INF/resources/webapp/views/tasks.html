@@ -286,7 +286,7 @@
 									<div class="notice" ng-repeat="comment in selectedTask.comments" ng-class="{'author':comment.createdBy == selectedTask.createdBy}">
 										<div class="row-full">
 											<div class="span2">
-												<img src="http://www.gravatar.com/avatar/{{comment.createdBy.username | hash}}.jpg?s=45" />
+												<img src="http://www.gravatar.com/avatar/{{comment.createdBy.username | hash}}.jpg?s=45&d={{'http://www.hip-hop.cz/user-small.png' | urlEncode}}" />
 											</div>
 											<div class="span10">
 												<div class="row-full header">
