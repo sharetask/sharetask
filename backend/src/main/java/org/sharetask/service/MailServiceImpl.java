@@ -38,6 +38,8 @@ import org.sharetask.entity.Workspace;
 import org.sharetask.repository.UserRepository;
 import org.sharetask.repository.WorkspaceRepository;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -65,7 +67,10 @@ public class MailServiceImpl implements MailService {
 
 	@Inject
 	private WorkspaceRepository workspaceRepository;
-
+	
+	@Inject
+	private MessageSource messageSource;
+	
 	@Value("#{applicationProps['application.url']}")
 	private String applicationUrl;
 
@@ -79,13 +84,18 @@ public class MailServiceImpl implements MailService {
 		final Map<String, Object> model = prepareInvitationMode(invitation);
 		final InvitationType invitationType = InvitationType.valueOf(invitation.getInvitationType());
 		String mailMessage;
+		String mailSubject;
 
 		switch (invitationType) {
 			case ADD_WORKSPACE_MEMBER:
 				mailMessage = templateMessageService.prepareMessage(TemplateList.WORKSPACE_INVITATION, model, null);
+				mailSubject = messageSource.getMessage("notification.mail.subject.addWorkspaceMember", null,
+						LocaleContextHolder.getLocale());
 				break;
 			case USER_REGISTRATION:
 				mailMessage = templateMessageService.prepareMessage(TemplateList.USER_REGISTRATION_INVITATION, model, null);
+				mailSubject = messageSource.getMessage("notification.mail.subject.userRegistration", null,
+						LocaleContextHolder.getLocale());
 				break;
 			default:
 				throw new IllegalStateException("Invitation type for sending email isn't implemented!");
@@ -94,6 +104,7 @@ public class MailServiceImpl implements MailService {
 		try {
 			helper.setFrom(noreplyMail);
 			helper.setTo(invitation.getEmail());
+			helper.setSubject(mailSubject);
 			helper.setText(mailMessage);
 			mailSender.send(message);
 		} catch (final MailException ex) {
