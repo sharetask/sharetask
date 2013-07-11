@@ -48,7 +48,7 @@ public class NotificationQueueServiceTest extends DbUnitTest{
 	 */
 	@Test
 	public void testStoreInvitation() {
-		notificationQueueService.storeInvitation("sender@test.com", new String[] {"recipient@test.com"}, "Test message");
+		notificationQueueService.storeInvitation("sender@test.com", new String[] {"recipient@test.com"}, "Test subject", "Test message");
 		final List<NotificationQueue> all = notificationQueueRepository.findAll();
 		assertThat(all.size() > 0, CoreMatchers.equalTo(true));
 	}

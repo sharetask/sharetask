@@ -310,6 +310,9 @@
 			<column name="FROM" type="VARCHAR(255)" remarks="Sender infdentifiert">
 				<constraints nullable="false" />
 			</column>
+			<column name="SUBJECT" type="VARCHAR(255)" remarks="Notification subject">
+				<constraints nullable="false" />
+			</column>
 			<column name="MESSAGE" type="BLOB" remarks="Message">
 				<constraints nullable="false" />
 			</column>

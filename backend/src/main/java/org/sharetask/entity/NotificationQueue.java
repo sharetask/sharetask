@@ -93,6 +93,10 @@ public class NotificationQueue implements Serializable {
 	private List<String> to = new ArrayList<String>();
 
 	@Getter
+	@Column(name = "SUBJECT", nullable = false, length = 255)
+	private String subject;
+
+	@Getter
 	@Lob
 	@Column(name = "MESSAGE")
 	private byte[] message;

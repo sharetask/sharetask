@@ -43,9 +43,9 @@ public class NotificationQueueServiceImpl implements NotificationQueueService {
 
 	@Override
 	@Transactional
-	public void storeInvitation(final String from, final String[] to, final String msg) {
-		final NotificationQueue notificationQueue = new NotificationQueue(null, NotificationType.EMAIL, from,
-				Arrays.asList(to), msg.getBytes(), 0, NotificationQueue.Priority.HIGH, new Date());
+	public void storeInvitation(final String from, final String[] to, final String subject, final String msg) {
+		final NotificationQueue notificationQueue = new NotificationQueue(null, NotificationType.EMAIL, from, 
+				Arrays.asList(to), subject, msg.getBytes(), 0, NotificationQueue.Priority.HIGH, new Date());
 		notificationQueueRepository.save(notificationQueue);
 	}
 }

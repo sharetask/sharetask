@@ -38,10 +38,6 @@
 	<!-- Change language using ?lang=cs                                    -->
 	<!-- User's language option is saved to cookie.                        -->
 	<!-- ================================================================= -->
-	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
-		<property name="basename" value="classpath:/i18n/messages" />
-		<property name="defaultEncoding" value="UTF-8" />
-	</bean>
 	<mvc:interceptors>
 		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" p:paramName="lang" />
 	</mvc:interceptors>
