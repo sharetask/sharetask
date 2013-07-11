@@ -307,7 +307,7 @@
 			<column name="TYPE" type="VARCHAR(50)" remarks="Type of notification">
 				<constraints nullable="false" />
 			</column>
-			<column name="FROM" type="VARCHAR(256)" remarks="Sender infdentifiert">
+			<column name="FROM" type="VARCHAR(255)" remarks="Sender infdentifiert">
 				<constraints nullable="false" />
 			</column>
 			<column name="MESSAGE" type="BLOB" remarks="Message">
@@ -334,7 +334,7 @@
 			<column name="NOTIFICATION_QUEUE_ID" type="BIGINT" remarks="Notification queue reference">
 				<constraints nullable="false"/>
 			</column>
-			<column name="TO" type="VARCHAR(256)" remarks="Recipient">
+			<column name="TO" type="VARCHAR(255)" remarks="Recipient">
 				<constraints nullable="false" />
 			</column>
 		</createTable>

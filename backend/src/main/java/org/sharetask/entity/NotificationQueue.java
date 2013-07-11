@@ -64,7 +64,7 @@ public class NotificationQueue implements Serializable {
 
 	public enum Priority {
 		LOW(1), MEDIUM(2), HIGH(3);
-		
+
 		@Getter
 		private final int priority;
 
@@ -83,7 +83,7 @@ public class NotificationQueue implements Serializable {
 	private NotificationType type;
 
 	@Getter
-	@Column(name = "FROM", nullable = false, length = 256)
+	@Column(name = "FROM", nullable = false, length = 255)
 	private String from;
 
 	@Getter
@@ -100,15 +100,15 @@ public class NotificationQueue implements Serializable {
 	@Getter
 	@Column(name = "RETRY", nullable = false)
 	private int retry;
-	
+
 	@Getter
 	@Column(name = "PRIORITY", nullable = false)
 	@Enumerated(value = EnumType.ORDINAL)
 	private Priority priority;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "UPDATED_ON", nullable = false)
 	private Date updatedOn;
-	
-	
+
+
 }
