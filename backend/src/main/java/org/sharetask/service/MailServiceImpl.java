@@ -106,7 +106,7 @@ public class MailServiceImpl implements MailService {
 			helper.setTo(invitation.getEmail());
 			helper.setSubject(mailSubject);
 			helper.setText(mailMessage);
-			mailSender.send(message);
+			mailSender.send(message, true /* html */);
 		} catch (final MailException ex) {
 			log.error("Problem in sending email notification:", ex.getMessage());
 			notificationQueueService.storeInvitation(noreplyMail, new String[]{invitation.getEmail()}, mailSubject, mailMessage);
