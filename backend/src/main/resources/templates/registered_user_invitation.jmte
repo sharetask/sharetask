@@ -1,7 +1,7 @@
 <html>
 <body>
 Hello,<br/>
-you are registered to <a href="${applicationLink}">ShareTa.sk</a>. After click to hyperlink your account will be enabled <a href="${confimationLink}">${confimationLink}</a>.<br/><br/>
+you are registered to <a href="${applicationLink}">ShareTa.sk</a>. After click to <a href="${confimationLink}">hyperlink</a> your account will be enabled.<br/><br/>
 
 Best regards,<br/>
 Your <a href="${applicationLink}">ShareTa.sk</a> team.<br/>
