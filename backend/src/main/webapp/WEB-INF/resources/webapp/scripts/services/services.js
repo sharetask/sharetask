@@ -31,7 +31,7 @@ shareTaskApp.service('User', ['$rootScope', '$location', '$window', 'LocalStorag
 	
 	this.get = function(input, success, error) {
 		Log.debug("Getting user (id: %s) from server", input.username);
-		return $http.get($rootScope.appBaseUrl+"api/user/"+input.username, {}).success(success).error(error);
+		return $http.get($rootScope.appBaseUrl+"api/user/"+encodeURI(input.username), {}).success(success).error(error);
 	};
 	
 	this.create = function(input, success, error) {
@@ -92,7 +92,7 @@ shareTaskApp.service('Workspace', ['$rootScope', '$resource', '$http', function(
 	
 	this.removeMember = function(input, success, error) {
 		Log.debug("Delete member (username: %o) from workspace (id: %o)", input.username, input.workspaceId);
-		return $http.delete($rootScope.appBaseUrl+"api/workspace/"+input.workspaceId+"/member/"+input.username, input.user).success(success).error(error);
+		return $http.delete($rootScope.appBaseUrl+"api/workspace/"+input.workspaceId+"/member/"+encodeURI(input.username), input.user).success(success).error(error);
 	};
 }]);
 

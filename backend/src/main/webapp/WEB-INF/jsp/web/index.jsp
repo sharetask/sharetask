@@ -69,7 +69,7 @@
 								<br /><br />
 								<h4><spring:message code="login.title" /></h4><br />
 								<form name="formLogin" novalidate class="css-form" ng-cloak>
-									<div class="alert alert-error" ng-class="{'hidden':loginData.result == 1 || loginData.result == 0}">
+									<div class="alert alert-error" ng-class="{'hidden':!loginData || !loginData.result || loginData.result == 1 || loginData.result == 0}">
 										<a class="close" ng-click="loginData.result = 0">&times;</a>
 										<strong>Error</strong> Bad user name or password.
 									</div>
