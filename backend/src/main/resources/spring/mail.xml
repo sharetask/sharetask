@@ -20,18 +20,16 @@
 	</beans>
 
 	<beans profile="dev,default">  
-		<bean id="mailSender" class="org.sharetask.service.DummyJavaMailSender">
-			<property name="innerSender">
-				<bean class="org.springframework.mail.javamail.JavaMailSenderImpl" />
-			</property>
+		<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+			<property name="host" value="localhost"/>
+			<property name="port" value="2500"/>
 		</bean>
 	</beans>
 	
 	<beans profile="integration">  
-		<bean id="mailSender" class="org.sharetask.service.DummyJavaMailSender">
-			<property name="innerSender">
-				<bean class="org.springframework.mail.javamail.JavaMailSenderImpl" />
-			</property>
+		<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+			<property name="host" value="localhost"/>
+			<property name="port" value="2500"/>
 		</bean>
 	</beans>
 </beans>
