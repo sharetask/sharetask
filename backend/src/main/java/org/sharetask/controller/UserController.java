@@ -68,7 +68,7 @@ public class UserController {
 
 	@Inject
 	private UserService userService;
-	
+
 	@RequestMapping(value = "/login/status", method = RequestMethod.GET)
 	public void login(final HttpServletRequest request, final HttpServletResponse response) {
 		int resultCode = HttpStatus.UNAUTHORIZED.value();
@@ -82,9 +82,9 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public void performLogin(@RequestBody final UserPassword login, final HttpServletRequest request, 
+	public void performLogin(@RequestBody final UserPassword login, final HttpServletRequest request,
 			final HttpServletResponse response) {
-		final UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(login.getUsername(), 
+		final UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(login.getUsername(),
 				login.getPassword());
 		try {
 			final Authentication auth = authenticationManager.authenticate(token);
@@ -96,7 +96,7 @@ public class UserController {
 			response.setStatus(HttpStatus.UNAUTHORIZED.value());
 		}
 	}
-	
+
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public void performLogout(final HttpServletRequest request, final HttpServletResponse response) {
 		SecurityContextHolder.clearContext();
@@ -111,25 +111,25 @@ public class UserController {
 	public void passwordChange(@RequestBody final UserPassword user) {
 		userService.changePassword(user.getPassword());
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
 	@ResponseBody public UserDTO create(@RequestBody final UserDTO user) {
 		return userService.create(user);
 	}
-	
+
 
 	@RequestMapping(method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
 	@ResponseBody public UserInfoDTO update(@RequestBody final UserInfoDTO user) {
 		return userService.update(user);
 	}
-	
-	@RequestMapping(value = "/{username:.*}", method = RequestMethod.GET)
+
+	@RequestMapping(value = "/{username:.*}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody public UserInfoDTO get(@PathVariable("username") final String username) {
 		return userService.read(username);
 	}
-	
+
 	@RequestMapping(value = "/confirm", method = RequestMethod.GET)
 	public String invite(@RequestParam("code") final String code) {
 		userService.confirmInvitation(code);
