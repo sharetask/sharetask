@@ -18,13 +18,21 @@
  */
 package org.sharetask.service;
 
-import javax.inject.Inject;
+import java.util.List;
 
+import javax.inject.Inject;
+import javax.mail.MessagingException;
+
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.sharetask.api.MailService;
 import org.sharetask.api.dto.InvitationDTO;
 import org.sharetask.data.DbUnitTest;
 import org.sharetask.entity.Invitation.InvitationType;
+import org.subethamail.wiser.Wiser;
+import org.subethamail.wiser.WiserMessage;
 
 /**
  * @author Michal Bocek
@@ -34,12 +42,28 @@ public class MailServiceTest extends DbUnitTest {
 	
 	@Inject
 	private MailService mailService;
-	
+    
+	private Wiser testSmtp;
+    
+    @Before
+    public void testSmtpInit(){
+    	testSmtp = new Wiser();
+    	testSmtp.setPort(2500);
+        testSmtp.start();
+    }
+    
+    @After
+    public void cleanup(){
+        testSmtp.stop();
+    }
+    
 	/**
 	 * Test method for {@link org.sharetask.api.MailService#sendInvitation(org.sharetask.api.dto.InvitationDTO)}.
+	 * @throws MessagingException 
+	 * @throws InterruptedException 
 	 */
 	@Test
-	public void testSendInvitation() {
+	public void testSendInvitation() throws MessagingException, InterruptedException {
 		final InvitationDTO invitationDTO = new InvitationDTO();
 		invitationDTO.setEmail("test3@test.com");
 		invitationDTO.setInvitingUser("test1@test.com");
@@ -47,5 +71,9 @@ public class MailServiceTest extends DbUnitTest {
 		invitationDTO.setInvitationType(InvitationType.ADD_WORKSPACE_MEMBER.name());
 		invitationDTO.setInvitationCode("xxxxxxyyyyyyyy");
 		mailService.sendInvitation(invitationDTO);
+		
+		final List<WiserMessage> messages = testSmtp.getMessages();
+		Assert.assertEquals(1, messages.size());
+		Assert.assertEquals("You are added to workspace on shareta.sk", messages.get(0).getMimeMessage().getSubject());
 	}
 }
