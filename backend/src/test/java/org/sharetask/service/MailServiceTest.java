@@ -19,6 +19,7 @@
 package org.sharetask.service;
 
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 import javax.mail.MessagingException;
@@ -50,6 +51,7 @@ public class MailServiceTest extends DbUnitTest {
     	testSmtp = new Wiser();
     	testSmtp.setPort(2500);
         testSmtp.start();
+        Locale.setDefault(Locale.GERMANY);
     }
     
     @After

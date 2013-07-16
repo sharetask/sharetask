@@ -41,9 +41,6 @@
 	<mvc:interceptors>
 		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" p:paramName="lang" />
 	</mvc:interceptors>
-	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
-		<property name="defaultLocale" value="en" />
-	</bean>
 	
 	<!-- ================================================================= -->
 	<!-- Resource resolve                                                  -->
