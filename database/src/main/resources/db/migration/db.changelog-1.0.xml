@@ -319,7 +319,7 @@
 			<column name="RETRY" type="BIGINT" remarks="Retry count">
 				<constraints nullable="false"/>
 			</column>
-			<column name="PRIORITY" type="BIGINT" remarks="Priority for send">
+			<column name="PRIORITY" type="VARCHAR(50)" remarks="Priority for send">
 				<constraints nullable="false"/>
 			</column>
 			<column name="UPDATED_ON" type="DATETIME" remarks="Date when record was updated">

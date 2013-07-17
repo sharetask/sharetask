@@ -18,35 +18,38 @@
  */
 package org.sharetask.service;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import org.sharetask.api.NotificationQueueService;
+import lombok.extern.slf4j.Slf4j;
+
+import org.sharetask.api.MailService;
+import org.sharetask.api.RunnableQuartzJob;
 import org.sharetask.entity.NotificationQueue;
-import org.sharetask.entity.NotificationQueue.NotificationType;
 import org.sharetask.repository.NotificationQueueRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Michal Bocek
  * @since 1.0.0
  */
-@Service
-@Transactional(readOnly = true)
-public class NotificationQueueServiceImpl implements NotificationQueueService {
+@Slf4j
+@Service("sendNotificationJob")
+public class SendNotificationJobImpl implements RunnableQuartzJob {
 
 	@Inject
-	private NotificationQueueRepository notificationQueueRepository;
+	private MailService mailService;
+		
+	@Inject
+	private NotificationQueueRepository nqRepository;
 
 	@Override
-	@Transactional
-	public void storeInvitation(final String from, final List<String> to, final String subject, final String msg,
-			final int retry) {
-		final NotificationQueue notificationQueue = new NotificationQueue(null, NotificationType.EMAIL, from, 
-				to, subject, msg.getBytes(), retry, NotificationQueue.Priority.HIGH, new Date());
-		notificationQueueRepository.save(notificationQueue);
+	public void doService() {
+		final List<NotificationQueue> findEMailByPriority = nqRepository.findEMailByPriority();
+		for (final NotificationQueue notificationQueue : findEMailByPriority) {
+			mailService.sendEmail(notificationQueue.getFrom(), notificationQueue.getTo(),
+					notificationQueue.getSubject(), notificationQueue.getSubject(), notificationQueue.getRetry());
+		}
 	}
 }

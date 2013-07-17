@@ -18,6 +18,8 @@
  */
 package org.sharetask.api;
 
+import java.util.List;
+
 import javax.validation.constraints.NotNull;
 
 import org.springframework.validation.annotation.Validated;
@@ -35,6 +37,6 @@ public interface NotificationQueueService {
 	 * @param workspace
 	 * @return
 	 */
-	void storeInvitation(@NotNull final String from, @NotNull final String[] to, @NotNull final String subject, 
-			@NotNull final String msq);
+	void storeInvitation(@NotNull final String from, @NotNull final List<String> to, @NotNull final String subject, 
+			@NotNull final String msq, final int retry);
 }

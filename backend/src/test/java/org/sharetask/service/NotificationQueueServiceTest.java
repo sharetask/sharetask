@@ -20,6 +20,7 @@ package org.sharetask.service;
 
 import static org.junit.Assert.assertThat;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -48,8 +49,10 @@ public class NotificationQueueServiceTest extends DbUnitTest{
 	 */
 	@Test
 	public void testStoreInvitation() {
-		notificationQueueService.storeInvitation("sender@test.com", new String[] {"recipient@test.com"}, "Test subject", "Test message");
-		final List<NotificationQueue> all = notificationQueueRepository.findAll();
+		final List<String> list = new ArrayList<String>();
+		list.add("recipient@test.com");
+		notificationQueueService.storeInvitation("sender@test.com", list, "Test subject", "Test message", 1);
+		final List<NotificationQueue> all = notificationQueueRepository.findEMailByPriority();
 		assertThat(all.size() > 0, CoreMatchers.equalTo(true));
 	}
 }

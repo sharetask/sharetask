@@ -18,6 +18,8 @@
  */
 package org.sharetask.api;
 
+import java.util.List;
+
 import javax.validation.constraints.NotNull;
 
 import org.sharetask.api.dto.InvitationDTO;
@@ -27,5 +29,13 @@ import org.sharetask.api.dto.InvitationDTO;
  * @since 1.0.0
  */
 public interface MailService {
+	
+	/**
+	 * Send invitation email.
+	 * @param invitation
+	 */
 	void sendInvitation(@NotNull final InvitationDTO invitation);
+
+	void sendEmail(@NotNull final String from, @NotNull final List<String> to, @NotNull final String subject, 
+			@NotNull final String msq, final int retry);
 }

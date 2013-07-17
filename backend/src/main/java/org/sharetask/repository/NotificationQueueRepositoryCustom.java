@@ -18,13 +18,14 @@
  */
 package org.sharetask.repository;
 
+import java.util.List;
+
 import org.sharetask.entity.NotificationQueue;
-import org.sharetask.repository.base.BaseJpaRepository;
 
 /**
  * @author Michal Bocek
  * @since 1.0.0
  */
-public interface NotificationQueueRepository extends BaseJpaRepository<NotificationQueue, String>,
-		NotificationQueueRepositoryCustom {
+public interface NotificationQueueRepositoryCustom {
+	List<NotificationQueue> findEMailByPriority();
 }

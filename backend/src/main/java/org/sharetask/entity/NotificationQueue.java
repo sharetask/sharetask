@@ -34,6 +34,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -54,16 +56,22 @@ import org.sharetask.api.Constants;
 @Table(name = "NOTIFICATION_QUEUE")
 @NoArgsConstructor
 @AllArgsConstructor
+@NamedQueries(value = { 
+		@NamedQuery(name = NotificationQueue.QUERY_NAME_FIND_EMAIL_BY_PRIORITY, query = NotificationQueue.QUERY_FIND_EMAIL_BY_PRIORITY)   
+	})
 public class NotificationQueue implements Serializable {
 
 	private static final long serialVersionUID = Constants.VERSION;
+
+	public static final String QUERY_NAME_FIND_EMAIL_BY_PRIORITY = "NotificationQueue.findEmailNotificationByPriority";
+	public static final String QUERY_FIND_EMAIL_BY_PRIORITY = "SELECT nq FROM NotificationQueue nq ORDER BY nq.priority * nq.retry";
 
 	public enum NotificationType {
 		EMAIL;
 	}
 
 	public enum Priority {
-		LOW(1), MEDIUM(2), HIGH(3);
+		LOW(1), MEDIUM(5), HIGH(10);
 
 		@Getter
 		private final int priority;
@@ -107,7 +115,7 @@ public class NotificationQueue implements Serializable {
 
 	@Getter
 	@Column(name = "PRIORITY", nullable = false)
-	@Enumerated(value = EnumType.ORDINAL)
+	@Enumerated(value = EnumType.STRING)
 	private Priority priority;
 
 	@Temporal(TemporalType.TIMESTAMP)

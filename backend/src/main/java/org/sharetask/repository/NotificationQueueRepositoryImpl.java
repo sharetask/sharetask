@@ -18,13 +18,27 @@
  */
 package org.sharetask.repository;
 
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+
 import org.sharetask.entity.NotificationQueue;
-import org.sharetask.repository.base.BaseJpaRepository;
 
 /**
  * @author Michal Bocek
  * @since 1.0.0
  */
-public interface NotificationQueueRepository extends BaseJpaRepository<NotificationQueue, String>,
-		NotificationQueueRepositoryCustom {
+public class NotificationQueueRepositoryImpl implements NotificationQueueRepositoryCustom {
+
+	@PersistenceContext
+	private EntityManager entityManager;
+
+	@Override
+	public List<NotificationQueue> findEMailByPriority() {
+		final TypedQuery<NotificationQueue> query = entityManager.createNamedQuery(
+				NotificationQueue.QUERY_NAME_FIND_EMAIL_BY_PRIORITY, NotificationQueue.class);
+		return query.getResultList();
+	}
 }

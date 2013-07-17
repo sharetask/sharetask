@@ -113,4 +113,32 @@
 			<delete tableName="TASK_TAG"/>
 		</rollback>
 	</changeSet>
+	
+	<changeSet id="load: notification queue" author="mbocek" context="development,integration">
+		<comment>Load initial data</comment>
+		<loadData tableName="NOTIFICATION_QUEUE" file="db/migration/dev/notification_queue.csv">
+			<column name="ID" type="NUMERIC"/>
+			<column name="TYPE" type="STRING"/>
+			<column name="FROM" type="STRING"/>
+			<column name="SUBJECT" type="STRING"/>
+			<column name="MESSAGE" type="STRING"/>
+			<column name="RETRY" type="NUMERIC"/>
+			<column name="PRIORITY" type="STRING"/>
+			<column name="UPDATED_ON" type="DATE"/>
+		</loadData>
+		<rollback>
+			<delete tableName="NOTIFICATION_QUEUE"/>
+		</rollback>
+	</changeSet>
+	
+	<changeSet id="load: notification queue to" author="mbocek" context="development,integration">
+		<comment>Load initial data</comment>
+		<loadData tableName="NOTIFICATION_QUEUE_TO" file="db/migration/dev/notification_queue_to.csv">
+			<column name="NOTIFICATION_QUEUE_ID" type="NUMERIC"/>
+			<column name="TO" type="STRING"/>
+		</loadData>
+		<rollback>
+			<delete tableName="NOTIFICATION_QUEUE_TO"/>
+		</rollback>
+	</changeSet>
 </databaseChangeLog>

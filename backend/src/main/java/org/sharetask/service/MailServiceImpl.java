@@ -18,7 +18,9 @@
  */
 package org.sharetask.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -79,8 +81,6 @@ public class MailServiceImpl implements MailService {
 
 	@Override
 	public void sendInvitation(final InvitationDTO invitation) {
-		final MimeMessage message = mailSender.createMimeMessage();
-		final MimeMessageHelper helper = new MimeMessageHelper(message);
 		final Map<String, Object> model = prepareInvitationMode(invitation);
 		final InvitationType invitationType = InvitationType.valueOf(invitation.getInvitationType());
 		String mailMessage;
@@ -100,21 +100,31 @@ public class MailServiceImpl implements MailService {
 			default:
 				throw new IllegalStateException("Invitation type for sending email isn't implemented!");
 		}
+		
+		final List<String> to = new ArrayList<String>();
+		to.add(invitation.getEmail());
+		sendEmail(noreplyMail, to, mailSubject, mailMessage, 0);
+	}
 
+	@Override
+	public void sendEmail(final String from, final List<String> to, final String subject, final String msq, final int retry) {
+		final MimeMessage message = mailSender.createMimeMessage();
+		final MimeMessageHelper helper = new MimeMessageHelper(message);
+		
 		try {
 			helper.setFrom(noreplyMail);
-			helper.setTo(invitation.getEmail());
-			helper.setSubject(mailSubject);
-			helper.setText(mailMessage, true /* html */);
+			helper.setTo(to.toArray(new String[] {}));
+			helper.setSubject(subject);
+			helper.setText(msq, true /* html */);
 			mailSender.send(message);
 		} catch (final MailException ex) {
 			log.error("Problem in sending email notification:", ex);
-			notificationQueueService.storeInvitation(noreplyMail, new String[]{invitation.getEmail()}, mailSubject, mailMessage);
+			notificationQueueService.storeInvitation(noreplyMail, to, subject, msq, retry + 1);
 		} catch (final MessagingException e) {
 			throw new IllegalStateException("Wrong mail message format: ", e);
 		}
 	}
-
+	
 	private Map<String, Object> prepareInvitationMode(final InvitationDTO invitation) {
 		final InvitationType invitationType = InvitationType.valueOf(invitation.getInvitationType());
 		Map<String, Object> result = null;
