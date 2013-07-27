@@ -29,11 +29,13 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -64,21 +66,10 @@ public class NotificationQueue implements Serializable {
 	private static final long serialVersionUID = Constants.VERSION;
 
 	public static final String QUERY_NAME_FIND_EMAIL_BY_PRIORITY = "NotificationQueue.findEmailNotificationByPriority";
-	public static final String QUERY_FIND_EMAIL_BY_PRIORITY = "SELECT nq FROM NotificationQueue nq ORDER BY nq.priority * nq.retry";
+	public static final String QUERY_FIND_EMAIL_BY_PRIORITY = "SELECT nq FROM NotificationQueue nq ORDER BY nq.priority.weight * nq.retry";
 
 	public enum NotificationType {
 		EMAIL;
-	}
-
-	public enum Priority {
-		LOW(1), MEDIUM(5), HIGH(10);
-
-		@Getter
-		private final int priority;
-
-		Priority(final int priority) {
-			this.priority = priority;
-		}
 	}
 
 	@Id
@@ -114,9 +105,9 @@ public class NotificationQueue implements Serializable {
 	private int retry;
 
 	@Getter
-	@Column(name = "PRIORITY", nullable = false)
-	@Enumerated(value = EnumType.STRING)
-	private Priority priority;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "PRIORITY_CODE", nullable = false)
+	private Priority priority;	
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "UPDATED_ON", nullable = false)

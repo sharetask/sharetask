@@ -26,7 +26,10 @@ import javax.inject.Inject;
 import org.sharetask.api.NotificationQueueService;
 import org.sharetask.entity.NotificationQueue;
 import org.sharetask.entity.NotificationQueue.NotificationType;
+import org.sharetask.entity.Priority;
+import org.sharetask.entity.Priority.PriorityType;
 import org.sharetask.repository.NotificationQueueRepository;
+import org.sharetask.repository.PriorityRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,12 +44,17 @@ public class NotificationQueueServiceImpl implements NotificationQueueService {
 	@Inject
 	private NotificationQueueRepository notificationQueueRepository;
 
+	@Inject
+	private PriorityRepository priorityRepository;
+
 	@Override
 	@Transactional
 	public void storeInvitation(final String from, final List<String> to, final String subject, final String msg,
 			final int retry) {
+		final Priority priorityHigh = priorityRepository.read(PriorityType.HIGH.name());
 		final NotificationQueue notificationQueue = new NotificationQueue(null, NotificationType.EMAIL, from, 
-				to, subject, msg.getBytes(), retry, NotificationQueue.Priority.HIGH, new Date());
+				to, subject, msg.getBytes(), retry, priorityHigh, new Date());
+		
 		notificationQueueRepository.save(notificationQueue);
 	}
 }

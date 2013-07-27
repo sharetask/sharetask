@@ -22,8 +22,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import lombok.extern.slf4j.Slf4j;
-
 import org.sharetask.api.MailService;
 import org.sharetask.api.RunnableQuartzJob;
 import org.sharetask.entity.NotificationQueue;
@@ -34,7 +32,6 @@ import org.springframework.stereotype.Service;
  * @author Michal Bocek
  * @since 1.0.0
  */
-@Slf4j
 @Service("sendNotificationJob")
 public class SendNotificationJobImpl implements RunnableQuartzJob {
 

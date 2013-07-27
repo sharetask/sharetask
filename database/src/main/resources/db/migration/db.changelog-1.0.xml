@@ -319,11 +319,26 @@
 			<column name="RETRY" type="BIGINT" remarks="Retry count">
 				<constraints nullable="false"/>
 			</column>
-			<column name="PRIORITY" type="VARCHAR(50)" remarks="Priority for send">
+			<column name="PRIORITY_CODE" type="VARCHAR(50)" remarks="Priority for send">
 				<constraints nullable="false"/>
 			</column>
 			<column name="UPDATED_ON" type="DATETIME" remarks="Date when record was updated">
 				<constraints nullable="false" />
+			</column>
+		</createTable>
+
+		<modifySql dbms="mysql">
+			<append value="ENGINE=INNODB CHARSET=UTF8 COLLATE utf8_general_ci" />
+		</modifySql>
+	</changeSet>
+
+	<changeSet id="create: priorily list" author="mbocek">
+		<createTable tableName="C_PRIORITY" remarks="priority list">
+			<column name="CODE" type="VARCHAR(50)" remarks="Priority primary key">
+				<constraints nullable="false" primaryKey="true" primaryKeyName="PK_PRIORITY" />
+			</column>
+			<column name="WEIGHT" type="BIGINT" remarks="Weight of priority">
+				<constraints nullable="false"/>
 			</column>
 		</createTable>
 
@@ -351,7 +366,22 @@
 		<addForeignKeyConstraint constraintName="FK_NOTIFICATION_QUEUE_TO"
 			baseTableName="NOTIFICATION_QUEUE_TO" baseColumnNames="NOTIFICATION_QUEUE_ID"
 			referencedTableName="NOTIFICATION_QUEUE" referencedColumnNames="ID" />
+		<addForeignKeyConstraint constraintName="FK_NOTIFICATION_QUEUE_PRIORITY"
+			baseTableName="NOTIFICATION_QUEUE" baseColumnNames="PRIORITY_CODE"
+			referencedTableName="C_PRIORITY" referencedColumnNames="CODE" />
 		<addPrimaryKey tableName="NOTIFICATION_QUEUE_TO" columnNames="NOTIFICATION_QUEUE_ID,TO"
 			constraintName="PK_NOTIFICATION_QUEUE_TO" />
 	</changeSet>
+	
+	<changeSet id="load: priorities" author="mbocek">
+		<comment>Load initial data</comment>
+		<loadData tableName="C_PRIORITY" file="db/migration/dev/priority.csv">
+			<column name="CODE" type="STRING"/>
+			<column name="WEIGHT" type="NUMERIC"/>
+		</loadData>
+		<rollback>
+			<delete tableName="C_PRIORITY"/>
+		</rollback>
+	</changeSet>
+	
 </databaseChangeLog>
