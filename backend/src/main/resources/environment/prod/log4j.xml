@@ -4,10 +4,23 @@
 	<!ENTITY LOGGING_DIRECTORY "${definition.directory.log}">
 ]>
 
-<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="true">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<appender name="app-debug" class="org.apache.log4j.RollingFileAppender">
+		<param name="Append" value="false" />
+		<param name="File" value="&LOGGING_DIRECTORY;app_debug.log" />
+		<param name="Threshold" value="DEBUG" />
+		<param name="encoding" value="UTF-8" />
+		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+			<param name="FileNamePattern" value="&LOGGING_DIRECTORY;app_info.%d.log.gz" />
+		</rollingPolicy>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="&CONVERSION_PATTERN;" />
+		</layout>
+	</appender>
 
 	<appender name="app-info" class="org.apache.log4j.rolling.RollingFileAppender">
-		<param name="Append" value="true" />
+		<param name="Append" value="false" />
 		<param name="File" value="&LOGGING_DIRECTORY;app_info.log" />
 		<param name="Threshold" value="INFO" />
 		<param name="encoding" value="UTF-8" />
@@ -32,7 +45,18 @@
 		</layout>
 	</appender>
 
+	<logger name="org.sharetask" additivity="false">
+		<level value="debug" />
+		<appender-ref ref="app-debug" />
+	</logger>
+	
+	<logger name="org.springframework.web" additivity="false" >
+		<level value="debug" />
+		<appender-ref ref="app-debug" />
+	</logger>
+	
 	<root>
+		<priority value="INFO" />
 		<appender-ref ref="app-info" />
 		<appender-ref ref="app-warn" />
 	</root>

@@ -125,7 +125,7 @@ public class UserController {
 		return userService.update(user);
 	}
 
-	@RequestMapping(value = "/{username:.*}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.ALL_VALUE)
+	@RequestMapping(value = "/{username:.*}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody public UserInfoDTO get(@PathVariable("username") final String username) {
 		return userService.read(username);
 	}

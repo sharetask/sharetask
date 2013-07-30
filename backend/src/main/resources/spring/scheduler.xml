@@ -39,7 +39,7 @@
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
-				<ref bean="dummyTrigger" />
+<!-- 				<ref bean="dummyTrigger" /> -->
 			</list>
 		</property>
 		<property name="applicationContextSchedulerContextKey" value="applicationContext" />
