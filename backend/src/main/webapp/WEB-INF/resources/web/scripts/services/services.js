@@ -31,7 +31,7 @@ shareTaskWeb.service('User', ['$rootScope', '$location', 'LocalStorage', '$resou
 	
 	this.get = function(input, success, error) {
 		console.log("Getting user (id: %s) from server", input.username);
-		return $http.get($rootScope.appBaseUrl+"api/user/"+encodeURI(input.username), {}).success(success).error(error);
+		return $http.get($rootScope.appBaseUrl+"api/user", {params: {username: encodeURI(input.username)}}).success(success).error(error);
 	};
 	
 	this.create = function(input, success, error) {
