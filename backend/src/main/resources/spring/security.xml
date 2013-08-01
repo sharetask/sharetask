@@ -28,6 +28,7 @@
 		<intercept-url pattern="/api/user/confirm" access="permitAll" />
 		<intercept-url pattern="/api/user" method="POST" access="permitAll" />
 		<intercept-url pattern="/api/user/logout" access="permitAll" />
+		<intercept-url pattern="/app-info" access="hasRole('ROLE_ADMINISTRATOR')" />
 		<intercept-url pattern="/**" access="isAuthenticated()" />
 	</http>
 

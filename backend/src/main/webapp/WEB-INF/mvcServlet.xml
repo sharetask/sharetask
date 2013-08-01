@@ -50,6 +50,7 @@
 	
 	<!-- 	<mvc:default-servlet-handler /> -->
 	<mvc:view-controller path="/" view-name="web/index"/>
+	<mvc:view-controller path="/denied" view-name="webapp/errors/403-access-denied"/>
 	<mvc:view-controller path="/register" view-name="web/register"/>
 	<mvc:view-controller path="/webapp" view-name="webapp/index"/>
 	<mvc:view-controller path="/app-info" view-name="webapp/app-info"/>

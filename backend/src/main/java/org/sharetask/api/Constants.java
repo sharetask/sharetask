@@ -25,16 +25,16 @@ package org.sharetask.api;
 public interface Constants {
 
 	long VERSION = 1000000L;
-	
-	String PERIMISSION_WORKSPACE_MEMBER_OR_OWNER = "isAuthenticated() and " +
+
+	String PERIMISSION_WORKSPACE_MEMBER_OR_OWNER = "isAuthenticated() and hasRole('ROLE_USER') and " +
 			"hasPermission(#workspaceId, 'isWorkspaceMemberOrOwner')";
-	
-	String PERIMISSION_WORKSPACE_OWNER = "isAuthenticated() and " +
+
+	String PERIMISSION_WORKSPACE_OWNER = "isAuthenticated() and hasRole('ROLE_USER') and " +
 			"hasPermission(#workspaceId, 'isWorkspaceOwner')";
-	
-	String PERMISSION_TASK_ASSIGNEE = "isAuthenticated() and " +
+
+	String PERMISSION_TASK_ASSIGNEE = "isAuthenticated() and hasRole('ROLE_USER') and " +
 			"hasPermission(#taskId, 'isTaskAssignee')";
 
-	String PERMISSION_TASK_ASSIGNEE_OR_CREATOR = "isAuthenticated() and " +
+	String PERMISSION_TASK_ASSIGNEE_OR_CREATOR = "isAuthenticated() and hasRole('ROLE_USER') and " +
 			"hasPermission(#taskId, 'isTaskAssigneeOrCreator')";
 }

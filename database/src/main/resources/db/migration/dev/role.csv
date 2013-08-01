@@ -1,4 +1,5 @@
 USER_NAME,ROLE
 dev1@shareta.sk,ROLE_USER
+dev1@shareta.sk,ROLE_ADMINISTRATOR
 dev2@shareta.sk,ROLE_USER
 dev3@shareta.sk,ROLE_USER
