@@ -29,6 +29,7 @@ import org.sharetask.api.UserService;
 import org.sharetask.api.dto.UserDTO;
 import org.sharetask.api.dto.UserInfoDTO;
 import org.sharetask.controller.json.UserPassword;
+import org.sharetask.utility.SecurityUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -69,7 +70,7 @@ public class UserController {
 	private UserService userService;
 
 	@RequestMapping(value = "/login/status", method = RequestMethod.GET)
-	public void login(final HttpServletRequest request, final HttpServletResponse response) {
+	public void loginStatus(final HttpServletRequest request, final HttpServletResponse response) {
 		int resultCode = HttpStatus.UNAUTHORIZED.value();
 		final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		log.info("authetication: {}", authentication);
@@ -80,7 +81,7 @@ public class UserController {
 		response.setStatus(resultCode);
 	}
 
-	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public void performLogin(@RequestBody final UserPassword login, final HttpServletRequest request,
 			final HttpServletResponse response) {
 		final UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(login.getUsername(),
@@ -105,28 +106,28 @@ public class UserController {
 		}
 	}
 
-	@RequestMapping(value = "/password", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/password", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
 	public void passwordChange(@RequestBody final UserPassword user) {
 		userService.changePassword(user.getPassword());
 	}
 
-	@RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
 	@ResponseBody public UserDTO create(@RequestBody final UserDTO user) {
 		return userService.create(user);
 	}
 
 
-	@RequestMapping(method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
 	@ResponseBody public UserInfoDTO update(@RequestBody final UserInfoDTO user) {
 		return userService.update(user);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody public UserInfoDTO get(@RequestParam("username") final String username) {
-		return userService.read(username);
+	@ResponseBody public UserInfoDTO get() {
+		return userService.read(SecurityUtil.getCurrentSignedInUsername());
 	}
 
 	@RequestMapping(value = "/confirm", method = RequestMethod.GET)
