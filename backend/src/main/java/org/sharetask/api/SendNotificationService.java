@@ -16,15 +16,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.sharetask.repository;
+package org.sharetask.api;
 
-import org.sharetask.entity.NotificationQueue;
-import org.sharetask.repository.base.BaseJpaRepository;
 
 /**
  * @author Michal Bocek
  * @since 1.0.0
  */
-public interface NotificationQueueRepository extends BaseJpaRepository<NotificationQueue, Long>,
-		NotificationQueueRepositoryCustom {
+public interface SendNotificationService {
+	void sendNotification(final Long notificationQueueId);
 }

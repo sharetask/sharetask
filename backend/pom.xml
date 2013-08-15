@@ -124,6 +124,7 @@
 				<configuration>
 					<excludes>
 						<exclude>**/DbUnitTest.java</exclude>
+						<exclude>**/ServiceUnitTest.java</exclude>
 						<exclude>**/IntegrationTest.java</exclude>
 						<exclude>**/*IT.java</exclude>
 					</excludes>

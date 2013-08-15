@@ -46,6 +46,7 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Michal Bocek
@@ -53,6 +54,7 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
+@Transactional
 public class MailServiceImpl implements MailService {
 
 	@Inject
@@ -69,10 +71,10 @@ public class MailServiceImpl implements MailService {
 
 	@Inject
 	private WorkspaceRepository workspaceRepository;
-	
+
 	@Inject
 	private MessageSource messageSource;
-	
+
 	@Value("#{applicationProps['application.url']}")
 	private String applicationUrl;
 
@@ -100,7 +102,7 @@ public class MailServiceImpl implements MailService {
 			default:
 				throw new IllegalStateException("Invitation type for sending email isn't implemented!");
 		}
-		
+
 		final List<String> to = new ArrayList<String>();
 		to.add(invitation.getEmail());
 		sendEmail(noreplyMail, to, mailSubject, mailMessage, 0);
@@ -110,7 +112,7 @@ public class MailServiceImpl implements MailService {
 	public void sendEmail(final String from, final List<String> to, final String subject, final String msq, final int retry) {
 		final MimeMessage message = mailSender.createMimeMessage();
 		final MimeMessageHelper helper = new MimeMessageHelper(message);
-		
+
 		try {
 			helper.setFrom(noreplyMail);
 			helper.setTo(to.toArray(new String[] {}));
@@ -124,7 +126,7 @@ public class MailServiceImpl implements MailService {
 			throw new IllegalStateException("Wrong mail message format: ", e);
 		}
 	}
-	
+
 	private Map<String, Object> prepareInvitationMode(final InvitationDTO invitation) {
 		final InvitationType invitationType = InvitationType.valueOf(invitation.getInvitationType());
 		Map<String, Object> result = null;

@@ -47,10 +47,9 @@ public class GenericQuartzJob extends QuartzJobBean {
 	@Override
 	protected void executeInternal(final JobExecutionContext jobCtx) throws JobExecutionException {
 		try {
-			final SchedulerContext schedCtx = jobCtx.getScheduler().getContext();
-
-			final ApplicationContext appCtx = (ApplicationContext) schedCtx.get("applicationContext");
-			final RunnableQuartzJob proc = (RunnableQuartzJob) appCtx.getBean(batchProcessorName);
+			final SchedulerContext schedContext = jobCtx.getScheduler().getContext();
+			final ApplicationContext appContext = (ApplicationContext) schedContext.get("applicationContext");
+			final RunnableQuartzJob proc = (RunnableQuartzJob) appContext.getBean(batchProcessorName);
 			proc.doService();
 		} catch (final Exception ex) {
 			log.error("Unable to execute batch job: " + batchProcessorName, ex);

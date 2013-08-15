@@ -31,7 +31,7 @@ import org.junit.Test;
 import org.sharetask.api.UserService;
 import org.sharetask.api.dto.UserDTO;
 import org.sharetask.api.dto.UserInfoDTO;
-import org.sharetask.data.DbUnitTest;
+import org.sharetask.data.ServiceUnitTest;
 import org.sharetask.entity.Role;
 import org.sharetask.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -45,7 +45,7 @@ import org.springframework.security.core.userdetails.UserDetails;
  * @author Michal Bocek
  * @since 1.0.0
  */
-public class UserServiceTest extends DbUnitTest {
+public class UserServiceTest extends ServiceUnitTest {
 
 	@Inject
 	private UserService userService;

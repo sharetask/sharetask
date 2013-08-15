@@ -20,33 +20,53 @@ package org.sharetask.service;
 
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.inject.Inject;
+
+import lombok.extern.slf4j.Slf4j;
 
 import org.sharetask.api.MailService;
 import org.sharetask.api.RunnableQuartzJob;
+import org.sharetask.api.SendNotificationService;
 import org.sharetask.entity.NotificationQueue;
 import org.sharetask.repository.NotificationQueueRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Michal Bocek
  * @since 1.0.0
  */
+@Slf4j
 @Service("sendNotificationJob")
-public class SendNotificationJobImpl implements RunnableQuartzJob {
+@Transactional(readOnly = true)
+public class SendNotificationJobImpl implements RunnableQuartzJob, SendNotificationService {
 
 	@Inject
 	private MailService mailService;
-		
+
 	@Inject
 	private NotificationQueueRepository nqRepository;
+
+	@Resource(name = "sendNotificationJob")
+	private SendNotificationService self;
 
 	@Override
 	public void doService() {
 		final List<NotificationQueue> findEMailByPriority = nqRepository.findEMailByPriority();
+		log.info("There will be {} email(s) proceeded", findEMailByPriority.size());
 		for (final NotificationQueue notificationQueue : findEMailByPriority) {
-			mailService.sendEmail(notificationQueue.getFrom(), notificationQueue.getTo(),
-					notificationQueue.getSubject(), notificationQueue.getSubject(), notificationQueue.getRetry());
+			self.sendNotification(notificationQueue.getId());
 		}
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public void sendNotification(final Long notificationQueueId) {
+		final NotificationQueue notificationQueue = nqRepository.read(notificationQueueId);
+		nqRepository.delete(notificationQueue);
+		mailService.sendEmail(notificationQueue.getFrom(), notificationQueue.getTo(), notificationQueue.getSubject(),
+				notificationQueue.getSubject(), notificationQueue.getRetry());
 	}
 }

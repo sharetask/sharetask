@@ -16,15 +16,34 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.sharetask.repository;
+package org.sharetask.data;
 
-import org.sharetask.entity.NotificationQueue;
-import org.sharetask.repository.base.BaseJpaRepository;
+import org.junit.After;
+import org.junit.Before;
+import org.subethamail.wiser.Wiser;
+
 
 /**
  * @author Michal Bocek
  * @since 1.0.0
  */
-public interface NotificationQueueRepository extends BaseJpaRepository<NotificationQueue, Long>,
-		NotificationQueueRepositoryCustom {
+public class ServiceUnitTest extends DbUnitTest {
+
+	private Wiser testSmtp;
+
+    @Before
+    public void testSmtpInit(){
+    	testSmtp = new Wiser();
+    	testSmtp.setPort(2500);
+        testSmtp.start();
+    }
+
+    @After
+    public void cleanup(){
+        testSmtp.stop();
+    }
+
+    public Wiser getTestSmtp() {
+		return testSmtp;
+	}
 }
