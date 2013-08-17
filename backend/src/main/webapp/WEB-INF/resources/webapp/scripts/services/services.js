@@ -29,9 +29,9 @@ shareTaskApp.service('User', ['$rootScope', '$location', '$window', 'LocalStorag
 		return $http.post($rootScope.appBaseUrl+"api/user/login", {username: user.username, password: user.password}).success(success).error(error);
 	};
 	
-	this.get = function(input, success, error) {
-		Log.debug("Getting user (id: %s) from server", input.username);
-		return $http.get($rootScope.appBaseUrl+"api/user", {params: {username: encodeURI(input.username)}}).success(success).error(error);
+	this.getCurrentUser = function(success, error) {
+		Log.debug("Getting current loged in user from server");
+		return $http.get($rootScope.appBaseUrl+"api/user").success(success).error(error);
 	};
 	
 	this.create = function(input, success, error) {

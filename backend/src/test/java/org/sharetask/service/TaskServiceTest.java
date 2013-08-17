@@ -37,7 +37,7 @@ import org.sharetask.api.TaskService;
 import org.sharetask.api.dto.CommentDTO;
 import org.sharetask.api.dto.EventDTO;
 import org.sharetask.api.dto.TaskDTO;
-import org.sharetask.data.DbUnitTest;
+import org.sharetask.data.ServiceUnitTest;
 import org.sharetask.entity.Event;
 import org.sharetask.entity.Event.EventType;
 import org.sharetask.entity.Task;
@@ -49,8 +49,8 @@ import org.sharetask.utility.DTOConverter;
  * @author Michal Bocek
  * @since 1.0.0
  */
-public class TaskServiceTest extends DbUnitTest {
-	
+public class TaskServiceTest extends ServiceUnitTest {
+
 	@Inject
 	private TaskService taskService;
 
@@ -176,7 +176,7 @@ public class TaskServiceTest extends DbUnitTest {
 		assertThat(newTask.getTitle(), not(equalTo(title)));
 		assertThat(newTask.getTitle(), equalTo("new Title"));
 	}
-	
+
 	/**
 	 * Test method for {@link org.sharetask.api.TaskService#completeTask(Long)}.
 	 */
@@ -187,7 +187,7 @@ public class TaskServiceTest extends DbUnitTest {
 		assertThat(task.getState(), equalTo(StateType.FINISHED));
 		assertThat(task.getEvents().size(), equalTo(2));
 	}
-	
+
 	/**
 	 * Test method for {@link org.sharetask.api.TaskService#forwardTask(Long, List)}.
 	 */

@@ -33,7 +33,7 @@ import org.sharetask.api.WorkspaceService;
 import org.sharetask.api.dto.UserDTO;
 import org.sharetask.api.dto.UserInfoDTO;
 import org.sharetask.api.dto.WorkspaceDTO;
-import org.sharetask.data.DbUnitTest;
+import org.sharetask.data.ServiceUnitTest;
 import org.sharetask.entity.Invitation;
 import org.sharetask.entity.Workspace;
 import org.sharetask.repository.InvitationRepository;
@@ -44,20 +44,20 @@ import org.sharetask.repository.WorkspaceRepository;
  * @author Michal Bocek
  * @since 1.0.0
  */
-public class WorkspaceServiceTest extends DbUnitTest {
+public class WorkspaceServiceTest extends ServiceUnitTest {
 
 	@Inject
 	private WorkspaceService workspaceService;
 
 	@Inject
 	private WorkspaceRepository workspaceRepository;
-	
+
 	@Inject
 	private InvitationRepository invitationRepository;
-	
+
 	@Inject
 	private InvitationService invitationService;
-	
+
 	@Inject
 	private UserRepository userRepository;
 
@@ -85,7 +85,7 @@ public class WorkspaceServiceTest extends DbUnitTest {
 		Assert.assertThat(member.getName(), CoreMatchers.is("Test1"));
 		Assert.assertThat(member.getSurName(), CoreMatchers.is("Test"));
 	}
-	
+
 	/**
 	 * Test method for {@link org.sharetask.api.WorkspaceService#update(WorkspaceDTO)}.
 	 */
@@ -97,7 +97,7 @@ public class WorkspaceServiceTest extends DbUnitTest {
 		final WorkspaceDTO dto = workspaceService.update(workspace);
 		Assert.assertThat(dto.getTitle(), CoreMatchers.is("Test Title"));
 	}
-	
+
 	/**
 	 * Test method for {@link org.sharetask.api.WorkspaceService#addMember(String)}.
 	 */
@@ -107,7 +107,7 @@ public class WorkspaceServiceTest extends DbUnitTest {
 		final Workspace workspace = workspaceRepository.findOne(100L);
 		Assert.assertThat(workspace.getMembers().size(), CoreMatchers.is(2));
 	}
-	
+
 	/**
 	 * Test method for {@link org.sharetask.api.WorkspaceService#invite(Long, String)}.
 	 */
@@ -124,7 +124,7 @@ public class WorkspaceServiceTest extends DbUnitTest {
 		}
 		Assert.assertThat(result, CoreMatchers.is(true));
 	}
-	
+
 	/**
 	 * Test method for {@link org.sharetask.api.WorkspaceService#removeMember(Long, Long)}.
 	 */
@@ -134,7 +134,7 @@ public class WorkspaceServiceTest extends DbUnitTest {
 		final Workspace workspace = workspaceRepository.findOne(100L);
 		Assert.assertThat(workspace.getMembers().size(), CoreMatchers.is(0));
 	}
-	
+
 	/**
 	 * Test method for {@link org.sharetask.api.WorkspaceService#findByOwner(String)}.
 	 */
@@ -163,7 +163,7 @@ public class WorkspaceServiceTest extends DbUnitTest {
 		final List<WorkspaceDTO> workspaces = workspaceService.findAllMyWorkspaces("test3@test.com");
 		Assert.assertThat(workspaces.size(), CoreMatchers.is(2));
 	}
-	
+
 
 	/**
 	 * Test method for {@link org.sharetask.api.WorkspaceService#delete(Long)}.

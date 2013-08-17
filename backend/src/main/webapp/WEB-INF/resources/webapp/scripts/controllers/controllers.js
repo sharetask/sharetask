@@ -48,7 +48,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 			User.authenticate({username: $scope.user.username, password: $scope.user.password}, function(data, status) {
 					Log.debug("User auth success! data: %o, status: %o", data, status);
 					// get user profile info
-					User.get({username: $scope.user.username}, function(data, status) {
+					User.getCurrentUser(function(data, status) {
 							Log.debug("User get success! data: %o, status: %o", data, status);
 							$rootScope.loggedUser = data;
 							$rootScope.loggedUser.password = $scope.user.password;

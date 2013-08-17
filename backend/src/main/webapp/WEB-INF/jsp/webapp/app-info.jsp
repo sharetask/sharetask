@@ -24,13 +24,14 @@
 <%@ page import="java.util.Properties"%>
 
 <!doctype html>
-<html lang="en" ng-app="shareTaskApp">
+<html lang="en">
 	<head>
 		<meta charset="utf-8">
 		<title>ShareTa.sk app - info</title>
 	</head>
 	<body>
 		<h1>Environment information:</h1>
+		<p>
 		<% 
 		Map<String, String> env = System.getenv();
         for (String envName : env.keySet()) {
@@ -39,7 +40,9 @@
                               env.get(envName)));
         }
 		%>	
+		</p>
 		<h1>System properties:</h1>
+		<p>
 		<% 
 		Properties systemProperties = System.getProperties();
 		Enumeration enuProp = systemProperties.propertyNames();
@@ -51,6 +54,7 @@
             		propertyValue));
 		}
 		%>
+		</p>
 	</body>
 </html>
  

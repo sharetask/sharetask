@@ -31,7 +31,7 @@ import org.junit.Test;
 import org.sharetask.api.UserService;
 import org.sharetask.api.dto.UserDTO;
 import org.sharetask.api.dto.UserInfoDTO;
-import org.sharetask.data.DbUnitTest;
+import org.sharetask.data.ServiceUnitTest;
 import org.sharetask.entity.Role;
 import org.sharetask.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -45,7 +45,7 @@ import org.springframework.security.core.userdetails.UserDetails;
  * @author Michal Bocek
  * @since 1.0.0
  */
-public class UserServiceTest extends DbUnitTest {
+public class UserServiceTest extends ServiceUnitTest {
 
 	@Inject
 	private UserService userService;
@@ -55,26 +55,26 @@ public class UserServiceTest extends DbUnitTest {
 
 	@Inject
 	private PasswordEncoder passwordEncoder;
-	
+
 	@Inject
 	private SaltSource saltSource;
-	
+
 	@Inject
 	private AuthenticationManager authenticationManager;
-	
+
 	/**
 	 * Test method for {@link com.tapas.evidence.service.UserServiceImpl#loadUserByUsername(java.lang.String)}.
 	 */
 	@Test
 	public void testLoadUserByUsername() {
-		final UserDetails user = this.userService.loadUserByUsername("dev1@shareta.sk");
+		final UserDetails user = userService.loadUserByUsername("dev1@shareta.sk");
 		assertNotNull(user);
-		assertTrue(user.getAuthorities().size() == 1);
+		assertTrue(user.getAuthorities().size() == 2);
 		final ArrayList<GrantedAuthority> list = new ArrayList<GrantedAuthority>();
 		list.add(new SimpleGrantedAuthority(Role.ROLE_USER.name()));
 		assertTrue(user.getAuthorities().containsAll(list));
 	}
-	
+
 	@Test
 	public void testCreateUser() {
 		final UserDTO userDTO = new UserDTO();
@@ -84,34 +84,34 @@ public class UserServiceTest extends DbUnitTest {
 		userDTO.setPassword("password");
 		userDTO.setSurName("Test Surname");
 		try {
-			this.userService.create(userDTO );
+			userService.create(userDTO );
 		} catch (final UserAlreadyExistsException e) {
 			fail("User " + userDTO.getUsername() + " already exists!");
 		}
-		
-		final org.sharetask.entity.User user = this.userRepository.findByUsername(name);
+
+		final org.sharetask.entity.User user = userRepository.findByUsername(name);
 		assertEquals(user.getEmail(), userDTO.getUsername());
 		assertEquals(user.getName(), userDTO.getName());
 		assertEquals(user.getSurName(), userDTO.getSurName());
 		assertEquals(user.getUsername(), userDTO.getUsername());
 		assertTrue(user.getRoles().size() == 1);
 	}
-	
+
 	@Test
 	public void testUpdateUser() {
 		final UserInfoDTO userInfoDTO = new UserInfoDTO();
 		userInfoDTO.setUsername("dev1@shareta.sk");
 		userInfoDTO.setName("Samuel");
 		userInfoDTO.setSurName("Michaelson");
-		final UserInfoDTO updatedUser = this.userService.update(userInfoDTO);
+		final UserInfoDTO updatedUser = userService.update(userInfoDTO);
 		assertEquals(updatedUser.getName(), userInfoDTO.getName());
 		assertEquals(updatedUser.getSurName(), userInfoDTO.getSurName());
 	}
-	
+
 	@Test
 	public void testReadUser() {
-		final UserInfoDTO userInfoDTO = this.userService.read("dev1@shareta.sk");
+		final UserInfoDTO userInfoDTO = userService.read("dev1@shareta.sk");
 		assertEquals(userInfoDTO.getName(), "John");
 		assertEquals(userInfoDTO.getSurName(), "Developer");
-	}	
+	}
 }

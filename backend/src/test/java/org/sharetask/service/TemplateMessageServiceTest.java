@@ -28,14 +28,14 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import org.sharetask.api.TemplateMessageService;
 import org.sharetask.api.TemplateMessageService.TemplateList;
-import org.sharetask.data.DbUnitTest;
+import org.sharetask.data.ServiceUnitTest;
 ;
 
 /**
  * @author Michal Bocek
  * @since 1.0.0
  */
-public class TemplateMessageServiceTest extends DbUnitTest {
+public class TemplateMessageServiceTest extends ServiceUnitTest {
 
 	@Inject
 	private TemplateMessageService templateMessageService;

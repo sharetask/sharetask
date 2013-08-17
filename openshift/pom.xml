@@ -54,7 +54,7 @@
 										</macrodef>
 										<git command = "clone">
 										    <args>
-										        <arg value = "ssh://${openshift.username}@${openshift.host}/~/git/web.git/" />
+										        <arg value = "ssh://${openshift.username}@${openshift.host}/~/git/${openshift.appname}.git/" />
 										        <arg value = "${target.directory}/web" />
 										    </args>
 										</git>

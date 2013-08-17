@@ -28,7 +28,7 @@ import javax.inject.Inject;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import org.sharetask.api.NotificationQueueService;
-import org.sharetask.data.DbUnitTest;
+import org.sharetask.data.ServiceUnitTest;
 import org.sharetask.entity.NotificationQueue;
 import org.sharetask.repository.NotificationQueueRepository;
 
@@ -36,11 +36,11 @@ import org.sharetask.repository.NotificationQueueRepository;
  * @author Michal Bocek
  * @since 1.0.0
  */
-public class NotificationQueueServiceTest extends DbUnitTest{
+public class NotificationQueueServiceTest extends ServiceUnitTest {
 
 	@Inject
 	private NotificationQueueService notificationQueueService;
-	
+
 	@Inject
 	private NotificationQueueRepository notificationQueueRepository;
 
@@ -50,9 +50,13 @@ public class NotificationQueueServiceTest extends DbUnitTest{
 	@Test
 	public void testStoreInvitation() {
 		final List<String> list = new ArrayList<String>();
-		list.add("recipient@test.com");
+		list.add("recipient1@test.com");
+		list.add("recipient2@test.com");
 		notificationQueueService.storeInvitation("sender@test.com", list, "Test subject", "Test message", 1);
 		final List<NotificationQueue> all = notificationQueueRepository.findEMailByPriority();
+		assertThat(all.size() > 0, CoreMatchers.equalTo(true));
+		notificationQueueRepository.delete(all);
+		notificationQueueService.storeInvitation("sender@test.com", list, "Test subject", "Test message", 1);
 		assertThat(all.size() > 0, CoreMatchers.equalTo(true));
 	}
 }
