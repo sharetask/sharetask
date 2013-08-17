@@ -16,6 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+ 
+[ng\:cloak], [ng-cloak], .ng-cloak {display:none !important;}
 
 * {text-shadow:none;}
 

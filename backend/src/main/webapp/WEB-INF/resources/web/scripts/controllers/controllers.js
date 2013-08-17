@@ -37,7 +37,7 @@ angular.module('shareTaskWeb.controllers', [])
 					User.get({username: $scope.user.username}, function(data, status) {
 							console.log("User get success! data: %o, status: %o", data, status);
 							$rootScope.loggedUser = data;
-							$rootScope.loggedUser.password = $scope.user.password;
+							//$rootScope.loggedUser.password = $scope.user.password;
 							LocalStorage.store('logged-user', $rootScope.loggedUser);
 							$window.location.href = $rootScope.appBaseUrl+"webapp#/tasks";
 						}, function(data, status) {
