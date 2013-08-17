@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
 -->
-		<div ng-controller="AppCtrl" ng-cloak class="ng-cloak">
+		<div ng-controller="AppCtrl" ng-cloak ng-click="click()">
 			<shortcut></shortcut>
 			<error-console show="errorConsole.show" data="errorConsole.data" status="errorConsole.status" func="errorConsole.func"></error-console>
 			<!-- application menu -->
@@ -27,10 +27,10 @@
 					<div class="navbar-inner" style="padding-left:0;">
 						<div class="container">
 							<ul class="nav">
-								<li class="cursor-pointer" style="background:rgba(255,255,255,0.2);margin-right:15px;"><a ng-click="setView('PANEL-TASK-FILTER')" title="{{'_ShowHideLeftSidebar_' | i18n}}"><i class="icon-white" ng-class="{'icon-chevron-left':viewPanelTaskFilter, 'icon-chevron-right':!viewPanelTaskFilter}"></i></a></li>
+								<li class="cursor-pointer" style="background:rgba(255,255,255,0.2);margin-right:15px;"><a ng-click="setView('PANEL-TASK-FILTER')" title="{{'_ShowHideLeftSidebar_' | i18n}}" stop-event="click"><i class="icon-white" ng-class="{'icon-chevron-left':viewPanelTaskFilter, 'icon-chevron-right':!viewPanelTaskFilter}"></i></a></li>
 								<li><span class="brand small">{{'_Workspaces_' | i18n}}</span></li>
-								<li class="cursor-pointer"><a ng-click="setEditMode('NEW-WORKSPACE')"><i class="icon-plus icon-white"></i></a></li>
-								<li ng-class="{'hidden':taskEditMode != 'NEW-WORKSPACE'}">
+								<li class="cursor-pointer"><a ng-click="setEditMode('NEW-WORKSPACE')" stop-event="click"><i class="icon-plus icon-white"></i></a></li>
+								<li ng-class="{'hidden':taskEditMode != 'NEW-WORKSPACE'}" stop-event="click">
 									<form name="formWorkspaceAdd" novalidate class="css-form">
 										<div class="input-append" style="padding-top:2px;">
 											<input class="span3" type="text" placeholder="{{'_PlaceholderAddWorkspace_' | i18n}}" ng-model="newWorkspaceTitle" required id="inputWorkspaceAdd" />
@@ -109,7 +109,7 @@
 									</ul>
 								</div>
 								
-								<button class="btn btn-inverse pull-right" style="margin-left:5px;" ng-click="setEditMode('NEW-TASK')"><i class="icon-plus icon-white"></i></button>
+								<button class="btn btn-inverse pull-right" style="margin-left:5px;" ng-click="setEditMode('NEW-TASK')" stop-event="click"><i class="icon-plus icon-white"></i></button>
 								<button class="btn pull-right" style="margin-left:5px;" ng-click="loadTasks()"><i class="icon-refresh"></i></button>
 								<div class="btn-group pull-right" style="margin-left:5px;">
 									<button class="btn dropdown-toggle" data-toggle="dropdown"><i class="icon-list"></i> <span class="caret"></span></button>
@@ -122,7 +122,7 @@
 								<!--<button class="btn pull-right" ng-click="viewCalendar = !viewCalendar"><i class="icon-calendar"></i></button>-->
 							</div>
 						</div>
-						<div class="new-task-simple" ng-class="{'hidden':taskEditMode != 'NEW-TASK'}">
+						<div class="new-task-simple" ng-class="{'hidden':taskEditMode != 'NEW-TASK'}" stop-event="click">
 							<div class="new-task-simple-inner">
 								<form name="formTaskAdd" novalidate class="css-form">
 									<div class="row-full input-append">
@@ -183,9 +183,9 @@
 					<div class="panel-task-detail-content" ng-class="{'hidden':selectedTask == null}">
 						<!-- action buttons -->
 						<div class="task-detail-action" ng-class="{'selected':taskEditMode == 'COMPLETE-TASK' || taskEditMode == 'FORWARD-TASK' || taskEditMode == 'DELETE-TASK'}">
-							<button class="btn btn-inverse" ng-click="setEditMode('COMPLETE-TASK')" ng-class="{'hidden':selectedTask.state == 'FINISHED'}">{{'_Complete_' | i18n}}</button>
-							<button class="btn" ng-click="setEditMode('FORWARD-TASK')" ng-class="{'hidden':selectedTask.state == 'FINISHED'}">{{'_Forward_' | i18n}}</button>
-							<button class="btn" ng-click="setEditMode('DELETE-TASK')">{{'_Delete_' | i18n}}</button>
+							<button class="btn btn-inverse" ng-click="setEditMode('COMPLETE-TASK')" ng-class="{'hidden':selectedTask.state == 'FINISHED'}" stop-event="click">{{'_Complete_' | i18n}}</button>
+							<button class="btn" ng-click="setEditMode('FORWARD-TASK')" ng-class="{'hidden':selectedTask.state == 'FINISHED'}" stop-event="click">{{'_Forward_' | i18n}}</button>
+							<button class="btn" ng-click="setEditMode('DELETE-TASK')" stop-event="click">{{'_Delete_' | i18n}}</button>
 						</div>
 						<!-- complete task -->
 						<div class="task-detail-action-confirm" ng-class="{'hidden':taskEditMode != 'COMPLETE-TASK'}">
@@ -214,10 +214,10 @@
 							<button class="btn" ng-click="setEditMode('')">{{'_No_' | i18n}}</button>
 						</div>
 						<!-- task title -->
-						<div class="editbox border-invisible" style="margin:10px 0;" ng-class="{'hidden':taskEditMode == 'TITLE'}">
+						<div class="editbox border-invisible" style="margin:10px 0;" ng-class="{'hidden':taskEditMode == 'TITLE'}" stop-event="click">
 							<div class="cursor-pointer" style="font-size:23px;color:#FF5A00;" ng-click="setEditMode('TITLE')">{{selectedTask.title}}</div>
 						</div>
-						<div ng-class="{'hidden':taskEditMode != 'TITLE'}" style="margin:10px 0 0 0;">
+						<div ng-class="{'hidden':taskEditMode != 'TITLE'}" stop-event="click" style="margin:10px 0 0 0;">
 							<div class="input-append">
 								<input type="text" ng-model="selectedTask.title" ui-keypress="{enter:'updateTask(selectedTask)', esc:'setEditMode(\'\')'}" />
 								<button class="btn btn-inverse" ng-click="updateTask(selectedTask)">{{'_Ok_' | i18n}}</button>
@@ -245,8 +245,8 @@
 						<div style="margin:5px 0 10px 0;">
 							<div class="tag large" ng-repeat="tag in selectedTask.tags"><span class="text">{{tag}}</span><span class="remove cursor-pointer" ng-click="removeTag(selectedTask.id, tag)">x</span></div>
 							<span ng-show="selectedTask.tags.length == 0"><small>{{'_MsgNoTaskTags_' | i18n}}</small></span>
-							<span class="tag large cursor-pointer" ng-click="setEditMode('ADD-TAG')"><span class="remove cursor-pointer"><i class="icon-plus icon-white"></i></span></span>
-							<div ng-class="{'hidden':taskEditMode != 'ADD-TAG'}">
+							<span class="tag large cursor-pointer" ng-click="setEditMode('ADD-TAG')" stop-event="click"><span class="remove cursor-pointer"><i class="icon-plus icon-white"></i></span></span>
+							<div ng-class="{'hidden':taskEditMode != 'ADD-TAG'}" stop-event="click">
 								<form name="formTaskAddLabel" novalidate class="css-form">
 									<div class="input-append">
 										<input type="text" placeholder="{{'_PlaceholderAddTag_' | i18n}}" ng-model="newTag" ui-keypress="{enter:'addTaskTag()', esc:'setEditMode(\'\')'}" id="inputTaskAddLabel" required />
@@ -257,8 +257,8 @@
 						</div>
 						<!-- task description -->
 						<div class="editbox border-visible" ng-class="{'hidden':taskEditMode == 'DESCRIPTION'}">
-							<div class="cursor-pointer" ng-click="setEditMode('DESCRIPTION')" ng-show="selectedTask.description != null">{{selectedTask.description}}</div>
-							<div class="cursor-pointer" ng-click="setEditMode('DESCRIPTION')" ng-show="selectedTask.description == null">{{'_MsgNoTaskDescription_' | i18n}}</div>
+							<div class="cursor-pointer" ng-click="setEditMode('DESCRIPTION')" ng-show="selectedTask.description != null" stop-event="click">{{selectedTask.description}}</div>
+							<div class="cursor-pointer" ng-click="setEditMode('DESCRIPTION')" ng-show="selectedTask.description == null" stop-event="click">{{'_MsgNoTaskDescription_' | i18n}}</div>
 							<!-- <button class="btn" ng-class="{'hidden':selectedTask.description != '' && selectedTask.description != null}" ng-click="setEditMode('DESCRIPTION')">Add description</button> -->
 						</div>
 						<div ng-class="{'hidden':taskEditMode != 'DESCRIPTION'}" style="margin-top:5px;">
@@ -277,7 +277,7 @@
 							<div class="tab-content">
 								<!-- task comments -->
 								<div class="tab-pane active" id="comments">
-									<form name="formTaskAddComment" novalidate class="css-form">
+									<form name="formTaskAddComment" novalidate class="css-form" stop-event="click">
 										<div class="row-full input-append">
 											<input class="span10" type="text" placeholder="{{'_PlaceholderAddComment_' | i18n}}" ng-model="newTaskComment.comment" required id="inputTaskAddComment" />
 											<button class="btn btn-inverse span2" ng-click="addTaskComment()" ng-disabled="formTaskAddComment.$invalid">{{'_Add_' | i18n}}</button>
@@ -286,7 +286,7 @@
 									<div class="notice" ng-repeat="comment in selectedTask.comments" ng-class="{'author':comment.createdBy == selectedTask.createdBy}">
 										<div class="row-full">
 											<div class="span2">
-												<img src="http://www.gravatar.com/avatar/{{comment.createdBy.username | hash}}.jpg?s=45&d={{'http://www.hip-hop.cz/user-small.png' | urlEncode}}" />
+												<img ng-src="http://www.gravatar.com/avatar/{{comment.createdBy.username | hash}}.jpg?s=45&d={{'http://www.hip-hop.cz/user-small.png' | urlEncode}}" />
 											</div>
 											<div class="span10">
 												<div class="row-full header">

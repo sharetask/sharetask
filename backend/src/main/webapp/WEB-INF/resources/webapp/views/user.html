@@ -34,7 +34,7 @@
 								<div class="tab-pane active" id="userProfile">
 									<div class="columns">
 										<div class="column profile">
-											<a href="http://www.gravatar.com/emails" title="{{'_MsgChangeAvatar_' | i18n}}" target="blank"><img src="http://www.gravatar.com/avatar/{{loggedUser.username | hash}}.jpg?s=150" /></a>
+											<a href="http://www.gravatar.com/emails" title="{{'_MsgChangeAvatar_' | i18n}}" target="blank"><img ng-src="http://www.gravatar.com/avatar/{{loggedUser.username | hash}}.jpg?s=150" /></a>
 											<em>{{loggedUser.name}} {{loggedUser.surName}}</em>
 										</div>
 										<div class="column full">

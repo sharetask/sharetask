@@ -88,7 +88,6 @@
 				}])
 				.run(['$rootScope', 'Logger', function ($rootScope, Logger) {
 					$rootScope.appBaseUrl = '<c:url value="/" />';
-					console.log($rootScope.appBaseUrl);
 					$rootScope.appVersion = '${applicationVersion}';
 					$rootScope.appLocale = {language: '<c:out value="${pageContext.request.locale.language}" />', country: '<c:out value="${pageContext.request.locale.country}" />'};
 					Logger.init('${logLevel}');

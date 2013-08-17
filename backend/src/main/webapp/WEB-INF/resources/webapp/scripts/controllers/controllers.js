@@ -109,6 +109,11 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 			}
 		};
 		
+		$scope.click = function() {
+			Log.debug("Click event");
+			$scope.setEditMode('');
+		};
+		
 		/**
 		 * Loading all workspaces from server.
 		 */

@@ -67,10 +67,12 @@ angular.module('shareTaskApp.directives', []).
 				function buildOptions() {
 					var opts = baseOptions || {};
 					opts.onSelect = function(dateText, inst) { 
-						if (model)
+						if (model) {
 							scope.$apply(attrs.model+"='"+ dateText+"'");
-						if (fnSelected)
+						}
+						if (fnSelected) {
 							scope.$apply(fnSelected);
+						}
 					};
 
 					opts.onClose = function(dateText, inst) {
