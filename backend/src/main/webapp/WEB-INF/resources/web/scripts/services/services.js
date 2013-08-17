@@ -38,6 +38,16 @@ shareTaskWeb.service('User', ['$rootScope', '$location', 'LocalStorage', '$resou
 		console.log("Create user (user: %o)", input.user);
 		return $http.post($rootScope.appBaseUrl+"api/user", input.user).success(success).error(error);
 	};
+	
+	this.getCurrentUser = function(success, error) {
+		console.log("Getting current loged in user from server");
+		return $http.get($rootScope.appBaseUrl+"api/user").success(success).error(error);
+	};
+	
+	this.logout = function(user, success, error) {
+		console.log("Logout user: %s", user);
+		return $http.get($rootScope.appBaseUrl+"api/user/logout").success(success).error(error);
+	};
 }]);
 
 

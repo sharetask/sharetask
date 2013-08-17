@@ -20,57 +20,15 @@
 
 /* Controllers */
 angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 'localization'])
-	/*.controller('RedirectCtrl', ['$scope', '$location', '$window', function($scope, $location, $window) {
-		$window.location.href = "/sharetask";
-	}])*/
-	.controller('AuthCtrl', ['$scope', '$location', '$rootScope', '$window', 'localize', 'User', 'LocalStorage', 'Logger', function($scope, $location, $rootScope, $window, localize, User, LocalStorage, Logger) {
+	.controller('IndexCtrl', ['$scope', '$location', '$rootScope', '$window', 'User', function($scope, $location, $rootScope, $window, User) {
 		
-		$scope.loginData = {processing: false, result: 0};
-		
-		// get logged user from local storage
-		//$rootScope.loggedUser = LocalStorage.get('logged-user');
-		//Log.debug("Logged user: %o", $rootScope.loggedUser);
-		
-		// redirect to tasks page if user is already logged in
-		// FIXME - user should be authenticate again
-		//if (!jQuery.isEmptyObject($rootScope.loggedUser)) {
-			//Log.debug("User (user: %o) is already logged in. Redirect to tasks page.", $rootScope.loggedUser);
-			//$location.path("/tasks");
-		//}
-		
-		/**
-		 * Login user.
-		 * User is redirected to tasks page.
-		 */
-		$scope.login = function() {
-			Log.debug("Login user (username: %s) with password (password: %s)", $scope.user.username, $scope.user.password);
-			$scope.loginData.processing = true;
-			User.authenticate({username: $scope.user.username, password: $scope.user.password}, function(data, status) {
-					Log.debug("User auth success! data: %o, status: %o", data, status);
-					// get user profile info
-					User.getCurrentUser(function(data, status) {
-							Log.debug("User get success! data: %o, status: %o", data, status);
-							$rootScope.loggedUser = data;
-							$rootScope.loggedUser.password = $scope.user.password;
-							//LocalStorage.store('logged-user', $rootScope.loggedUser);
-							$location.path("/tasks");
-						}, function(data, status, script, func) {
-							Log.debug("Auth error! data: %o, status: %o", data, status);
-							$scope.user = {};
-							$rootScope.loggedUser = {};
-							//LocalStorage.remove('logged-user');
-						});
-					$scope.loginData.result = 1;
-					$scope.loginData.processing = false;
-				}, function(data, status, script, func) {
-					Log.debug("User auth error! data: %o, status: %o", data, status);
-					$scope.user = {};
-					$rootScope.loggedUser = {};
-					//LocalStorage.remove('logged-user');
-					$scope.loginData.result = -1;
-					$scope.loginData.processing = false;
-				});
-		};
+		User.getCurrentUser(function(data, status) {
+				Log.debug("User getCurrentUser success! data: %o, status: %o", data, status);
+				$location.path("/tasks");
+			}, function(data, status, script, func) {
+				Log.debug("User getCurrentUser error! data: %o, status: %o", data, status);
+				$window.location.href = $rootScope.appBaseUrl;
+			});
 	}])
 	.controller('AppCtrl', ['$scope', '$location', '$rootScope', '$filter', '$timeout', '$window', 'localize', 'Workspace', 'Task', 'User', 'LocalStorage', 'ErrorHandling', 'Logger', 'Analytics', function($scope, $location, $rootScope, $filter, $timeout, $window, localize, Workspace, Task, User, LocalStorage, ErrorHandling, Logger, Analytics) {
 		
@@ -89,23 +47,6 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		//$scope.dateOptions = {format: 'dd/mm/yyyy'};
 		$scope.datePickerOptions = { dateFormat: "M d, yy" };
 		var taskFilter = $filter('filterTasks');
-		
-		// get logged user from local storage
-		$rootScope.loggedUser = LocalStorage.get('logged-user');
-		Log.debug("Logged user: %o", $rootScope.loggedUser);
-		
-		// redirect to login page if user is not logged in
-		if (jQuery.isEmptyObject($rootScope.loggedUser) || jQuery.isEmptyObject($rootScope.loggedUser.username)) {
-			Log.debug("Unauthenticated access. Redirect to login page.");
-			//$location.path("/");
-			$window.location.href = $rootScope.appBaseUrl;
-		}
-		else {
-			// Loading all workspaces from server.
-			$scope.loadWorkspaces();
-			// start sync for tasks
-			$scope.syncTasks();
-		}
 		
 		Analytics.trackPage('/tasks');
 		
@@ -792,9 +733,20 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 	        Log.debug("SyncTasksTimer (timer: %o) started", $scope.syncTasksTimer);
 		};
 		
-		
+		User.getCurrentUser(function(data, status) {
+				Log.debug("User getCurrentUser success! data: %o, status: %o", data, status);
+				$rootScope.loggedUser = data;
+				// Loading all workspaces from server.
+				$scope.loadWorkspaces();
+				// start sync for tasks
+				$scope.syncTasks();
+			}, function(data, status, script, func) {
+				Log.debug("User getCurrentUser error! data: %o, status: %o", data, status);
+				Log.debug("Unauthenticated access. Redirect to login page.");
+				$window.location.href = $rootScope.appBaseUrl;
+			});
 	}])
-	.controller('AdminCtrl', ['$scope', '$location', '$rootScope', '$timeout', '$window', 'localize', 'Workspace', 'LocalStorage', 'ErrorHandling', function($scope, $location, $rootScope, $timeout, $window, localize, Workspace, LocalStorage, ErrorHandling) {
+	.controller('AdminCtrl', ['$scope', '$location', '$rootScope', '$timeout', '$window', 'localize', 'Workspace', 'User', 'LocalStorage', 'ErrorHandling', function($scope, $location, $rootScope, $timeout, $window, localize, Workspace, User, LocalStorage, ErrorHandling) {
 		$scope.updateWorkspaceData = {processing: false, result: 0};
 		$scope.newMember = {processing: false, result: 0};
 		$scope.addWorkspaceData = {processing: false, result: 0};
@@ -932,20 +884,15 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 				});
 		};
 		
-		// get logged user from local storage
-		//$rootScope.loggedUser = LocalStorage.get('logged-user');
-		//Log.debug("Logged user: %o", $rootScope.loggedUser);
-		
-		// redirect to login page if user is not logged in
-		if (jQuery.isEmptyObject($rootScope.loggedUser) || jQuery.isEmptyObject($rootScope.loggedUser.username)) {
-			Log.debug("Unauthenticated access. Redirect to login page.");
-			//$location.path("/");
-			$window.location.href = $rootScope.appBaseUrl;
-		}
-		else {
-			// Loading all workspaces from server.
-			$scope.loadWorkspaces();
-		}
+		User.getCurrentUser(function(data, status) {
+				Log.debug("User getCurrentUser success! data: %o, status: %o", data, status);
+				// Loading all workspaces from server.
+				$scope.loadWorkspaces();
+			}, function(data, status, script, func) {
+				Log.debug("User getCurrentUser error! data: %o, status: %o", data, status);
+				Log.debug("Unauthenticated access. Redirect to login page.");
+				$window.location.href = $rootScope.appBaseUrl;
+			});
 	}])
 	.controller('UserCtrl', ['$scope', '$location', '$rootScope', '$window', 'localize', 'User', 'Gravatar', 'ErrorHandling', 'LocalStorage', function($scope, $location, $rootScope, $window, localize, User, Gravatar, ErrorHandling, LocalStorage) {
 		$scope.updateUserProfile = {processing: false, result: 0};
@@ -991,18 +938,13 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 				});
 		};
 		
-		// get logged user from local storage
-		//$rootScope.loggedUser = LocalStorage.get('logged-user');
-		//Log.debug("Logged user: %o", $rootScope.loggedUser);
-		
-		// redirect to login page if user is not logged in
-		if (jQuery.isEmptyObject($rootScope.loggedUser) || jQuery.isEmptyObject($rootScope.loggedUser.username)) {
-			Log.debug("Unauthenticated access. Redirect to login page.");
-			//$location.path("/");
-			$window.location.href = $rootScope.appBaseUrl;
-		}
-		else {
-			$scope.getGravatar();
-		}
+		User.getCurrentUser(function(data, status) {
+				Log.debug("User getCurrentUser success! data: %o, status: %o", data, status);
+				$scope.getGravatar();
+			}, function(data, status, script, func) {
+				Log.debug("User getCurrentUser error! data: %o, status: %o", data, status);
+				Log.debug("Unauthenticated access. Redirect to login page.");
+				$window.location.href = $rootScope.appBaseUrl;
+			});
 	}])
 	;

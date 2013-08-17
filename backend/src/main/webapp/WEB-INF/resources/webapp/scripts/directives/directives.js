@@ -140,17 +140,22 @@ angular.module('shareTaskApp.directives', []).
 			link: function(scope, element, attrs) {
 				//Log.debug("scope: %o, element: %o, attrs: %o", scope, element, attrs);
 			},
-			controller: ['$rootScope', '$scope', '$element', '$attrs', '$transclude', '$location', '$window', 'LocalStorage', function($rootScope, $scope, $element, $attrs, $transclude, $location, $window, LocalStorage) {
+			controller: ['$rootScope', '$scope', '$element', '$attrs', '$transclude', '$location', '$window', 'User', 'ErrorHandling', 'LocalStorage', function($rootScope, $scope, $element, $attrs, $transclude, $location, $window, User, ErrorHandling, LocalStorage) {
 				
 				$scope.currentPage = $rootScope.currentPage;
 				Log.debug("current page: %o", $rootScope.currentPage);
 				
 				$scope.logout = function() {
 					Log.debug("Logout user: %s", $rootScope.loggedUser.username);
-					$rootScope.loggedUser = {};
-					LocalStorage.remove('logged-user');
-					//$location.path("/");
-					$window.location.href = $rootScope.appBaseUrl;
+					User.logout($rootScope.loggedUser.username, function(data, status) {
+						Log.debug("User logout success! data: %o, status: %o", data, status);
+						$rootScope.loggedUser = {};
+						LocalStorage.remove('logged-user');
+						$window.location.href = $rootScope.appBaseUrl;
+					}, function(data, status, script, func) {
+						Log.debug("User logout error! data: %o, status: %o", data, status);
+						ErrorHandling.handle(data, status, script, func);
+					});
 				};
 			}]
 		};

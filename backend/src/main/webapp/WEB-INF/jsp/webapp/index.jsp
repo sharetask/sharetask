@@ -59,10 +59,10 @@
 		<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/vendor/angular/ui-bootstrap-tpls-0.3.0.min.js" />"></script>
 		<c:choose>
 			<c:when test="${fn:length(pageContext.request.locale.country) == 0}">
-				<script type="text/javascript" src="<c:url value="/resources-web-${applicationVersion}/scripts/vendor/angular/i18n/angular-locale_${fn:toLowerCase(pageContext.request.locale.language)}.js" />"></script>
+				<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/vendor/angular/i18n/angular-locale_${fn:toLowerCase(pageContext.request.locale.language)}.js" />"></script>
 			</c:when>
 			<c:otherwise>
-				<script type="text/javascript" src="<c:url value="/resources-web-${applicationVersion}/scripts/vendor/angular/i18n/angular-locale_${fn:toLowerCase(pageContext.request.locale.language)}-${fn:toLowerCase(pageContext.request.locale.country)}.js" />"></script>
+				<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/vendor/angular/i18n/angular-locale_${fn:toLowerCase(pageContext.request.locale.language)}-${fn:toLowerCase(pageContext.request.locale.country)}.js" />"></script>
 			</c:otherwise>
 		</c:choose>
 		<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/vendor/angular/angular-google-analytics.js" />"></script>
@@ -88,6 +88,7 @@
 				}])
 				.run(['$rootScope', 'Logger', function ($rootScope, Logger) {
 					$rootScope.appBaseUrl = '<c:url value="/" />';
+					console.log($rootScope.appBaseUrl);
 					$rootScope.appVersion = '${applicationVersion}';
 					$rootScope.appLocale = {language: '<c:out value="${pageContext.request.locale.language}" />', country: '<c:out value="${pageContext.request.locale.country}" />'};
 					Logger.init('${logLevel}');

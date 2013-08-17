@@ -24,6 +24,14 @@ angular.module('shareTaskWeb.controllers', [])
 		
 		$scope.loginData = {processing: false, result: 0};
 		
+		// get current logged user
+		User.getCurrentUser(function(data, status) {
+				console.log("User getCurrentUser success! data: %o, status: %o", data, status);
+				$scope.loggedUser = data;
+			}, function(data, status, script, func) {
+				console.log("User getCurrentUser error! data: %o, status: %o", data, status);
+			});
+		
 		/**
 		 * Login user.
 		 * User is redirected to tasks page.
@@ -55,6 +63,18 @@ angular.module('shareTaskWeb.controllers', [])
 					LocalStorage.remove('logged-user');
 					$scope.loginData.result = -1;
 					$scope.loginData.processing = false;
+				});
+		};
+		
+		/**
+		 * Logout user.
+		 */
+		$scope.logout = function() {
+			User.logout($scope.loggedUser.username, function(data, status) {
+					console.log("User logout success! data: %o, status: %o", data, status);
+					delete($scope.loggedUser);
+				}, function(data, status, script, func) {
+					console.log("User logout error! data: %o, status: %o", data, status);
 				});
 		};
 	}])

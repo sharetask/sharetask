@@ -64,19 +64,25 @@
 						</div>
 						<div class="span4" style="width:330px;right:0;overflow:visible;position:absolute;">
 							<div class="brand-login" ng-controller="AuthCtrl">
-								<h4><spring:message code="account.question" /></h4><br />
-								<a href="<c:url value="/register" />" class="btn btn-inverse"><spring:message code="account.create.button" /></a><br />
-								<br /><br />
-								<h4><spring:message code="login.title" /></h4><br />
-								<form name="formLogin" novalidate class="css-form" ng-cloak>
-									<div class="alert alert-error" ng-class="{'hidden':!loginData || !loginData.result || loginData.result == 1 || loginData.result == 0}">
-										<a class="close" ng-click="loginData.result = 0">&times;</a>
-										<strong>Error</strong> Bad user name or password.
-									</div>
-									<input type="text" name="username" placeholder="<spring:message code="login.username.placeholder" />" ng-model="user.username" ui-keypress="{enter:'login()'}" required auto-fillable-field /><br />
-									<input type="password" name="password" placeholder="<spring:message code="login.password.placeholder" />" ng-model="user.password" ui-keypress="{enter:'login()'}" required auto-fillable-field /><br />
-									<button class="btn btn-inverse" ng-click="login()" ng-disabled="formLogin.$invalid || loginData.processing"><spring:message code="login.button.submit" /></button>
-								</form>
+								<div ng-show="!loggedUser">
+									<h4><spring:message code="account.question" /></h4><br />
+									<a href="<c:url value="/register" />" class="btn btn-inverse"><spring:message code="account.create.button" /></a><br />
+									<br /><br />
+									<h4><spring:message code="login.title" /></h4><br />
+									<form name="formLogin" novalidate class="css-form" ng-cloak>
+										<div class="alert alert-error" ng-class="{'hidden':!loginData || !loginData.result || loginData.result == 1 || loginData.result == 0}">
+											<a class="close" ng-click="loginData.result = 0">&times;</a>
+											<strong>Error</strong> Bad user name or password.
+										</div>
+										<input type="text" name="username" placeholder="<spring:message code="login.username.placeholder" />" ng-model="user.username" ui-keypress="{enter:'login()'}" required auto-fillable-field /><br />
+										<input type="password" name="password" placeholder="<spring:message code="login.password.placeholder" />" ng-model="user.password" ui-keypress="{enter:'login()'}" required auto-fillable-field /><br />
+										<button class="btn btn-inverse" ng-click="login()" ng-disabled="formLogin.$invalid || loginData.processing"><spring:message code="login.button.submit" /></button>
+									</form>
+								</div>
+								<div ng-show="loggedUser">
+									<h4><spring:message code="msg.helloBack" arguments="{{loggedUser.name}}" /></h4><br />
+									<a href="<c:url value="/webapp" />" class="btn btn-inverse"><spring:message code="app.button.open" /></a> <a ng-click="logout()" class="btn"><spring:message code="app.button.logout" /></a><br />
+								</div>
 							</div>
 						</div>
 					</div>
