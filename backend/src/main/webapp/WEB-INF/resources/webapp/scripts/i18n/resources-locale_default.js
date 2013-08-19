@@ -482,7 +482,21 @@
 	
 	
 	
-	
+	{
+	    "key":"_MsgAppWelcome_",
+	    "value":"Welcome to application shareta.sk.",
+	    "description":""
+	},
+	{
+	    "key":"_MsgAddFirstWorkspaceInstructions1_",
+	    "value":"At least one workspace have to be exist in your profile.",
+	    "description":""
+	},
+	{
+	    "key":"_MsgAddFirstWorkspaceInstructions2_",
+	    "value":"Please create your first workspace and you can start using application...",
+	    "description":""
+	},
 	{
 	    "key":"_MsgNewTask_",
 	    "value":"You have new task",

@@ -481,6 +481,22 @@
 	
 	
 	
+	
+	{
+	    "key":"_MsgAppWelcome_",
+	    "value":"Vítejte v aplikaci shareta.sk.",
+	    "description":""
+	},
+	{
+	    "key":"_MsgAddFirstWorkspaceInstructions1_",
+	    "value":"Pro práci s úkoly musíte mít založen alespoň jeden projekt.",
+	    "description":""
+	},
+	{
+	    "key":"_MsgAddFirstWorkspaceInstructions2_",
+	    "value":"Založte si prosím svůj první projekt a následně budete moci začít využívat aplikaci...",
+	    "description":""
+	},
 	{
 	    "key":"_MsgNewTask_",
 	    "value":"Máte nový úkol",

@@ -35,7 +35,8 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		$scope.errorMessageOnTaskList = '';
 		$scope.viewPanelTaskFilter = true;
 		$scope.viewDatePicker = false;
-		$scope.selectedWorkspace;
+		$scope.workspaces = [];
+		$scope.selectedWorkspace = null;
 		$scope.selectedTask;
 		$scope.taskEditMode = '';
 		$scope.filter = {'queue': 'MY_PENDING', 'tag': '', 'searchString': '', 'orderBy': 'TASK_DUE_DATE'};
@@ -46,6 +47,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		$rootScope.errorConsole = {show: false, msgCode: ''};
 		//$scope.dateOptions = {format: 'dd/mm/yyyy'};
 		$scope.datePickerOptions = { dateFormat: "M d, yy" };
+		$scope.addWorkspaceData = {processing: false, result: 0};
 		var taskFilter = $filter('filterTasks');
 		
 		Analytics.trackPage('/tasks');
@@ -146,6 +148,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 			Workspace.create({workspace: workspace}, function(data, status) {
 					Log.debug("Workspace create success! data: %o, status: %o", data, status);
 					$scope.workspaces.push(data);
+					$scope.setSelectedWorkspace(data);
 					$scope.newWorkspaceTitle = '';
 					$scope.setEditMode('');
 					Analytics.trackEvent('Workspace', 'add', 'success', status);
