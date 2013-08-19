@@ -130,22 +130,27 @@ body {margin:0;padding:0;-webkit-text-size-adjust:100%;}
 #app-menu {height:40px;top:0;width:100%;overflow:visible;position:absolute;}
 #workspace-menu {height:35px;top:40px;width:100%;overflow:visible;position:absolute;}
 
-.sidebar {top:76px;bottom:0;left:0;width:140px;overflow:visible;position:absolute;background:#565656;color:#fff;}
+.sidebar {top:40px;bottom:0;left:0;width:170px;overflow:visible;position:absolute;background:#565656;color:#fff;}
 .sidebar.admin {top:40px;}
 .sidebar-inner {height:100%;/*border-right:3px solid #ddd;*/}
 .sidebar-content {/*padding:5px;*/}
 .sidebar.hide2 {width:0;}
 
-.panel-task-divider {top:76px;bottom:0;left:0;width:10px;overflow:visible;position:absolute;background:#ccc;display:none;}
+.sidebar .btn-group {width:100%;}
+.sidebar .btn-group .btn  {width:100%;color:#fff;background:rgba(0,0,0,0.2);text-align:left;padding:0 10px;line-height:40px;margin-bottom:5px;}
+.sidebar .btn-group .btn:hover {background:rgba(0,0,0,0.5);}
+
+
+.panel-task-divider {top:40px;bottom:0;left:0;width:10px;overflow:visible;position:absolute;background:#ccc;display:none;}
 .panel-task-divider:hover {background:#98C7F0;}
 /*.panel-task-divider:hover .caret-left, .panel-task-divider:hover .caret-right {border-right: 6px solid #fff;}*/
 .panel-task-divider-inner {height:100%;cursor:pointer;}
 .panel-task-divider.left {left:0;}
 
-.panel-task-list {top:76px;bottom:0;left:140px;right:45%;overflow:visible;position:absolute;background:#fff;}
+.panel-task-list {top:40px;bottom:0;left:170px;right:45%;overflow:visible;position:absolute;background:#fff;}
 .panel-task-list-inner {height:100%;}
 .panel-task-list.large {left:0;}
-.panel-task-list .header {height:80px;top:0px;padding:0 10px;}
+.panel-task-list .header {height:80px;top:0px;padding:0 5px;}
 .panel-task-list .header.large {height:120px;}
 .panel-task-list .header .queue-name {height:45px;}
 .queue-name .title {/*text-transform:uppercase;*/font-size:23px;/*background:#0079F2;color:#fff;*/line-height:33px;/*padding:0 15px;*//*font-weight:bold;*/}
@@ -155,7 +160,7 @@ body {margin:0;padding:0;-webkit-text-size-adjust:100%;}
 .panel-task-list .header .new-task-simple {height:40px;}
 .new-task-simple-inner {padding:5px;}
 
-.panel-task-detail {top:76px;bottom:0;width:45%;right:0;overflow:visible;position:absolute;background:#fff;}
+.panel-task-detail {top:40px;bottom:0;width:45%;right:0;overflow:visible;position:absolute;background:#fff;}
 .panel-task-detail-inner {height:100%;border-left:3px solid #ddd;overflow-y:auto;-webkit-overflow-scrolling:touch;}
 .panel-task-detail-content {padding:0 10px;}
 

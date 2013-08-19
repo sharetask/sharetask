@@ -58,7 +58,7 @@
 				</div>
 			</div>
 			
-			<div ng-show="!selectedWorkspace" ng-cloak>
+			<div class="ng-cloak" ng-show="!selectedWorkspace">
 				<div class="panel-full">
 					<div class="panel-full-inside">
 						<div style="padding:10px 20px;">
@@ -79,11 +79,17 @@
 				</div>
 			</div>
 			
-			<div ng-show="selectedWorkspace" ng-cloak>
+			<div ng-show="selectedWorkspace != null" ng-cloak>
 				<!-- task filter panel -->
 				<div class="sidebar" ng-class="{'hide2':!viewPanelTaskFilter}">
 					<div class="sidebar-inner">
 						<div class="sidebar-content">
+							<div class="btn-group">
+								<button class="btn dropdown-toggle" data-toggle="dropdown" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"><i class="icon-caret-down"></i> {{selectedWorkspace.title}}</button>
+								<ul class="dropdown-menu">
+									<li ng-repeat="workspace in workspaces"><a ng-click="setSelectedWorkspace(workspace)">{{workspace.title}}</a></li>
+								</ul>
+							</div>
 							<div class="tile" ng-class="{'active':'MY_PENDING'==filter.queue}" ng-click="setTaskFilterQueue('MY_PENDING')">
 								<div class="header"></div>
 								<div class="footer">{{'_Pending_' | i18n}}<span class="pull-right">{{allTasks | queueTasksCount: 'MY_PENDING'}}</span></div>
@@ -123,6 +129,7 @@
 							</div>
 							<div class="queue-controls">
 								<div class="queue-controls-inner">
+									<button class="btn" ng-click="setView('PANEL-TASK-FILTER')"><i ng-class="{'icon-double-angle-left':viewPanelTaskFilter, 'icon-double-angle-right':!viewPanelTaskFilter}"></i></button>
 									<div class="btn-group">
 										<button class="btn dropdown-toggle" data-toggle="dropdown">{{filter.orderBy | orderName | i18n}} <span class="caret"></span></button>
 										<ul class="dropdown-menu">
