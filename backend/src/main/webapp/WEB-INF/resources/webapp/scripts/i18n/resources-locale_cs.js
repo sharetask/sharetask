@@ -355,6 +355,11 @@
 		"value":"Zavřít",
 		"description":""
 	},
+	{
+	    "key":"_FirstWorkspaceTitle_",
+	    "value":"Založte svůj první projekt",
+	    "description":""
+	},
 	
 	
 	

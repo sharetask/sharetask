@@ -74,11 +74,9 @@ angular.module('shareTaskApp.directives', []).
 							scope.$apply(fnSelected);
 						}
 					};
-
 					opts.onClose = function(dateText, inst) {
 						closePicker();
 					};
-
 					return opts;
 				}
 
@@ -98,12 +96,10 @@ angular.module('shareTaskApp.directives', []).
 					dpCtrl.datepicker( buildOptions() );
 				}
 
-
 				// defines a watch on the show attribute, if one was provided.
 				// otherwise, always display the control
 				if (show) {
 					scope.$watch(show, function(show) {
-
 						if (show) {
 							openPicker();
 						}
@@ -130,7 +126,12 @@ angular.module('shareTaskApp.directives', []).
 					//Log.debug("new model, %o", new Date(newModel));
 					//Log.debug("old model, %o", oldModel);
 					//dpCtrl.setDate(new Date(newModel));
-					dpCtrl.datepicker("setDate", new Date(newModel));
+					if (newModel == null) {
+						dpCtrl.datepicker("setDate", new Date());
+					}
+					else {
+						dpCtrl.datepicker("setDate", new Date(newModel));
+					}
 				});
 			}
 		};
@@ -175,7 +176,7 @@ angular.module('shareTaskApp.directives', []).
 				$scope.opts = {backdropFade: true, dialogFade: true};
 				
 				$scope.open = function () {
-					$scope.shouldBeOpen = true;
+					$scope.shouldBeOpenEC = true;
 				};
 				
 				$scope.send = function () {
@@ -185,13 +186,13 @@ angular.module('shareTaskApp.directives', []).
 				};
 				
 				$scope.close = function () {
-					$scope.shouldBeOpen = false;
+					$scope.shouldBeOpenEC = false;
 					$rootScope.errorConsole = {show: false, data: '', status: 0, func: {}};
 				};
 				
 				$scope.$watch($attrs.show, function(newModel, oldModel) {
 					Log.debug("ErrorConsole - show: %o, %o", newModel, oldModel);
-					$scope.shouldBeOpen = newModel;
+					$scope.shouldBeOpenEC = newModel;
 				});
 				
 				$scope.$watch($attrs.data, function(newModel, oldModel) {
@@ -207,6 +208,61 @@ angular.module('shareTaskApp.directives', []).
 				$scope.$watch($attrs.func, function(newModel, oldModel) {
 					Log.debug("ErrorConsole - func: %o, %o", newModel, oldModel);
 					$scope.func = newModel;
+				});
+			}]
+		};
+	}])
+	.directive('firstWorkspaceWindow', ['$rootScope', function($rootScope) {
+		return {
+			restrict: 'E',
+			templateUrl: 'resources-webapp-'+$rootScope.appVersion+'/views/components/first-workspace-window.html',
+			link: function(scope, element, attrs) {
+				//Log.debug("FirstWorkspaceWindow - scope: %o, element: %o, attrs: %o", scope, element, attrs);
+			},
+			controller: ['$rootScope', '$scope', '$element', '$attrs', '$transclude', '$location', 'Workspace', 'Analytics', function($rootScope, $scope, $element, $attrs, $transclude, $location, Workspace, Analytics) {
+				Log.debug("FirstWorkspaceWindow - scope: %o, element: %o, attrs: %o", $scope, $element, $attrs);
+				
+				$scope.opts = {backdropFade: true, dialogFade: true};
+				
+				$scope.open = function () {
+					$scope.shouldBeOpenFWW = true;
+				};
+				
+				/**
+				 * Add new workspace.
+				 * User adds workspace title only. All others attributes are set to default values.
+				 * Workspace data are stored to server.
+				 */
+				$scope.addWorkspace = function() {
+					Log.debug("Add new workspace (workspaceTitle: %s)", $scope.newWorkspaceTitle);
+					var workspace = {title: $scope.newWorkspaceTitle, owner: {username: $scope.user.username}};
+					Log.debug("Workspace: %o", workspace);
+					Workspace.create({workspace: workspace}, function(data, status) {
+							Log.debug("Workspace create success! data: %o, status: %o", data, status);
+							$scope.newWorkspaceTitle = '';
+							$rootScope.firstWorkspaceWindow = {show: false};
+							$scope.$emit('EVENT-RELOAD-WORKSPACES');
+							Analytics.trackEvent('Workspace', 'add', 'success', status);
+						}, function(data, status, script, func) {
+							Log.debug("Workspace create error!");
+							ErrorHandling.handle(data, status, script, func);
+							Analytics.trackEvent('Workspace', 'add', 'error', status);
+						});
+				};
+				
+				$scope.close = function () {
+					$scope.shouldBeOpen = false;
+					$rootScope.firstWorkspaceWindow = {show: false};
+				};
+				
+				$scope.$watch($attrs.show, function(newModel, oldModel) {
+					Log.debug("FirstWorkspaceWindow - show: %o, %o", newModel, oldModel);
+					$scope.shouldBeOpenFWW = newModel;
+				});
+				
+				$scope.$watch($attrs.user, function(newModel, oldModel) {
+					Log.debug("FirstWorkspaceWindow - user: %o, %o", newModel, oldModel);
+					$scope.user = newModel;
 				});
 			}]
 		};

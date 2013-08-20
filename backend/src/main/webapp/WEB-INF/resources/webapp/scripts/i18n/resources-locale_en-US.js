@@ -355,6 +355,11 @@
 		"value":"Close",
 		"description":""
 	},
+	{
+	    "key":"_FirstWorkspaceTitle_",
+	    "value":"Create your first workspace",
+	    "description":""
+	},
 	
 	
 	

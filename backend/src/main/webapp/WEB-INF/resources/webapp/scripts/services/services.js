@@ -44,8 +44,8 @@ shareTaskApp.service('User', ['$rootScope', '$location', '$window', 'LocalStorag
 		return $http.put($rootScope.appBaseUrl+"api/user", input.user).success(success).error(error);
 	};
 	
-	this.logout = function(user, success, error) {
-		Log.debug("Logout user: %s", user);
+	this.logout = function(success, error) {
+		Log.debug("Logout user");
 		return $http.get($rootScope.appBaseUrl+"api/user/logout").success(success).error(error);
 	};
 }]);

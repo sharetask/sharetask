@@ -49,15 +49,16 @@ angular.module('shareTaskWeb.directives', [])
 			link: function(scope, element, attrs) {
 				//console.log("scope: %o, element: %o, attrs: %o", scope, element, attrs);
 			},
-			controller: ['$rootScope', '$scope', '$element', '$attrs', '$transclude', '$location', 'LocalStorage', function($rootScope, $scope, $element, $attrs, $transclude, $location, LocalStorage) {
+			controller: ['$rootScope', '$scope', '$element', '$attrs', '$transclude', '$location', 'User', 'LocalStorage', function($rootScope, $scope, $element, $attrs, $transclude, $location, User, LocalStorage) {
 				
 				$scope.currentPage = $rootScope.currentPage;
 				console.log("current page: %o", $rootScope.currentPage);
 				
 				$scope.logout = function() {
 					console.log("Logout user: %s", $rootScope.loggedUser.username);
-					$rootScope.loggedUser = {};
-					LocalStorage.remove('logged-user');
+					User.logout();
+					//$rootScope.loggedUser = {};
+					//LocalStorage.remove('logged-user');
 					$location.path("/");
 				};
 			}]

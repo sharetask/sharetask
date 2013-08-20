@@ -45,6 +45,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		$scope.newTaskTitle = '';
 		$rootScope.currentPage = "tasks";
 		$rootScope.errorConsole = {show: false, msgCode: ''};
+		$rootScope.firstWorkspaceWindow = {show: false};
 		//$scope.dateOptions = {format: 'dd/mm/yyyy'};
 		$scope.datePickerOptions = { dateFormat: "M d, yy" };
 		$scope.addWorkspaceData = {processing: false, result: 0};
@@ -63,12 +64,10 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 					case 110:
 						// key 'n' pressed - add new task
 						$scope.setEditMode('NEW-TASK');
-						//$scope.focusTaskAdd = true;
 						break;
 					case 102:
 						// key 'f' pressed - forward task
 						$scope.setEditMode('FORWARD-TASK');
-						//$scope.focusTaskForward = true;
 						break;
 					case 100:
 						// key 'd' pressed - delete task
@@ -81,7 +80,6 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 					case 119:
 						// key 'w' pressed - add new workspace
 						$scope.setEditMode('NEW-WORKSPACE');
-						//$scope.focusWorkspaceAdd = true;
 						break;
 					case 115:
 						// key 's' pressed - search
@@ -97,15 +95,11 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 						break;
 					case 99:
 						// key 'c' pressed - add new task comment
-						// TODO - implement
-						//$scope.focusTaskAddComment = true;
 						setTimeout(function() { $('#inputTaskAddComment')[0].focus(); }, 0);
 						break;
 					case 108:
 						// key 'l' pressed - add new task label
-						// TODO - implement
 						$scope.setEditMode('ADD-TAG');
-						//$scope.focusTaskAddLabel = true;
 						break;
 				}
 			}
@@ -115,6 +109,10 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 			Log.debug("Click event");
 			$scope.setEditMode('');
 		};
+		
+		$scope.$on('EVENT-RELOAD-WORKSPACES', function() {
+			$scope.loadWorkspaces();
+		});
 		
 		/**
 		 * Loading all workspaces from server.
@@ -127,6 +125,9 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 						$scope.workspaces = data;
 						$scope.selectedWorkspace = data[0];
 						$scope.loadTasks();
+					}
+					else {
+						$rootScope.firstWorkspaceWindow = {show: true};
 					}
 					Analytics.trackEvent('Workspaces', 'load', 'success', status);
 				}, function(data, status, script, func) {
@@ -716,26 +717,28 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 			Log.debug("Starting SyncTasksTimer job");
 			$scope.syncTasksTimer = $timeout(function() {
 				Log.debug("SyncTasksTimer job fired");
-				$scope.newTasks = [];
-				Log.debug("Load all active tasks for workspace (id: %s)", $scope.selectedWorkspace.id);
-				Workspace.getActiveTasks({workspaceId: $scope.selectedWorkspace.id}, function(data, status) {
-						Log.debug("Workspace getActiveTasks success! data: %o, status: %o", data, status);
-						angular.forEach(data, function(task1) {
-							var found = false;
-							angular.forEach($scope.tasks, function(task2) {
-								if (task1.id === task2.id) {
-									found = true;
+				if ($scope.selectedWorkspace) {
+					$scope.newTasks = [];
+					Log.debug("Load all active tasks for workspace (id: %s)", $scope.selectedWorkspace.id);
+					Workspace.getActiveTasks({workspaceId: $scope.selectedWorkspace.id}, function(data, status) {
+							Log.debug("Workspace getActiveTasks success! data: %o, status: %o", data, status);
+							angular.forEach(data, function(task1) {
+								var found = false;
+								angular.forEach($scope.tasks, function(task2) {
+									if (task1.id === task2.id) {
+										found = true;
+									}
+								});
+								if (!found) {
+									$scope.newTasks.push(task1);
 								}
 							});
-							if (!found) {
-								$scope.newTasks.push(task1);
-							}
-						});
-						Log.debug("There are these new tasks: %o", $scope.newTasks);
-					}, function(data, status, script, func) {
-						Log.debug("Workspace getActiveTasks error!");
-						ErrorHandling.handle(data, status, script, func);
-				});
+							Log.debug("There are these new tasks: %o", $scope.newTasks);
+						}, function(data, status, script, func) {
+							Log.debug("Workspace getActiveTasks error!");
+							ErrorHandling.handle(data, status, script, func);
+					});
+				}
 	        	$scope.syncTasks();
 			}, 60000);
 	        Log.debug("SyncTasksTimer (timer: %o) started", $scope.syncTasksTimer);
