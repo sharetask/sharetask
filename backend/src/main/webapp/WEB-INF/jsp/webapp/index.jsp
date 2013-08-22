@@ -67,6 +67,7 @@
 		</c:choose>
 		<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/vendor/angular/angular-google-analytics.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/vendor/localize/localize.js" />"></script>
+		<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/vendor/localize/jquery.ui.datepicker-${fn:toLowerCase(pageContext.request.locale.language)}.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/vendor/md5-min.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/services/services.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/controllers/controllers.js" />"></script>
@@ -90,6 +91,7 @@
 					$rootScope.appBaseUrl = '<c:url value="/" />';
 					$rootScope.appVersion = '${applicationVersion}';
 					$rootScope.appLocale = {language: '<c:out value="${pageContext.request.locale.language}" />', country: '<c:out value="${pageContext.request.locale.country}" />'};
+					console.log("appLocale: %o", $rootScope.appLocale);
 					Logger.init('${logLevel}');
 				}]);
 		</script>

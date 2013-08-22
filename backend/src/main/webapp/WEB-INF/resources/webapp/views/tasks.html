@@ -270,7 +270,7 @@
 								<strong ng-show="selectedTask.dueDate != null">{{selectedTask.dueDate | date:'mediumDate'}}</strong>
 								<strong ng-show="selectedTask.dueDate == null"> - </strong>
 							</span>
-							<jqui-datepicker model="selectedTask.dueDate" selected="viewTaskDueDatePicker=false" options="datePickerOptions" ng-class="{'hidden':!viewTaskDueDatePicker}"></jqui-datepicker>
+							<jqui-datepicker model="selectedTask.dueDate" selected="changeTaskDueDate()" options="datePickerOptions" ng-class="{'hidden':!viewTaskDueDatePicker}"></jqui-datepicker>
 						</div>
 						<!-- task tags -->
 						<div style="margin:5px 0 10px 0;">

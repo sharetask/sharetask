@@ -47,7 +47,18 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		$rootScope.errorConsole = {show: false, msgCode: ''};
 		$rootScope.firstWorkspaceWindow = {show: false};
 		//$scope.dateOptions = {format: 'dd/mm/yyyy'};
-		$scope.datePickerOptions = { dateFormat: "M d, yy" };
+		//$scope.datePickerOptions = { dateFormat: "M d, yy" };
+		$scope.datePickerOptions = {firstDay: 1, dateFormat: "yy-mm-dd", minDate:'0'};
+		/*
+		$scope.datePickerOptions = {firstDay: 1,
+									dateFormat: "yy-mm-dd",
+									prevText: '<<',
+									nextText: '>>',
+									minDate:'0',
+									dayNames: ["Neděle", "Pondělí", "Úterý", "Středa", "Čtvrtek", "Pátek", "Sobota"],
+									dayNamesMin: ["Ne", "Po", "Út", "St", "Čt", "Pá", "So"],
+									monthNames: ["Leden", "Únor", "Březen", "Duben", "Květen", "Červen", "Červenec", "Srpen", "Září", "Říjen", "Listopad", "Prosinec"]};
+		*/
 		$scope.addWorkspaceData = {processing: false, result: 0};
 		var taskFilter = $filter('filterTasks');
 		
@@ -487,6 +498,24 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 			else if ($scope.selectedTask.priority == 'HIGH') { $scope.selectedTask.priority = 'LOW'; }
 			$scope.updateTask($scope.selectedTask);
 			Analytics.trackEvent('Task', 'setPriority');
+		};
+		
+		/**
+		 * Changing active task due date.
+		 * Task data are stored to server.
+		 */
+		$scope.changeTaskDueDate = function() {
+			$scope.viewTaskDueDatePicker = false;
+			if ($scope.selectedTask == null) {
+				return;
+			}
+			Log.debug("Change task due date (id: %s, due date: %s)", $scope.selectedTask.id, $scope.selectedTask.dueDate);
+			if ($scope.selectedTask.state == 'FINISHED') {
+				Log.debug("Task (id: %s) already completed", $scope.selectedTask.id);
+				return;
+			}
+			$scope.updateTask($scope.selectedTask);
+			Analytics.trackEvent('Task', 'setDueDate');
 		};
 		
 		/**

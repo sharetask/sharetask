@@ -56,7 +56,6 @@ angular.module('shareTaskApp.directives', []).
 				var fnSelected = attrs.selected || null;
 				var show = attrs.show || null;
 				var options = attrs.options || null;
-
 				var baseOptions = scope.$eval(options) || null;
 				var dpCtrl = null;
 
@@ -67,16 +66,16 @@ angular.module('shareTaskApp.directives', []).
 				function buildOptions() {
 					var opts = baseOptions || {};
 					opts.onSelect = function(dateText, inst) { 
-						if (model) {
+						if (model)
 							scope.$apply(attrs.model+"='"+ dateText+"'");
-						}
-						if (fnSelected) {
+						if (fnSelected)
 							scope.$apply(fnSelected);
-						}
 					};
+
 					opts.onClose = function(dateText, inst) {
 						closePicker();
 					};
+
 					return opts;
 				}
 
@@ -94,12 +93,15 @@ angular.module('shareTaskApp.directives', []).
 					elm.append('<div class="datepicker"></div>');
 					dpCtrl = elm.find('.datepicker');
 					dpCtrl.datepicker( buildOptions() );
+					dpCtrl.datepicker('option', $.datepicker.regional);
 				}
+
 
 				// defines a watch on the show attribute, if one was provided.
 				// otherwise, always display the control
 				if (show) {
 					scope.$watch(show, function(show) {
+
 						if (show) {
 							openPicker();
 						}
@@ -123,15 +125,24 @@ angular.module('shareTaskApp.directives', []).
 				}
 				
 				scope.$watch(model, function(newModel, oldModel) {
-					//Log.debug("new model, %o", new Date(newModel));
-					//Log.debug("old model, %o", oldModel);
-					//dpCtrl.setDate(new Date(newModel));
-					if (newModel == null) {
-						dpCtrl.datepicker("setDate", new Date());
+					/*
+					Log.debug("new model, %o", newModel);
+					Log.debug("new model date, %o", new Date(newModel));
+					Log.debug("old model, %o", oldModel);
+					*/
+					var oldDate = new Date(oldModel);
+					var newDate = new Date(newModel);
+					if (oldModel !== undefined) {
+						newDate.setHours(oldDate.getHours());
+						newDate.setMinutes(oldDate.getMinutes());
 					}
-					else {
-						dpCtrl.datepicker("setDate", new Date(newModel));
-					}
+					Log.debug("new date, %o", newDate);
+					/*
+					var hourOptions = newDate.getHours()+":"+newDate.getMinutes();
+					Log.debug("options, %o", baseOptions.dateFormat+"'T"+hourOptions+"'");
+					dpCtrl.datepicker('option', baseOptions.dateFormat+"'T17:00'");
+					*/
+					dpCtrl.datepicker("setDate", newDate);
 				});
 			}
 		};
@@ -150,7 +161,7 @@ angular.module('shareTaskApp.directives', []).
 				
 				$scope.logout = function() {
 					Log.debug("Logout user: %s", $rootScope.loggedUser.username);
-					User.logout($rootScope.loggedUser.username, function(data, status) {
+					User.logout(function(data, status) {
 						Log.debug("User logout success! data: %o, status: %o", data, status);
 						$rootScope.loggedUser = {};
 						LocalStorage.remove('logged-user');
@@ -321,72 +332,4 @@ angular.module('shareTaskApp.directives', []).
 			}
 		};
 	})
-	/*
-	.directive('checkStrength', function () {
-	    return {
-			replace: false,
-			restrict: 'EACM',
-			link: function (scope, iElement, iAttrs) {
-
-	        	var strength = {
-	                colors: ['#F00', '#F90', '#FF0', '#9F0', '#0F0'],
-	                mesureStrength: function (p) {
-
-	                    var _force = 0;                    
-	                    var _regex = '/[$-/:-?{-~!"^_`\[\]]/g';
-	                                          
-	                    var _lowerLetters = /[a-z]+/.test(p);                    
-	                    var _upperLetters = /[A-Z]+/.test(p);
-	                    var _numbers = /[0-9]+/.test(p);
-	                    var _symbols = _regex.test(p);
-	                                          
-	                    var _flags = [_lowerLetters, _upperLetters, _numbers, _symbols];                    
-	                    var _passedMatches = $.grep(_flags, function (el) { return el === true; }).length;                                          
-	                    
-	                    _force += 2 * p.length + ((p.length >= 10) ? 1 : 0);
-	                    _force += _passedMatches * 10;
-	                        
-	                    // penality (short password)
-	                    _force = (p.length <= 6) ? Math.min(_force, 10) : _force;                                      
-	                    
-	                    // penality (poor variety of characters)
-	                    _force = (_passedMatches == 1) ? Math.min(_force, 10) : _force;
-	                    _force = (_passedMatches == 2) ? Math.min(_force, 20) : _force;
-	                    _force = (_passedMatches == 3) ? Math.min(_force, 40) : _force;
-	                    
-	                    return _force;
-
-	                },
-	                getColor: function (s) {
-
-	                    var idx = 0;
-	                    if (s <= 10) { idx = 0; }
-	                    else if (s <= 20) { idx = 1; }
-	                    else if (s <= 30) { idx = 2; }
-	                    else if (s <= 40) { idx = 3; }
-	                    else { idx = 4; }
-
-	                    return { idx: idx + 1, col: this.colors[idx] };
-
-	                }
-	            };
-
-	            scope.$watch(iAttrs.checkStrength, function () {
-	                if (scope.pw === '') {
-	                    iElement.css({ "display": "none"  });
-	                } else {
-	                    var c = strength.getColor(strength.mesureStrength(scope.pw));
-	                    iElement.css({ "display": "inline" });
-	                    iElement.children('li')
-	                        .css({ "background": "#DDD" })
-	                        .slice(0, c.idx)
-	                        .css({ "background": c.col });
-	                }
-	            });
-
-	        },
-	        template: '<li class="point"></li><li class="point"></li><li class="point"></li><li class="point"></li><li class="point"></li>'
-	    };
-	})
-	*/
 	;
