@@ -42,28 +42,6 @@ angular.module('shareTaskWeb.directives', [])
 			}
 		};
 	})
-	.directive('webMenu', ['$rootScope', function($rootScope) {
-		return {
-			restrict: 'E',
-			templateUrl: 'resources-web-'+$rootScope.appVersion+'/views/components/web-menu.html',
-			link: function(scope, element, attrs) {
-				//console.log("scope: %o, element: %o, attrs: %o", scope, element, attrs);
-			},
-			controller: ['$rootScope', '$scope', '$element', '$attrs', '$transclude', '$location', 'User', 'LocalStorage', function($rootScope, $scope, $element, $attrs, $transclude, $location, User, LocalStorage) {
-				
-				$scope.currentPage = $rootScope.currentPage;
-				console.log("current page: %o", $rootScope.currentPage);
-				
-				$scope.logout = function() {
-					console.log("Logout user: %s", $rootScope.loggedUser.username);
-					User.logout();
-					//$rootScope.loggedUser = {};
-					//LocalStorage.remove('logged-user');
-					$location.path("/");
-				};
-			}]
-		};
-	}])
 	.directive('autoFillableField', function() {
 		return {
 			restrict: "A",

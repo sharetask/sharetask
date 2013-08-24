@@ -37,10 +37,13 @@
 		<title>ShareTa.sk</title>
 		<link rel="shortcut icon" href="<c:url value="/resources-web-${applicationVersion}/favicon.ico" />" />
 		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-web-${applicationVersion}/css/bootswatch.min.css" />">
+		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-webapp-${applicationVersion}/css/font-awesome.min.css" />">
+		<!--[if IE 7]>
+			<link rel="stylesheet" type="text/css" href="<c:url value="/resources-webapp-${applicationVersion}/css/font-awesome-ie7.min.css" />">
+		<![endif]-->
 		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-web-${applicationVersion}/css/sharetask.css" />">
-		<link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css">
 	</head>
-	<body>
+	<body ng-cloak>
 		<!-- application menu -->
 		<div id="app-menu">
 			<div class="navbar navbar-inverse">
@@ -57,7 +60,7 @@
 			</div>
 		</div>
 		<!-- registration form -->
-		<div class="panel-full" ng-controller="RegisterCtrl" ng-cloak>
+		<div class="panel-full" ng-controller="RegisterCtrl">
 			<div class="panel-full-inside">
 				<div style="padding:20px 20px 50px 20px;">
 					<form name="formRegistration" novalidate class="css-form">
@@ -82,6 +85,7 @@
 						<input class="span3" type="password" name="password" placeholder="<spring:message code="register.password.placeholder" />" ng-model="newAccount.password1" required /><br />
 						<label><spring:message code="register.password.check" /></label>
 						<input class="span3" type="password" name="password" placeholder="<spring:message code="register.password.check.placeholder" />" ng-model="newAccount.password2" required /><br />
+						<br />
 						<button class="btn btn-inverse" ng-click="register()" ng-disabled="formRegistration.$invalid || newAccount.password1 != newAccount.password2 || newAccountData.processing"><spring:message code="register.button.submit" /><span ng-show="newAccountData.processing"> processing...</span></button>
 					</form>
 				</div>
@@ -90,9 +94,6 @@
 		<div id="footer">
 			<spring:message code="msg.changeLanguage" />: <a href="<c:url value="/?lang=en" />">english</a>, <a href="<c:url value="/?lang=cs" />">česky</a>
 		</div>
-		<!-- In production use:
-		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
-		-->
 		<script type="text/javascript" src="<c:url value="/resources-web-${applicationVersion}/scripts/vendor/jquery/jquery-1.9.1.min.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-web-${applicationVersion}/scripts/vendor/jquery/jquery-ui.min.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-web-${applicationVersion}/scripts/vendor/bootstrap/bootstrap.min.js" />"></script>

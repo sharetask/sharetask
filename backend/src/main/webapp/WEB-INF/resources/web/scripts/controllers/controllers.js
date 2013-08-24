@@ -20,16 +20,21 @@
 
 /* Controllers */
 angular.module('shareTaskWeb.controllers', [])
-	.controller('AuthCtrl', ['$scope', '$location', '$rootScope', '$window', 'User', 'LocalStorage', function($scope, $location, $rootScope, $window, User, LocalStorage) {
+	.controller('AuthCtrl', ['$scope', '$location', '$rootScope', '$window', 'User', function($scope, $location, $rootScope, $window, User) {
 		
+		$scope.loaded = false;
+		$scope.loggedUser = null;
 		$scope.loginData = {processing: false, result: 0};
 		
 		// get current logged user
 		User.getCurrentUser(function(data, status) {
 				console.log("User getCurrentUser success! data: %o, status: %o", data, status);
 				$scope.loggedUser = data;
+				$scope.loaded = true;
 			}, function(data, status, script, func) {
 				console.log("User getCurrentUser error! data: %o, status: %o", data, status);
+				$scope.loggedUser = null;
+				$scope.loaded = true;
 			});
 		
 		/**
@@ -45,22 +50,18 @@ angular.module('shareTaskWeb.controllers', [])
 					User.get({username: $scope.user.username}, function(data, status) {
 							console.log("User get success! data: %o, status: %o", data, status);
 							$rootScope.loggedUser = data;
-							//$rootScope.loggedUser.password = $scope.user.password;
-							LocalStorage.store('logged-user', $rootScope.loggedUser);
 							$window.location.href = $rootScope.appBaseUrl+"webapp#/tasks";
 						}, function(data, status) {
 							console.log("Auth error! data: %o, status: %o", data, status);
 							$scope.user = {};
-							$rootScope.loggedUser = {};
-							LocalStorage.remove('logged-user');
+							$scope.loggedUser = null;
 							$scope.loginData.processing = false;
 						});
 					$scope.loginData.result = 1;
 				}, function(data, status) {
 					console.log("User auth error! data: %o, status: %o", data, status);
 					$scope.user = {};
-					$rootScope.loggedUser = {};
-					LocalStorage.remove('logged-user');
+					$scope.loggedUser = null;
 					$scope.loginData.result = -1;
 					$scope.loginData.processing = false;
 				});
@@ -72,13 +73,13 @@ angular.module('shareTaskWeb.controllers', [])
 		$scope.logout = function() {
 			User.logout($scope.loggedUser.username, function(data, status) {
 					console.log("User logout success! data: %o, status: %o", data, status);
-					delete($scope.loggedUser);
+					$scope.loggedUser = null;
 				}, function(data, status, script, func) {
 					console.log("User logout error! data: %o, status: %o", data, status);
 				});
 		};
 	}])
-	.controller('RegisterCtrl', ['$scope', '$location', '$rootScope', '$window', 'User', 'LocalStorage', function($scope, $location, $rootScope, $window, User, LocalStorage) {
+	.controller('RegisterCtrl', ['$scope', '$location', '$rootScope', '$window', 'User', function($scope, $location, $rootScope, $window, User) {
 		
 		$scope.newAccountData = {processing: false, result: 0};
 		
@@ -97,23 +98,6 @@ angular.module('shareTaskWeb.controllers', [])
 					$scope.newAccount = {name: '', surName: '', email: ''};
 					$scope.newAccountData.result = 1;
 					$scope.newAccountData.processing = false;
-					// authenticate user
-					/*
-					User.authenticate({username: $scope.newAccount.username, password: $scope.newAccount.password}, function(data, status) {
-							console.log("User auth success! data: %o, status: %o", data, status);
-							$rootScope.loggedUser = {username: $scope.newAccount.username, name: $scope.newAccount.name, surName: $scope.newAccount.surName, password: $scope.newAccount.password};
-							LocalStorage.store('logged-user', $rootScope.loggedUser);
-							$window.location.href = $rootScope.appBaseUrl+"webapp#/tasks";
-							$scope.newAccountData.result = 1;
-							$scope.newAccountData.processing = false;
-						}, function(data, status) {
-							console.log("User auth error! data: %o, status: %o", data, status);
-							$rootScope.loggedUser = {};
-							LocalStorage.remove('logged-user');
-							$scope.newAccountData.result = -1;
-							$scope.newAccountData.processing = false;
-						});
-					*/
 				}, function(data, status) {
 					console.log("User create error! data: %o, status: %o", data, status);
 					$scope.newAccountData.result = -1;

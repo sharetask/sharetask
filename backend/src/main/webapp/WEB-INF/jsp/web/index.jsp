@@ -23,7 +23,7 @@
 
 <spring:eval expression="@applicationProps['application.version']" var="applicationVersion" />
 <spring:eval expression="@applicationProps['application.revision']" var="applicationRevision" />
-<spring:eval expression="@applicationProps['google.analytics.web.account']" var="googleAnalyticsAccount" />
+<spring:eval expression="@applicationProps['google.analytics.account.web']" var="googleAnalyticsAccount" />
 
 <!doctype html>
 <html lang="en" ng-app="shareTaskWeb">
@@ -43,7 +43,7 @@
 		<![endif]-->
 		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-web-${applicationVersion}/css/sharetask.css" />">
 	</head>
-	<body>
+	<body ng-cloak>
 		<!-- application menu -->
 		<div id="app-menu">
 			<div class="navbar navbar-inverse">
@@ -66,25 +66,27 @@
 						<div class="span8">
 						</div>
 						<div class="span4" style="width:330px;right:0;overflow:visible;position:absolute;">
-							<div class="brand-login" ng-controller="AuthCtrl" ng-init="loggedUser=null">
-								<div class="loader2" ng-class="{'show':loggedUser!=null}">
-									<h4><spring:message code="msg.helloBack" arguments="{{loggedUser.name}}" /></h4><br />
-									<a href="<c:url value="/webapp" />" class="btn btn-inverse"><spring:message code="app.button.open" /></a> <a ng-click="logout()" class="btn"><spring:message code="app.button.logout" /></a><br />
-								</div>
-								<div class="loader2" ng-class="{'show':loggedUser==null}">
-									<h4><spring:message code="account.question" /></h4><br />
-									<a href="<c:url value="/register" />" class="btn btn-inverse"><spring:message code="account.create.button" /></a><br />
-									<br /><br />
-									<h4><spring:message code="login.title" /></h4><br />
-									<form name="formLogin" novalidate class="css-form" ng-cloak>
-										<div class="alert alert-error" ng-class="{'hidden':!loginData || !loginData.result || loginData.result == 1 || loginData.result == 0}">
-											<a class="close" ng-click="loginData.result = 0">&times;</a>
-											<strong>Error</strong> Bad user name or password.
-										</div>
-										<input type="text" name="username" placeholder="<spring:message code="login.username.placeholder" />" ng-model="user.username" ui-keypress="{enter:'login()'}" required auto-fillable-field /><br />
-										<input type="password" name="password" placeholder="<spring:message code="login.password.placeholder" />" ng-model="user.password" ui-keypress="{enter:'login()'}" required auto-fillable-field /><br />
-										<button class="btn btn-inverse" ng-click="login()" ng-disabled="formLogin.$invalid || loginData.processing"><spring:message code="login.button.submit" /></button>
-									</form>
+							<div class="brand-login" ng-controller="AuthCtrl">
+								<div ng-show="loaded">
+									<div ng-show="loggedUser != null">
+										<h4><spring:message code="msg.helloBack" arguments="{{loggedUser.name}}" /></h4><br />
+										<a href="<c:url value="/webapp" />" class="btn btn-inverse"><spring:message code="app.button.open" /></a> <a ng-click="logout()" class="btn"><spring:message code="app.button.logout" /></a><br />
+									</div>
+									<div ng-show="loggedUser == null">
+										<h4><spring:message code="account.question" /></h4><br />
+										<a href="<c:url value="/register" />" class="btn btn-inverse"><spring:message code="account.create.button" /></a><br />
+										<br /><br />
+										<h4><spring:message code="login.title" /></h4><br />
+										<form name="formLogin" novalidate class="css-form">
+											<div class="alert alert-error" ng-class="{'hidden':!loginData || !loginData.result || loginData.result == 1 || loginData.result == 0}">
+												<a class="close" ng-click="loginData.result = 0">&times;</a>
+												Bad user name or password.
+											</div>
+											<input type="text" name="username" placeholder="<spring:message code="login.username.placeholder" />" ng-model="user.username" ui-keypress="{enter:'login()'}" required auto-fillable-field /><br />
+											<input type="password" name="password" placeholder="<spring:message code="login.password.placeholder" />" ng-model="user.password" ui-keypress="{enter:'login()'}" required auto-fillable-field /><br />
+											<button class="btn btn-inverse" ng-click="login()" ng-disabled="formLogin.$invalid || loginData.processing"><spring:message code="login.button.submit" /></button>
+										</form>
+									</div>
 								</div>
 							</div>
 						</div>
