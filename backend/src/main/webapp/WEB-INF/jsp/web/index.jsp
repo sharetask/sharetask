@@ -37,8 +37,11 @@
 		<title>ShareTa.sk</title>
 		<link rel="shortcut icon" href="<c:url value="/resources-web-${applicationVersion}/favicon.ico" />" />
 		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-web-${applicationVersion}/css/bootswatch.min.css" />">
+		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-webapp-${applicationVersion}/css/font-awesome.min.css" />">
+		<!--[if IE 7]>
+			<link rel="stylesheet" type="text/css" href="<c:url value="/resources-webapp-${applicationVersion}/css/font-awesome-ie7.min.css" />">
+		<![endif]-->
 		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-web-${applicationVersion}/css/sharetask.css" />">
-		<link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css">
 	</head>
 	<body>
 		<!-- application menu -->
@@ -63,8 +66,12 @@
 						<div class="span8">
 						</div>
 						<div class="span4" style="width:330px;right:0;overflow:visible;position:absolute;">
-							<div class="brand-login" ng-controller="AuthCtrl">
-								<div ng-show="!loggedUser">
+							<div class="brand-login" ng-controller="AuthCtrl" ng-init="loggedUser=null">
+								<div class="loader2" ng-class="{'show':loggedUser!=null}">
+									<h4><spring:message code="msg.helloBack" arguments="{{loggedUser.name}}" /></h4><br />
+									<a href="<c:url value="/webapp" />" class="btn btn-inverse"><spring:message code="app.button.open" /></a> <a ng-click="logout()" class="btn"><spring:message code="app.button.logout" /></a><br />
+								</div>
+								<div class="loader2" ng-class="{'show':loggedUser==null}">
 									<h4><spring:message code="account.question" /></h4><br />
 									<a href="<c:url value="/register" />" class="btn btn-inverse"><spring:message code="account.create.button" /></a><br />
 									<br /><br />
@@ -79,10 +86,6 @@
 										<button class="btn btn-inverse" ng-click="login()" ng-disabled="formLogin.$invalid || loginData.processing"><spring:message code="login.button.submit" /></button>
 									</form>
 								</div>
-								<div ng-show="loggedUser">
-									<h4><spring:message code="msg.helloBack" arguments="{{loggedUser.name}}" /></h4><br />
-									<a href="<c:url value="/webapp" />" class="btn btn-inverse"><spring:message code="app.button.open" /></a> <a ng-click="logout()" class="btn"><spring:message code="app.button.logout" /></a><br />
-								</div>
 							</div>
 						</div>
 					</div>
@@ -94,9 +97,6 @@
 		<div id="footer">
 			<spring:message code="msg.changeLanguage" />: <a href="<c:url value="/?lang=en" />">english</a>, <a href="<c:url value="/?lang=cs" />">česky</a>
 		</div>
-		<!-- In production use:
-		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
-		-->
 		<script type="text/javascript" src="<c:url value="/resources-web-${applicationVersion}/scripts/vendor/jquery/jquery-1.9.1.min.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-web-${applicationVersion}/scripts/vendor/jquery/jquery-ui.min.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-web-${applicationVersion}/scripts/vendor/bootstrap/bootstrap.min.js" />"></script>

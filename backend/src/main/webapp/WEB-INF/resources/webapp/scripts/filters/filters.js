@@ -40,7 +40,12 @@ angular.module('shareTaskApp.filters', []).
 						}
 					}
 					else if (filter.queue == "MY_TODAY") {
-						if (new Date().toDateString() == new Date(task.dueDate).toDateString() && task.state != "FINISHED" && task.state != "TERMINATED" && task.state != "FAILED") {
+						var todayDate = new Date();
+						var dueDate = new Date(task.dueDate);
+						var todayString = todayDate.getFullYear()+"-"+("0"+todayDate.getMonth()).substr(-2)+"-"+todayDate.getDate();
+						var dueDateString = dueDate.getFullYear()+"-"+("0"+dueDate.getMonth()).substr(-2)+"-"+dueDate.getDate();
+						//Log.debug("today: %s, duedate: %s", todayString, dueDateString);
+						if (todayString == dueDateString && task.state != "FINISHED" && task.state != "TERMINATED" && task.state != "FAILED") {
 							if (filter.tag == '') {
 								newTasks.push(task);
 							}
@@ -50,7 +55,12 @@ angular.module('shareTaskApp.filters', []).
 						}
 					}
 					else if (filter.queue == "MY_OVERDUE") {
-						if (new Date().toDateString() > new Date(task.dueDate).toDateString() && task.state != "FINISHED" && task.state != "TERMINATED" && task.state != "FAILED") {
+						var todayDate = new Date();
+						var dueDate = new Date(task.dueDate);
+						var todayString = todayDate.getFullYear()+"-"+("0"+todayDate.getMonth()).substr(-2)+"-"+todayDate.getDate();
+						var dueDateString = dueDate.getFullYear()+"-"+("0"+dueDate.getMonth()).substr(-2)+"-"+dueDate.getDate();
+						//Log.debug("today: %s, duedate: %s", todayString, dueDateString);
+						if (todayString > dueDateString && task.state != "FINISHED" && task.state != "TERMINATED" && task.state != "FAILED") {
 							if (filter.tag == '') {
 								newTasks.push(task);
 							}
@@ -96,12 +106,22 @@ angular.module('shareTaskApp.filters', []).
 						}
 					}
 					else if (queueName == "MY_TODAY") {
-						if (new Date().toDateString() == new Date(task.dueDate).toDateString() && task.state != "FINISHED" && task.state != "TERMINATED" && task.state != "FAILED") {
+						var todayDate = new Date();
+						var dueDate = new Date(task.dueDate);
+						var todayString = todayDate.getFullYear()+"-"+("0"+todayDate.getMonth()).substr(-2)+"-"+todayDate.getDate();
+						var dueDateString = dueDate.getFullYear()+"-"+("0"+dueDate.getMonth()).substr(-2)+"-"+dueDate.getDate();
+						//Log.debug("today: %s, duedate: %s", todayString, dueDateString);
+						if (todayString == dueDateString && task.state != "FINISHED" && task.state != "TERMINATED" && task.state != "FAILED") {
 							count++;
 						}
 					}
 					else if (queueName == "MY_OVERDUE") {
-						if (task.dueDate !== null && new Date() > new Date(task.dueDate) && task.state != "FINISHED" && task.state != "TERMINATED" && task.state != "FAILED") {
+						var todayDate = new Date();
+						var dueDate = new Date(task.dueDate);
+						var todayString = todayDate.getFullYear()+"-"+("0"+todayDate.getMonth()).substr(-2)+"-"+todayDate.getDate();
+						var dueDateString = dueDate.getFullYear()+"-"+("0"+dueDate.getMonth()).substr(-2)+"-"+dueDate.getDate();
+						//Log.debug("today: %s, duedate: %s", todayString, dueDateString);
+						if (task.dueDate !== null && todayString > dueDateString && task.state != "FINISHED" && task.state != "TERMINATED" && task.state != "FAILED") {
 							count++;
 						}
 					}
@@ -165,6 +185,46 @@ angular.module('shareTaskApp.filters', []).
 		return function(input) {
 			//Log.debug("urlDecode: %o", input);
 			return decodeURIComponent(input);
+		};
+	}])
+	.filter('dateString', [function() {
+		return function(input) {
+			//Log.debug("dateString: %o", input);
+			var input = new Date(input);
+			return input.getFullYear()+"-"+("0"+(input.getMonth() + 1)).substr(-2)+"-"+input.getDate();
+		};
+	}])
+	.filter('myDate', ['$filter', function($filter) {
+		return function(input, format) {
+			//Log.debug("myDate: %o, format: %s", input, format);
+			var inDateString = $filter('dateString')(input);
+			//Log.debug("inDateString: %s", inDateString);
+			var todayString = $filter('dateString')(new Date());
+			//Log.debug("todayString: %s", todayString);
+			var yesterdayDate = new Date();
+			yesterdayDate.setDate(yesterdayDate.getDate() - 1);
+			var yesterdayDateString = $filter('dateString')(yesterdayDate);
+			//Log.debug("yesterdayDateString: %s", yesterdayDateString);
+			var tommorowDate = new Date();
+			tommorowDate.setDate(tommorowDate.getDate() + 1);
+			var tommorowDateString = $filter('dateString')(tommorowDate);
+			//Log.debug("tommorowDateString: %s", tommorowDateString);
+			if (inDateString == yesterdayDateString) {
+				//Log.debug("formatedDate: %s", $filter('i18n')('_YesterdayDate_'));
+				return $filter('i18n')('_YesterdayDate_');
+			}
+			if (inDateString == todayString) {
+				//Log.debug("formatedDate: %s", $filter('i18n')('_TodayDate_'));
+				return $filter('i18n')('_TodayDate_');
+			}
+			if (inDateString == tommorowDateString) {
+				//Log.debug("formatedDate: %s", $filter('i18n')('_TomorrowDate_'));
+				return $filter('i18n')('_TomorrowDate_');
+			}
+			else {
+				//Log.debug("formatedDate: %s", $filter('date')(input, format));
+				return $filter('date')(input, format);
+			}
 		};
 	}])
 	;

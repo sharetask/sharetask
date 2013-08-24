@@ -16,7 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+/*[ng\:cloak], [ng-cloak], .ng-cloak {display:none !important;}*/
 
+.loader2 {display:none;}
+.loader2.show {display:block;}
+ 
 * {text-shadow:none;}
 
 .row-full {width:100%;*zoom:1;}
@@ -104,6 +108,7 @@ a:hover, a:focus {color:#565656;}
 .task-list-item .tag .text.selected {color:#fff;}
 */
 .hidden {display:none;}
+.show {display:block;}
 
 .cursor-pointer {cursor:pointer;}
 .btn {background:#ccc;color:#000;}

@@ -152,17 +152,17 @@
 	},
 	{
 	    "key":"_Low_",
-	    "value":"Low",
+	    "value":"Want to do",
 	    "description":""
 	},
 	{
 	    "key":"_Standard_",
-	    "value":"Standard",
+	    "value":"Should do",
 	    "description":""
 	},
 	{
 	    "key":"_High_",
-	    "value":"High",
+	    "value":"Must do",
 	    "description":""
 	},
 	{
@@ -358,6 +358,21 @@
 	{
 	    "key":"_FirstWorkspaceTitle_",
 	    "value":"Create your first workspace",
+	    "description":""
+	},
+	{
+	    "key":"_YesterdayDate_",
+	    "value":"yesterday",
+	    "description":""
+	},
+	{
+	    "key":"_TodayDate_",
+	    "value":"today",
+	    "description":""
+	},
+	{
+	    "key":"_TomorrowDate_",
+	    "value":"tomorrow",
 	    "description":""
 	},
 	

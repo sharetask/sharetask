@@ -156,8 +156,13 @@ angular.module('shareTaskApp.directives', []).
 			},
 			controller: ['$rootScope', '$scope', '$element', '$attrs', '$transclude', '$location', '$window', 'User', 'ErrorHandling', 'LocalStorage', function($rootScope, $scope, $element, $attrs, $transclude, $location, $window, User, ErrorHandling, LocalStorage) {
 				
+				$rootScope.showHelp = false;
 				$scope.currentPage = $rootScope.currentPage;
 				Log.debug("current page: %o", $rootScope.currentPage);
+				
+				$scope.toggleHelp = function() {
+					$rootScope.showHelp = !$rootScope.showHelp;
+				};
 				
 				$scope.logout = function() {
 					Log.debug("Logout user: %s", $rootScope.loggedUser.username);
@@ -332,4 +337,18 @@ angular.module('shareTaskApp.directives', []).
 			}
 		};
 	})
+	.directive('help', ['$rootScope', function($rootScope) {
+		return {
+			restrict: 'E',
+			templateUrl: 'resources-webapp-'+$rootScope.appVersion+'/views/components/help.html',
+			link: function(scope, element, attrs) {
+				//Log.debug("scope: %o, element: %o, attrs: %o", scope, element, attrs);
+			},
+			controller: ['$rootScope', '$scope', '$element', '$attrs', '$transclude', '$location', function($rootScope, $scope, $element, $attrs, $transclude, $location) {
+				
+				$scope.currentPage = $rootScope.currentPage;
+				Log.debug("current page: %o", $location.path());
+			}]
+		};
+	}])
 	;

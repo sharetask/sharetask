@@ -152,17 +152,17 @@
 	},
 	{
 	    "key":"_Low_",
-	    "value":"Nízká",
+	    "value":"Chtěl bych udělat",
 	    "description":""
 	},
 	{
 	    "key":"_Standard_",
-	    "value":"Standardní",
+	    "value":"Měl bych udělat",
 	    "description":""
 	},
 	{
 	    "key":"_High_",
-	    "value":"Vysoká",
+	    "value":"Musím udělat",
 	    "description":""
 	},
 	{
@@ -360,6 +360,22 @@
 	    "value":"Založte svůj první projekt",
 	    "description":""
 	},
+	{
+	    "key":"_YesterdayDate_",
+	    "value":"včera",
+	    "description":""
+	},
+	{
+	    "key":"_TodayDate_",
+	    "value":"dnes",
+	    "description":""
+	},
+	{
+	    "key":"_TomorrowDate_",
+	    "value":"zítra",
+	    "description":""
+	},
+	
 	
 	
 	

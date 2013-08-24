@@ -40,9 +40,13 @@
 		<title>ShareTa.sk</title>
 		<link rel="shortcut icon" href="<c:url value="/resources-webapp-${applicationVersion}/favicon.ico" />" />
 		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-webapp-${applicationVersion}/css/bootswatch.min.css" />">
+		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-webapp-${applicationVersion}/css/font-awesome.min.css" />">
+		<!--[if IE 7]>
+			<link rel="stylesheet" type="text/css" href="<c:url value="/resources-webapp-${applicationVersion}/css/font-awesome-ie7.min.css" />">
+		<![endif]-->
 		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-webapp-${applicationVersion}/css/jquery.ui.datepicker.css" />">
 		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-webapp-${applicationVersion}/css/sharetask.css" />">
-		<link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css">
+		
 	</head>
 	<body ng-cloak>
 		<div ng-view></div>
@@ -83,7 +87,7 @@
 					// routing
 					$routeProvider.when('/', {templateUrl: '<c:url value="/resources-webapp-${applicationVersion}/views/index.html" />'});
 					$routeProvider.when('/tasks', {templateUrl: '<c:url value="/resources-webapp-${applicationVersion}/views/tasks.html" />'});
-					$routeProvider.when('/admin', {templateUrl: '<c:url value="/resources-webapp-${applicationVersion}/views/admin.html" />'});
+					$routeProvider.when('/workspaces', {templateUrl: '<c:url value="/resources-webapp-${applicationVersion}/views/workspaces.html" />'});
 					$routeProvider.when('/user', {templateUrl: '<c:url value="/resources-webapp-${applicationVersion}/views/user.html" />'});
 					$routeProvider.otherwise({redirectTo: '/'});
 				}])

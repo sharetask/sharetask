@@ -22,6 +22,7 @@
 			<first-workspace-window show="firstWorkspaceWindow.show" user="loggedUser.username"></first-workspace-window>
 			<!-- application menu -->
 			<app-menu></app-menu>
+			<help ng-show="showHelp"></help>
 			<!-- workspace menu -->
 			<!--<div id="workspace-menu">
 				<div class="navbar">
@@ -83,37 +84,36 @@
 			<!-- task filter panel -->
 			<div class="sidebar" ng-class="{'hide2':!viewPanelTaskFilter}">
 				<div class="sidebar-inner">
+					<div class="btn-group">
+						<button class="btn dropdown-toggle" data-toggle="dropdown" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"><i class="icon-caret-down"></i> {{selectedWorkspace.title}}</button>
+						<ul class="dropdown-menu">
+							<li ng-repeat="workspace in workspaces"><a ng-click="setSelectedWorkspace(workspace)">{{workspace.title}}</a></li>
+						</ul>
+					</div>
+					<div class="tile" ng-class="{'active':'MY_PENDING'==filter.queue}" ng-click="setTaskFilterQueue('MY_PENDING')">
+						<div class="header"></div>
+						<div class="footer">{{'_Pending_' | i18n}}<span class="pull-right">{{allTasks | queueTasksCount: 'MY_PENDING'}}</span></div>
+					</div>
+					<div class="tile" ng-class="{'active':'MY_TODAY'==filter.queue}" ng-click="setTaskFilterQueue('MY_TODAY')">
+						<div class="header"></div>
+						<div class="footer">{{'_Today_' | i18n}}<span class="pull-right">{{allTasks | queueTasksCount: 'MY_TODAY'}}</span></div>
+					</div>
+					<div class="tile" ng-class="{'active':'MY_OVERDUE'==filter.queue}" ng-click="setTaskFilterQueue('MY_OVERDUE')">
+						<div class="header"></div>
+						<div class="footer">{{'_Overdue_' | i18n}}<span class="pull-right">{{allTasks | queueTasksCount: 'MY_OVERDUE'}}</span></div>
+					</div>
+					<div class="tile" ng-class="{'active':'MY_HIGH_PRIORITY'==filter.queue}" ng-click="setTaskFilterQueue('MY_HIGH_PRIORITY')">
+						<div class="header"></div>
+						<div class="footer">{{'_HighPriority_' | i18n}}<span class="pull-right">{{allTasks | queueTasksCount: 'MY_HIGH_PRIORITY'}}</span></div>
+					</div>
+					<div class="tile" ng-class="{'active':'MY_COMPLETED'==filter.queue}" ng-click="setTaskFilterQueue('MY_COMPLETED')">
+						<div class="header"></div>
+						<div class="footer">{{'_Completed_' | i18n}}<span class="pull-right">{{allTasks | queueTasksCount: 'MY_COMPLETED'}}</span></div>
+					</div>
+					<br />
 					<div class="sidebar-content">
-						<div class="btn-group">
-							<button class="btn dropdown-toggle" data-toggle="dropdown" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"><i class="icon-caret-down"></i> {{selectedWorkspace.title}}</button>
-							<ul class="dropdown-menu">
-								<li ng-repeat="workspace in workspaces"><a ng-click="setSelectedWorkspace(workspace)">{{workspace.title}}</a></li>
-							</ul>
-						</div>
-						<div class="tile" ng-class="{'active':'MY_PENDING'==filter.queue}" ng-click="setTaskFilterQueue('MY_PENDING')">
-							<div class="header"></div>
-							<div class="footer">{{'_Pending_' | i18n}}<span class="pull-right">{{allTasks | queueTasksCount: 'MY_PENDING'}}</span></div>
-						</div>
-						<div class="tile" ng-class="{'active':'MY_TODAY'==filter.queue}" ng-click="setTaskFilterQueue('MY_TODAY')">
-							<div class="header"></div>
-							<div class="footer">{{'_Today_' | i18n}}<span class="pull-right">{{allTasks | queueTasksCount: 'MY_TODAY'}}</span></div>
-						</div>
-						<div class="tile" ng-class="{'active':'MY_OVERDUE'==filter.queue}" ng-click="setTaskFilterQueue('MY_OVERDUE')">
-							<div class="header"></div>
-							<div class="footer">{{'_Overdue_' | i18n}}<span class="pull-right">{{allTasks | queueTasksCount: 'MY_OVERDUE'}}</span></div>
-						</div>
-						<div class="tile" ng-class="{'active':'MY_HIGH_PRIORITY'==filter.queue}" ng-click="setTaskFilterQueue('MY_HIGH_PRIORITY')">
-							<div class="header"></div>
-							<div class="footer">{{'_HighPriority_' | i18n}}<span class="pull-right">{{allTasks | queueTasksCount: 'MY_HIGH_PRIORITY'}}</span></div>
-						</div>
-						<div class="tile" ng-class="{'active':'MY_COMPLETED'==filter.queue}" ng-click="setTaskFilterQueue('MY_COMPLETED')">
-							<div class="header"></div>
-							<div class="footer">{{'_Completed_' | i18n}}<span class="pull-right">{{allTasks | queueTasksCount: 'MY_COMPLETED'}}</span></div>
-						</div>
-						<br />
-						<div style="padding:5px;">
-							<div class="tag cursor-pointer" ng-repeat="tag in tags" ng-class="{'hidden':!viewPanelTaskFilter}" data-drag="true" data-jqyoui-options="{appendTo:'body', revert:'invalid', helper:'clone'}" ng-model="tag" jqyoui-draggable=""><span class="text" ng-class="{'selected':tag == filter.tag}" ng-click="setTaskFilterTag(tag)">{{tag}}</span></div>
-						</div>
+						<div class="tag2 cursor-pointer" ng-repeat="tag in tags" ng-class="{'hidden':!viewPanelTaskFilter,'active':tag == filter.tag}" ng-click="setTaskFilterTag(tag)"><i class="icon-tag"></i> {{tag}}</div>
+						<!--<div class="tag cursor-pointer" ng-repeat="tag in tags" ng-class="{'hidden':!viewPanelTaskFilter}" data-drag="true" data-jqyoui-options="{appendTo:'body', revert:'invalid', helper:'clone'}" ng-model="tag" jqyoui-draggable=""><span class="text" ng-class="{'selected':tag == filter.tag}" ng-click="setTaskFilterTag(tag)">{{tag}}</span></div>-->
 					</div>
 				</div>
 			</div>
@@ -138,7 +138,6 @@
 										<li ng-click="setTaskOrdering('TASK_AUTHOR')"><a>{{'_AuthorBy_' | i18n}}</a></li>
 									</ul>
 								</div>
-								
 								<button class="btn btn-inverse pull-right" style="margin-left:5px;" ng-click="setEditMode('NEW-TASK')" stop-event="click"><i class="icon-plus icon-white"></i></button>
 								<button class="btn pull-right" style="margin-left:5px;" ng-click="loadTasks()"><i class="icon-refresh"></i></button>
 								<div class="btn-group pull-right" style="margin-left:5px;">
@@ -154,12 +153,11 @@
 						</div>
 						<div class="new-task-simple" ng-class="{'hidden':taskEditMode != 'NEW-TASK'}" stop-event="click">
 							<div class="new-task-simple-inner">
-								<form name="formTaskAdd" novalidate class="css-form">
 									<div class="row-full input-append">
 										<input class="span10" type="text" placeholder="{{'_PlaceholderAddTask_' | i18n}}" ng-model="newTaskTitle" required id="inputTaskAdd" />
-										<button class="btn btn-inverse span2" ng-click="addTask()" ng-disabled="formTaskAdd.$invalid">{{'_Add_' | i18n}}</button>
+										<button class="btn btn-inverse span2" ng-click="addTask()" ng-disabled="!newTaskTitle.length">{{'_Add_' | i18n}}</button>
 									</div>
-								</form>
+								
 							</div>
 						</div>
 					</div>
@@ -178,16 +176,37 @@
 							</div>
 							<!-- tasks -->
 							<div class="task-list-item" ng-repeat="task in tasks | orderBy:orderTasks" ng-class="{'selected':task.id == selectedTask.id}" ng-click="setSelectedTask(task.id)" data-drop="true" jqyoui-droppable="{onDrop:'addTaskTagDragDrop'}" ng-show="!viewCalendar">
-								<div class="task-list-item-inner">
+								<div class="task-list-item-inner" ng-class="{'priority-low':task.priority == 'LOW','priority-medium':task.priority == 'MEDIUM','priority-high':task.priority == 'HIGH'}">
+									<table>
+									<tr>
+										<!--<td style="vertical-align:top;padding-right:10px;">
+											<div class="st-checkbox cursor-pointer" ng-click="task.checked = !task.checked" ng-class="{'selected checked':task.id == selectedTask.id && task.checked, 'checked':task.checked}" stop-event="click"></div>
+										</td>-->
+										<td style="vertical-align:top;padding-right:10px;font-size:25px;" ng-show="!task.checked">
+											<i class="icon-check-empty" ng-show="!task.checked" ng-click="task.checked = !task.checked" stop-event="click"></i>
+										</td>
+										<td style="vertical-align:top;padding-right:9px;color:#FF5A00;font-size:25px;" ng-show="task.checked">
+											<i class="icon-check-sign" ng-click="task.checked = !task.checked" stop-event="click"></i>
+										</td>
+										<td width="80%">
+											<strong>{{task.title}}</strong><br />
+											<small>{{task.createdBy.name}} {{task.createdBy.surName}}</small>
+										</td>
+										<td width="20%" style="text-align:right;">
+											<small>{{task.dueDate | myDate:'mediumDate'}}</small><br />
+											<i class="icon-comments"></i> {{task.commentsCount}}
+										</td>
+									</tr>
+									</table>
+									<!--
 									<div class="row-full">
-										<div class="span1">
-											<div class="st-checkbox cursor-pointer" ng-click="task.checked = !task.checked" ng-class="{'selected checked':task.id == selectedTask.id && task.checked, 'checked':task.checked}" stop-event="click"><!--<i class="icon-ok icon-white" ng-class="{'hidden':!task.checked}"></i>--></div>
+										<div class="" style="display:block;float:left;width:30px;min-height:30px;margin-left:0;*margin-left:0;">
+											<div class="st-checkbox cursor-pointer" ng-click="task.checked = !task.checked" ng-class="{'selected checked':task.id == selectedTask.id && task.checked, 'checked':task.checked}" stop-event="click"></div>
 										</div>
-										<div class="span11">
+										<div class="span12">
 											<div class="row-full" style="margin-bottom:7px;">
 												<div class="span8 text">
-													<strong>{{task.title}}</strong><!--<br />
-													<small>{{task.description}}</small>-->
+													<strong>{{task.title}}</strong>
 												</div>
 												<div class="span4" style="text-align:right;"><small>{{task.dueDate | date:'mediumDate'}}</small></div>
 											</div>
@@ -200,6 +219,7 @@
 											</div>
 										</div>
 									</div>
+									-->
 								</div>
 							</div>
 							<calendar ng-show="viewCalendar" model="tasks"></calendar>
@@ -211,18 +231,21 @@
 			<div class="panel-task-detail">
 				<div class="panel-task-detail-inner">
 					<div class="panel-task-detail-content" ng-class="{'hidden':selectedTask == null}">
+					
 						<!-- action buttons -->
 						<div class="task-detail-action" ng-class="{'selected':taskEditMode == 'COMPLETE-TASK' || taskEditMode == 'FORWARD-TASK' || taskEditMode == 'DELETE-TASK'}">
 							<button class="btn btn-inverse" ng-click="setEditMode('COMPLETE-TASK')" ng-class="{'hidden':selectedTask.state == 'FINISHED'}" stop-event="click">{{'_Complete_' | i18n}}</button>
 							<button class="btn" ng-click="setEditMode('FORWARD-TASK')" ng-class="{'hidden':selectedTask.state == 'FINISHED'}" stop-event="click">{{'_Forward_' | i18n}}</button>
 							<button class="btn" ng-click="setEditMode('DELETE-TASK')" stop-event="click">{{'_Delete_' | i18n}}</button>
 						</div>
+						
 						<!-- complete task -->
 						<div class="task-detail-action-confirm" ng-class="{'hidden':taskEditMode != 'COMPLETE-TASK'}">
 							<p>{{'_CompleteConfirmationText_' | i18n}}</p>
 							<button class="btn btn-inverse" ng-click="completeTask(false)">{{'_Yes_' | i18n}}</button>
 							<button class="btn" ng-click="setEditMode('')">{{'_No_' | i18n}}</button>
 						</div>
+						
 						<!-- forward task -->
 						<div class="task-detail-action-confirm" ng-class="{'hidden':taskEditMode != 'FORWARD-TASK'}">
 							<p>{{'_ForwardConfirmationText_' | i18n}}</p>
@@ -237,15 +260,17 @@
 								</div>
 							</div>
 						</div>
+						
 						<!-- delete task -->
 						<div class="task-detail-action-confirm" ng-class="{'hidden':taskEditMode != 'DELETE-TASK'}">
 							<p>{{'_DeleteConfirmationText_' | i18n}}</p>
 							<button class="btn btn-inverse" ng-click="deleteTask(false)">{{'_Yes_' | i18n}}</button>
 							<button class="btn" ng-click="setEditMode('')">{{'_No_' | i18n}}</button>
 						</div>
+						
 						<!-- task title -->
 						<div class="editbox border-invisible" style="margin:10px 0;" ng-class="{'hidden':taskEditMode == 'TITLE'}" stop-event="click">
-							<div class="cursor-pointer" style="font-size:23px;color:#FF5A00;" ng-click="setEditMode('TITLE')">{{selectedTask.title}}</div>
+							<div class="cursor-pointer" style="font-size:24px;color:#FF5A00;" ng-click="setEditMode('TITLE')">{{selectedTask.title}}</div>
 						</div>
 						<div ng-class="{'hidden':taskEditMode != 'TITLE'}" stop-event="click" style="margin:10px 0 0 0;">
 							<div class="input-append">
@@ -253,9 +278,12 @@
 								<button class="btn btn-inverse" ng-click="updateTask(selectedTask)">{{'_Ok_' | i18n}}</button>
 							</div>
 						</div>
+						
 						<!-- task author -->
-						<p>{{'_By_' | i18n}} <span popover-title="{{selectedTask.createdBy.name}} {{selectedTask.createdBy.surName}}" popover="I appeared on mouse enter!" popover-trigger="mouseenter" popover-placement="right">{{selectedTask.createdBy.name}} {{selectedTask.createdBy.surName}}</span></p>
+						<p>{{'_By_' | i18n}} <!--<span popover-title="{{selectedTask.createdBy.name}} {{selectedTask.createdBy.surName}}" popover="I appeared on mouse enter!" popover-trigger="mouseenter" popover-placement="right">{{selectedTask.createdBy.name}} {{selectedTask.createdBy.surName}}</span> -->{{selectedTask.createdBy.name}} {{selectedTask.createdBy.surName}} ({{selectedTask.createdOn | date:'fullDate'}})</p>
+						
 						<!-- task created on, priority, due date -->
+						<!--
 						<div style="margin-top:5px;">
 							<span class="slabel">
 								{{'_CreatedOn_' | i18n}}<br /><br />
@@ -270,13 +298,38 @@
 								<strong ng-show="selectedTask.dueDate != null">{{selectedTask.dueDate | date:'mediumDate'}}</strong>
 								<strong ng-show="selectedTask.dueDate == null"> - </strong>
 							</span>
-							<jqui-datepicker model="selectedTask.dueDate" selected="changeTaskDueDate()" options="datePickerOptions" ng-class="{'hidden':!viewTaskDueDatePicker}"></jqui-datepicker>
-						</div>
+						</div>-->
+						
+						<!-- task priority -->
+						<table class="tab">
+						<tr>
+							<td class="icon" ng-class="{'priority-low':selectedTask.priority == 'LOW','priority-medium':selectedTask.priority == 'MEDIUM','priority-high':selectedTask.priority == 'HIGH'}"><i class="icon-flag icon-large"></i></td>
+							<td class="content cursor-pointer" ng-click="changeTaskPriority()"><strong>{{selectedTask.priority | priorityName | i18n}}</strong></td>
+							<td class="icon cursor-pointer" ng-click="changeTaskPriority()"><i class="icon-random"></i></td>
+						</tr>
+						</table>
+						
+						<!-- task due date -->
+						<table class="tab">
+						<tr>
+							<td class="icon" ng-class="{'priority-medium':dateOver(selectedTask.dueDate) == 0,'priority-high':dateOver(selectedTask.dueDate) == 1}"><i class="icon-time icon-large"></i></td>
+							<td class="content cursor-pointer" ng-click="setView('TASK-DUE-DATE-PICKER')">
+								<strong ng-show="selectedTask.dueDate != null">{{selectedTask.dueDate | date:'fullDate'}}</strong>
+								<strong ng-show="selectedTask.dueDate == null"> - </strong>
+							</td>
+							<td class="icon cursor-pointer" ng-click="setView('TASK-DUE-DATE-PICKER')"><i class="icon-caret-down" ng-show="!viewTaskDueDatePicker"></i><i class="icon-caret-up icon-large" ng-show="viewTaskDueDatePicker"></i></td>
+						</tr>
+						<tr ng-class="{'hidden':!viewTaskDueDatePicker}">
+							<td></td>
+							<td colspan="2" class="content"><jqui-datepicker model="selectedTask.dueDate" selected="changeTaskDueDate()" options="datePickerOptions"></jqui-datepicker></td>
+						</tr>
+						</table>
+						
 						<!-- task tags -->
-						<div style="margin:5px 0 10px 0;">
-							<div class="tag large" ng-repeat="tag in selectedTask.tags"><span class="text">{{tag}}</span><span class="remove cursor-pointer" ng-click="removeTag(selectedTask.id, tag)">x</span></div>
+						<div style="margin:10px 0;">
+							<div class="tag large" ng-repeat="tag in selectedTask.tags"><span class="text"><i class="icon-tag"></i> {{tag}}</span><span class="remove cursor-pointer" ng-click="removeTag(selectedTask.id, tag)">x</span></div>
 							<span ng-show="selectedTask.tags.length == 0"><small>{{'_MsgNoTaskTags_' | i18n}}</small></span>
-							<span class="tag large cursor-pointer" ng-click="setEditMode('ADD-TAG')" stop-event="click"><span class="remove cursor-pointer"><i class="icon-plus icon-white"></i></span></span>
+							<span class="tag large cursor-pointer" ng-click="setEditMode('ADD-TAG')" stop-event="click"><span class="text cursor-pointer"><i class="icon-plus icon-white"></i></span></span>
 							<div ng-class="{'hidden':taskEditMode != 'ADD-TAG'}" stop-event="click">
 								<form name="formTaskAddLabel" novalidate class="css-form">
 									<div class="input-append">
@@ -286,6 +339,7 @@
 								</form>
 							</div>
 						</div>
+						
 						<!-- task description -->
 						<div class="editbox border-visible" ng-class="{'hidden':taskEditMode == 'DESCRIPTION'}">
 							<div class="cursor-pointer" ng-click="setEditMode('DESCRIPTION')" ng-show="selectedTask.description != null" stop-event="click">{{selectedTask.description}}</div>
@@ -299,6 +353,7 @@
 							</div>
 						</div>
 						<br />
+						
 						<!-- task comments, subtasks -->
 						<ul class="nav nav-tabs">
 							<li class="active"><a href="#comments" data-toggle="tab"><i class="icon-comments"></i> {{'_Comments_' | i18n}}</a></li>
@@ -308,12 +363,25 @@
 							<div class="tab-content">
 								<!-- task comments -->
 								<div class="tab-pane active" id="comments">
-									<form name="formTaskAddComment" novalidate class="css-form" stop-event="click">
-										<div class="row-full input-append">
-											<input class="span10" type="text" placeholder="{{'_PlaceholderAddComment_' | i18n}}" ng-model="newTaskComment.comment" required id="inputTaskAddComment" />
-											<button class="btn btn-inverse span2" ng-click="addTaskComment()" ng-disabled="formTaskAddComment.$invalid">{{'_Add_' | i18n}}</button>
-										</div>
-									</form>
+									<div class="row-full input-append">
+										<input class="span10" type="text" placeholder="{{'_PlaceholderAddComment_' | i18n}}" ng-model="newTaskComment.comment" required id="inputTaskAddComment" />
+										<button class="btn btn-inverse span2" ng-click="addTaskComment()" ng-disabled="!newTaskComment.comment.length">{{'_Add_' | i18n}}</button>
+									</div>
+									
+									<table class="comment" ng-repeat="comment in selectedTask.comments">
+									<tr>
+										<th><img ng-src="http://www.gravatar.com/avatar/{{comment.createdBy.username | hash}}.jpg?s=45&d={{'http://www.hip-hop.cz/user-small.png' | urlEncode}}" /></th>
+										<td>
+											<div class="row-full">
+												<div class="pull-left">{{comment.createdBy.name}} {{comment.createdBy.surName}}</div>
+												<div class="pull-right"><small>{{comment.createdOn | date:'medium'}}</small></div>
+											</div>
+											<div class="row-full body"><small>{{comment.message}}</small></div>
+										</td>
+									</tr>
+									</table>
+									
+									<!--
 									<div class="notice" ng-repeat="comment in selectedTask.comments" ng-class="{'author':comment.createdBy == selectedTask.createdBy}">
 										<div class="row-full">
 											<div class="span2">
@@ -328,6 +396,7 @@
 											</div>
 										</div>
 									</div>
+									-->
 								</div>
 								<!-- subtasks -->
 								<div class="tab-pane" id="subtasks">

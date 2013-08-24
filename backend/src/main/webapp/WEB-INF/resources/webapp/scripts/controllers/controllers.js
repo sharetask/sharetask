@@ -76,6 +76,10 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 						// key 'n' pressed - add new task
 						$scope.setEditMode('NEW-TASK');
 						break;
+					case 67:
+						// key 'Shift+c' pressed - complete task
+						$scope.completeTask(false);
+						break;
 					case 102:
 						// key 'f' pressed - forward task
 						$scope.setEditMode('FORWARD-TASK');
@@ -88,10 +92,10 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 						// key 'Shift+p' pressed - change task priority
 						$scope.changeTaskPriority();
 						break;
-					case 119:
+					/*case 119:
 						// key 'w' pressed - add new workspace
 						$scope.setEditMode('NEW-WORKSPACE');
-						break;
+						break;*/
 					case 115:
 						// key 's' pressed - search
 						setTimeout(function() { $('#inputSearch')[0].focus(); }, 0);
@@ -271,8 +275,8 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		 */
 		$scope.filterTasks = function(selectedTaskId) {
 			Log.debug("Filter tasks: %o, selectedTaskId: %s", $scope.filter, selectedTaskId);
-			$scope.tasks = taskFilter($scope.filter, this.allTasks);
-			$scope.tasks = $filter('orderBy')(this.tasks, this.orderTasks);
+			$scope.tasks = taskFilter($scope.filter, $scope.allTasks);
+			$scope.tasks = $filter('orderBy')($scope.tasks, $scope.orderTasks);
 			// set selected task
 			if (!jQuery.isEmptyObject($scope.tasks) && isNaN(selectedTaskId)) {
 				$scope.setSelectedTask($scope.tasks[0].id);
@@ -301,6 +305,17 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 			$scope.filterTasks();
 			Analytics.trackEvent('Tasks', 'setOrdering', orderBy);
 		};
+		
+		$scope.dateOver = function(date) {
+			var inputDate = new Date(date);
+			var currDate = new Date();
+			var inputDateString = inputDate.getFullYear()+"-"+("0"+inputDate.getMonth()).substr(-2)+"-"+inputDate.getDate();
+			var currDateString = currDate.getFullYear()+"-"+("0"+currDate.getMonth()).substr(-2)+"-"+currDate.getDate();
+			//Log.debug("date %o vs curr %o", inputDateString, currDateString);
+			if (inputDateString < currDateString) return 1;
+			if (inputDateString == currDateString) return 0;
+			if (inputDateString > currDateString) return -1;
+		}
 		
 		/**
 		 * Setting selected task.
@@ -455,16 +470,15 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 			result[0].title = task.title;
 			result[0].description = task.description;
 			result[0].tags = task.tags;
+			result[0].dueDate = task.dueDate;
 			delete(result[0].comments);
-			Task.update({workspaceId: $scope.selectedWorkspace.id, task: task}, function(data, status) {
+			delete(result[0].checked);
+			Task.update({workspaceId: $scope.selectedWorkspace.id, task: result[0]}, function(data, status) {
 					Log.debug("Task update success! data: %o, status: %o", data, status);
-					//Analytics.trackEvent('Task', 'update', 'success', status);
 				}, function(data, status, script, func) {
 					Log.debug("Task update error!");
 					ErrorHandling.handle(data, status, script, func);
-					//Analytics.trackEvent('Task', 'update', 'error', status);
 				});
-			//LocalStorage.store('workspace-' + $scope.selectedWorkspace.id, $scope.allTasks);
 			$scope.setSelectedTask(task.id);
 		};
 		
@@ -515,6 +529,9 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 				return;
 			}
 			$scope.updateTask($scope.selectedTask);
+			//$scope.filterTasks($scope.selectedTask.id);
+			//$scope.tasks = $filter('orderBy')($scope.tasks, $scope.orderTasks);
+			//$scope.setTaskFilterQueue($scope.filter.queue);
 			Analytics.trackEvent('Task', 'setDueDate');
 		};
 		
@@ -751,9 +768,10 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 					Log.debug("Load all active tasks for workspace (id: %s)", $scope.selectedWorkspace.id);
 					Workspace.getActiveTasks({workspaceId: $scope.selectedWorkspace.id}, function(data, status) {
 							Log.debug("Workspace getActiveTasks success! data: %o, status: %o", data, status);
+							Log.debug("Workspace allTasks: %o", $scope.allTasks);
 							angular.forEach(data, function(task1) {
 								var found = false;
-								angular.forEach($scope.tasks, function(task2) {
+								angular.forEach($scope.allTasks, function(task2) {
 									if (task1.id === task2.id) {
 										found = true;
 									}
@@ -786,11 +804,12 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 				$window.location.href = $rootScope.appBaseUrl;
 			});
 	}])
-	.controller('AdminCtrl', ['$scope', '$location', '$rootScope', '$timeout', '$window', 'localize', 'Workspace', 'User', 'LocalStorage', 'ErrorHandling', function($scope, $location, $rootScope, $timeout, $window, localize, Workspace, User, LocalStorage, ErrorHandling) {
+	.controller('WorkspacesCtrl', ['$scope', '$location', '$rootScope', '$timeout', '$window', 'localize', 'Workspace', 'User', 'LocalStorage', 'ErrorHandling', function($scope, $location, $rootScope, $timeout, $window, localize, Workspace, User, LocalStorage, ErrorHandling) {
+	
 		$scope.updateWorkspaceData = {processing: false, result: 0};
 		$scope.newMember = {processing: false, result: 0};
 		$scope.addWorkspaceData = {processing: false, result: 0};
-		$rootScope.currentPage = "admin";
+		$rootScope.currentPage = "workspaces";
 		
 		/**
 		 * Loading all workspaces from server.
@@ -926,6 +945,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		
 		User.getCurrentUser(function(data, status) {
 				Log.debug("User getCurrentUser success! data: %o, status: %o", data, status);
+				$rootScope.loggedUser = data;
 				// Loading all workspaces from server.
 				$scope.loadWorkspaces();
 			}, function(data, status, script, func) {
@@ -934,10 +954,11 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 				$window.location.href = $rootScope.appBaseUrl;
 			});
 	}])
-	.controller('UserCtrl', ['$scope', '$location', '$rootScope', '$window', 'localize', 'User', 'Gravatar', 'ErrorHandling', 'LocalStorage', function($scope, $location, $rootScope, $window, localize, User, Gravatar, ErrorHandling, LocalStorage) {
+	.controller('UserCtrl', ['$scope', '$location', '$rootScope', '$filter', '$window', 'localize', 'User', 'Gravatar', 'ErrorHandling', 'LocalStorage', function($scope, $location, $rootScope, $filter, $window, localize, User, Gravatar, ErrorHandling, LocalStorage) {
 		$scope.updateUserProfile = {processing: false, result: 0};
 		$rootScope.currentPage = "user";
 		$scope.gravatar = {};
+		var hashFilter = $filter('hash');
 		
 		/**
 		 * Get Gravatar profile data for user.
@@ -980,6 +1001,8 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		
 		User.getCurrentUser(function(data, status) {
 				Log.debug("User getCurrentUser success! data: %o, status: %o", data, status);
+				$rootScope.loggedUser = data;
+				$scope.usernameHash = hashFilter($rootScope.loggedUser.username);
 				$scope.getGravatar();
 			}, function(data, status, script, func) {
 				Log.debug("User getCurrentUser error! data: %o, status: %o", data, status);
