@@ -1,0 +1,89 @@
+ -----
+ Development in fork 
+ -----
+ Michal Bocek
+ -----
+ 2013-08-25
+ -----
+
+Development in fork
+
+	In this short tutorial you can find recepie how to develop code in your personal fork of the project. 
+
+* Fork projekt on github 
+
+	* go to github projet home page {{https://github.com/sharetask/sharetask}} and fork the project under your account
+	
+* Setup fork
+	
+	* first time checkout forked projekt
+  
++-----+
+	$ git clone git://github.com/<account>/sharetask.git
++-----+
+
+	* setup remote upstream
+	
++-----+
+	$ git remote -v
+	# List the current remotes
+	# origin  https://github.com/<account>/sharetask.git (fetch)
+	# origin  https://github.com/<account>/sharetask.git (push)
+	
+	$ git remote add upstream https://github.com/sharetask/sharetask.git
+	# Set a new remote
+
+	$ git remote -v
+	# Verify new remote
+	# origin    https://github.com/<account>/sharetask.git (fetch)
+	# origin    https://github.com/<account>/sharetask.git (push)
+	# upstream  https://github.com/sharetask/sharetask.git (fetch)
+	# upstream  https://github.com/sharetask/sharetask.git (push)
++-----+
+
+* Working with fork
+
+	* sychronizing with upstream - fetch upstream branch to local branch
+	
++-----+
+	$ git fetch upstream
+	# remote: Counting objects: 915, done.
+	# remote: Compressing objects: 100% (564/564), done.
+	# remote: Total 786 (delta 558), reused 421 (delta 195)
+	# Receiving objects: 100% (786/786), 424.47 KiB | 355.00 KiB/s, done.
+	# Resolving deltas: 100% (558/558), completed with 77 local objects.
+	# From https://github.com/sharetask/sharetask
+	#    85cbe34..2bfa929  gh-pages   -> upstream/gh-pages
+	#    b0d3064..b7fcffa  master     -> upstream/master
++-----+
+	
+	* show branch information
+	
++-----+
+	$ git branch -va
+	# List all local and remote-tracking branches
+	#* master                    b0d3064 added attribute appname
+	#  remotes/origin/HEAD       -> origin/master
+	#  remotes/origin/gh-pages   efe0114 Wagon: Deploying site to repository
+	#  remotes/origin/master     b0d3064 added attribute appname
+	#  remotes/upstream/gh-pages 2bfa929 Wagon: Deploying site to repository
+	#  remotes/upstream/master   b7fcffa Web page Flash of Unstyled Content fix.
++-----+
+
+	* merge upstream to local master branch 
+
++-----+
+	$ git checkout master
+	# Check out our local master branch
+	# Switched to branch 'master'
+	
+	$ git merge upstream/master
+	# Merge upstream's master into our own
+	# Updating b0d3064..b7fcffa
+	# Fast-forward
+	#  README                    |    9 -------
+	#  README.md                 |    7 ++++++
+	#  2 files changed, 7 insertions(+), 9 deletions(-)
+	#  delete mode 100644 README
+	#  create mode 100644 README.md
++-----+

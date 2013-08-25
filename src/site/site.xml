@@ -4,6 +4,12 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/DECORATION/1.3.0 http://maven.apache.org/xsd/decoration-1.3.0.xsd">
 
+	<custom>
+		<fluidoSkin>
+			<sourceLineNumbersEnabled>true</sourceLineNumbersEnabled>
+		</fluidoSkin>
+	</custom>
+
 	<version position="right"/>
 	<publishDate position="right"/>
 	
@@ -27,6 +33,7 @@
 		</breadcrumbs>
 		<menu name="Overview">
 			<item name="Run from source code" href="./run-from-source.html"/>
+			<item name="Development in fork" href="./development-in-fork.html"/>
 		</menu>			
 		<menu ref="modules"/>
 		<menu ref="reports"/>
