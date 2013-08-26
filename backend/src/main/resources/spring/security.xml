@@ -85,4 +85,41 @@
 		<beans:property name="workspaceRepository" ref="workspaceRepository"/>
 	</beans:bean>
 
+
+
+
+
+
+
+
+	<beans:bean id="facebookClient" class="org.pac4j.oauth.client.FacebookClient">
+		<beans:property name="key" value="fbkey" />
+		<beans:property name="secret" value="fbsecret" />
+	</beans:bean>
+
+	<beans:bean id="googleClient" class="org.pac4j.oauth.client.Google2Client">
+		<beans:property name="key" value="96323765852-ltqp2hedmv4dnl6o1d5jjibmudb1jr29.apps.googleusercontent.com" />
+		<beans:property name="secret" value="Wd34gjQUNJxq8HL3caczkc1m" />
+	</beans:bean>
+
+	<beans:bean id="clients" class="org.pac4j.core.client.Clients">
+		<beans:property name="callbackUrl" value="http://localhost:8080/sharetask/authcallback" />
+		<beans:property name="clients">
+			<beans:list>
+				<beans:ref bean="facebookClient" />
+				<beans:ref bean="googleClient" />
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+	
+	<beans:bean id="clientFilter" class="org.pac4j.springframework.security.web.ClientAuthenticationFilter">
+		<beans:constructor-arg value="/authcallback" />
+		<beans:property name="clients" ref="clients" />
+		<beans:property name="authenticationManager" ref="authenticationManager" />
+	</beans:bean>
+
+	<beans:bean id="clientProvider" class="org.pac4j.springframework.security.authentication.ClientAuthenticationProvider">
+		<beans:property name="clients" ref="clients" />
+	</beans:bean>	
+	
 </beans:beans>

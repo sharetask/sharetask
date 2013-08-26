@@ -41,12 +41,17 @@
 		</layout>
 	</appender>
 
-	<logger name="org.sharetask">
+	<logger name="org.sharetask" additivity="false">
 		<level value="debug" />
 		<appender-ref ref="app-debug" />
 	</logger>
 	
-	<logger name="org.springframework.web">
+	<logger name="org.springframework.web" additivity="false">
+		<level value="debug" />
+		<appender-ref ref="app-debug" />
+	</logger>
+	
+	<logger name="org.pac4j" additivity="false">
 		<level value="debug" />
 		<appender-ref ref="app-debug" />
 	</logger>

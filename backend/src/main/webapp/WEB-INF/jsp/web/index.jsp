@@ -16,6 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
 --%>
+<%@page import="org.pac4j.oauth.client.Google2Client"%>
+<%@page import="org.pac4j.oauth.client.FacebookClient"%>
+<%@page import="org.pac4j.core.context.J2EContext"%>
+<%@page import="org.pac4j.core.context.WebContext"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
@@ -24,6 +28,15 @@
 <spring:eval expression="@applicationProps['application.version']" var="applicationVersion" />
 <spring:eval expression="@applicationProps['application.revision']" var="applicationRevision" />
 <spring:eval expression="@applicationProps['google.analytics.account.web']" var="googleAnalyticsAccount" />
+<spring:eval expression="@applicationProps['google.analytics.account.web']" var="googleAnalyticsAccount" />
+
+<%
+    WebContext context = new J2EContext(request, response); 
+	FacebookClient fbClient = (FacebookClient) application.getAttribute("FacebookClient");
+	Google2Client gClient= (Google2Client) application.getAttribute("GoogleClient");
+    String redirectionFacebookUrl = fbClient.getRedirectionUrl(context);
+    String redirectionGoogleUrl = gClient.getRedirectionUrl(context);
+%>
 
 <!doctype html>
 <html lang="en" ng-app="shareTaskWeb">
@@ -44,6 +57,9 @@
 		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-web-${applicationVersion}/css/sharetask.css" />">
 	</head>
 	<body ng-cloak>
+		<a href="<%= redirectionFacebookUrl%>">facebook</a><br/>
+		<a href="<%= redirectionGoogleUrl%>">google</a>
+	
 		<!-- application menu -->
 		<div id="app-menu">
 			<div class="navbar navbar-inverse">
