@@ -39,9 +39,9 @@
 						<div ng-show="attrEditMode != 'WORKSPACE-ADD' && attrEditMode != 'WORKSPACE-DELETE'">
 							<legend>{{selectedWorkspace.title}}</legend>
 							<ul class="nav nav-tabs">
-								<li class="active"><a href="#workspaceData" data-toggle="tab">{{'_Workspace_' | i18n}}</a></li>
-								<li><a href="#workspaceMembers" data-toggle="tab">{{'_Members_' | i18n}}</a></li>
-								<li><a href="#workspaceDelete" data-toggle="tab">{{'_Delete_' | i18n}}</a></li>
+								<li class="active"><a href="#workspaceData" data-toggle="tab"><i class="icon-folder-close"></i> {{'_Workspace_' | i18n}}</a></li>
+								<li><a href="#workspaceMembers" data-toggle="tab"><i class="icon-group"></i> {{'_Members_' | i18n}}</a></li>
+								<li><a href="#workspaceDelete" data-toggle="tab"><i class="icon-remove"></i> {{'_Delete_' | i18n}}</a></li>
 							</ul>
 							<div class="tabbable">
 								<div class="tab-content">
@@ -66,7 +66,7 @@
 												<!--<button class="btn" ng-click="">{{'_ForwardOwnership_' | i18n}}</button>-->
 											</div>
 											<br /><br />
-											<button class="btn btn-inverse" ng-click="updateWorkspace()" ng-disabled="formWorkspaceUpdate.$invalid || updateWorkspaceData.processing">{{'_Save_' | i18n}}<span ng-show="updateWorkspaceData.processing"> {{'_Processing_' | i18n}}</span></button>
+											<button class="btn btn-inverse" ng-click="updateWorkspace()" ng-disabled="formWorkspaceUpdate.$invalid || updateWorkspaceData.processing"><i class="icon-save"></i> {{'_Save_' | i18n}}<span ng-show="updateWorkspaceData.processing"> {{'_Processing_' | i18n}}</span></button>
 										</form>
 									</div>
 									<!-- workspace members tab -->
@@ -86,6 +86,23 @@
 												<button class="btn btn-inverse" ng-click="inviteMember()" ng-disabled="!newMember.username.length || newMember.processing">{{'_Invite_' | i18n}}<span ng-show="newMember.processing"> {{'_Processing_' | i18n}}</span></button>
 											</div>
 										</div>
+										<!-- members -->
+										<div class="user-panels">
+											<div class="user-panel" ng-repeat="member in selectedWorkspace.members">
+												<div class="inner">
+													<img class="photo" ng-src="http://www.gravatar.com/avatar/{{member.username | hash}}.jpg?s=45&d={{'http://www.hip-hop.cz/user-small.png' | urlEncode}}" />
+													<div class="pull-left">
+														<strong>{{member.name}} {{member.surName}}</strong><br />
+														<small>{{member.username}}</small>
+													</div>
+													<div class="clearfix"></div>
+													<div class="buttons">
+														<button class="btn" ng-click="removeMember(member.username)"><i class="icon-remove"></i> {{'_Delete_' | i18n}}</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										<!--
 										<table class="table table-bordered table-striped table-hover">
 										<thead>
 											<tr>
@@ -113,6 +130,7 @@
 											</tr>
 										</tbody>
 										</table>
+										-->
 									</div>
 									<!-- workspace delete tab -->
 									<div class="tab-pane" id="workspaceDelete">
