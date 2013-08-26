@@ -7,9 +7,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="author" content="Michal Bocek" />
+    <meta name="Date-Creation-yyyymmdd" content="20130825" />
     <meta name="Date-Revision-yyyymmdd" content="20130826" />
     <meta http-equiv="Content-Language" content="en" />
-    <title>ShareTask - Continuous Integration</title>
+    <title>ShareTask - Development in fork</title>
     <link rel="stylesheet" href="./css/apache-maven-fluido-1.3.0.min.css" />
     <link rel="stylesheet" href="./css/site.css" />
     <link rel="stylesheet" href="./css/print.css" media="print" />
@@ -52,7 +54,7 @@
         ShareTask</a>
         </li>
       <li class="divider ">/</li>
-        <li class="">Continuous Integration</li>
+        <li class="">Development in fork</li>
         
                 
                     
@@ -78,12 +80,10 @@
         Run from source code</a>
             </li>
                   
-      <li>
+      <li class="active">
     
-                          <a href="development-in-fork.html" title="Development in fork">
-          <i class="none"></i>
-        Development in fork</a>
-            </li>
+            <a href="#"><i class="none"></i>Development in fork</a>
+          </li>
                               <li class="nav-header">Modules</li>
                                 
       <li>
@@ -107,118 +107,13 @@
         ShareTask: openshift</a>
             </li>
                               <li class="nav-header">Project Documentation</li>
-                                                                                                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                                                                                                              
       <li>
     
                           <a href="project-info.html" title="Project Information">
-          <i class="icon-chevron-down"></i>
+          <i class="icon-chevron-right"></i>
         Project Information</a>
-                    <ul class="nav nav-list">
-                      
-      <li>
-    
-                          <a href="distribution-management.html" title="Distribution Management">
-          <i class="none"></i>
-        Distribution Management</a>
-            </li>
-                      
-      <li>
-    
-                          <a href="index.html" title="About">
-          <i class="none"></i>
-        About</a>
-            </li>
-                      
-      <li>
-    
-                          <a href="dependencies.html" title="Dependencies">
-          <i class="none"></i>
-        Dependencies</a>
-            </li>
-                      
-      <li>
-    
-                          <a href="issue-tracking.html" title="Issue Tracking">
-          <i class="none"></i>
-        Issue Tracking</a>
-            </li>
-                      
-      <li>
-    
-                          <a href="plugins.html" title="Project Plugins">
-          <i class="none"></i>
-        Project Plugins</a>
-            </li>
-                      
-      <li class="active">
-    
-            <a href="#"><i class="none"></i>Continuous Integration</a>
-          </li>
-                      
-      <li>
-    
-                          <a href="license.html" title="Project License">
-          <i class="none"></i>
-        Project License</a>
-            </li>
-                      
-      <li>
-    
-                          <a href="dependency-management.html" title="Dependency Management">
-          <i class="none"></i>
-        Dependency Management</a>
-            </li>
-                      
-      <li>
-    
-                          <a href="mail-lists.html" title="Mailing Lists">
-          <i class="none"></i>
-        Mailing Lists</a>
-            </li>
-                      
-      <li>
-    
-                          <a href="team-list.html" title="Project Team">
-          <i class="none"></i>
-        Project Team</a>
-            </li>
-                      
-      <li>
-    
-                          <a href="dependency-convergence.html" title="Dependency Convergence">
-          <i class="none"></i>
-        Dependency Convergence</a>
-            </li>
-                      
-      <li>
-    
-                          <a href="source-repository.html" title="Source Repository">
-          <i class="none"></i>
-        Source Repository</a>
-            </li>
-                      
-      <li>
-    
-                          <a href="plugin-management.html" title="Plugin Management">
-          <i class="none"></i>
-        Plugin Management</a>
-            </li>
-                      
-      <li>
-    
-                          <a href="modules.html" title="Project Modules">
-          <i class="none"></i>
-        Project Modules</a>
-            </li>
-                      
-      <li>
-    
-                          <a href="project-summary.html" title="Project Summary">
-          <i class="none"></i>
-        Project Summary</a>
-            </li>
-              </ul>
-        </li>
+                  </li>
             </ul>
                 
                     
@@ -239,7 +134,47 @@
                 
         <div id="bodyColumn"  class="span9" >
                                   
-            <div class="section"><h2>Continuous Integration<a name="Continuous_Integration"></a></h2><a name="Continuous_Integration"></a><p>No continuous integration management system is defined. Please check back at a later date.</p></div>
+            <div class="section"><h2>Development in fork<a name="Development_in_fork"></a></h2><p>In this short tutorial you can find recepie how to develop code in your personal fork of the project. </p><div class="section"><h3>Fork projekt on github <a name="Fork_projekt_on_github"></a></h3><ul><li>go to github projet home page <a class="externalLink" href="https://github.com/sharetask/sharetask">https://github.com/sharetask/sharetask</a> and fork the project under your account</li></ul></div><div class="section"><h3>Setup fork<a name="Setup_fork"></a></h3><ul><li>first time checkout forked projekt<div class="source"><pre class="prettyprint linenums">        $ git clone git://github.com/&lt;account&gt;/sharetask.git</pre></div></li><li>setup remote upstream<div class="source"><pre class="prettyprint linenums">        $ git remote -v
+        # List the current remotes
+        # origin  https://github.com/&lt;account&gt;/sharetask.git (fetch)
+        # origin  https://github.com/&lt;account&gt;/sharetask.git (push)
+        
+        $ git remote add upstream https://github.com/sharetask/sharetask.git
+        # Set a new remote
+
+        $ git remote -v
+        # Verify new remote
+        # origin    https://github.com/&lt;account&gt;/sharetask.git (fetch)
+        # origin    https://github.com/&lt;account&gt;/sharetask.git (push)
+        # upstream  https://github.com/sharetask/sharetask.git (fetch)
+        # upstream  https://github.com/sharetask/sharetask.git (push)</pre></div></li></ul></div><div class="section"><h3>Working with fork<a name="Working_with_fork"></a></h3><ul><li>sychronizing with upstream - fetch upstream branch to local branch<div class="source"><pre class="prettyprint linenums">        $ git fetch upstream
+        # remote: Counting objects: 915, done.
+        # remote: Compressing objects: 100% (564/564), done.
+        # remote: Total 786 (delta 558), reused 421 (delta 195)
+        # Receiving objects: 100% (786/786), 424.47 KiB | 355.00 KiB/s, done.
+        # Resolving deltas: 100% (558/558), completed with 77 local objects.
+        # From https://github.com/sharetask/sharetask
+        #    85cbe34..2bfa929  gh-pages   -&gt; upstream/gh-pages
+        #    b0d3064..b7fcffa  master     -&gt; upstream/master</pre></div></li><li>show branch information<div class="source"><pre class="prettyprint linenums">        $ git branch -va
+        # List all local and remote-tracking branches
+        #* master                    b0d3064 added attribute appname
+        #  remotes/origin/HEAD       -&gt; origin/master
+        #  remotes/origin/gh-pages   efe0114 Wagon: Deploying site to repository
+        #  remotes/origin/master     b0d3064 added attribute appname
+        #  remotes/upstream/gh-pages 2bfa929 Wagon: Deploying site to repository
+        #  remotes/upstream/master   b7fcffa Web page Flash of Unstyled Content fix.</pre></div></li><li>merge upstream to local master branch <div class="source"><pre class="prettyprint linenums">        $ git checkout master
+        # Check out our local master branch
+        # Switched to branch 'master'
+        
+        $ git merge upstream/master
+        # Merge upstream's master into our own
+        # Updating b0d3064..b7fcffa
+        # Fast-forward
+        #  README                    |    9 -------
+        #  README.md                 |    7 ++++++
+        #  2 files changed, 7 insertions(+), 9 deletions(-)
+        #  delete mode 100644 README
+        #  create mode 100644 README.md</pre></div></li></ul></div></div>
                   </div>
             </div>
           </div>
