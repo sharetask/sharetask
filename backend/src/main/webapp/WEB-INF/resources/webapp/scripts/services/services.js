@@ -59,7 +59,7 @@ shareTaskApp.service('Workspace', ['$rootScope', '$resource', '$http', function(
 	};
 	
 	this.getActiveTasks = function(input, success, error) {
-		Log.debug("Getting active tasks for workspace (id: %s) from server", input.workspaceId);
+		Log.debug("Getting tasks for workspace (id: %s) from server", input.workspaceId);
 		return $http.get($rootScope.appBaseUrl+"api/workspace/"+input.workspaceId+"/task", {params: {taskQueue: 'ALL'}}).success(success).error(error);
 	};
 	
@@ -79,8 +79,8 @@ shareTaskApp.service('Workspace', ['$rootScope', '$resource', '$http', function(
 	};
 	
 	this.remove = function(input, success, error) {
-		Log.debug("Delete workspace (workspace: %o)", input.workspace);
-		return $http.delete($rootScope.appBaseUrl+"api/workspace/"+input.workspaceId, {}).success(success).error(error);
+		Log.debug("Delete workspace (id: %s)", input.workspace.id);
+		return $http.delete($rootScope.appBaseUrl+"api/workspace/"+input.workspace.id, {}).success(success).error(error);
 	};
 	
 	this.inviteMember = function(input, success, error) {

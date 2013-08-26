@@ -374,8 +374,11 @@
 	    "value":"tomorrow",
 	    "description":""
 	},
-	
-	
+	{
+	    "key":"_CreateNewWorkspace_",
+	    "value":"Create new workspace",
+	    "description":""
+	},
 	
 	
 	
@@ -496,6 +499,16 @@
 	{
 	    "key":"_ResultWorkspaceInviteError_",
 	    "value":"Error inviting new user to this workspace.",
+	    "description":""
+	},
+	{
+	    "key":"_DeleteWorkspaceConfirmationText_",
+	    "value":"Do you really want to delete this workspace? All workspace tasks will be ramoved and connot be restored any way.",
+	    "description":""
+	},
+	{
+	    "key":"_WorkspaceTasksCountText_",
+	    "value":"Count of tasks in this workspace:",
 	    "description":""
 	},
 	
