@@ -15,7 +15,7 @@
 	    <security:filter-chain-map path-type="ant">
 	        <security:filter-chain pattern="/authcallback" filters="securityContextFilter, clientFilter, servletApiFilter," />
 	        <security:filter-chain pattern="/**" filters="securityContextFilter, requestCacheFilter, servletApiFilter, 
-	        	rememberMeProcessingFilter, anonFilter, sessionMgmtFilter, exceptionTranslator" />
+	        	rememberMeProcessingFilter, anonFilter, sessionMgmtFilter, exceptionTranslator, filterSecurityInterceptor" />
 	    </security:filter-chain-map>
 	</bean>
 
@@ -72,6 +72,7 @@
 	<bean id="filterSecurityInterceptor" class="org.springframework.security.web.access.intercept.FilterSecurityInterceptor">
 		<property name="securityMetadataSource">
 			<security:filter-security-metadata-source use-expressions="true">
+				<security:intercept-url pattern="/" access="permitAll" />
 				<security:intercept-url pattern="/register" access="permitAll" />
 				<security:intercept-url pattern="/webapp" access="permitAll" />
 				<security:intercept-url pattern="/resources-webapp-#{applicationProps['application.version']}/**" access="permitAll" />
