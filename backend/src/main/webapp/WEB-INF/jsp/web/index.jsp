@@ -49,7 +49,7 @@
 			<div class="navbar navbar-inverse">
 				<div class="navbar-inner" style="padding-left:0;">
 					<div class="container" style="width:auto;">
-						<img class="pull-left" src="<c:url value="/resources-web-${applicationVersion}/img/icon-white-small.png" />" width="40" height="40" hspace="5" />
+						<img class="pull-left" src="<c:url value="/resources-web-${applicationVersion}/img/icon-white-small.png" />" style="padding:8px 15px 0 8px;" />
 						<span class="brand">ShareTa.sk</span>
 						<ul class="nav">
 							<li><a href="<c:url value="/" />"><i class="icon-home icon-white"></i> <spring:message code="menu.home" /></a></li>
@@ -64,6 +64,9 @@
 				<div class="brand-img">
 					<div class="row-full">
 						<div class="span8">
+							<div class="brand-title">
+								<strong>Manage and share your task list.<br />Share tasks with your team or family.</strong>
+							</div>
 						</div>
 						<div class="span4" style="width:330px;right:0;overflow:visible;position:absolute;">
 							<div class="brand-login" ng-controller="AuthCtrl">
