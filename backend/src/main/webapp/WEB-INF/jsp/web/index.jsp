@@ -32,9 +32,7 @@
 
 <%
     WebContext context = new J2EContext(request, response); 
-	FacebookClient fbClient = (FacebookClient) application.getAttribute("FacebookClient");
 	Google2Client gClient= (Google2Client) application.getAttribute("GoogleClient");
-    String redirectionFacebookUrl = fbClient.getRedirectionUrl(context);
     String redirectionGoogleUrl = gClient.getRedirectionUrl(context);
 %>
 
@@ -57,7 +55,6 @@
 		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-web-${applicationVersion}/css/sharetask.css" />">
 	</head>
 	<body ng-cloak>
-		<a href="<%= redirectionFacebookUrl%>">facebook</a><br/>
 		<a href="<%= redirectionGoogleUrl%>">google</a>
 	
 		<!-- application menu -->

@@ -17,7 +17,6 @@
 	<bean id="servletContextAttributeExporter" class="org.springframework.web.context.support.ServletContextAttributeExporter">
 		<property name="attributes">
 			<map>
-				<entry key="FacebookClient" value-ref="facebookClient" />
 				<entry key="GoogleClient" value-ref="googleClient" />
 			</map>
 		</property>

@@ -46,7 +46,7 @@
 		<appender-ref ref="app-debug" />
 	</logger>
 	
-	<logger name="org.springframework.web" additivity="false">
+	<logger name="org.springframework" additivity="false">
 		<level value="debug" />
 		<appender-ref ref="app-debug" />
 	</logger>
