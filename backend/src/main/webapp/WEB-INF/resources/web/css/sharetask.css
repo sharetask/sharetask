@@ -100,7 +100,7 @@ a:hover, a:focus {color:#565656;}
 .btn {background:#ccc;color:#000;}
 .btn:hover {background:#aaa;color:#fff;}
 .btn-inverse {background:#FF5A00;color:#fff;}
-.btn-inverse:hover {background:#000;}
+.btn-inverse:hover {background:#fff;color:#FF5A00}
 
 body {margin:0;padding:0;-webkit-text-size-adjust:100%;}
 
