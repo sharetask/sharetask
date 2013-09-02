@@ -126,7 +126,10 @@ a:hover, a:focus {color:#565656;}
 
 .user-panels:before,.user-panels:after {display:table;line-height:0;content:"";}
 .user-panels:after {clear:both;}
-.user-panel {float:left;margin:5px;padding:10px;background:#eaeaea;}
+.user-panel {float:left;margin:0 10px 10px 0;border:1px solid #999;}
+.user-panel  .inner {border:4px solid #fff;background:#f0f0f0;padding:10px 10px 5px 10px;}
+.user-panel  .photo {float:left;margin-right:15px;}
+.user-panel  .buttons {margin-top:10px;padding-top:5px;border-top:1px solid #ccc;text-align:right;}
 
 body {margin:0;padding:0;-webkit-text-size-adjust:100%;}
 

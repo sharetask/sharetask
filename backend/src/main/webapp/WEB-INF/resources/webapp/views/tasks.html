@@ -131,11 +131,11 @@
 							<div class="queue-controls-inner">
 								<button class="btn" ng-click="setView('PANEL-TASK-FILTER')"><i ng-class="{'icon-double-angle-left':viewPanelTaskFilter, 'icon-double-angle-right':!viewPanelTaskFilter}"></i></button>
 								<div class="btn-group">
-									<button class="btn dropdown-toggle" data-toggle="dropdown">{{filter.orderBy | orderName | i18n}} <span class="caret"></span></button>
+									<button class="btn dropdown-toggle" data-toggle="dropdown"><i class="icon-sort-by-attributes"></i> {{filter.orderBy | orderName | i18n}} <span class="caret"></span></button>
 									<ul class="dropdown-menu">
-										<li ng-click="setTaskOrdering('TASK_TITLE')"><a>{{'_NameBy_' | i18n}}</a></li>
-										<li ng-click="setTaskOrdering('TASK_DUE_DATE')"><a>{{'_DueDateBy_' | i18n}}</a></li>
-										<li ng-click="setTaskOrdering('TASK_AUTHOR')"><a>{{'_AuthorBy_' | i18n}}</a></li>
+										<li ng-click="setTaskOrdering('TASK_TITLE')"><a>{{'_ByName_' | i18n}}</a></li>
+										<li ng-click="setTaskOrdering('TASK_DUE_DATE')"><a>{{'_ByDueDate_' | i18n}}</a></li>
+										<li ng-click="setTaskOrdering('TASK_AUTHOR')"><a>{{'_ByAuthor_' | i18n}}</a></li>
 									</ul>
 								</div>
 								<button class="btn btn-inverse pull-right" style="margin-left:5px;" ng-click="setEditMode('NEW-TASK')" stop-event="click"><i class="icon-plus icon-white"></i></button>
@@ -144,7 +144,7 @@
 									<button class="btn dropdown-toggle" data-toggle="dropdown"><i class="icon-list"></i> <span class="caret"></span></button>
 									<ul class="dropdown-menu">
 										<li ng-click="completeTask(true)"><a>{{'_Complete_' | i18n}}</a></li>
-										<li ng-click=""><a>{{'_Forward_' | i18n}}</a></li>
+										<!--<li ng-click=""><a>{{'_Forward_' | i18n}}</a></li>-->
 										<li ng-click="deleteTask(true)"><a>{{'_Delete_' | i18n}}</a></li>
 									</ul>
 								</div>
@@ -153,11 +153,10 @@
 						</div>
 						<div class="new-task-simple" ng-class="{'hidden':taskEditMode != 'NEW-TASK'}" stop-event="click">
 							<div class="new-task-simple-inner">
-									<div class="row-full input-append">
-										<input class="span10" type="text" placeholder="{{'_PlaceholderAddTask_' | i18n}}" ng-model="newTaskTitle" required id="inputTaskAdd" />
-										<button class="btn btn-inverse span2" ng-click="addTask()" ng-disabled="!newTaskTitle.length">{{'_Add_' | i18n}}</button>
-									</div>
-								
+								<div class="row-full input-append">
+									<input class="span10" type="text" placeholder="{{'_PlaceholderAddTask_' | i18n}}" ng-model="newTaskTitle" required id="inputTaskAdd" />
+									<button class="btn btn-inverse span2" ng-click="addTask()" ng-disabled="!newTaskTitle.length">{{'_Add_' | i18n}}</button>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -234,9 +233,9 @@
 					
 						<!-- action buttons -->
 						<div class="task-detail-action" ng-class="{'selected':taskEditMode == 'COMPLETE-TASK' || taskEditMode == 'FORWARD-TASK' || taskEditMode == 'DELETE-TASK'}">
-							<button class="btn btn-inverse" ng-click="setEditMode('COMPLETE-TASK')" ng-class="{'hidden':selectedTask.state == 'FINISHED'}" stop-event="click">{{'_Complete_' | i18n}}</button>
-							<button class="btn" ng-click="setEditMode('FORWARD-TASK')" ng-class="{'hidden':selectedTask.state == 'FINISHED'}" stop-event="click">{{'_Forward_' | i18n}}</button>
-							<button class="btn" ng-click="setEditMode('DELETE-TASK')" stop-event="click">{{'_Delete_' | i18n}}</button>
+							<button class="btn btn-inverse" ng-click="setEditMode('COMPLETE-TASK')" ng-class="{'hidden':selectedTask.state == 'FINISHED'}" stop-event="click"><i class="icon-ok"></i> {{'_Complete_' | i18n}}</button>
+							<button class="btn" ng-click="setEditMode('FORWARD-TASK')" ng-class="{'hidden':selectedTask.state == 'FINISHED'}" stop-event="click"><i class="icon-share-alt"></i> {{'_Forward_' | i18n}}</button>
+							<button class="btn" ng-click="setEditMode('DELETE-TASK')" stop-event="click"><i class="icon-remove"></i> {{'_Delete_' | i18n}}</button>
 						</div>
 						
 						<!-- complete task -->
@@ -247,16 +246,25 @@
 						</div>
 						
 						<!-- forward task -->
-						<div class="task-detail-action-confirm" ng-class="{'hidden':taskEditMode != 'FORWARD-TASK'}">
+						<div class="task-detail-action-confirm" ng-class="{'hidden':taskEditMode != 'FORWARD-TASK'}" stop-event="click">
 							<p>{{'_ForwardConfirmationText_' | i18n}}</p>
 							<div class="input-append">
 								<input type="text" placeholder="search member..." ng-model="search.$" ui-keypress="{enter:'forwardTask()', esc:'setEditMode(\'\')'}" id="inputTaskForward" />
 								<!--<button class="btn btn-inverse" ng-click="forwardTask(forwardUser)">Forward</button>-->
 							</div>
 							<div class="user-panels">
-								<div class="user-panel cursor-pointer" ng-repeat="member in selectedWorkspace.members | filter:search | limitTo:6" ng-click="forwardTask(member)">
-									<p><strong>{{member.name}} {{member.surName}}</strong></p>
-									{{member.username}}
+								<div class="user-panel" ng-repeat="member in selectedWorkspace.members | filter:search | limitTo:6">
+									<div class="inner">
+										<img class="photo" ng-src="http://www.gravatar.com/avatar/{{member.username | hash}}.jpg?s=45&d={{'http://www.hip-hop.cz/user-small.png' | urlEncode}}" />
+										<div class="pull-left">
+											<strong>{{member.name}} {{member.surName}}</strong><br />
+											<small>{{member.username}}</small>
+										</div>
+										<div class="clearfix"></div>
+										<div class="buttons">
+											<button class="btn" ng-click="forwardTask(member)"><i class="icon-share-alt"></i> {{'_Forward_' | i18n}}</button>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>

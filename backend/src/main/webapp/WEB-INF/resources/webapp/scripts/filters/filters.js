@@ -143,9 +143,9 @@ angular.module('shareTaskApp.filters', []).
 	.filter('orderName', ['Workspace', function(Workspace) {
 		return function(input) {
 			//Log.debug("orderName: %o", input);
-			if (input == "TASK_DUE_DATE") { return "_ByDueDate_"; }
-			else if (input == "TASK_TITLE") { return "_ByName_"; }
-			else if (input == "TASK_AUTHOR") { return "_ByAuthor_"; }
+			if (input == "TASK_DUE_DATE") { return "_DueDate_"; }
+			else if (input == "TASK_TITLE") { return "_Name_"; }
+			else if (input == "TASK_AUTHOR") { return "_Author_"; }
 			else if (input === undefined || input === null) { return "__"; }
 		};
 	}])

@@ -807,8 +807,10 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 	.controller('WorkspacesCtrl', ['$scope', '$location', '$rootScope', '$timeout', '$window', 'localize', 'Workspace', 'User', 'LocalStorage', 'ErrorHandling', function($scope, $location, $rootScope, $timeout, $window, localize, Workspace, User, LocalStorage, ErrorHandling) {
 	
 		$scope.updateWorkspaceData = {processing: false, result: 0};
+		$scope.deleteWorkspaceData = {processing: false, result: 0};
 		$scope.newMember = {processing: false, result: 0};
 		$scope.addWorkspaceData = {processing: false, result: 0};
+		$scope.selectedWorkspaceTaskCount = 0;
 		$rootScope.currentPage = "workspaces";
 		
 		/**
@@ -821,11 +823,26 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 					if (data.length) {
 						$scope.workspaces = data;
 						$scope.selectedWorkspace = data[0];
+						$scope.loadTasks();
 					}
 				}, function(data, status, script, func) {
 					Log.debug("Workspace find error!");
 					ErrorHandling.handle(data, status, script, func);
 				});
+		};
+		
+		/**
+		 * Load all active tasks for selected workspace.
+		 */
+		$scope.loadTasks = function() {
+			Log.debug("Load all tasks for workspace (id: %s)", $scope.selectedWorkspace.id);
+			Workspace.getActiveTasks({workspaceId: $scope.selectedWorkspace.id}, function(data, status) {
+					Log.debug("Workspace getActiveTasks success! data: %o, status: %o", data, status);
+					$scope.selectedWorkspaceTaskCount = data.length;
+				}, function(data, status, script, func) {
+					Log.debug("Workspace getActiveTasks error!");
+					ErrorHandling.handle(data, status, script, func);
+			});
 		};
 		
 		/**
@@ -838,6 +855,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 				return e.id == id;
 			});
 			$scope.selectedWorkspace = workspace[0];
+			$scope.loadTasks();
 			$scope.setEditMode('');
 			Log.debug("Selected workspace: %o", $scope.selectedWorkspace);
 		};
@@ -884,6 +902,31 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 					ErrorHandling.handle(data, status, script, func);
 					$scope.updateWorkspaceData.result = -1;
 					$scope.updateWorkspaceData.processing = false;
+				});
+		};
+		
+		/**
+		 * Delete workspace.
+		 * Workspace data are stored to server.
+		 */
+		$scope.deleteWorkspace = function() {
+			Log.debug("Delete workspace (workspace: %o)", $scope.selectedWorkspace);
+			$scope.deleteWorkspaceData.processing = true;
+			Workspace.remove({workspace: $scope.selectedWorkspace}, function(data, status) {
+					Log.debug("Workspace remove success! data: %o, status: %o", data, status);
+					$scope.deleteWorkspaceData.result = 1;
+					$scope.deleteWorkspaceData.processing = false;
+					var workspaces = $.grep($scope.workspaces, function(e) {
+						return e.id != $scope.selectedWorkspace.id;
+					});
+					$scope.workspaces = workspaces;
+					$scope.selectedWorkspace = workspaces[0];
+					$scope.loadTasks();
+				}, function(data, status, script, func) {
+					Log.debug("Workspace remove error!");
+					ErrorHandling.handle(data, status, script, func);
+					$scope.deleteWorkspaceData.result = -1;
+					$scope.deleteWorkspaceData.processing = false;
 				});
 		};
 		

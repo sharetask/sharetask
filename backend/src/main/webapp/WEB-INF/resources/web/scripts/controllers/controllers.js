@@ -20,22 +20,35 @@
 
 /* Controllers */
 angular.module('shareTaskWeb.controllers', [])
-	.controller('AuthCtrl', ['$scope', '$location', '$rootScope', '$window', 'User', function($scope, $location, $rootScope, $window, User) {
+	.controller('IndexCtrl', ['$scope', '$location', '$rootScope', '$window', 'User', function($scope, $location, $rootScope, $window, User) {
 		
-		$scope.loaded = false;
-		$scope.loggedUser = null;
-		$scope.loginData = {processing: false, result: 0};
+		$scope.showSignInForm = false;
+		$rootScope.loggedUser = null;
 		
 		// get current logged user
 		User.getCurrentUser(function(data, status) {
 				console.log("User getCurrentUser success! data: %o, status: %o", data, status);
-				$scope.loggedUser = data;
-				$scope.loaded = true;
+				$rootScope.loggedUser = data;
 			}, function(data, status, script, func) {
 				console.log("User getCurrentUser error! data: %o, status: %o", data, status);
-				$scope.loggedUser = null;
-				$scope.loaded = true;
+				$rootScope.loggedUser = null;
 			});
+			
+		/**
+		 * Logout user.
+		 */
+		$scope.logout = function() {
+			User.logout($rootScope.loggedUser.username, function(data, status) {
+					console.log("User logout success! data: %o, status: %o", data, status);
+					$rootScope.loggedUser = null;
+				}, function(data, status, script, func) {
+					console.log("User logout error! data: %o, status: %o", data, status);
+				});
+		};
+	}])
+	.controller('AuthCtrl', ['$scope', '$location', '$rootScope', '$window', 'User', function($scope, $location, $rootScope, $window, User) {
+		
+		$scope.loginData = {processing: false, result: 0};
 		
 		/**
 		 * Login user.
@@ -54,28 +67,16 @@ angular.module('shareTaskWeb.controllers', [])
 						}, function(data, status) {
 							console.log("Auth error! data: %o, status: %o", data, status);
 							$scope.user = {};
-							$scope.loggedUser = null;
+							$rootScope.loggedUser = null;
 							$scope.loginData.processing = false;
 						});
 					$scope.loginData.result = 1;
 				}, function(data, status) {
 					console.log("User auth error! data: %o, status: %o", data, status);
 					$scope.user = {};
-					$scope.loggedUser = null;
+					$rootScope.loggedUser = null;
 					$scope.loginData.result = -1;
 					$scope.loginData.processing = false;
-				});
-		};
-		
-		/**
-		 * Logout user.
-		 */
-		$scope.logout = function() {
-			User.logout($scope.loggedUser.username, function(data, status) {
-					console.log("User logout success! data: %o, status: %o", data, status);
-					$scope.loggedUser = null;
-				}, function(data, status, script, func) {
-					console.log("User logout error! data: %o, status: %o", data, status);
 				});
 		};
 	}])

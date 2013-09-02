@@ -26,8 +26,8 @@
 				<div class="panel-full-inside">
 					<div style="padding:10px 20px;">
 						<ul class="nav nav-tabs">
-							<li class="active"><a href="#userProfile" data-toggle="tab">{{'_Profile_' | i18n}}</a></li>
-							<li><a href="#userSettings" data-toggle="tab">{{'_Settings_' | i18n}}</a></li>
+							<li class="active"><a href="#userProfile" data-toggle="tab"><i class="icon-user"></i> {{'_Profile_' | i18n}}</a></li>
+							<li><a href="#userSettings" data-toggle="tab"><i class="icon-cog"></i> {{'_Settings_' | i18n}}</a></li>
 						</ul>
 						<div class="tabbable">
 							<div class="tab-content">
@@ -35,13 +35,11 @@
 								<div class="tab-pane active" id="userProfile">
 									<div class="columns">
 										<div class="column profile">
-											
 											<a href="http://www.gravatar.com/emails" title="{{'_MsgChangeAvatar_' | i18n}}" target="blank"><img ng-src="http://www.gravatar.com/avatar/{{usernameHash}}.jpg?s=150&d={{'http://www.hip-hop.cz/user-large.png' | urlEncode}}" /></a>
-											<em>{{loggedUser.name}} {{loggedUser.surName}}</em>
 										</div>
 										<div class="column full">
 											<form name="formUserUpdate" novalidate class="css-form">
-												<legend>{{'_UserProfile_' | i18n}}</legend>
+												<legend>{{loggedUser.name}} {{loggedUser.surName}}</legend>
 												<div class="alert alert-success" ng-class="{'hidden':updateUserProfile.result == -1 || updateUserProfile.result == 0}">
 													<a class="close" ng-click="updateUserProfile.result = 0">&times;</a>
 													<strong>{{'_Success_' | i18n}}</strong> {{'_ResultUserProfileUpdateOk_' | i18n}}
@@ -61,7 +59,7 @@
 												<input class="span5" type="text" placeholder="{{'_PlaceholderNewPassword_' | i18n}}" ng-model="loggedUser.newPassword1" /><br />
 												<label>{{'_NewPasswordCheck_' | i18n}}</label>
 												<input class="span5" type="text" placeholder="{{'_PlaceholderNewPasswordCheck_' | i18n}}" ng-model="loggedUser.newPassword2" /><br />
-												<button class="btn btn-inverse" ng-click="update()" ng-disabled="formUserUpdate.$invalid || loggedUser.newPassword1 != loggedUser.newPassword2 || updateUserProfile.processing">{{'_Save_' | i18n}}<span ng-show="updateUserProfile.processing"> {{'_Processing_' | i18n}}</span></button>
+												<button class="btn btn-inverse" ng-click="update()" ng-disabled="formUserUpdate.$invalid || loggedUser.newPassword1 != loggedUser.newPassword2 || updateUserProfile.processing"><i class="icon-save"></i> {{'_Save_' | i18n}}<span ng-show="updateUserProfile.processing"> {{'_Processing_' | i18n}}</span></button>
 											</form>
 										</div>
 									</div>

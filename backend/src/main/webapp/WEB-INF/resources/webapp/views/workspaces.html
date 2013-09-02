@@ -33,18 +33,19 @@
 				<div class="workspace-page-inner">
 					<div class="workspace-page-content">
 						<div style="border-bottom:1px solid #ddd;padding-bottom:5px;margin-bottom:20px;">
-							<button class="btn btn-inverse" ng-click="setEditMode('WORKSPACE-ADD')"><i class="icon-plus"></i> {{'_Add_' | i18n}}</button>
+							<button class="btn btn-inverse" ng-click="setEditMode('WORKSPACE-ADD')"><i class="icon-plus"></i> {{'_CreateNewWorkspace_' | i18n}}</button>
 						</div>
 						
-						<div ng-class="{'hidden':attrEditMode == 'WORKSPACE-ADD'}">
+						<div ng-show="attrEditMode != 'WORKSPACE-ADD' && attrEditMode != 'WORKSPACE-DELETE'">
 							<legend>{{selectedWorkspace.title}}</legend>
 							<ul class="nav nav-tabs">
-								<li class="active"><a href="#workspaceData" data-toggle="tab">{{'_Workspace_' | i18n}}</a></li>
-								<li><a href="#workspaceMembers" data-toggle="tab">{{'_Members_' | i18n}}</a></li>
+								<li class="active"><a href="#workspaceData" data-toggle="tab"><i class="icon-folder-close"></i> {{'_Workspace_' | i18n}}</a></li>
+								<li><a href="#workspaceMembers" data-toggle="tab"><i class="icon-group"></i> {{'_Members_' | i18n}}</a></li>
+								<li><a href="#workspaceDelete" data-toggle="tab"><i class="icon-remove"></i> {{'_Delete_' | i18n}}</a></li>
 							</ul>
 							<div class="tabbable">
 								<div class="tab-content">
-									<!-- workspace update form -->
+									<!-- workspace update tab -->
 									<div class="tab-pane active" id="workspaceData">
 										<form name="formWorkspaceUpdate" novalidate class="css-form">
 											<div class="alert alert-success" ng-class="{'hidden':updateWorkspaceData.result == -1 || updateWorkspaceData.result == 0}">
@@ -64,11 +65,11 @@
 												<input type="text" placeholder="type owner name..." value="{{selectedWorkspace.owner.name}} {{selectedWorkspace.owner.surName}}" disabled="disabled" />
 												<!--<button class="btn" ng-click="">{{'_ForwardOwnership_' | i18n}}</button>-->
 											</div>
-											<br />
-											<button class="btn btn-inverse" ng-click="updateWorkspace()" ng-disabled="formWorkspaceUpdate.$invalid || updateWorkspaceData.processing">{{'_Save_' | i18n}}<span ng-show="updateWorkspaceData.processing"> {{'_Processing_' | i18n}}</span></button>
+											<br /><br />
+											<button class="btn btn-inverse" ng-click="updateWorkspace()" ng-disabled="formWorkspaceUpdate.$invalid || updateWorkspaceData.processing"><i class="icon-save"></i> {{'_Save_' | i18n}}<span ng-show="updateWorkspaceData.processing"> {{'_Processing_' | i18n}}</span></button>
 										</form>
 									</div>
-									<!-- workspace members -->
+									<!-- workspace members tab -->
 									<div class="tab-pane" id="workspaceMembers">
 										<p><button class="btn btn-inverse" ng-click="setEditMode('WORKSPACE-INVITE-MEMBER')"><i class="icon-plus icon-white"></i> {{'_InviteMember_' | i18n}}</button></p>
 										<div class="alert alert-success" ng-class="{'hidden':newMember.result == -1 || newMember.result == 0}">
@@ -84,14 +85,24 @@
 												<input class="span4" type="text" placeholder="{{'_PlaceholderMembersMail_' | i18n}}" ng-model="newMember.username" required />
 												<button class="btn btn-inverse" ng-click="inviteMember()" ng-disabled="!newMember.username.length || newMember.processing">{{'_Invite_' | i18n}}<span ng-show="newMember.processing"> {{'_Processing_' | i18n}}</span></button>
 											</div>
-											<!--
-											<form name="formWorkspaceInviteMember" novalidate class="css-form">
-												<label>{{'_Mail_' | i18n}}</label>
-												<input class="span4" type="text" placeholder="{{'_PlaceholderMembersMail_' | i18n}}" ng-model="newMember.username" required /><br />
-												<button class="btn btn-inverse" ng-click="inviteMember()" ng-disabled="formWorkspaceInviteMember.$invalid || newMember.processing">{{'_Invite_' | i18n}}<span ng-show="newMember.processing"> {{'_Processing_' | i18n}}</span></button>
-											</form>
-											-->
 										</div>
+										<!-- members -->
+										<div class="user-panels">
+											<div class="user-panel" ng-repeat="member in selectedWorkspace.members">
+												<div class="inner">
+													<img class="photo" ng-src="http://www.gravatar.com/avatar/{{member.username | hash}}.jpg?s=45&d={{'http://www.hip-hop.cz/user-small.png' | urlEncode}}" />
+													<div class="pull-left">
+														<strong>{{member.name}} {{member.surName}}</strong><br />
+														<small>{{member.username}}</small>
+													</div>
+													<div class="clearfix"></div>
+													<div class="buttons">
+														<button class="btn" ng-click="removeMember(member.username)"><i class="icon-remove"></i> {{'_Delete_' | i18n}}</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										<!--
 										<table class="table table-bordered table-striped table-hover">
 										<thead>
 											<tr>
@@ -119,12 +130,20 @@
 											</tr>
 										</tbody>
 										</table>
+										-->
+									</div>
+									<!-- workspace delete tab -->
+									<div class="tab-pane" id="workspaceDelete">
+										<p>{{'_DeleteWorkspaceConfirmationText_' | i18n}}</p>
+										<p>{{'_WorkspaceTasksCountText_' | i18n}} {{selectedWorkspaceTaskCount}}</p>
+										<br />
+										<button class="btn" ng-click="deleteWorkspace()">{{'_Yes_' | i18n}}</button>
 									</div>
 								</div>
 							</div>
 						</div>
 						
-						<div ng-class="{'hidden':attrEditMode != 'WORKSPACE-ADD'}">
+						<div ng-show="attrEditMode == 'WORKSPACE-ADD'">
 							<form name="formWorkspaceAdd" novalidate class="css-form">
 								<legend>{{'_AddNewWorkspace_' | i18n}}</legend>
 								<label>{{'_Name_' | i18n}}</label>

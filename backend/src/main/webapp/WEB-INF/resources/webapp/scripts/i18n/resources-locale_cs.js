@@ -375,6 +375,11 @@
 	    "value":"zítra",
 	    "description":""
 	},
+	{
+	    "key":"_CreateNewWorkspace_",
+	    "value":"Založit nový projekt",
+	    "description":""
+	},
 	
 	
 	
@@ -497,6 +502,16 @@
 	{
 	    "key":"_ResultWorkspaceInviteError_",
 	    "value":"Chyba při odesílání pozvánky uživateli.",
+	    "description":""
+	},
+	{
+	    "key":"_DeleteWorkspaceConfirmationText_",
+	    "value":"Opravdu chcete tento projekt odstranit? Současně budou odstraněny i všechny úkoly v tomto projektu a nebudou moci být již nikdy obnoveny.",
+	    "description":""
+	},
+	{
+	    "key":"_WorkspaceTasksCountText_",
+	    "value":"Počet úkolů v tomto projektu:",
 	    "description":""
 	},
 	
