@@ -6,5 +6,8 @@
 	<persistence-unit name="MyTaskPersistenceUnit" transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<mapping-file>META-INF/orm.xml</mapping-file>
+		<properties>
+			<property name="hibernate.generate_statistics" value="true"/>
+		</properties>
 	</persistence-unit>
 </persistence>
