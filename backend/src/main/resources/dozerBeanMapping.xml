@@ -19,12 +19,12 @@
 				<class-a>org.sharetask.entity.Comment</class-a>
 				<class-b>org.sharetask.api.dto.CommentDTO</class-b>
 			</converter>
-			<converter type="org.sharetask.utility.converter.UserConverter">
-				<class-a>org.sharetask.entity.User</class-a>
+			<converter type="org.sharetask.utility.converter.UserAuthenticationConverter">
+				<class-a>org.sharetask.entity.UserAuthentication</class-a>
 				<class-b>org.sharetask.api.dto.UserDTO</class-b>
 			</converter>
-			<converter type="org.sharetask.utility.converter.UserInfoConverter">
-				<class-a>org.sharetask.entity.User</class-a>
+			<converter type="org.sharetask.utility.converter.UserInformationConverter">
+				<class-a>org.sharetask.entity.UserInformation</class-a>
 				<class-b>org.sharetask.api.dto.UserInfoDTO</class-b>
 			</converter>
 			<converter type="org.sharetask.utility.converter.InvitationConverter">

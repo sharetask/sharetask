@@ -18,19 +18,19 @@
  */
 package org.sharetask.repository;
 
-import org.sharetask.entity.User;
+import org.sharetask.entity.UserInformation;
 import org.sharetask.repository.base.BaseJpaRepository;
 
 /**
  * @author Michal Bocek
  * @since 1.0.0
  */
-public interface UserRepository extends BaseJpaRepository<User, String> {
+public interface UserInformationRepository extends BaseJpaRepository<UserInformation, String> {
 	
 	/**
 	 * Find user by user name.
 	 * @param id
 	 * @return
 	 */
-	User findByUsername(final String username);
+	UserInformation findByUsername(final String username);
 }

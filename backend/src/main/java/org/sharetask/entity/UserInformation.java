@@ -51,25 +51,16 @@ import org.sharetask.api.Constants;
  */
 @ToString
 @Entity
-@Table(name = "USER")
+@Table(name = "USER_INFORMATION")
 @NoArgsConstructor
-public class User implements Serializable {
+public class UserInformation implements Serializable {
 
 	private static final long serialVersionUID = Constants.VERSION;
 
-	// should be email
 	@Id
 	@Getter @Setter
 	@Column(name = "USER_NAME", nullable = false, length = 255)
 	private String username;
-	
-	@Getter @Setter
-	@Column(name = "PASSWORD", nullable = false, length = 64)
-	private String password;
-	
-	@Getter @Setter
-	@Column(name = "ENABLED", nullable = false)
-	private boolean enabled;
 	
 	@Getter @Setter
 	@Column(name = "NAME", nullable = false, length = 255)
@@ -78,14 +69,6 @@ public class User implements Serializable {
 	@Getter @Setter
 	@Column(name = "SURNAME", nullable = false, length = 255)
 	private String surName;
-	
-	@Getter @Setter
-	@Column(name = "EMAIL", nullable = false, length = 255)
-	private String email;
-
-	@Getter @Setter
-	@Column(name = "SALT", nullable = false, length = 64)
-	private String salt;
 	
 	@Setter
 	@ElementCollection(targetClass = Role.class)
@@ -102,7 +85,7 @@ public class User implements Serializable {
 	@Column(name = "UPDATED_ON", nullable = false)
 	private Date updatedOn;
 
-	public User(final String username) {
+	public UserInformation(final String username) {
 		this.username = username;
 	}
 

@@ -33,10 +33,7 @@ import org.sharetask.api.dto.UserDTO;
 import org.sharetask.api.dto.UserInfoDTO;
 import org.sharetask.data.ServiceUnitTest;
 import org.sharetask.entity.Role;
-import org.sharetask.repository.UserRepository;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.dao.SaltSource;
-import org.springframework.security.authentication.encoding.PasswordEncoder;
+import org.sharetask.repository.UserAuthenticationRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -51,16 +48,7 @@ public class UserServiceTest extends ServiceUnitTest {
 	private UserService userService;
 
 	@Inject
-	private UserRepository userRepository;
-
-	@Inject
-	private PasswordEncoder passwordEncoder;
-
-	@Inject
-	private SaltSource saltSource;
-
-	@Inject
-	private AuthenticationManager authenticationManager;
+	private UserAuthenticationRepository userRepository;
 
 	/**
 	 * Test method for {@link com.tapas.evidence.service.UserServiceImpl#loadUserByUsername(java.lang.String)}.
@@ -86,15 +74,14 @@ public class UserServiceTest extends ServiceUnitTest {
 		try {
 			userService.create(userDTO );
 		} catch (final UserAlreadyExistsException e) {
-			fail("User " + userDTO.getUsername() + " already exists!");
+			fail("UserAuthentication " + userDTO.getUsername() + " already exists!");
 		}
 
-		final org.sharetask.entity.User user = userRepository.findByUsername(name);
-		assertEquals(user.getEmail(), userDTO.getUsername());
-		assertEquals(user.getName(), userDTO.getName());
-		assertEquals(user.getSurName(), userDTO.getSurName());
+		final org.sharetask.entity.UserAuthentication user = userRepository.findByUsername(name);
+		assertEquals(user.getUserInfo().getName(), userDTO.getName());
+		assertEquals(user.getUserInfo().getSurName(), userDTO.getSurName());
 		assertEquals(user.getUsername(), userDTO.getUsername());
-		assertTrue(user.getRoles().size() == 1);
+		assertTrue(user.getUserInfo().getRoles().size() == 1);
 	}
 
 	@Test

@@ -49,9 +49,9 @@ public abstract class BaseImmutableEntity {
 	@CreatedBy
 	@ManyToOne(cascade = { CascadeType.REFRESH }, optional = false)
 	@JoinColumn(name = "CREATED_BY")
-	private User createdBy;
+	private UserInformation createdBy;
 	
 	public Date getCreatedOn() {
-		return this.createdOn == null ? null : (Date)this.createdOn.clone();
+		return createdOn == null ? null : (Date)createdOn.clone();
 	}
 }

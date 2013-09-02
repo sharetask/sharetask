@@ -86,7 +86,7 @@ public class Workspace extends BaseEntity implements Serializable {
 	@Getter	@Setter
 	@ManyToOne(cascade = { CascadeType.REFRESH }, optional = false)
 	@JoinColumn(name = "OWNER_USER_NAME")
-	private User owner;
+	private UserInformation owner;
 
 	@OneToMany(mappedBy = "workspace", cascade = CascadeType.ALL)
 	private final List<Task> tasks = new ArrayList<Task>();
@@ -95,29 +95,29 @@ public class Workspace extends BaseEntity implements Serializable {
 	@JoinTable(name = "WORKSPACE_MEMBER", 
 		joinColumns = { @JoinColumn(name = "WORKSPACE_ID", referencedColumnName = "ID") }, 
 		inverseJoinColumns = { @JoinColumn(name = "USER_NAME", referencedColumnName = "USER_NAME", unique = true) })
-	private List<User> members = new ArrayList<User>();
+	private List<UserInformation> members = new ArrayList<UserInformation>();
 	
 	public Workspace() {
-		this.members = new ArrayList<User>();
+		members = new ArrayList<UserInformation>();
 	}
 	
 	public Collection<Task> getTasks() {
-		return Collections.unmodifiableCollection(this.tasks);
+		return Collections.unmodifiableCollection(tasks);
 	}
 
-	public Collection<User> getMembers() {
-		return Collections.unmodifiableCollection(this.members);
+	public Collection<UserInformation> getMembers() {
+		return Collections.unmodifiableCollection(members);
 	}
 
-	public void addMember(final User user) {
-		this.members.add(user);
+	public void addMember(final UserInformation user) {
+		members.add(user);
 	}
 	
-	public void removeMember(final User user) {
-		this.members.remove(user);
+	public void removeMember(final UserInformation user) {
+		members.remove(user);
 	}
 	
 	public void clearMembers() {
-		this.members.clear();
+		members.clear();
 	}
 }

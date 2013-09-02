@@ -40,6 +40,7 @@ import org.hibernate.internal.SessionImpl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -62,6 +63,7 @@ public class DbUnitTest {
 	private EntityManager entityManager;
 
 	@Inject
+	@Qualifier("authenticationManagerStd")
 	private AuthenticationManager authenticationManager;
 	
 	protected boolean enableSecurity = true;
@@ -72,9 +74,9 @@ public class DbUnitTest {
 		DatabaseOperation.DELETE.execute(getConnection(), getDataSet());
 		DatabaseOperation.INSERT.execute(getConnection(), getDataSet());
 		// login
-		if (this.enableSecurity) {
+		if (enableSecurity) {
 		    final Authentication authentication = new UsernamePasswordAuthenticationToken("test1@test.com", "password");
-	    	final Authentication authenticate = this.authenticationManager.authenticate(authentication);
+	    	final Authentication authenticate = authenticationManager.authenticate(authentication);
 	    	SecurityContextHolder.getContext().setAuthentication(authenticate);
 		}
 	}
@@ -86,7 +88,7 @@ public class DbUnitTest {
 
 	private IDatabaseConnection getConnection() throws DatabaseUnitException {
 		// get connection
-		final SessionImpl session = (SessionImpl) this.entityManager.getDelegate();
+		final SessionImpl session = (SessionImpl) entityManager.getDelegate();
 		final Connection con = session.connection(); // NOPMD
 		//DatabaseMetaData databaseMetaData = con.getMetaData();
 		final IDatabaseConnection connection = new DatabaseConnection(con);
@@ -102,6 +104,6 @@ public class DbUnitTest {
 	}
 	
 	protected EntityManager getEntityManager() {
-		return this.entityManager;
+		return entityManager;
 	}
 }

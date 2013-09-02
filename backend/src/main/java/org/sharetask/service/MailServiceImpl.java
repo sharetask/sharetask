@@ -35,9 +35,9 @@ import org.sharetask.api.TemplateMessageService;
 import org.sharetask.api.TemplateMessageService.TemplateList;
 import org.sharetask.api.dto.InvitationDTO;
 import org.sharetask.entity.Invitation.InvitationType;
-import org.sharetask.entity.User;
+import org.sharetask.entity.UserAuthentication;
 import org.sharetask.entity.Workspace;
-import org.sharetask.repository.UserRepository;
+import org.sharetask.repository.UserAuthenticationRepository;
 import org.sharetask.repository.WorkspaceRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
@@ -64,7 +64,7 @@ public class MailServiceImpl implements MailService {
 	private TemplateMessageService templateMessageService;
 
 	@Inject
-	private UserRepository userRepository;
+	private UserAuthenticationRepository userRepository;
 
 	@Inject
 	private NotificationQueueService notificationQueueService;
@@ -150,9 +150,9 @@ public class MailServiceImpl implements MailService {
 
 	private Map<String, Object> prepareAddWorkspaceMember(final InvitationDTO invitation) {
 		final Map<String, Object> model = new HashMap<String, Object>();
-		final User invitingUser = userRepository.findOne(invitation.getInvitingUser());
-		model.put("userName", invitingUser.getName());
-		model.put("userSurName", invitingUser.getSurName());
+		final UserAuthentication invitingUser = userRepository.findOne(invitation.getInvitingUser());
+		model.put("userName", invitingUser.getUserInfo().getName());
+		model.put("userSurName", invitingUser.getUserInfo().getSurName());
 		final Workspace workspace = workspaceRepository.findOne(invitation.getEntityId());
 		model.put("workspaceName", workspace.getTitle());
 		model.put("confimationLink", applicationUrl + "?code=" + invitation.getInvitationCode());

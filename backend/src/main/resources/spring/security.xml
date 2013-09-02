@@ -72,7 +72,7 @@
 	<bean id="filterSecurityInterceptor" class="org.springframework.security.web.access.intercept.FilterSecurityInterceptor">
 		<property name="securityMetadataSource">
 			<security:filter-security-metadata-source use-expressions="true">
-				<security:intercept-url pattern="/" access="permitAll" />
+			<security:intercept-url pattern="/" access="permitAll" />
 				<security:intercept-url pattern="/register" access="permitAll" />
 				<security:intercept-url pattern="/webapp" access="permitAll" />
 				<security:intercept-url pattern="/resources-webapp-#{applicationProps['application.version']}/**" access="permitAll" />
@@ -156,15 +156,17 @@
 
 	<bean id="loginUrlAuthenticationEntryPoint" class="org.springframework.security.web.authentication.Http403ForbiddenEntryPoint" />
 	
-	<security:authentication-manager alias="authenticationManagerStd">
-		<security:authentication-provider user-service-ref="userService">
-			<security:password-encoder ref="passwordEncoder">
-				<security:salt-source ref="saltSource"/>
-			</security:password-encoder>
-		</security:authentication-provider>
+	<security:authentication-manager id="authenticationManagerStd">
+		<security:authentication-provider ref="authenticationProviderStd" />
 	</security:authentication-manager>
+	
+    <bean id="authenticationProviderStd" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+        <property name="passwordEncoder" ref="passwordEncoder" />
+        <property name="saltSource" ref="saltSource" />
+        <property name="userDetailsService" ref="userService" />
+    </bean>	
 
-	<security:authentication-manager alias="authenticationManagerPac">
+	<security:authentication-manager id="authenticationManagerPac">
 		<security:authentication-provider ref="clientProvider"/>
 	</security:authentication-manager>
 

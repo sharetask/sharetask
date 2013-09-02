@@ -26,13 +26,13 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.util.ArrayList;
 
+import javax.annotation.Resource;
 import javax.inject.Inject;
 
 import org.junit.Test;
-import org.sharetask.api.UserService;
 import org.sharetask.data.DbUnitTest;
 import org.sharetask.entity.Role;
-import org.sharetask.repository.UserRepository;
+import org.sharetask.repository.UserAuthenticationRepository;
 import org.sharetask.security.UserDetailsImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -52,10 +52,7 @@ import org.springframework.security.crypto.codec.Hex;
 public class AuthenticationServiceTest extends DbUnitTest {
 
 	@Inject
-	private UserService userService;
-
-	@Inject
-	private UserRepository userRepository;
+	private UserAuthenticationRepository userRepository;
 
 	@Inject
 	private PasswordEncoder passwordEncoder;
@@ -63,44 +60,44 @@ public class AuthenticationServiceTest extends DbUnitTest {
 	@Inject
 	private SaltSource saltSource;
 	
-	@Inject
+	@Resource(name = "authenticationManagerStd")
 	private AuthenticationManager authenticationManager;
 
 	public AuthenticationServiceTest() {
-		this.enableSecurity = false;
+		enableSecurity = false;
 	}
 	
 	@Test
 	public void testPasswordEncoding() throws NoSuchAlgorithmException, NoSuchProviderException {
-		ArrayList<GrantedAuthority> list = new ArrayList<GrantedAuthority>();
+		final ArrayList<GrantedAuthority> list = new ArrayList<GrantedAuthority>();
 		list.add(new SimpleGrantedAuthority(Role.ROLE_USER.name()));
 		list.add(new SimpleGrantedAuthority(Role.ROLE_ADMINISTRATOR.name()));
-		User u = new UserDetailsImpl("dev1@shareta.sk", "password", "6ef7a5723d302c64d65d02f5c6662dc61bebec930ea300620bc9ff7f12b49fda11e2e57933526fd3b73840b0693a7cf4abe05fbfe16223d4bd42eb3043cf5d24", list);
-		String password = passwordEncoder.encodePassword("password", saltSource.getSalt(u));
-		org.sharetask.entity.User user = userRepository.findOne(u.getUsername());
+		final User u = new UserDetailsImpl("dev1@shareta.sk", "password", "6ef7a5723d302c64d65d02f5c6662dc61bebec930ea300620bc9ff7f12b49fda11e2e57933526fd3b73840b0693a7cf4abe05fbfe16223d4bd42eb3043cf5d24", list);
+		final String password = passwordEncoder.encodePassword("password", saltSource.getSalt(u));
+		final org.sharetask.entity.UserAuthentication user = userRepository.findOne(u.getUsername());
 		assertEquals(password, user.getPassword());
-	    Authentication authentication = new UsernamePasswordAuthenticationToken("dev1@shareta.sk", "password");
+	    final Authentication authentication = new UsernamePasswordAuthenticationToken("dev1@shareta.sk", "password");
 	    try {
 	    	authenticationManager.authenticate(authentication);
-	    } catch (BadCredentialsException e) {
+	    } catch (final BadCredentialsException e) {
 	    	fail("Problem with authentication: user/password");
 	    }
 	}
 	
 	@Test
 	public void testSaltPasswordEncoder() throws NoSuchAlgorithmException {
-		String username = "test3@test.com";
-		String password = "password";
-		ArrayList<GrantedAuthority> list = new ArrayList<GrantedAuthority>();
+		final String username = "test3@test.com";
+		final String password = "password";
+		final ArrayList<GrantedAuthority> list = new ArrayList<GrantedAuthority>();
 		list.add(new SimpleGrantedAuthority(Role.ROLE_USER.name()));
 		list.add(new SimpleGrantedAuthority(Role.ROLE_ADMINISTRATOR.name()));
-		MessageDigest mda = MessageDigest.getInstance("SHA-512");
-		String baseSalt = String.valueOf(System.currentTimeMillis()) + "dev1@shareta.sk";
-		byte [] digest = mda.digest(baseSalt.getBytes());
-		String salt = new String(Hex.encode(digest));
-		User u = new UserDetailsImpl(username, password, salt, list);
-		String passwordEncoded = passwordEncoder.encodePassword("password", saltSource.getSalt(u));
-		System.out.println("User name: " + username);
+		final MessageDigest mda = MessageDigest.getInstance("SHA-512");
+		final String baseSalt = String.valueOf(System.currentTimeMillis()) + "dev1@shareta.sk";
+		final byte [] digest = mda.digest(baseSalt.getBytes());
+		final String salt = new String(Hex.encode(digest));
+		final User u = new UserDetailsImpl(username, password, salt, list);
+		final String passwordEncoded = passwordEncoder.encodePassword("password", saltSource.getSalt(u));
+		System.out.println("UserAuthentication name: " + username);
 		System.out.println("Password: " + password);
 		System.out.println("Salt: " + salt);
 		System.out.println("Encoded password: " + passwordEncoded);

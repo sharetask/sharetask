@@ -21,13 +21,13 @@ package org.sharetask.utility.converter;
 import org.dozer.CustomConverter;
 import org.dozer.MappingException;
 import org.sharetask.api.dto.UserInfoDTO;
-import org.sharetask.entity.User;
+import org.sharetask.entity.UserInformation;
 
 /**
  * @author Michal Bocek
  * @since 1.0.0
  */
-public class UserInfoConverter implements CustomConverter {
+public class UserInformationConverter implements CustomConverter {
 
 	/* (non-Javadoc)
 	 * @see org.dozer.CustomConverter#convert(java.lang.Object, java.lang.Object, java.lang.Class, java.lang.Class)
@@ -36,17 +36,17 @@ public class UserInfoConverter implements CustomConverter {
 	public Object convert(final Object destination, final Object source, final Class<?> destClass,
 			final Class<?> sourceClass) {
 		Object result = null;
-		if (source instanceof User) {
-			final UserInfoDTO teacher = convert((User) source);
+		if (source instanceof UserInformation) {
+			final UserInfoDTO teacher = convert((UserInformation) source);
 			result = teacher;
 		} else if (source != null) {
-			throw new MappingException("Converter UserInfoConverter used incorrectly. Arguments passed were:"
+			throw new MappingException("Converter UserInformationConverter used incorrectly. Arguments passed were:"
 					+ destination + " and " + source);
 		}
 		return result;
 	}
 
-	private UserInfoDTO convert(final User source) {
+	private UserInfoDTO convert(final UserInformation source) {
 		final UserInfoDTO userInfoDTO = new UserInfoDTO();
 		userInfoDTO.setUsername(source.getUsername());
 		userInfoDTO.setName(source.getName());
