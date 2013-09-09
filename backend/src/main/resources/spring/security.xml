@@ -11,18 +11,29 @@
 
 	<util:properties id="applicationProps" location="classpath:application.properties"/>
 
+	<!-- ================================================================= -->
+	<!-- Filter chain with mapping to url                                  -->
+	<!-- - one chain is for callback from services like google, facebook.. -->
+	<!-- - second chain is standard security chain                         -->
+	<!-- ================================================================= -->
 	<bean id="filterChainProxy" class="org.springframework.security.web.FilterChainProxy">
 	    <security:filter-chain-map path-type="ant">
-	        <security:filter-chain pattern="/authcallback" filters="securityContextFilter, clientFilter, servletApiFilter," />
+	        <security:filter-chain pattern="/authcallback" filters="securityContextFilter, servletApiFilter, clientFilter" />
 	        <security:filter-chain pattern="/**" filters="securityContextFilter, requestCacheFilter, servletApiFilter, 
 	        	rememberMeProcessingFilter, anonFilter, sessionMgmtFilter, exceptionTranslator, filterSecurityInterceptor" />
 	    </security:filter-chain-map>
 	</bean>
 
+	<!-- ================================================================= -->
+	<!-- Populate security context holder with information from repository -->
+	<!-- ================================================================= -->
 	<bean id="securityContextFilter" class="org.springframework.security.web.context.SecurityContextPersistenceFilter">
 		<property name="securityContextRepository" ref="securityContextRepository" />
 	</bean>
 
+	<!-- ================================================================= -->
+	<!-- Security context repository definition                            -->
+	<!-- ================================================================= -->
 	<bean id="securityContextRepository" class="org.springframework.security.web.context.HttpSessionSecurityContextRepository">
 		<property name="disableUrlRewriting" value="true" />
 	</bean>
@@ -69,6 +80,9 @@
 		</property>
 	</bean>
 
+	<!-- ================================================================= -->
+	<!-- URL security filter                                               -->
+	<!-- ================================================================= -->
 	<bean id="filterSecurityInterceptor" class="org.springframework.security.web.access.intercept.FilterSecurityInterceptor">
 		<property name="securityMetadataSource">
 			<security:filter-security-metadata-source use-expressions="true">
@@ -95,15 +109,14 @@
 	<!-- ================================================================= -->
 	<!-- Sign in via google account                                        -->
 	<!-- ================================================================= -->
-<!-- 	<security:http pattern="/authcallback" auto-config="false" entry-point-ref="loginUrlAuthenticationEntryPoint">
-	    <security:custom-filter after="CAS_FILTER" ref="clientFilter" />
-	</security:http>
--->
 	<bean id="googleClient" class="org.pac4j.oauth.client.Google2Client">
 		<property name="key" value="96323765852-ltqp2hedmv4dnl6o1d5jjibmudb1jr29.apps.googleusercontent.com" />
 		<property name="secret" value="Wd34gjQUNJxq8HL3caczkc1m" />
 	</bean>
 
+	<!-- ================================================================= -->
+	<!-- Authentication client list with callback URL                      -->
+	<!-- ================================================================= -->
 	<bean id="clients" class="org.pac4j.core.client.Clients">
 		<property name="callbackUrl" value="http://localhost:8080/sharetask/authcallback" />
 		<property name="clients">
@@ -113,63 +126,55 @@
 		</property>
 	</bean>
 	
+	<!-- ================================================================= -->
+	<!-- Authentication client list with callback URL                      -->
+	<!-- ================================================================= -->
 	<bean id="clientFilter" class="org.pac4j.springframework.security.web.ClientAuthenticationFilter">
 		<constructor-arg value="/authcallback" />
 		<property name="clients" ref="clients" />
 		<property name="authenticationManager" ref="authenticationManagerPac" />
 		<property name="authenticationSuccessHandler">
-	        <bean class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
+	        <bean class="org.sharetask.security.StoreUserInformationAuthenticationSuccessHandler">
 	            <property name="defaultTargetUrl" value="/webapp" />
 	        </bean>
 	    </property>		
 	</bean>
 
+	<!-- ================================================================= -->
+	<!-- PAC4J client provider                                             -->
+	<!-- ================================================================= -->
 	<bean id="clientProvider" class="org.pac4j.springframework.security.authentication.ClientAuthenticationProvider">
 		<property name="clients" ref="clients" />
 	</bean>
-
-
-	<!-- ================================================================= -->
-	<!-- Standard database authentication setup                            -->
-	<!-- ================================================================= -->
-<!-- 	<security:http auto-config="false" disable-url-rewriting="true" use-expressions="true" entry-point-ref="loginUrlAuthenticationEntryPoint"> -->
-		<!-- <form-login /> login will be done programmatically -->
-<!-- 		<security:access-denied-handler error-page="/denied" /> -->
-		<!-- <logout invalidate-session="true" logout-url="/api/user/logout" /> login will be done programmatically -->
-<!-- 		<security:remember-me /> -->
-
-<!-- 		<security:intercept-url pattern="/" access="permitAll" /> -->
-<!-- 		<security:intercept-url pattern="/register" access="permitAll" /> -->
-<!-- 		<security:intercept-url pattern="/webapp" access="permitAll" /> -->
-<!-- 		<security:intercept-url pattern="/resources-webapp-#{applicationProps['application.version']}/**" access="permitAll" /> -->
-<!-- 		<security:intercept-url pattern="/resources-web-#{applicationProps['application.version']}/**" access="permitAll" /> -->
-<!-- 		<security:intercept-url pattern="/api/info" access="permitAll" /> -->
-<!-- 		<security:intercept-url pattern="/api/user/login/status" access="permitAll" /> -->
-<!-- 		<security:intercept-url pattern="/api/user/login" access="permitAll" /> -->
-<!-- 		<security:intercept-url pattern="/authcallback" access="permitAll" /> -->
-<!-- 		<security:intercept-url pattern="/api/user/confirm" access="permitAll" /> -->
-<!-- 		<security:intercept-url pattern="/api/user" method="POST" access="permitAll" /> -->
-<!-- 		<security:intercept-url pattern="/api/user/logout" access="permitAll" /> -->
-<!-- 		<security:intercept-url pattern="/app-info" access="hasRole('ROLE_ADMINISTRATOR')" /> -->
-<!-- 		<security:intercept-url pattern="/**" access="isAuthenticated()" /> -->
-<!-- 	</security:http> -->
-
+	
 	<bean id="loginUrlAuthenticationEntryPoint" class="org.springframework.security.web.authentication.Http403ForbiddenEntryPoint" />
 	
+	<!-- ================================================================= -->
+	<!-- Authentication manager for all calls                              -->
+	<!-- ================================================================= -->
 	<security:authentication-manager id="authenticationManagerStd">
 		<security:authentication-provider ref="authenticationProviderStd" />
 	</security:authentication-manager>
 	
+	<!-- ================================================================= -->
+	<!-- Authentication provider for all calls with salt                   -->
+	<!-- ================================================================= -->
     <bean id="authenticationProviderStd" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
         <property name="passwordEncoder" ref="passwordEncoder" />
         <property name="saltSource" ref="saltSource" />
         <property name="userDetailsService" ref="userService" />
     </bean>	
 
+	<!-- ================================================================= -->
+	<!-- Authentication manager for calls from google, facebook ...        -->
+	<!-- ================================================================= -->
 	<security:authentication-manager id="authenticationManagerPac">
 		<security:authentication-provider ref="clientProvider"/>
 	</security:authentication-manager>
 
+	<!-- ================================================================= -->
+	<!-- SHA password encoding with 512 bit strength                       -->
+	<!-- ================================================================= -->
 	<bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder">
 		<constructor-arg name="strength" value="512" />
 	</bean>
@@ -186,6 +191,9 @@
 		<property name="permissionEvaluator" ref="permissionEvaluator" />
 	</bean>
 
+	<!-- ================================================================= -->
+	<!-- Permission evaluator for specific permission verbs                -->
+	<!-- ================================================================= -->
 	<bean id="permissionEvaluator" class="org.sharetask.security.AccessPermissionEvaluator">
 		<constructor-arg index="0">
 			<map key-type="java.lang.String" value-type="org.sharetask.security.Permission">
