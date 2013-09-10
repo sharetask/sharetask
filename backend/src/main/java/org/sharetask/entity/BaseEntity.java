@@ -49,9 +49,9 @@ public abstract class BaseEntity extends BaseImmutableEntity {
 	@LastModifiedBy
 	@ManyToOne(cascade = { CascadeType.REFRESH }, optional = false)
 	@JoinColumn(name = "UPDATED_BY")
-	private User updatedBy;
+	private UserInformation updatedBy;
 	
 	public Date getUpdatedOn() {
-		return this.updatedOn == null ? null : (Date)this.updatedOn.clone();
+		return updatedOn == null ? null : (Date)updatedOn.clone();
 	}
 }

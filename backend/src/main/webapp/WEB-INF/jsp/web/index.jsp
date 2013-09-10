@@ -16,6 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
 --%>
+<%@page import="org.pac4j.oauth.client.Google2Client"%>
+<%@page import="org.pac4j.oauth.client.FacebookClient"%>
+<%@page import="org.pac4j.core.context.J2EContext"%>
+<%@page import="org.pac4j.core.context.WebContext"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
@@ -24,6 +28,13 @@
 <spring:eval expression="@applicationProps['application.version']" var="applicationVersion" />
 <spring:eval expression="@applicationProps['application.revision']" var="applicationRevision" />
 <spring:eval expression="@applicationProps['google.analytics.account.web']" var="googleAnalyticsAccount" />
+<spring:eval expression="@applicationProps['google.analytics.account.web']" var="googleAnalyticsAccount" />
+
+<%
+    WebContext context = new J2EContext(request, response); 
+	Google2Client gClient= (Google2Client) application.getAttribute("GoogleClient");
+    String redirectionGoogleUrl = gClient.getRedirectionUrl(context);
+%>
 
 <!doctype html>
 <html lang="en" ng-app="shareTaskWeb">
@@ -95,7 +106,7 @@
 						</tr>
 						<tr>
 							<td style="padding-right:15px;border-right:1px solid rgba(255,255,255,0.5);">
-								<p><a href="" class="btn btn-inverse"><i class="icon-google-plus"></i> <spring:message code="login.account.google" /></a></p><br />
+								<p><a href="<%= redirectionGoogleUrl%>" class="btn btn-inverse"><i class="icon-google-plus"></i> <spring:message code="login.account.google" /></a></p><br />
 								<p><a href="" class="btn btn-inverse"><i class="icon-facebook"></i> <spring:message code="login.account.facebook" /></a></p><br />
 								<p><a href="" class="btn btn-inverse"><i class="icon-twitter"></i> <spring:message code="login.account.twitter" /></a></p>
 							</td>

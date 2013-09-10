@@ -38,10 +38,10 @@ import org.sharetask.entity.Event.EventType;
 import org.sharetask.entity.Task;
 import org.sharetask.entity.Task.PriorityType;
 import org.sharetask.entity.Task.StateType;
-import org.sharetask.entity.User;
+import org.sharetask.entity.UserInformation;
 import org.sharetask.entity.Workspace;
 import org.sharetask.repository.TaskRepository;
-import org.sharetask.repository.UserRepository;
+import org.sharetask.repository.UserInformationRepository;
 import org.sharetask.repository.WorkspaceRepository;
 import org.sharetask.utility.DTOConverter;
 import org.sharetask.utility.SecurityUtil;
@@ -63,7 +63,7 @@ public class TaskServiceImpl implements TaskService {
 	private TaskRepository taskRepository;
 
 	@Inject
-	private UserRepository userRepository;
+	private UserInformationRepository userRepository;
 
 	@Inject
 	private WorkspaceRepository workspaceRepository;
@@ -80,7 +80,7 @@ public class TaskServiceImpl implements TaskService {
 		taskEntity.setWorkspace(workspace);
 		// when assignee isn't set from source it will be assigned as signed in user
 		if (taskEntity.getAssignee() == null) {
-			final User assignee = userRepository.read(SecurityUtil.getCurrentSignedInUsername());
+			final UserInformation assignee = userRepository.read(SecurityUtil.getCurrentSignedInUsername());
 			taskEntity.setAssignee(assignee);
 		}
 		final Task storedTaskEntity = taskRepository.save(taskEntity);
@@ -163,7 +163,7 @@ public class TaskServiceImpl implements TaskService {
 	public void forward(final Long taskId, final String assignee) {
 		final Task task = taskRepository.read(taskId);
 
-		final User assigneeUser = userRepository.read(assignee);
+		final UserInformation assigneeUser = userRepository.read(assignee);
 		if (task.getWorkspace().getMembers().contains(assigneeUser)) {
 			log.debug("Added user {} is member of workspace.", assigneeUser.getUsername());
 			task.setAssignee(assigneeUser);

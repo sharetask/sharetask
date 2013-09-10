@@ -20,7 +20,7 @@ package org.sharetask.security;
 
 import lombok.Setter;
 
-import org.sharetask.entity.User;
+import org.sharetask.entity.UserInformation;
 import org.sharetask.entity.Workspace;
 import org.sharetask.repository.WorkspaceRepository;
 import org.springframework.security.core.Authentication;
@@ -44,11 +44,11 @@ public class WorkspaceMemberOrOwnerPermission implements Permission {
 	@Override
 	public boolean isAllowed(final Authentication authentication, final Object targetDomainObject) {
 		boolean result;
-		Assert.isTrue(isAuthenticated(authentication), "User is not authenticated!");
+		Assert.isTrue(isAuthenticated(authentication), "UserAuthentication is not authenticated!");
 		Assert.isTrue(targetDomainObject instanceof Long);
 		final Long workspaceId = (Long) targetDomainObject;
 		final String userName = authentication.getName();
-		final Workspace workspace = this.workspaceRepository.read(workspaceId);
+		final Workspace workspace = workspaceRepository.read(workspaceId);
 		if (isWorkspaceOwner(workspace, userName)) {
 			result = true;
 		} else if (isWorkspaceMember(workspace, userName)) {
@@ -61,7 +61,7 @@ public class WorkspaceMemberOrOwnerPermission implements Permission {
 	
     private boolean isWorkspaceMember(final Workspace workspace, final String userName) {
     	boolean result = false;
-    	for (final User member : workspace.getMembers()) {
+    	for (final UserInformation member : workspace.getMembers()) {
 			if (member.getUsername().equals(userName)) {
 				result = true;
 				break;

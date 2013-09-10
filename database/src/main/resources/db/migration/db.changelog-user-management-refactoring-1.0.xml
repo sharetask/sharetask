@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
+						http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+	<changeSet id="create: user_authentication" author="mbocek">
+		<createTable tableName="USER_AUTHENTICATION" remarks="Table for storing user authentication data">
+			<column name="USER_NAME" type="VARCHAR(255)" remarks="User identifiert">
+				<constraints nullable="false" primaryKey="true" primaryKeyName="PK_USER_AUTHENTICATION" />
+			</column>
+			<column name="ENABLED" type="BOOLEAN" remarks="Enabled flag" >
+				<constraints nullable="false" />
+			</column>
+			<column name="PASSWORD" type="VARCHAR(128)" remarks="Encoded password">
+				<constraints nullable="false" />
+			</column>
+			<column name="SALT" type="VARCHAR(128)" remarks="Generated salt password">
+				<constraints nullable="false" />
+			</column>
+			<column name="CREATED_ON" type="DATETIME" remarks="Date when record was creaded">
+				<constraints nullable="false" />
+			</column>
+			<column name="UPDATED_ON" type="DATETIME" remarks="Date when record was updated">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		
+		<modifySql dbms="mysql">
+			<append value="ENGINE=INNODB CHARSET=UTF8 COLLATE utf8_general_ci" />
+		</modifySql>	
+	</changeSet>
+
+	<changeSet id="create: user_information" author="mbocek">
+		<createTable tableName="USER_INFORMATION" remarks="Table for storing user information">
+			<column name="USER_NAME" type="VARCHAR(255)" remarks="User identifiert">
+				<constraints nullable="false" primaryKey="true" primaryKeyName="PK_USER_INFORMATION" />
+			</column>
+			<column name="NAME" type="VARCHAR(255)" remarks="User name">
+				<constraints nullable="false" />
+			</column>
+			<column name="SURNAME" type="VARCHAR(255)" remarks="Surname">
+				<constraints nullable="false" />
+			</column>
+			<column name="CREATED_ON" type="DATETIME" remarks="Date when record was creaded">
+				<constraints nullable="false" />
+			</column>
+			<column name="UPDATED_ON" type="DATETIME" remarks="Date when record was updated">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		
+		<modifySql dbms="mysql">
+			<append value="ENGINE=INNODB CHARSET=UTF8 COLLATE utf8_general_ci" />
+		</modifySql>
+	</changeSet>
+
+	<changeSet id="create: user foreignkeys" author="mbocek">
+		<addForeignKeyConstraint baseColumnNames="USER_NAME" baseTableName="USER_ROLE"
+			constraintName="FK_ROLE_USER_INFO" deferrable="false" initiallyDeferred="false"
+			onDelete="CASCADE" onUpdate="NO ACTION" 
+			referencedColumnNames="USER_NAME" referencedTableName="USER_INFORMATION"
+			referencesUniqueColumn="false" />
+	</changeSet>
+
+	<changeSet id="migration: user information" author="mbocek">
+		<sql>insert into USER_AUTHENTICATION(user_name, enabled, password, salt, created_on, updated_on) 
+		     select user_name, enabled, password, salt, created_on, updated_on from user</sql>
+		<sql>insert into USER_INFORMATION(user_name, name, surname, created_on, updated_on) 
+		     select user_name, name, surname, created_on, updated_on from user</sql>
+	</changeSet>
+	
+	<changeSet id="cleanup: migration constraint" author="mbocek">
+		<dropForeignKeyConstraint baseTableName="USER_ROLE"
+            constraintName="FK_ROLE_USER" />
+            
+		<dropForeignKeyConstraint baseTableName="TASK"
+            constraintName="FK_TASK_ASSIGNEE" />
+
+        <addForeignKeyConstraint constraintName="FK_TASK_ASSIGNEE"
+			baseTableName="TASK" baseColumnNames="ASSIGNEE_USER_NAME"
+			referencedTableName="USER_INFORMATION" referencedColumnNames="USER_NAME" />
+        
+		<dropForeignKeyConstraint baseTableName="WORKSPACE"
+            constraintName="FK_WORKSPACE_USER" />
+
+		<addForeignKeyConstraint constraintName="FK_WORKSPACE_USER"
+			baseTableName="WORKSPACE" baseColumnNames="OWNER_USER_NAME"
+			referencedTableName="USER_INFORMATION" referencedColumnNames="USER_NAME" />
+        
+		<dropForeignKeyConstraint baseTableName="WORKSPACE"
+            constraintName="FK_WORKSPACE_MEMBER_USER" />
+
+		<addForeignKeyConstraint constraintName="FK_WORKSPACE_MEMBER_USER"
+			baseTableName="WORKSPACE_MEMBER" baseColumnNames="USER_NAME"
+			referencedTableName="USER_INFORMATION" referencedColumnNames="USER_NAME" />
+	</changeSet>
+
+	<changeSet id="drop: user table" author="mbocek">
+		<dropTable tableName="USER"/>
+	</changeSet>
+
+</databaseChangeLog>

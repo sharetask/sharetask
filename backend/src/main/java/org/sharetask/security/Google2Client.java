@@ -16,21 +16,25 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.sharetask.repository;
+package org.sharetask.security;
 
-import org.sharetask.entity.User;
-import org.sharetask.repository.base.BaseJpaRepository;
+import org.pac4j.core.context.WebContext;
+import org.pac4j.oauth.client.exception.OAuthCredentialsException;
 
 /**
  * @author Michal Bocek
  * @since 1.0.0
  */
-public interface UserRepository extends BaseJpaRepository<User, String> {
-	
-	/**
-	 * Find user by user name.
-	 * @param id
-	 * @return
-	 */
-	User findByUsername(final String username);
+public class Google2Client extends org.pac4j.oauth.client.Google2Client {
+
+	@Override
+	protected boolean hasBeenCancelled(final WebContext context) {
+        final String error = context.getRequestParameter(OAuthCredentialsException.ERROR);
+        // user has denied permissions
+        if ("access_denied".equals(error)) {
+            return true;
+        } else {
+            return false;
+        }
+	}
 }

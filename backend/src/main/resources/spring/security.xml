@@ -1,88 +1,225 @@
-<beans:beans xmlns="http://www.springframework.org/schema/security"
-	xmlns:beans="http://www.springframework.org/schema/beans" 
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:security="http://www.springframework.org/schema/security" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:p="http://www.springframework.org/schema/p"
 	xmlns:util="http://www.springframework.org/schema/util"  
  	xmlns:context="http://www.springframework.org/schema/context"
- 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd 
+ 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd 
 						http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd
 						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
 						http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
 	<util:properties id="applicationProps" location="classpath:application.properties"/>
 
-	<http auto-config="false" disable-url-rewriting="true" use-expressions="true" entry-point-ref="loginUrlAuthenticationEntryPoint">
-		<!-- <form-login /> login will be done programmatically -->
-		<access-denied-handler error-page="/denied" />
-		<!-- <logout invalidate-session="true" logout-url="/api/user/logout" /> login will be done programmatically -->
-		<remember-me />
+	<!-- ================================================================= -->
+	<!-- Filter chain with mapping to url                                  -->
+	<!-- - one chain is for callback from services like google, facebook.. -->
+	<!-- - second chain is standard security chain                         -->
+	<!-- ================================================================= -->
+	<bean id="filterChainProxy" class="org.springframework.security.web.FilterChainProxy">
+	    <security:filter-chain-map path-type="ant">
+	        <security:filter-chain pattern="/authcallback" filters="securityContextFilter, servletApiFilter, clientFilter" />
+	        <security:filter-chain pattern="/**" filters="securityContextFilter, requestCacheFilter, servletApiFilter, 
+	        	rememberMeProcessingFilter, anonFilter, sessionMgmtFilter, exceptionTranslator, filterSecurityInterceptor" />
+	    </security:filter-chain-map>
+	</bean>
 
-		<intercept-url pattern="/" access="permitAll" />
-		<intercept-url pattern="/register" access="permitAll" />
-		<intercept-url pattern="/webapp" access="permitAll" />
-		<intercept-url pattern="/resources-webapp-#{applicationProps['application.version']}/**" access="permitAll" />
-		<intercept-url pattern="/resources-web-#{applicationProps['application.version']}/**" access="permitAll" />
-		<intercept-url pattern="/api/info" access="permitAll" />
-		<intercept-url pattern="/api/user/login/status" access="permitAll" />
-		<intercept-url pattern="/api/user/login" access="permitAll" />
-		<intercept-url pattern="/api/user/confirm" access="permitAll" />
-		<intercept-url pattern="/api/user" method="POST" access="permitAll" />
-		<intercept-url pattern="/api/user/logout" access="permitAll" />
-		<intercept-url pattern="/app-info" access="hasRole('ROLE_ADMINISTRATOR')" />
-		<intercept-url pattern="/**" access="isAuthenticated()" />
-	</http>
+	<!-- ================================================================= -->
+	<!-- Populate security context holder with information from repository -->
+	<!-- ================================================================= -->
+	<bean id="securityContextFilter" class="org.springframework.security.web.context.SecurityContextPersistenceFilter">
+		<property name="securityContextRepository" ref="securityContextRepository" />
+	</bean>
 
-	<beans:bean id="loginUrlAuthenticationEntryPoint" class="org.springframework.security.web.authentication.Http403ForbiddenEntryPoint" />
+	<!-- ================================================================= -->
+	<!-- Security context repository definition                            -->
+	<!-- ================================================================= -->
+	<bean id="securityContextRepository" class="org.springframework.security.web.context.HttpSessionSecurityContextRepository">
+		<property name="disableUrlRewriting" value="true" />
+	</bean>
+
+	<bean id="requestCacheFilter" class="org.springframework.security.web.savedrequest.RequestCacheAwareFilter" />
 	
-	<authentication-manager alias="authenticationManager">
-		<authentication-provider user-service-ref="userService">
-			<password-encoder ref="passwordEncoder">
-				<salt-source ref="saltSource"/>
-			</password-encoder>
-		</authentication-provider>
-	</authentication-manager>
+	<bean id="servletApiFilter" class="org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter" />
 
-	<beans:bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder">
-		<beans:constructor-arg name="strength" value="512" />
-	</beans:bean>
+	<bean id="rememberMeProcessingFilter" class="org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter">
+		<property name="rememberMeServices" ref="rememberMeServices" />
+		<property name="authenticationManager" ref="authenticationManagerStd" />
+	</bean>
+	
+	<bean id="rememberMeServices" class="org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices">
+		<property name="userDetailsService" ref="userService" />
+		<property name="key" value="sharetask" />
+	</bean>	
 
-	<beans:bean id="saltSource" class="org.springframework.security.authentication.dao.ReflectionSaltSource"
+	<bean id="anonFilter" class="org.springframework.security.web.authentication.AnonymousAuthenticationFilter">
+		<property name="key" value="sharetask" />
+		<property name="userAttribute" value="anonymousUser,ROLE_ANONYMOUS" />
+	</bean>
+
+	<bean id="sessionMgmtFilter" class="org.springframework.security.web.session.SessionManagementFilter">
+		<constructor-arg ref="securityContextRepository" />
+	</bean>
+
+	<bean id="accessDeniedHandler" class="org.springframework.security.web.access.AccessDeniedHandlerImpl">
+		<property name="errorPage" value="/denied" />
+	</bean>
+
+	<bean id="exceptionTranslator" class="org.springframework.security.web.access.ExceptionTranslationFilter">
+		<property name="authenticationEntryPoint" ref="loginUrlAuthenticationEntryPoint"/>
+		<property name="accessDeniedHandler" ref="accessDeniedHandler"/>
+	</bean>
+
+	<bean id="accessDecisionManager" class="org.springframework.security.access.vote.AffirmativeBased">
+		<property name="decisionVoters">
+			<list>
+				<bean class="org.springframework.security.access.vote.RoleVoter" />
+				<bean class="org.springframework.security.web.access.expression.WebExpressionVoter" />
+				<bean class="org.springframework.security.access.vote.AuthenticatedVoter" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- ================================================================= -->
+	<!-- URL security filter                                               -->
+	<!-- ================================================================= -->
+	<bean id="filterSecurityInterceptor" class="org.springframework.security.web.access.intercept.FilterSecurityInterceptor">
+		<property name="securityMetadataSource">
+			<security:filter-security-metadata-source use-expressions="true">
+			<security:intercept-url pattern="/" access="permitAll" />
+				<security:intercept-url pattern="/register" access="permitAll" />
+				<security:intercept-url pattern="/webapp" access="permitAll" />
+				<security:intercept-url pattern="/resources-webapp-#{applicationProps['application.version']}/**" access="permitAll" />
+				<security:intercept-url pattern="/resources-web-#{applicationProps['application.version']}/**" access="permitAll" />
+				<security:intercept-url pattern="/api/info" access="permitAll" />
+				<security:intercept-url pattern="/api/user/login/status" access="permitAll" />
+				<security:intercept-url pattern="/api/user/login" access="permitAll" />
+				<security:intercept-url pattern="/authcallback" access="permitAll" />
+				<security:intercept-url pattern="/api/user/confirm" access="permitAll" />
+				<security:intercept-url pattern="/api/user" method="POST" access="permitAll" />
+				<security:intercept-url pattern="/api/user/logout" access="permitAll" />
+				<security:intercept-url pattern="/app-info" access="hasRole('ROLE_ADMINISTRATOR')" />
+				<security:intercept-url pattern="/**" access="isAuthenticated()" />			
+			</security:filter-security-metadata-source>
+		</property>
+		<property name="authenticationManager" ref="authenticationManagerStd" />
+		<property name="accessDecisionManager" ref="accessDecisionManager" />
+	</bean>
+
+	<!-- ================================================================= -->
+	<!-- Sign in via google account                                        -->
+	<!-- ================================================================= -->
+	<bean id="googleClient" class="org.sharetask.security.Google2Client">
+		<property name="key" value="96323765852-ltqp2hedmv4dnl6o1d5jjibmudb1jr29.apps.googleusercontent.com" />
+		<property name="secret" value="Wd34gjQUNJxq8HL3caczkc1m" />
+	</bean>
+
+	<!-- ================================================================= -->
+	<!-- Authentication client list with callback URL                      -->
+	<!-- ================================================================= -->
+	<bean id="clients" class="org.pac4j.core.client.Clients">
+		<property name="callbackUrl" value="http://localhost:8080/sharetask/authcallback" />
+		<property name="clients">
+			<list>
+				<ref bean="googleClient" />
+			</list>
+		</property>
+	</bean>
+	
+	<!-- ================================================================= -->
+	<!-- Authentication client list with callback URL                      -->
+	<!-- ================================================================= -->
+	<bean id="clientFilter" class="org.pac4j.springframework.security.web.ClientAuthenticationFilter">
+		<constructor-arg value="/authcallback" />
+		<property name="clients" ref="clients" />
+		<property name="authenticationManager" ref="authenticationManagerPac" />
+		<property name="authenticationSuccessHandler">
+	        <bean class="org.sharetask.security.StoreUserInformationAuthenticationSuccessHandler">
+	            <property name="defaultTargetUrl" value="/webapp" />
+	        </bean>
+	    </property>		
+	</bean>
+
+	<!-- ================================================================= -->
+	<!-- PAC4J client provider                                             -->
+	<!-- ================================================================= -->
+	<bean id="clientProvider" class="org.pac4j.springframework.security.authentication.ClientAuthenticationProvider">
+		<property name="clients" ref="clients" />
+	</bean>
+	
+	<bean id="loginUrlAuthenticationEntryPoint" class="org.springframework.security.web.authentication.Http403ForbiddenEntryPoint" />
+	
+	<!-- ================================================================= -->
+	<!-- Authentication manager for all calls                              -->
+	<!-- ================================================================= -->
+	<security:authentication-manager id="authenticationManagerStd">
+		<security:authentication-provider ref="authenticationProviderStd" />
+	</security:authentication-manager>
+	
+	<!-- ================================================================= -->
+	<!-- Authentication provider for all calls with salt                   -->
+	<!-- ================================================================= -->
+    <bean id="authenticationProviderStd" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+        <property name="passwordEncoder" ref="passwordEncoder" />
+        <property name="saltSource" ref="saltSource" />
+        <property name="userDetailsService" ref="userService" />
+    </bean>	
+
+	<!-- ================================================================= -->
+	<!-- Authentication manager for calls from google, facebook ...        -->
+	<!-- ================================================================= -->
+	<security:authentication-manager id="authenticationManagerPac">
+		<security:authentication-provider ref="clientProvider"/>
+	</security:authentication-manager>
+
+	<!-- ================================================================= -->
+	<!-- SHA password encoding with 512 bit strength                       -->
+	<!-- ================================================================= -->
+	<bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder">
+		<constructor-arg name="strength" value="512" />
+	</bean>
+
+	<bean id="saltSource" class="org.springframework.security.authentication.dao.ReflectionSaltSource"
 		p:userPropertyToUse="salt" />
 
-	<global-method-security pre-post-annotations="enabled">
-		<expression-handler ref="expressionHandler"/>
-	</global-method-security>
+	<security:global-method-security pre-post-annotations="enabled">
+		<security:expression-handler ref="expressionHandler"/>
+	</security:global-method-security>
 
-	<beans:bean id="expressionHandler"
+	<bean id="expressionHandler"
 		class="org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler">
-		<beans:property name="permissionEvaluator" ref="permissionEvaluator" />
-	</beans:bean>
+		<property name="permissionEvaluator" ref="permissionEvaluator" />
+	</bean>
 
-	<beans:bean id="permissionEvaluator" class="org.sharetask.security.AccessPermissionEvaluator">
-		<beans:constructor-arg index="0">
-			<beans:map key-type="java.lang.String" value-type="org.sharetask.security.Permission">
-				<beans:entry key="isTaskAssignee" value-ref="taskAssigneePermission" />
-				<beans:entry key="isTaskAssigneeOrCreator" value-ref="taskAssigneeOrCreatorPermission" />
-				<beans:entry key="isWorkspaceMemberOrOwner" value-ref="workspaceMemberOrOwnerPermission" />
-				<beans:entry key="isWorkspaceOwner" value-ref="workspaceOwnerPermission" />
-			</beans:map>
-		</beans:constructor-arg>
-	</beans:bean>
+	<!-- ================================================================= -->
+	<!-- Permission evaluator for specific permission verbs                -->
+	<!-- ================================================================= -->
+	<bean id="permissionEvaluator" class="org.sharetask.security.AccessPermissionEvaluator">
+		<constructor-arg index="0">
+			<map key-type="java.lang.String" value-type="org.sharetask.security.Permission">
+				<entry key="isTaskAssignee" value-ref="taskAssigneePermission" />
+				<entry key="isTaskAssigneeOrCreator" value-ref="taskAssigneeOrCreatorPermission" />
+				<entry key="isWorkspaceMemberOrOwner" value-ref="workspaceMemberOrOwnerPermission" />
+				<entry key="isWorkspaceOwner" value-ref="workspaceOwnerPermission" />
+			</map>
+		</constructor-arg>
+	</bean>
 	
-	<beans:bean id="taskAssigneePermission" class="org.sharetask.security.TaskAssigneePermission">
-		<beans:property name="taskRepository" ref="taskRepository"/>
-	</beans:bean>
+	<bean id="taskAssigneePermission" class="org.sharetask.security.TaskAssigneePermission">
+		<property name="taskRepository" ref="taskRepository"/>
+	</bean>
 	
-	<beans:bean id="taskAssigneeOrCreatorPermission" class="org.sharetask.security.TaskAssigneeOrCreatorPermission">
-		<beans:property name="taskRepository" ref="taskRepository"/>
-	</beans:bean>
+	<bean id="taskAssigneeOrCreatorPermission" class="org.sharetask.security.TaskAssigneeOrCreatorPermission">
+		<property name="taskRepository" ref="taskRepository"/>
+	</bean>
 	
-	<beans:bean id="workspaceMemberOrOwnerPermission" class="org.sharetask.security.WorkspaceMemberOrOwnerPermission">
-		<beans:property name="workspaceRepository" ref="workspaceRepository"/>
-	</beans:bean>
+	<bean id="workspaceMemberOrOwnerPermission" class="org.sharetask.security.WorkspaceMemberOrOwnerPermission">
+		<property name="workspaceRepository" ref="workspaceRepository"/>
+	</bean>
 
-	<beans:bean id="workspaceOwnerPermission" class="org.sharetask.security.WorkspaceOwnerPermission">
-		<beans:property name="workspaceRepository" ref="workspaceRepository"/>
-	</beans:bean>
-
-</beans:beans>
+	<bean id="workspaceOwnerPermission" class="org.sharetask.security.WorkspaceOwnerPermission">
+		<property name="workspaceRepository" ref="workspaceRepository"/>
+	</bean>
+	
+	<alias name="filterChainProxy" alias="springSecurityFilterChain"/>
+</beans>

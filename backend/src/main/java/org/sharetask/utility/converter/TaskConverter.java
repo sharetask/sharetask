@@ -24,7 +24,7 @@ import org.sharetask.api.dto.TaskDTO;
 import org.sharetask.api.dto.UserInfoDTO;
 import org.sharetask.entity.Task;
 import org.sharetask.entity.Task.PriorityType;
-import org.sharetask.entity.User;
+import org.sharetask.entity.UserInformation;
 import org.sharetask.utility.DTOConverter;
 
 /**
@@ -67,7 +67,7 @@ public class TaskConverter implements CustomConverter {
 		taskDTO.setTags(source.getTags());
 		taskDTO.setState(source.getState().name());
 		if (source.getAssignee() != null) {
-			final User assignee = source.getAssignee();
+			final UserInformation assignee = source.getAssignee();
 			taskDTO.setAssignee(DTOConverter.convert(assignee, UserInfoDTO.class));
 		}
 		taskDTO.setEventsCount(source.getEvents().size());

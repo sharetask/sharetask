@@ -43,7 +43,7 @@ public class TaskAssigneePermission implements Permission {
 	@Override
 	public boolean isAllowed(final Authentication authentication, final Object targetDomainObject) {
 		boolean result;
-		Assert.isTrue(isAuthenticated(authentication), "User is not authenticated!");
+		Assert.isTrue(isAuthenticated(authentication), "UserAuthentication is not authenticated!");
 		Assert.isTrue(targetDomainObject instanceof Long);
 		final Long taskId = (Long) targetDomainObject;
 		final String userName = authentication.getName();

@@ -29,9 +29,9 @@ import org.sharetask.api.WorkspaceQueryType;
 import org.sharetask.api.WorkspaceService;
 import org.sharetask.api.dto.InvitationDTO;
 import org.sharetask.api.dto.WorkspaceDTO;
-import org.sharetask.entity.User;
+import org.sharetask.entity.UserInformation;
 import org.sharetask.entity.Workspace;
-import org.sharetask.repository.UserRepository;
+import org.sharetask.repository.UserInformationRepository;
 import org.sharetask.repository.WorkspaceRepository;
 import org.sharetask.utility.DTOConverter;
 import org.sharetask.utility.SecurityUtil;
@@ -53,7 +53,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 	private WorkspaceRepository workspaceRepository;
 
 	@Inject
-	private UserRepository userRepository;
+	private UserInformationRepository userRepository;
 
 	@Inject 
 	private InvitationService invitationService; 
@@ -66,7 +66,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 	public WorkspaceDTO create(final WorkspaceDTO workspace) {
 		final Workspace workspaceEntity = DTOConverter.convert(workspace, Workspace.class);
 		// store owner of workspace
-		final User user = userRepository.read(SecurityUtil.getCurrentSignedInUsername());
+		final UserInformation user = userRepository.read(SecurityUtil.getCurrentSignedInUsername());
 		workspaceEntity.setOwner(user);
 		// add member to workspace
 		workspaceEntity.addMember(user);
@@ -97,7 +97,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 	public void addMember(final String invitationCode) {
 		final InvitationDTO invitation = invitationService.confirmInvitation(invitationCode);
 		final Workspace workspace = workspaceRepository.read(invitation.getEntityId());
-		final User user = userRepository.read(invitation.getEmail());
+		final UserInformation user = userRepository.read(invitation.getEmail());
 
 		// add member to workspace
 		if (!workspace.getMembers().contains(user.getUsername())) {
@@ -113,7 +113,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 	@Transactional
 	@PreAuthorize(Constants.PERIMISSION_WORKSPACE_OWNER)
 	public void removeMember(final Long workspaceId, final String username) {
-		final User user = userRepository.read(username);
+		final UserInformation user = userRepository.read(username);
 		final Workspace workspace = workspaceRepository.read(workspaceId);
 
 		// add member to workspace

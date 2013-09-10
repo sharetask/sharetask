@@ -21,8 +21,6 @@ package org.sharetask.service;
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
 
-import lombok.extern.slf4j.Slf4j;
-
 import org.sharetask.api.Constants;
 import org.sharetask.api.InvitationService;
 import org.sharetask.api.MailService;
@@ -41,7 +39,6 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Michal Bocek
  * @since 1.0.0
  */
-@Slf4j
 @Service
 @Transactional(readOnly = true)
 public class InvitationServiceImpl implements InvitationService {
