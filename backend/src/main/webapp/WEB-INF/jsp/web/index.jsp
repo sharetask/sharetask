@@ -55,8 +55,6 @@
 		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-web-${applicationVersion}/css/sharetask.css" />">
 	</head>
 	<body ng-controller="IndexCtrl" ng-cloak>
-		<a href="<%= redirectionGoogleUrl%>">google</a>
-	
 		<!-- application menu -->
 		<div id="app-menu">
 			<div class="navbar navbar-inverse">
@@ -108,7 +106,7 @@
 						</tr>
 						<tr>
 							<td style="padding-right:15px;border-right:1px solid rgba(255,255,255,0.5);">
-								<p><a href="" class="btn btn-inverse"><i class="icon-google-plus"></i> <spring:message code="login.account.google" /></a></p><br />
+								<p><a href="<%= redirectionGoogleUrl%>" class="btn btn-inverse"><i class="icon-google-plus"></i> <spring:message code="login.account.google" /></a></p><br />
 								<p><a href="" class="btn btn-inverse"><i class="icon-facebook"></i> <spring:message code="login.account.facebook" /></a></p><br />
 								<p><a href="" class="btn btn-inverse"><i class="icon-twitter"></i> <spring:message code="login.account.twitter" /></a></p>
 							</td>

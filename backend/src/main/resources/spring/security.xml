@@ -109,7 +109,7 @@
 	<!-- ================================================================= -->
 	<!-- Sign in via google account                                        -->
 	<!-- ================================================================= -->
-	<bean id="googleClient" class="org.pac4j.oauth.client.Google2Client">
+	<bean id="googleClient" class="org.sharetask.security.Google2Client">
 		<property name="key" value="96323765852-ltqp2hedmv4dnl6o1d5jjibmudb1jr29.apps.googleusercontent.com" />
 		<property name="secret" value="Wd34gjQUNJxq8HL3caczkc1m" />
 	</bean>
