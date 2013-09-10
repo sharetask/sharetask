@@ -21,13 +21,13 @@ package org.sharetask.utility.converter;
 import org.dozer.CustomConverter;
 import org.dozer.MappingException;
 import org.sharetask.api.dto.UserDTO;
-import org.sharetask.entity.User;
+import org.sharetask.entity.UserAuthentication;
 
 /**
  * @author Michal Bocek
  * @since 1.0.0
  */
-public class UserConverter implements CustomConverter {
+public class UserAuthenticationConverter implements CustomConverter {
 
 	/* (non-Javadoc)
 	 * @see org.dozer.CustomConverter#convert(java.lang.Object, java.lang.Object, java.lang.Class, java.lang.Class)
@@ -37,33 +37,33 @@ public class UserConverter implements CustomConverter {
 			final Class<?> sourceClass) {
 		Object result = null;
 		if (source instanceof UserDTO) {
-			final User teacher = convert((UserDTO) source, (User) destination);
+			final UserAuthentication teacher = convert((UserDTO) source, (UserAuthentication) destination);
 			result = teacher;
-		} else if (source instanceof User) {
-			final UserDTO teacher = convert((User) source);
+		} else if (source instanceof UserAuthentication) {
+			final UserDTO teacher = convert((UserAuthentication) source);
 			result = teacher;
 		} else if (source != null) {
-			throw new MappingException("Converter UserConverter used incorrectly. Arguments passed were:"
+			throw new MappingException("Converter UserAuthenticationConverter used incorrectly. Arguments passed were:"
 					+ destination + " and " + source);
 		}
 		return result;
 	}
 
-	private UserDTO convert(final User source) {
+	private UserDTO convert(final UserAuthentication source) {
 		final UserDTO userDTO = new UserDTO();
 		userDTO.setUsername(source.getUsername());
 		userDTO.setEnabled(source.isEnabled());
-		userDTO.setName(source.getName());
-		userDTO.setSurName(source.getSurName());
+		userDTO.setName(source.getUserInfo().getName());
+		userDTO.setSurName(source.getUserInfo().getSurName());
 		userDTO.setCreatedOn(source.getCreatedOn());
 		userDTO.setUpdatedOn(source.getUpdatedOn());
 		return userDTO;
 	}
 
-	private User convert(final UserDTO sourceDTO, final User destination) {
-		final User user = destination == null ? new User() : destination;
-		user.setName(sourceDTO.getName());
-		user.setSurName(sourceDTO.getSurName());
+	private UserAuthentication convert(final UserDTO sourceDTO, final UserAuthentication destination) {
+		final UserAuthentication user = destination == null ? new UserAuthentication() : destination;
+		user.getUserInfo().setName(sourceDTO.getName());
+		user.getUserInfo().setSurName(sourceDTO.getSurName());
 		return user;
 	}
 }

@@ -102,7 +102,7 @@ public class Task extends BaseEntity implements Serializable {
 	@Getter	@Setter
 	@ManyToOne(fetch = FetchType.EAGER, optional = true)
 	@JoinColumn(name = "ASSIGNEE_USER_NAME")
-	private User assignee;
+	private UserInformation assignee;
 
 	@Getter	@Setter
 	@Enumerated(value = EnumType.STRING)

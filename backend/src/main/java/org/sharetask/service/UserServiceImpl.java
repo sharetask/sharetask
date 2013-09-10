@@ -32,8 +32,10 @@ import org.sharetask.api.dto.InvitationDTO;
 import org.sharetask.api.dto.UserDTO;
 import org.sharetask.api.dto.UserInfoDTO;
 import org.sharetask.entity.Role;
-import org.sharetask.entity.User;
-import org.sharetask.repository.UserRepository;
+import org.sharetask.entity.UserAuthentication;
+import org.sharetask.entity.UserInformation;
+import org.sharetask.repository.UserAuthenticationRepository;
+import org.sharetask.repository.UserInformationRepository;
 import org.sharetask.security.UserDetailsImpl;
 import org.sharetask.utility.DTOConverter;
 import org.sharetask.utility.HashCodeUtil;
@@ -57,7 +59,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements UserService {
 
 	@Inject
-	private UserRepository userRepository;
+	private UserAuthenticationRepository userAuthenticationRepository;
+
+	@Inject
+	private UserInformationRepository userInformationRepository;
 
 	@Inject
 	private PasswordEncoder passwordEncoder;
@@ -70,9 +75,9 @@ public class UserServiceImpl implements UserService {
 
 	private static class UserDetailBuilder {
 
-		private final User user;
+		private final UserAuthentication user;
 
-		public UserDetailBuilder(final User user) {
+		public UserDetailBuilder(final UserAuthentication user) {
 			this.user = user;
 		}
 
@@ -86,7 +91,7 @@ public class UserServiceImpl implements UserService {
 			final boolean accountNonLocked = user.isEnabled();
 
 			final Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-			for (final Role role : user.getRoles()) {
+			for (final Role role : user.getUserInfo().getRoles()) {
 				authorities.add(new SimpleGrantedAuthority(role.name()));
 			}
 
@@ -98,12 +103,12 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-		final User user = userRepository.findByUsername(username);
+		final UserAuthentication user = userAuthenticationRepository.findByUsername(username);
 		UserDetails userDetails = null;
 		if (user != null) {
 			userDetails = new UserDetailBuilder(user).build();
 		} else {
-			throw new UsernameNotFoundException("User with name: " + username + " not found");
+			throw new UsernameNotFoundException("UserAuthentication with name: " + username + " not found");
 		}
 		return userDetails;
 	}
@@ -112,21 +117,22 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public UserDTO create(final UserDTO userDTO) {
 		log.info("Registering user: {}", userDTO);
-		final User user = new User();
+		final UserAuthentication user = new UserAuthentication();
 		user.setUsername(userDTO.getUsername());
-		user.setName(userDTO.getName());
-		user.setSurName(userDTO.getSurName());
+		final UserInformation userInfo = user.getUserInfo();
+		userInfo.setUsername(userDTO.getUsername());
+		userInfo.setName(userDTO.getName());
+		userInfo.setSurName(userDTO.getSurName());
 
-		if (userRepository.findByUsername(userDTO.getUsername()) != null) {
+		if (userAuthenticationRepository.findByUsername(userDTO.getUsername()) != null) {
 			throw new UserAlreadyExistsException();
 		}
 
-		user.setEmail(user.getUsername());
 		final Collection<Role> roles = new ArrayList<Role>();
 		user.setEnabled(false);
 
 		roles.add(Role.ROLE_USER);
-		user.setRoles(roles);
+		userInfo.setRoles(roles);
 
 		// salt create
 		final String salt = getSalt(userDTO.getUsername());
@@ -136,7 +142,7 @@ public class UserServiceImpl implements UserService {
 				new ArrayList<GrantedAuthority>());
 		user.setPassword(passwordEncoder.encodePassword(userDTO.getPassword(),
 				saltSource.getSalt(userDetails)));
-		final User storedUser = userRepository.save(user);
+		final UserAuthentication storedUser = userAuthenticationRepository.save(user);
 		invitationService.inviteRegisteredUser(userDTO.getUsername());
 		return DTOConverter.convert(storedUser,  UserDTO.class);
 	}
@@ -148,16 +154,16 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public UserInfoDTO update(final UserInfoDTO userInfoDTO) {
-		final User user = userRepository.read(userInfoDTO.getUsername());
+		final UserInformation user = userInformationRepository.read(userInfoDTO.getUsername());
 		user.setName(userInfoDTO.getName());
 		user.setSurName(userInfoDTO.getSurName());
-		final User storedUser = userRepository.save(user);
+		final UserInformation storedUser = userInformationRepository.save(user);
 		return DTOConverter.convert(storedUser, UserInfoDTO.class);
 	}
 
 	@Override
 	public UserInfoDTO read(final String username) {
-		final User user = userRepository.read(username);
+		final UserInformation user = userInformationRepository.read(username);
 		return DTOConverter.convert(user, UserInfoDTO.class);
 	}
 	
@@ -165,20 +171,20 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public void changePassword(final String password) {
 		final String username = SecurityUtil.getCurrentSignedInUsername();
-		final User user = userRepository.read(username);
+		final UserAuthentication user = userAuthenticationRepository.read(username);
 		final UserDetails userDetails = new UserDetailsImpl(user.getUsername(), "password", user.getSalt(),
 				new ArrayList<GrantedAuthority>());
 		user.setPassword(passwordEncoder.encodePassword(password, saltSource.getSalt(userDetails)));
-		userRepository.save(user);
+		userAuthenticationRepository.save(user);
 	}
 
 	@Override
 	@Transactional
 	public void confirmInvitation(@NotNull final String code) {
 		final InvitationDTO invitation = invitationService.confirmInvitation(code);
-		final User user = userRepository.read(invitation.getEmail());
+		final UserAuthentication user = userAuthenticationRepository.read(invitation.getEmail());
 		user.setEnabled(true);
-		userRepository.save(user);
+		userAuthenticationRepository.save(user);
 	}
 	
 }

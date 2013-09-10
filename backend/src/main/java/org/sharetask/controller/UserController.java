@@ -30,6 +30,7 @@ import org.sharetask.api.dto.UserDTO;
 import org.sharetask.api.dto.UserInfoDTO;
 import org.sharetask.controller.json.UserPassword;
 import org.sharetask.utility.SecurityUtil;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -58,6 +59,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class UserController {
 
 	@Inject
+	@Qualifier("authenticationManagerStd")
 	private AuthenticationManager authenticationManager;
 
 	@Inject
