@@ -316,6 +316,8 @@
 				
 				<definition.quartz.jobStore.driverClass>org.quartz.impl.jdbcjobstore.HSQLDBDelegate</definition.quartz.jobStore.driverClass>
 				<definition.quartz.dataSource.validationQuery>select 1 from INFORMATION_SCHEMA.SYSTEM_USERS</definition.quartz.dataSource.validationQuery>
+
+				<definition.security.login.callbackUrl>http://localhost:8080/sharetask/authcallback</definition.security.login.callbackUrl>
 				<tomcat.version>7.0.40</tomcat.version>
 			</properties>
 			<dependencies>
@@ -544,6 +546,7 @@
 				
 				<definition.quartz.jobStore.driverClass>org.quartz.impl.jdbcjobstore.HSQLDBDelegate</definition.quartz.jobStore.driverClass>
 				<definition.quartz.dataSource.validationQuery>select 1 from INFORMATION_SCHEMA.SYSTEM_USERS</definition.quartz.dataSource.validationQuery>
+				<definition.security.login.callbackUrl>http://localhost:8080/sharetask/authcallback</definition.security.login.callbackUrl>
 			</properties>
 			<dependencies>
 				<dependency>
@@ -553,7 +556,7 @@
 			</dependencies>
 		</profile>
 		<profile>
-			<id>prod</id>
+			<id>openshift</id>
 			<properties>
 				<spring.profile>prod</spring.profile>
 				<maven.test.skip>true</maven.test.skip>
@@ -570,6 +573,18 @@
 					<artifactId>mysql-connector-java</artifactId>
 				</dependency>
 			</dependencies>
+		</profile>
+		<profile>
+			<id>production-server</id>
+			<properties>
+				<definition.security.login.callbackUrl>http://www.shareta.sk/authcallback</definition.security.login.callbackUrl>
+			</properties>
+		</profile>
+		<profile>
+			<id>integration-server</id>
+			<properties>
+				<definition.security.login.callbackUrl>http://integration-sharetask.rhcloud.com/authcallback</definition.security.login.callbackUrl>
+			</properties>
 		</profile>
 	</profiles>
 

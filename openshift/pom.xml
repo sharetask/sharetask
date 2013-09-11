@@ -13,7 +13,7 @@
 
 	<profiles>
 		<profile>
-			<id>prod</id>
+			<id>openshift</id>
 			<build>
 				<plugins>
 					<plugin>

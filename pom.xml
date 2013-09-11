@@ -465,6 +465,7 @@
 				<definition.database.jdbc.password></definition.database.jdbc.password>
 			</properties>
 		</profile>
+		<!-- used only on openshift server - direcly run on openshift paas -->
 		<profile>
 			<id>prod-db-deploy</id>
 			<modules>
@@ -478,7 +479,7 @@
 			</properties>
 		</profile>
 		<profile>
-			<id>prod</id>
+			<id>openshift</id>
 			<properties>
 				<definition.database.jdbc.driver>com.mysql.jdbc.Driver</definition.database.jdbc.driver>
 				<definition.database.jdbc.url>jdbc:mysql://${OPENSHIFT_MYSQL_DB_HOST}:${OPENSHIFT_MYSQL_DB_PORT}/${OPENSHIFT_APP_NAME}?useUnicode=true&amp;characterEncoding=UTF-8</definition.database.jdbc.url>
