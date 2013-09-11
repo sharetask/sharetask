@@ -49,21 +49,22 @@ public class StoreUserInformationAuthenticationSuccessHandler extends SimpleUrlA
 
 	@Inject
 	private UserInformationRepository userRepository;
-	
+
 	interface AuthGrantedAuthority extends GrantedAuthority {
-		
+
 	};
-	
+
 	@Override
 	public void onAuthenticationSuccess(final HttpServletRequest request, final HttpServletResponse response,
 			final Authentication authentication) throws IOException, ServletException {
 
 		final Authentication principal = SecurityContextHolder.getContext().getAuthentication();
 		if (principal instanceof ClientAuthenticationToken) {
-			log.debug("Skipping user information storing.");
-		
+			log.debug("Token is pac4j token.");
+
 			final Google2Profile profile = (Google2Profile)((ClientAuthenticationToken)principal).getUserProfile();
 			if (userRepository.findByUsername(profile.getEmail()) == null) {
+				log.debug("User with name: {} doesne exist's. Will be created", profile.getEmail());
 				final UserInformation userInformation = new UserInformation(profile.getEmail());
 				userInformation.setName(profile.getFirstName());
 				userInformation.setSurName(profile.getFamilyName());
@@ -72,13 +73,13 @@ public class StoreUserInformationAuthenticationSuccessHandler extends SimpleUrlA
 				userInformation.setRoles(list);
 				userRepository.save(userInformation);
 			}
-			
+
 			final ArrayList<GrantedAuthority> list = new ArrayList<GrantedAuthority>();
 			list.add(new SimpleGrantedAuthority(Role.ROLE_USER.name()));
 			final Authentication authToken = new UsernamePasswordAuthenticationToken(profile.getEmail(), "", list);
-			SecurityContextHolder.getContext().setAuthentication(authToken);			
+			SecurityContextHolder.getContext().setAuthentication(authToken);
 		}
-		
+
 		super.onAuthenticationSuccess(request, response, authentication);
 	}
 }
