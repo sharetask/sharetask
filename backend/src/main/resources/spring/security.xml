@@ -9,6 +9,7 @@
 						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
 						http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
+	<context:property-placeholder location="classpath:/config.properties"/>
 	<util:properties id="applicationProps" location="classpath:application.properties"/>
 
 	<!-- ================================================================= -->
@@ -118,7 +119,7 @@
 	<!-- Authentication client list with callback URL                      -->
 	<!-- ================================================================= -->
 	<bean id="clients" class="org.pac4j.core.client.Clients">
-		<property name="callbackUrl" value="http://localhost:8080/sharetask/authcallback" />
+		<property name="callbackUrl" value="${security.login.callbackUrl}" />
 		<property name="clients">
 			<list>
 				<ref bean="googleClient" />
