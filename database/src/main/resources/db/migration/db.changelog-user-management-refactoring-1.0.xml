@@ -55,12 +55,6 @@
 		</modifySql>
 	</changeSet>
 
-	<changeSet id="create: user foreignkeys" author="mbocek">
-		<addForeignKeyConstraint baseColumnNames="USER_NAME" baseTableName="USER_ROLE"
-			constraintName="FK_ROLE_USER_INFO" deferrable="false" initiallyDeferred="false"
-			referencedColumnNames="USER_NAME" referencedTableName="USER_INFORMATION"/>
-	</changeSet>
-
 	<changeSet id="migration: user information" author="mbocek">
 		<sql>insert into USER_AUTHENTICATION(user_name, enabled, password, salt, created_on, updated_on) 
 		     select user_name, enabled, password, salt, created_on, updated_on from user</sql>
