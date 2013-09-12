@@ -58,9 +58,7 @@
 	<changeSet id="create: user foreignkeys" author="mbocek">
 		<addForeignKeyConstraint baseColumnNames="USER_NAME" baseTableName="USER_ROLE"
 			constraintName="FK_ROLE_USER_INFO" deferrable="false" initiallyDeferred="false"
-			onDelete="CASCADE" onUpdate="NO ACTION" 
-			referencedColumnNames="USER_NAME" referencedTableName="USER_INFORMATION"
-			referencesUniqueColumn="false" />
+			referencedColumnNames="USER_NAME" referencedTableName="USER_INFORMATION"/>
 	</changeSet>
 
 	<changeSet id="migration: user information" author="mbocek">
