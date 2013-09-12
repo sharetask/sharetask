@@ -86,7 +86,7 @@
 			baseTableName="WORKSPACE" baseColumnNames="OWNER_USER_NAME"
 			referencedTableName="USER_INFORMATION" referencedColumnNames="USER_NAME" />
         
-		<dropForeignKeyConstraint baseTableName="WORKSPACE"
+		<dropForeignKeyConstraint baseTableName="WORKSPACE_MEMBER"
             constraintName="FK_WORKSPACE_MEMBER_USER" />
 
 		<addForeignKeyConstraint constraintName="FK_WORKSPACE_MEMBER_USER"
