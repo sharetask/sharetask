@@ -154,7 +154,7 @@
 						<div class="new-task-simple" ng-class="{'hidden':taskEditMode != 'NEW-TASK'}" stop-event="click">
 							<div class="new-task-simple-inner">
 								<div class="row-full input-append">
-									<input class="span10" type="text" placeholder="{{'_PlaceholderAddTask_' | i18n}}" ng-model="newTaskTitle" required id="inputTaskAdd" />
+									<input class="span10" type="text" placeholder="{{'_PlaceholderAddTask_' | i18n}}" ng-model="newTaskTitle" ui-keypress="{enter:'addTask()', esc:'setEditMode(\'\')'}" required id="inputTaskAdd" />
 									<button class="btn btn-inverse span2" ng-click="addTask()" ng-disabled="!newTaskTitle.length">{{'_Add_' | i18n}}</button>
 								</div>
 							</div>
@@ -372,7 +372,7 @@
 								<!-- task comments -->
 								<div class="tab-pane active" id="comments">
 									<div class="row-full input-append">
-										<input class="span10" type="text" placeholder="{{'_PlaceholderAddComment_' | i18n}}" ng-model="newTaskComment.comment" required id="inputTaskAddComment" />
+										<input class="span10" type="text" placeholder="{{'_PlaceholderAddComment_' | i18n}}" ng-model="newTaskComment.comment" ui-keypress="{enter:'addTaskComment()'}" required id="inputTaskAddComment" />
 										<button class="btn btn-inverse span2" ng-click="addTaskComment()" ng-disabled="!newTaskComment.comment.length">{{'_Add_' | i18n}}</button>
 									</div>
 									

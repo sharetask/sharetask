@@ -60,7 +60,7 @@ angular.module('shareTaskApp.filters', []).
 						var todayString = todayDate.getFullYear()+"-"+("0"+todayDate.getMonth()).substr(-2)+"-"+todayDate.getDate();
 						var dueDateString = dueDate.getFullYear()+"-"+("0"+dueDate.getMonth()).substr(-2)+"-"+dueDate.getDate();
 						//Log.debug("today: %s, duedate: %s", todayString, dueDateString);
-						if (todayString > dueDateString && task.state != "FINISHED" && task.state != "TERMINATED" && task.state != "FAILED") {
+						if (task.dueDate !== null && todayString > dueDateString && task.state != "FINISHED" && task.state != "TERMINATED" && task.state != "FAILED") {
 							if (filter.tag == '') {
 								newTasks.push(task);
 							}
