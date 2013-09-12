@@ -57,9 +57,9 @@
 
 	<changeSet id="migration: user information" author="mbocek">
 		<sql>insert into USER_AUTHENTICATION(user_name, enabled, password, salt, created_on, updated_on) 
-		     select user_name, enabled, password, salt, created_on, updated_on from user</sql>
+		     select user_name, enabled, password, salt, created_on, updated_on from USER</sql>
 		<sql>insert into USER_INFORMATION(user_name, name, surname, created_on, updated_on) 
-		     select user_name, name, surname, created_on, updated_on from user</sql>
+		     select user_name, name, surname, created_on, updated_on from USER</sql>
 	</changeSet>
 
 	<changeSet id="create: user foreignkeys" author="mbocek">
