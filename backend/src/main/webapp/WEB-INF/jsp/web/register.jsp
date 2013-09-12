@@ -49,11 +49,23 @@
 			<div class="navbar navbar-inverse">
 				<div class="navbar-inner" style="padding-left:0;">
 					<div class="container" style="width:auto;">
-						<img class="pull-left" src="<c:url value="/resources-web-${applicationVersion}/img/icon-white-small.png" />" width="40" height="40" hspace="5" />
+						<img class="pull-left" src="<c:url value="/resources-web-${applicationVersion}/img/icon-white-small.png" />" style="padding:8px 15px 0 8px;" />
 						<span class="brand">ShareTa.sk</span>
 						<ul class="nav">
 							<li><a href="<c:url value="/" />"><i class="icon-home icon-white"></i> <spring:message code="menu.home" /></a></li>
-							<li><a href="<c:url value="/register" />"><i class="icon-user icon-white"></i> <spring:message code="menu.registration" /></a></li>
+							<li></li>
+						</ul>
+						<ul class="nav pull-right">
+							<li id="fat-menu" class="dropdown" ng-show="loggedUser != null">
+								<a id="dropUser" role="button" class="dropdown-toggle cursor-pointer" data-toggle="dropdown"><i class="icon-user icon-white"></i> {{loggedUser.name}} {{loggedUser.surName}} <b class="caret"></b></a>
+								<ul class="dropdown-menu" role="menu" aria-labelledby="dropUser">
+									<li><a role="menuitem" tabindex="-1" href="<c:url value="/webapp" />"><spring:message code="app.button.open" /></a></li>
+									<li class="divider"></li>
+									<li><a class="cursor-pointer" role="menuitem" tabindex="-1" ng-click="logout()"><i class="icon-signout"></i><spring:message code="app.button.logout" /></a></li>
+								</ul>
+							</li>
+							<li ng-show="loggedUser == null" ng-click="showSignInForm = !showSignInForm"><a class="cursor-pointer"><i class="icon-signin"></i> <spring:message code="menu.signin" /></a></li>
+							<li><a href="<c:url value="/register" />"><spring:message code="menu.signup" /></a></li>
 						</ul>
 					</div>
 				</div>
