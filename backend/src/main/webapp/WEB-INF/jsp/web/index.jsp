@@ -87,7 +87,22 @@
 				<table class="head">
 				<tr>
 					<td class="title" ng-show="!showSignInForm">
-						<strong>Manage and share your task list.<br />Share tasks with your team or family.</strong>
+						<div class="headline-panels">
+							<div class="headline-panel">
+								<div class="header">Manage tasks</div>
+								Manage all task on one place.
+							</div>
+							<div class="headline-panel">
+								<div class="header">Share tasks</div>
+								Share tasks with your team or family.
+							</div>
+							<div class="headline-panel">
+								<div class="header">Anywhere & Anytime</div>
+								Manage task on your PC, tablet or smartphone.
+							</div>
+						</div>
+						
+						
 					</td>
 					<td class="title" ng-show="showSignInForm">
 					</td>

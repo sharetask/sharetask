@@ -63,7 +63,12 @@
 											<label>{{'_Owner_' | i18n}}</label>
 											<div class="input-append">
 												<input type="text" placeholder="type owner name..." value="{{selectedWorkspace.owner.name}} {{selectedWorkspace.owner.surName}}" disabled="disabled" />
-												<!--<button class="btn" ng-click="">{{'_ForwardOwnership_' | i18n}}</button>-->
+												<!--<div class="btn-group">
+													<button class="btn dropdown-toggle" data-toggle="dropdown"><i class="icon-user"></i> {{'_ForwardOwnership_' | i18n}} <span class="caret"></span></button>
+													<ul class="dropdown-menu">
+														<li ng-click="selectedWorkspace.owner = member" ng-repeat="member in selectedWorkspace.members"><a>{{member.name}} {{member.surName}} ({{member.username}})</a></li>
+													</ul>
+												</div>-->
 											</div>
 											<br /><br />
 											<button class="btn btn-inverse" ng-click="updateWorkspace()" ng-disabled="formWorkspaceUpdate.$invalid || updateWorkspaceData.processing"><i class="icon-save"></i> {{'_Save_' | i18n}}<span ng-show="updateWorkspaceData.processing"> {{'_Processing_' | i18n}}</span></button>

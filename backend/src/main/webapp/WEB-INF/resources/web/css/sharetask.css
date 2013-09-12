@@ -116,9 +116,16 @@ form {margin:0;padding:0;}
 .head td {vertical-align:top;}
 .head .login {background:rgba(0,0,0,0.7);padding:20px 15px;color:#fff;}
 .head .login h4 {color:#fff;}
-.head .title {text-align:center;padding:70px 50px;}
+.head .title {text-align:center;padding:30px;}
 .head .title strong {color:#fff;background:rgba(0,0,0,0.9);font-size:240%;line-height:180%;font-weight:normal;}
 
 .no-margins {margin:0;}
 .alert a {color:#fff;text-decoration:underline;}
 .alert a:hover {color:#000;}
+
+.headline-panels:before,.headline-panels:after {display:table;line-height:0;content:"";}
+.headline-panels:after {clear:both;}
+.headline-panel {float:left;margin:0 20px 20px 0;background:rgba(0,0,0,0.8);padding:15px;color:#fff;}
+.headline-panel  .header {font-size:220%;line-height:180%;font-weight:normal;}
+.headline-panel  .buttons {margin-top:10px;padding-top:5px;border-top:1px solid #ccc;text-align:right;}
+
