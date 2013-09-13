@@ -27,7 +27,10 @@
 					<li ng-class="{'active':currentPage == 'workspaces'}"><a href="#/workspaces"><i class="icon-folder-close icon-white"></i> {{'_Workspaces_' | i18n}}</a></li>
 				</ul>
 				<ul class="nav pull-right">
-					
+					<li ng-show="currentPage == 'tasks'">
+						<i class="icon-search"></i>
+						<input type="search" placeholder="{{'_PlaceholderSearch_' | i18n}}" ng-model="filter.searchString" id="inputSearch" />
+					</li>
 					<li id="fat-menu" class="dropdown" ng-class="{'active':currentPage == 'user'}">
 						<a id="dropUser" role="button" class="dropdown-toggle cursor-pointer" data-toggle="dropdown"><i class="icon-user icon-white"></i> {{loggedUser.name}} {{loggedUser.surName}} <b class="caret"></b></a>
 						<ul class="dropdown-menu" role="menu" aria-labelledby="dropUser">
@@ -36,7 +39,7 @@
 							<li><a class="cursor-pointer" role="menuitem" tabindex="-1" ng-click="logout()"><i class="icon-off"></i> {{'_Logout_' | i18n}}</a></li>
 						</ul>
 					</li>
-					<li><a ng-click="toggleHelp()"><i class="icon-question icon-large"></i></a></li>
+					<li><a ng-click="toggleHelp()"><i class="icon-question"></i></a></li>
 				</ul>
 			</div>
 		</div>

@@ -174,7 +174,7 @@
 								<small><a class="cursor-pointer" ng-click="loadTasks()">{{'_RefreshTasks_' | i18n}}</a></small>
 							</div>
 							<!-- tasks -->
-							<div class="task-list-item" ng-repeat="task in tasks | orderBy:orderTasks" ng-class="{'selected':task.id == selectedTask.id}" ng-click="setSelectedTask(task.id)" data-drop="true" jqyoui-droppable="{onDrop:'addTaskTagDragDrop'}" ng-show="!viewCalendar">
+							<div class="task-list-item" ng-repeat="task in tasks | filter:filter.searchString | orderBy:orderTasks" ng-class="{'selected':task.id == selectedTask.id}" ng-click="setSelectedTask(task.id)" data-drop="true" jqyoui-droppable="{onDrop:'addTaskTagDragDrop'}" ng-show="!viewCalendar">
 								<div class="task-list-item-inner" ng-class="{'priority-low':task.priority == 'LOW','priority-medium':task.priority == 'MEDIUM','priority-high':task.priority == 'HIGH'}">
 									<table>
 									<tr>
@@ -378,7 +378,7 @@
 									
 									<table class="comment" ng-repeat="comment in selectedTask.comments">
 									<tr>
-										<th><img ng-src="http://www.gravatar.com/avatar/{{comment.createdBy.username | hash}}.jpg?s=45&d={{'http://www.hip-hop.cz/user-small.png' | urlEncode}}" /></th>
+										<th><img ng-src="http://www.gravatar.com/avatar/{{comment.createdBy.username | hash}}.jpg?s=35&d={{'http://www.hip-hop.cz/user-small.png' | urlEncode}}" width="35" /></th>
 										<td>
 											<div class="row-full">
 												<div class="pull-left">{{comment.createdBy.name}} {{comment.createdBy.surName}}</div>

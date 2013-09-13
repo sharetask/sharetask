@@ -47,7 +47,7 @@
 h1,h2,h3,h4,h5,h6 {margin:5px 0;line-height:0;}
 h4 {font-size:135%;/*font-weight:bold;*/}
 
-.navbar {margin-bottom:0;}
+.navbar {margin-bottom:0;color:#fff;}
 .navbar .nav > li > a:hover {background:rgba(255,255,255,0.4);color:#fff;}
 .navbar .nav > li.active > a {background:rgba(255,255,255,0.4);font-weight:bold;}
 .navbar-inverse .navbar-inner {background:#FF5A00;}
@@ -192,7 +192,7 @@ body {margin:0;padding:0;-webkit-text-size-adjust:100%;}
 .notice .body {font-size:85%;line-height:15px;}
 */
 .comment {width:100%;margin-bottom:5px;border-bottom:1px solid #ddd;}
-.comment th {width:60px;margin:5px;padding:10px 5px;vertical-align:top;text-align:center;}
+.comment th {width:50px;margin:5px;padding:10px 5px;vertical-align:top;text-align:center;}
 .comment td {padding:5px;vertical-align:top;}
 
 .adminLeftPane {top:40px;bottom:0;width:140px;overflow:visible;position:absolute;background:#f5f5f5;}
@@ -257,5 +257,11 @@ form {margin:0;padding:0;}
 .tags a:after{content:"";position:absolute;top:10px;left:0;float:left;width:4px;height:4px;-moz-border-radius:2px;-webkit-border-radius:2px;border-radius:2px;background:#fff;}
 .tags a:hover{background:#555;}
 .tags a:hover:before{border-color:transparent #555 transparent transparent;}
+
+input[type="search"],input[type="search"]:focus {border:none;border-bottom:1px solid #fff;background:#FF5A00;color:#fff;padding:10px 5px 0 5px;}
+input[type="search"]::-webkit-input-placeholder {color:#fff;}
+input[type="search"]:-moz-placeholder {color:#fff;}
+input[type="search"]::-moz-placeholder {color:#fff;}
+nput[type="search"]:-ms-input-placeholder {color:#fff;}
 
 .help {top:40px;bottom:0;left:0;right:0;overflow:visible;position:absolute;background:url("../img/help.png") top right no-repeat;background-size:100% 100%;color:white;z-index:999;}
