@@ -272,7 +272,7 @@
 	},
 	{
 		"key":"_Processing_",
-		"value":"processing...",
+		"value":"processing",
 		"description":""
 	},
 	{

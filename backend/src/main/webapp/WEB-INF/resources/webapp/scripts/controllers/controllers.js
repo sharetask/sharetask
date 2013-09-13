@@ -354,6 +354,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		 */
 		$scope.addTaskTag = function() {
 			Log.debug("Add new tag to task, id: %s, tag: %s", $scope.selectedTask.id, $scope.newTag);
+			$scope.newTagProcessing = true;
 			if ($scope.selectedTask.tags === null) {
 				$scope.selectedTask.tags = [];
 			}
@@ -362,6 +363,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 			$scope.setTags();
 			$scope.taskEditMode = '';
 			$scope.newTag = '';
+			$scope.newTagProcessing = false;
 			Analytics.trackEvent('Task', 'addTag', 'Typed');
 		};
 		
@@ -542,6 +544,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		 */
 		$scope.addTask = function() {
 			Log.debug("Add new task (taskTitle: %o)", $scope);
+			$scope.newTaskProcessing = true;
 			var createdByObj = {username: $rootScope.loggedUser.username};
 			var assigneeObj = {username: $rootScope.loggedUser.username};
 			var task = {title: $scope.newTaskTitle, createdBy: createdByObj, assignee: assigneeObj, createdOn: new Date(), priority: 'MEDIUM'};
@@ -553,22 +556,11 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 					$scope.filterTasks(data.id);
 					$scope.newTaskTitle = '';
 					$scope.setEditMode('');
+					$scope.newTaskProcessing = false;
 					Analytics.trackEvent('Task', 'add', 'success', status);
-					/*
-					Task.forward({workspaceId: $scope.selectedWorkspace.id, taskId: data.id, username: $rootScope.loggedUser.username}, function(data, status) {
-							Log.debug("Task forward success! data: %o, status: %o", data, status);
-							$scope.allTasks.push(data);
-							LocalStorage.store('workspace-' + $scope.selectedWorkspace.id, $scope.allTasks);
-							$scope.filterTasks(data.id);
-							$scope.newTaskTitle = '';
-							$scope.setEditMode('');
-						}, function(data, status, script, func) {
-							Log.debug("Task forward error!");
-							ErrorHandling.handle(data, status, script, func);
-						});
-					*/
 				}, function(data, status, script, func) {
 					Log.debug("Task create error!");
+					$scope.newTaskProcessing = false;
 					ErrorHandling.handle(data, status, script, func);
 					Analytics.trackEvent('Task', 'add', 'error', status);
 				});
@@ -737,6 +729,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		 */
 		$scope.addTaskComment = function() {
 			Log.debug("Add new comment (comment: %o) to task (id: %s)", $scope.newTaskComment, $scope.selectedTask.id);
+			$scope.newCommentProcessing = true;
 			if (!jQuery.isEmptyObject($scope.newTaskComment)) {
 				Task.addComment({workspaceId: $scope.selectedWorkspace.id, taskId: $scope.selectedTask.id, comment: $scope.newTaskComment}, function(data, status) {
 						Log.debug("Task addComment success! data: %o, status: %o", data, status);
@@ -746,9 +739,11 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 						$scope.newTaskComment.message = $scope.newTaskComment.comment;
 						$scope.selectedTask.comments.push($scope.newTaskComment);
 						$scope.newTaskComment = null;
+						$scope.newCommentProcessing = false;
 						Analytics.trackEvent('Task', 'addComment', 'success', status);
 					}, function(data, status, script, func) {
 						Log.debug("Task addComment error!");
+						$scope.newCommentProcessing = false;
 						ErrorHandling.handle(data, status, script, func);
 						Analytics.trackEvent('Task', 'addComment', 'error', status);
 					});
@@ -951,17 +946,17 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		 */
 		$scope.inviteMember = function() {
 			Log.debug("Invite new member (member: %o) to workspace (id: %s)", $scope.newMember, $scope.selectedWorkspace.id);
-			$scope.newMember.processing = true;
+			$scope.inviteMemberProcessing = true;
 			Workspace.inviteMember({workspaceId: $scope.selectedWorkspace.id, user: $scope.newMember}, function(data, status) {
 					Log.debug("Workspace inviteMember success! data: %o, status: %o", data, status);
 					$scope.newMember.result = 1;
-					$scope.newMember.processing = false;
+					$scope.inviteMemberProcessing = false;
 					$scope.newMember.username = '';
 					$scope.setEditMode('');
 				}, function(data, status, script, func) {
 					Log.debug("Workspace inviteMember error!");
 					$scope.newMember.result = -1;
-					$scope.newMember.processing = false;
+					$scope.inviteMemberProcessing = false;
 					ErrorHandling.handle(data, status, script, func);
 				});
 		};
@@ -972,6 +967,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		 */
 		$scope.removeMember = function(username) {
 			Log.debug("Remove member (username: %s) from workspace (id: %s)", username, $scope.selectedWorkspace.id);
+			$scope.removeMemberProcessing = true;
 			Workspace.removeMember({workspaceId: $scope.selectedWorkspace.id, username: username}, function(data, status) {
 					Log.debug("Workspace removeMember success! data: %o, status: %o", data, status);
 					// remove member from local workspace
@@ -980,8 +976,10 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 					});
 					$scope.selectedWorkspace.members = newMembers;
 					Log.debug("new members: %o", $scope.selectedWorkspace.members);
+					$scope.removeMemberProcessing = false;
 				}, function(data, status, script, func) {
 					Log.debug("Workspace removeMember error!");
+					$scope.removeMemberProcessing = false;
 					ErrorHandling.handle(data, status, script, func);
 				});
 		};

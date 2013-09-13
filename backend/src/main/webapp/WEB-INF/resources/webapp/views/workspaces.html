@@ -71,7 +71,7 @@
 												</div>-->
 											</div>
 											<br /><br />
-											<button class="btn btn-inverse" ng-click="updateWorkspace()" ng-disabled="formWorkspaceUpdate.$invalid || updateWorkspaceData.processing"><i class="icon-save"></i> {{'_Save_' | i18n}}<span ng-show="updateWorkspaceData.processing"> {{'_Processing_' | i18n}}</span></button>
+											<button class="btn btn-inverse" ng-click="updateWorkspace()" ng-disabled="formWorkspaceUpdate.$invalid || updateWorkspaceData.processing"><i class="icon-save"></i> <span ng-show="!updateWorkspaceData.processing">{{'_Save_' | i18n}}</span><span ng-show="updateWorkspaceData.processing">{{'_Processing_' | i18n}}</span></button>
 										</form>
 									</div>
 									<!-- workspace members tab -->
@@ -88,7 +88,7 @@
 										<div ng-class="{'hidden':attrEditMode != 'WORKSPACE-INVITE-MEMBER'}" style="margin-bottom:20px;padding:10px;border-bottom:3px solid #999;background:#f8f8f8;">
 											<div class="row-full input-append">
 												<input class="span4" type="text" placeholder="{{'_PlaceholderMembersMail_' | i18n}}" ng-model="newMember.username" required />
-												<button class="btn btn-inverse" ng-click="inviteMember()" ng-disabled="!newMember.username.length || newMember.processing">{{'_Invite_' | i18n}}<span ng-show="newMember.processing"> {{'_Processing_' | i18n}}</span></button>
+												<button class="btn btn-inverse" ng-click="inviteMember()" ng-disabled="!newMember.username.length || inviteMemberProcessing"><span ng-show="!inviteMemberProcessing">{{'_Invite_' | i18n}}</span><span ng-show="inviteMemberProcessing">{{'_Processing_' | i18n}}</span></button>
 											</div>
 										</div>
 										<!-- members -->
@@ -102,7 +102,7 @@
 													</div>
 													<div class="clearfix"></div>
 													<div class="buttons">
-														<button class="btn" ng-click="removeMember(member.username)"><i class="icon-remove"></i> {{'_Delete_' | i18n}}</button>
+														<button class="btn" ng-click="removeMember(member.username)"><i class="icon-remove"></i> <span ng-show="!removeMemberProcessing">{{'_Delete_' | i18n}}</span><span ng-show="removeMemberProcessing">{{'_Processing_' | i18n}}</span></button>
 													</div>
 												</div>
 											</div>
@@ -142,7 +142,7 @@
 										<p>{{'_DeleteWorkspaceConfirmationText_' | i18n}}</p>
 										<p>{{'_WorkspaceTasksCountText_' | i18n}} {{selectedWorkspaceTaskCount}}</p>
 										<br />
-										<button class="btn" ng-click="deleteWorkspace()">{{'_Yes_' | i18n}}</button>
+										<button class="btn" ng-click="deleteWorkspace()"><span ng-show="!deleteWorkspaceData.processing">{{'_Yes_' | i18n}}</span><span ng-show="deleteWorkspaceData.processing">{{'_Processing_' | i18n}}</span></button>
 									</div>
 								</div>
 							</div>
@@ -155,7 +155,7 @@
 								<input class="span5" type="text" placeholder="{{'_PlaceholderWorkspaceName_' | i18n}}" ng-model="newWorkspace.title" required /><br />
 								<label>{{'_Description_' | i18n}}</label>
 								<textarea class="span5" rows="3" placeholder="{{'_PlaceholderWorkspaceDescription_' | i18n}}" ng-model="newWorkspace.description"></textarea><br />
-								<button class="btn btn-inverse" ng-click="addWorkspace()" ng-disabled="formWorkspaceAdd.$invalid || addWorkspaceData.processing">{{'_Add_' | i18n}}<span ng-show="addWorkspaceData.processing"> {{'_Processing_' | i18n}}</span></button>
+								<button class="btn btn-inverse" ng-click="addWorkspace()" ng-disabled="formWorkspaceAdd.$invalid || addWorkspaceData.processing"><span ng-show="!addWorkspaceData.processing">{{'_Add_' | i18n}}</span><span ng-show="addWorkspaceData.processing">{{'_Processing_' | i18n}}</span></button>
 							</form>
 						</div>
 					</div>

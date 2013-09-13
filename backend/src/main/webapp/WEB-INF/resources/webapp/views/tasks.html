@@ -154,8 +154,8 @@
 						<div class="new-task-simple" ng-class="{'hidden':taskEditMode != 'NEW-TASK'}" stop-event="click">
 							<div class="new-task-simple-inner">
 								<div class="row-full input-append">
-									<input class="span10" type="text" placeholder="{{'_PlaceholderAddTask_' | i18n}}" ng-model="newTaskTitle" ui-keypress="{enter:'addTask()', esc:'setEditMode(\'\')'}" required id="inputTaskAdd" />
-									<button class="btn btn-inverse span2" ng-click="addTask()" ng-disabled="!newTaskTitle.length">{{'_Add_' | i18n}}</button>
+									<input class="span10" type="text" placeholder="{{'_PlaceholderAddTask_' | i18n}}" ng-model="newTaskTitle" ui-keypress="{enter:'addTask()', esc:'setEditMode(\'\')'}" required id="inputTaskAdd" ng-disabled="newTaskProcessing" />
+									<button class="btn btn-inverse span2" ng-click="addTask()" ng-disabled="!newTaskTitle.length || newTaskProcessing"><span ng-show="!newTaskProcessing">{{'_Add_' | i18n}}</span><span ng-show="newTaskProcessing">{{'_Processing_' | i18n}}</span></button>
 								</div>
 							</div>
 						</div>
@@ -341,8 +341,8 @@
 							<div ng-class="{'hidden':taskEditMode != 'ADD-TAG'}" stop-event="click">
 								<form name="formTaskAddLabel" novalidate class="css-form">
 									<div class="input-append">
-										<input type="text" placeholder="{{'_PlaceholderAddTag_' | i18n}}" ng-model="newTag" ui-keypress="{enter:'addTaskTag()', esc:'setEditMode(\'\')'}" id="inputTaskAddLabel" required />
-										<button class="btn btn-inverse" ng-click="addTaskTag()" ng-disabled="formTaskAddLabel.$invalid">{{'_Add_' | i18n}}</button>
+										<input type="text" placeholder="{{'_PlaceholderAddTag_' | i18n}}" ng-model="newTag" ui-keypress="{enter:'addTaskTag()', esc:'setEditMode(\'\')'}" id="inputTaskAddLabel" required ng-disabled="newTagProcessing"/>
+										<button class="btn btn-inverse" ng-click="addTaskTag()" ng-disabled="formTaskAddLabel.$invalid || newTagProcessing"><span ng-show="!newTagProcessing">{{'_Add_' | i18n}}</span><span ng-show="newTagProcessing">{{'_Processing_' | i18n}}</span></button>
 									</div>
 								</form>
 							</div>
@@ -372,8 +372,8 @@
 								<!-- task comments -->
 								<div class="tab-pane active" id="comments">
 									<div class="row-full input-append">
-										<input class="span10" type="text" placeholder="{{'_PlaceholderAddComment_' | i18n}}" ng-model="newTaskComment.comment" ui-keypress="{enter:'addTaskComment()'}" required id="inputTaskAddComment" />
-										<button class="btn btn-inverse span2" ng-click="addTaskComment()" ng-disabled="!newTaskComment.comment.length">{{'_Add_' | i18n}}</button>
+										<input class="span10" type="text" placeholder="{{'_PlaceholderAddComment_' | i18n}}" ng-model="newTaskComment.comment" ui-keypress="{enter:'addTaskComment()'}" required id="inputTaskAddComment" ng-disabled="newCommentProcessing" />
+										<button class="btn btn-inverse span2" ng-click="addTaskComment()" ng-disabled="!newTaskComment.comment.length || newCommentProcessing"><span ng-show="!newCommentProcessing">{{'_Add_' | i18n}}</span><span ng-show="newCommentProcessing">{{'_Processing_' | i18n}}</span></button>
 									</div>
 									
 									<table class="comment" ng-repeat="comment in selectedTask.comments">

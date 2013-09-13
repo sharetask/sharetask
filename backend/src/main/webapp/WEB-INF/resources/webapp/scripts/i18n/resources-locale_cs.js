@@ -272,7 +272,7 @@
 	},
 	{
 		"key":"_Processing_",
-		"value":"... zpracovávám...",
+		"value":"pracuji",
 		"description":""
 	},
 	{
