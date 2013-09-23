@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd" [
-	<!ENTITY CONVERSION_PATTERN "&#37;d [&#37;t] &#37;-5p &#37;c - &#37;m&#37;n">
+<!DOCTYPE log4j:configuration SYSTEM "../log4j.dtd" [
+	<!ENTITY CONVERSION_PATTERN "&#37;d [&#37;X{session}/&#37;X{uid}] [&#37;t] &#37;-5p &#37;c - &#37;m&#37;n">
 ]>
 
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">

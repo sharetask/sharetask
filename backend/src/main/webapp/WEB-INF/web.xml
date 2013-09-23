@@ -19,6 +19,18 @@
 	</context-param>
 	
 	<!-- ================================================================= -->
+	<!-- Log session filter                                                -->
+	<!-- ================================================================= -->
+	<filter>
+		<filter-name>Log session information filter</filter-name>
+		<filter-class>org.sharetask.utility.log.LogSessionFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>Log session information filter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<!-- ================================================================= -->
 	<!-- Security filter                                                   -->
 	<!-- ================================================================= -->
 	<filter>
@@ -47,6 +59,18 @@
 	</filter>
 	<filter-mapping>
 		<filter-name>Character Encoding Filter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<!-- ================================================================= -->
+	<!-- Log uid filter                                                    -->
+	<!-- ================================================================= -->
+	<filter>
+		<filter-name>Log user information filter</filter-name>
+		<filter-class>org.sharetask.utility.log.LogUidFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>Log user information filter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 

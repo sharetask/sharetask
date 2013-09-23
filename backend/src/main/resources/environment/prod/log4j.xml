@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd" [
+<!DOCTYPE log4j:configuration SYSTEM "../log4j.dtd" [
 	<!ENTITY CONVERSION_PATTERN "&#37;d [&#37;t] &#37;-5p &#37;c - &#37;m&#37;n">
 	<!ENTITY LOGGING_DIRECTORY "${definition.directory.log}">
 ]>
