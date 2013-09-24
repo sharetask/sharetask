@@ -176,6 +176,7 @@ public class TaskServiceImpl implements TaskService {
 	/* (non-Javadoc)
 	 * @see org.sharetask.api.TaskService#getComments(java.lang.Long)
 	 */
+	// TODO: security check???
 	@Override
 	public List<CommentDTO> getComments(final Long taskId) {
 		final Task task = taskRepository.read(taskId);
@@ -185,6 +186,7 @@ public class TaskServiceImpl implements TaskService {
 	/* (non-Javadoc)
 	 * @see org.sharetask.api.TaskService#getEvents(java.lang.Long)
 	 */
+	// TODO: security check???
 	@Override
 	public List<EventDTO> getEvents(final Long taskId) {
 		final Task task = taskRepository.read(taskId);

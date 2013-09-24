@@ -82,6 +82,33 @@
 				<version>0.3.1</version>
 			</extension>
 		</extensions>
+		
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>enforce-property</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<requireProperty>
+									<property>project.version</property>
+									<message>"Project version must be specified."</message>
+									<regex>${definition.majorVersion}\.${definition.minorVersion}.*</regex>
+									<regexMessage>Project version must start with a number ${definition.majorVersion}.${definition.minorVersion}</regexMessage>
+								</requireProperty>
+							</rules>
+							<fail>true</fail>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+				
 		<pluginManagement>
 			<plugins>
 				<plugin>
@@ -193,6 +220,12 @@
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>buildnumber-maven-plugin</artifactId>
 					<version>1.2</version>
+				</plugin>
+				
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-enforcer-plugin</artifactId>
+					<version>1.3.1</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -506,5 +539,8 @@
 		<spring-data.version>1.3.0.RELEASE</spring-data.version>
 		<sonar.host.url>https://soso-gateway.dyndns.org/sonar</sonar.host.url>
 		<target.directory>target</target.directory>
+		
+		<definition.majorVersion>1</definition.majorVersion>
+		<definition.minorVersion>0</definition.minorVersion>
 	</properties>
 </project>

@@ -1,63 +1,61 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE log4j:configuration SYSTEM "../log4j.dtd" [
-	<!ENTITY CONVERSION_PATTERN "&#37;d [&#37;t] &#37;-5p &#37;c - &#37;m&#37;n">
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd" [
+	<!ENTITY CONVERSION_PATTERN "&#37;d [&#37;X{session}/&#37;X{uid}] [&#37;t] &#37;-5p &#37;c - &#37;m&#37;n">
+	<!-- <!ENTITY VERSION "${definition.majorVersion}.${definition.minorVersion}.${definition.buildNumber}"> -->
+	<!ENTITY APPLICATION_NAME "sharetask">
 	<!ENTITY LOGGING_DIRECTORY "${definition.directory.log}">
 ]>
 
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
 
-	<appender name="app-debug" class="org.apache.log4j.RollingFileAppender">
+	<appender name="app-main" class="org.apache.log4j.RollingFileAppender">
 		<param name="Append" value="false" />
-		<param name="File" value="&LOGGING_DIRECTORY;app_debug.log" />
+		<param name="File" value="${definition.directory.log}/&APPLICATION_NAME;_main.log" />
 		<param name="Threshold" value="DEBUG" />
 		<param name="encoding" value="UTF-8" />
 		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
-			<param name="FileNamePattern" value="&LOGGING_DIRECTORY;app_info.%d.log.gz" />
-		</rollingPolicy>
+			<param name="FileNamePattern" value="&LOGGING_DIRECTORY;&APPLICATION_NAME;_main.%d.log.gz" />
+		</rollingPolicy>		
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="&CONVERSION_PATTERN;" />
 		</layout>
 	</appender>
 
-	<appender name="app-info" class="org.apache.log4j.rolling.RollingFileAppender">
+	<appender name="app-warn" class="org.apache.log4j.RollingFileAppender">
 		<param name="Append" value="false" />
-		<param name="File" value="&LOGGING_DIRECTORY;app_info.log" />
-		<param name="Threshold" value="INFO" />
-		<param name="encoding" value="UTF-8" />
-		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
-			<param name="FileNamePattern" value="&LOGGING_DIRECTORY;app_info.%d.log.gz" />
-		</rollingPolicy>
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="&CONVERSION_PATTERN;" />
-		</layout>
-	</appender>
-
-	<appender name="app-warn" class="org.apache.log4j.rolling.RollingFileAppender">
-		<param name="Append" value="true" />
-		<param name="File" value="&LOGGING_DIRECTORY;app_warn.log" />
+		<param name="File" value="${definition.directory.log}/&APPLICATION_NAME;_warn.log" />
 		<param name="Threshold" value="WARN" />
 		<param name="encoding" value="UTF-8" />
 		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
-			<param name="FileNamePattern" value="&LOGGING_DIRECTORY;app_warn.%d.log.gz" />
-		</rollingPolicy>
+			<param name="FileNamePattern" value="&LOGGING_DIRECTORY;&APPLICATION_NAME;_warn.%d.log.gz" />
+		</rollingPolicy>		
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="&CONVERSION_PATTERN;" />
 		</layout>
 	</appender>
 
-	<logger name="org.sharetask" additivity="false">
-		<level value="debug" />
-		<appender-ref ref="app-debug" />
+	<logger name="org.sharetask">
+		<level value="INFO" />
+		<appender-ref ref="app-main" />
 	</logger>
 	
-	<logger name="org.springframework.web" additivity="false" >
-		<level value="debug" />
-		<appender-ref ref="app-debug" />
+	<logger name="org.springframework">
+		<level value="INFO" />
+		<appender-ref ref="app-main" />
+	</logger>
+	
+	<logger name="org.pac4j">
+		<level value="INFO" />
+		<appender-ref ref="app-main" />
+	</logger>
+	
+	<logger name="org.hibernate">
+		<level value="INFO" />
+		<appender-ref ref="app-main" />
 	</logger>
 	
 	<root>
-		<priority value="INFO" />
-		<appender-ref ref="app-info" />
+		<priority value="WARN" />
 		<appender-ref ref="app-warn" />
 	</root>
 </log4j:configuration>

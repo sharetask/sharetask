@@ -26,6 +26,7 @@
 				<includes>
 					<include>config.properties</include>
 					<include>application.properties</include>
+					<include>environment/**/log4j.xml</include>
 				</includes>
 			</resource>
 			<resource>
@@ -61,7 +62,7 @@
 							<outputDirectory>${basedir}/${target.directory}/classes</outputDirectory>
 							<resources>
 								<resource>
-									<directory>${basedir}/src/main/resources/${definition.evironment.path}</directory>
+									<directory>${basedir}/${target.directory}/classes/${definition.evironment.path}</directory>
 								</resource>
 							</resources>
 						</configuration>

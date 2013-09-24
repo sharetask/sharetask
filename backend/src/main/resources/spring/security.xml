@@ -18,7 +18,7 @@
 	<!-- - second chain is standard security chain                         -->
 	<!-- ================================================================= -->
 	<bean id="filterChainProxy" class="org.springframework.security.web.FilterChainProxy">
-	    <security:filter-chain-map path-type="ant">
+	    <security:filter-chain-map request-matcher="ant">
 	        <security:filter-chain pattern="/authcallback" filters="securityContextFilter, servletApiFilter, clientFilter" />
 	        <security:filter-chain pattern="/**" filters="securityContextFilter, requestCacheFilter, servletApiFilter, 
 	        	rememberMeProcessingFilter, anonFilter, sessionMgmtFilter, exceptionTranslator, filterSecurityInterceptor" />
