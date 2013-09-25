@@ -20,7 +20,7 @@
 	<appender name="app-main" class="org.apache.log4j.RollingFileAppender">
 		<param name="Append" value="false" />
 		<param name="File" value="${definition.directory.log}/&APPLICATION_NAME;_main.log" />
-		<param name="Threshold" value="DEBUG" />
+		<param name="Threshold" value="TRACE" />
 		<param name="encoding" value="UTF-8" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="&CONVERSION_PATTERN;" />
@@ -36,6 +36,11 @@
 			<param name="ConversionPattern" value="&CONVERSION_PATTERN;" />
 		</layout>
 	</appender>
+
+	<logger name="methodTracing">
+		<level value="TRACE" />
+		<appender-ref ref="app-main" />
+	</logger>
 
 	<logger name="org.sharetask">
 		<level value="DEBUG" />

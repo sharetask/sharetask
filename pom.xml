@@ -302,7 +302,6 @@
 				<groupId>org.aspectj</groupId>
 				<artifactId>aspectjtools</artifactId>
 				<version>${aspectjrt.version}</version>
-				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>cglib</groupId>

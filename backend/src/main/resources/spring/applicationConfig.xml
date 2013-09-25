@@ -63,5 +63,17 @@
 	<bean id="hibernateStatisticsMBean" class="org.hibernate.jmx.StatisticsService">
 		<property name="statisticsEnabled" value="true" />
 		<property name="sessionFactory" value="#{entityManagerFactory.sessionFactory}" />
-	</bean>  	
+	</bean>
+	
+	<!-- ================================================================= -->
+	<!-- Trace intercepter                                                 -->
+	<!-- ================================================================= -->
+	<bean id="customizableTraceInterceptor" class="org.springframework.aop.interceptor.CustomizableTraceInterceptor">
+	    <property name="enterMessage" value="Enter: $[targetClassShortName].$[methodName]($[arguments])"/>
+	    <property name="exitMessage" value="Exit: $[targetClassShortName].$[methodName](...) duration[$[invocationTime]]ms returning [$[returnValue]]"/>
+	    <property name="loggerName" value="methodTracing" />
+	</bean> 
+	<aop:config>
+		<aop:advisor advice-ref="customizableTraceInterceptor" pointcut="execution(public * org.sharetask.controller.UserController.*(..))" />
+	</aop:config>
 </beans>
