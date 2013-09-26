@@ -70,8 +70,8 @@ public class UserServiceImpl implements UserService {
 	@Inject
 	private SaltSource saltSource;
 
-	@Inject 
-	private InvitationService invitationService; 
+	@Inject
+	private InvitationService invitationService;
 
 	private static class UserDetailBuilder {
 
@@ -164,9 +164,10 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserInfoDTO read(final String username) {
 		final UserInformation user = userInformationRepository.read(username);
-		return DTOConverter.convert(user, UserInfoDTO.class);
+		throw new RuntimeException("xxxxxx");
+		//return DTOConverter.convert(user, UserInfoDTO.class);
 	}
-	
+
 	@Override
 	@Transactional
 	public void changePassword(final String password) {
@@ -186,5 +187,5 @@ public class UserServiceImpl implements UserService {
 		user.setEnabled(true);
 		userAuthenticationRepository.save(user);
 	}
-	
+
 }
