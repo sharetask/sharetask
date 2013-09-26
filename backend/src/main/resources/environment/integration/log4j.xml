@@ -37,6 +37,16 @@
 		</layout>
 	</appender>
 
+	<logger name="supportTracing">
+		<level value="INFO" />
+		<appender-ref ref="app-main" />
+	</logger>
+
+	<logger name="exceptionLogging">
+		<level value="TRACE" />
+		<appender-ref ref="app-main" />
+	</logger>
+	
 	<logger name="org.sharetask">
 		<level value="INFO" />
 		<appender-ref ref="app-main" />

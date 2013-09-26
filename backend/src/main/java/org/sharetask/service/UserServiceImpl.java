@@ -164,8 +164,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserInfoDTO read(final String username) {
 		final UserInformation user = userInformationRepository.read(username);
-		throw new RuntimeException("xxxxxx");
-		//return DTOConverter.convert(user, UserInfoDTO.class);
+		return DTOConverter.convert(user, UserInfoDTO.class);
 	}
 
 	@Override
