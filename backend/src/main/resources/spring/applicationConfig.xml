@@ -66,13 +66,25 @@
 	</bean>
 	
 	<!-- ================================================================= -->
-	<!-- Trace intercepter                                                 -->
+	<!-- Support trace interceptor                                         -->
 	<!-- ================================================================= -->
-	<bean id="customizableTraceInterceptor" class="org.springframework.aop.interceptor.CustomizableTraceInterceptor">
+	<bean id="supportInterceptor" class="org.springframework.aop.interceptor.CustomizableTraceInterceptor">
 	    <property name="enterMessage" value="&gt; $[targetClassShortName].$[methodName]($[arguments])"/>
-	    <property name="exitMessage" value="&lt; $[targetClassShortName].$[methodName](...) duration[$[invocationTime]]ms returning [$[returnValue]]"/>
+	    <property name="exitMessage" value="&lt; $[targetClassShortName].$[methodName](...) duration: [$[invocationTime]]ms returning [$[returnValue]]"/>
+	    <property name="loggerName" value="supportTracing" />
 	</bean> 
-	<aop:config>
-		<aop:advisor advice-ref="customizableTraceInterceptor" pointcut="execution(public * org.sharetask.service..*ServiceImpl.*(..))" />
+	<aop:config proxy-target-class="true">
+		<aop:advisor advice-ref="supportInterceptor" pointcut="execution(public * org.sharetask.service..*ServiceImpl.*(..))" />
 	</aop:config>
+	
+	<!-- ================================================================= -->
+	<!-- Exception error interceptor                                       -->
+	<!-- ================================================================= -->
+	<bean id="exceptionInterceptor" class="org.sharetask.utility.log.ErrorInterceptor">
+	    <property name="exceptionMessage" value="E $[targetClassShortName].$[methodName]($[arguments]): $[exception]"/>
+	    <property name="loggerName" value="exceptionLogging" />
+	</bean> 
+	<aop:config proxy-target-class="true">
+		<aop:advisor advice-ref="exceptionInterceptor" pointcut="execution(public * org.sharetask.service..*ServiceImpl.*(..))" />
+	</aop:config>	
 </beans>
