@@ -100,12 +100,24 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 		final UserInformation user = userRepository.read(invitation.getEmail());
 
 		// add member to workspace
-		if (!workspace.getMembers().contains(user.getUsername())) {
+		if (!checkIfExistsMemeberInWorkspace(workspace, user)) {
 			workspace.addMember(user);
 			workspaceRepository.save(workspace);
 		}
 	}
 
+	private boolean checkIfExistsMemeberInWorkspace(final Workspace workspace, final UserInformation user) {
+		boolean result = false;
+		for (final UserInformation userInformation : workspace.getMembers()) {
+			if (userInformation.getUsername().equals(user.getUsername())) {
+				result = true;
+				break;
+			}
+		}
+		return result;
+	}
+	
+	
 	/* (non-Javadoc)
 	 * @see org.sharetask.api.WorkspaceService#removeMember(java.lang.Long, java.lang.String)
 	 */

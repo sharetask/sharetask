@@ -319,6 +319,7 @@
 				<definition.quartz.dataSource.validationQuery>select 1 from INFORMATION_SCHEMA.SYSTEM_USERS</definition.quartz.dataSource.validationQuery>
 
 				<definition.security.login.callbackUrl>http://localhost:8080/sharetask/authcallback</definition.security.login.callbackUrl>
+				<definition.application.url>http://localhost:8080/sharetask</definition.application.url>
 				<tomcat.version>7.0.40</tomcat.version>
 			</properties>
 			<dependencies>
@@ -548,6 +549,7 @@
 				<definition.quartz.jobStore.driverClass>org.quartz.impl.jdbcjobstore.HSQLDBDelegate</definition.quartz.jobStore.driverClass>
 				<definition.quartz.dataSource.validationQuery>select 1 from INFORMATION_SCHEMA.SYSTEM_USERS</definition.quartz.dataSource.validationQuery>
 				<definition.security.login.callbackUrl>http://localhost:8080/sharetask/authcallback</definition.security.login.callbackUrl>
+				<definition.application.url>http://localhost:8080/sharetask</definition.application.url>
 			</properties>
 			<dependencies>
 				<dependency>
@@ -579,12 +581,14 @@
 			<id>production-server</id>
 			<properties>
 				<definition.security.login.callbackUrl>http://www.shareta.sk/authcallback</definition.security.login.callbackUrl>
+				<definition.application.url>http://shareta.sk</definition.application.url>
 			</properties>
 		</profile>
 		<profile>
 			<id>integration-server</id>
 			<properties>
 				<definition.security.login.callbackUrl>http://integration-sharetask.rhcloud.com/authcallback</definition.security.login.callbackUrl>
+				<definition.application.url>http://integration-sharetask.rhcloud.com</definition.application.url>
 			</properties>
 		</profile>
 	</profiles>

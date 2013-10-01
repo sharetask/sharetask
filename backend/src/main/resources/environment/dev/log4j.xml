@@ -37,7 +37,7 @@
 		</layout>
 	</appender>
 
-	<logger name="methodTracing">
+	<logger name="org.sharetask">
 		<level value="TRACE" />
 		<appender-ref ref="app-main" />
 	</logger>

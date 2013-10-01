@@ -69,11 +69,10 @@
 	<!-- Trace intercepter                                                 -->
 	<!-- ================================================================= -->
 	<bean id="customizableTraceInterceptor" class="org.springframework.aop.interceptor.CustomizableTraceInterceptor">
-	    <property name="enterMessage" value="Enter: $[targetClassShortName].$[methodName]($[arguments])"/>
-	    <property name="exitMessage" value="Exit: $[targetClassShortName].$[methodName](...) duration[$[invocationTime]]ms returning [$[returnValue]]"/>
-	    <property name="loggerName" value="methodTracing" />
+	    <property name="enterMessage" value="&gt; $[targetClassShortName].$[methodName]($[arguments])"/>
+	    <property name="exitMessage" value="&lt; $[targetClassShortName].$[methodName](...) duration[$[invocationTime]]ms returning [$[returnValue]]"/>
 	</bean> 
 	<aop:config>
-		<aop:advisor advice-ref="customizableTraceInterceptor" pointcut="execution(public * org.sharetask.controller.UserController.*(..))" />
+		<aop:advisor advice-ref="customizableTraceInterceptor" pointcut="execution(public * org.sharetask.service..*ServiceImpl.*(..))" />
 	</aop:config>
 </beans>
