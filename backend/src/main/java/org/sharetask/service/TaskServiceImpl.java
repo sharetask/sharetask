@@ -134,7 +134,7 @@ public class TaskServiceImpl implements TaskService {
 	 */
 	@Override
 	@Transactional
-	@PreAuthorize("isAuthenticated() and hasPermission(#task.id, 'isTaskAssignee')")
+	@PreAuthorize(Constants.PERMISSION_TASK_ASSIGNEE_OR_CREATOR)
 	public TaskDTO update(final TaskDTO task) {
 		final Task entity = taskRepository.findOne(task.getId());
 		DTOConverter.convert(task, entity);
