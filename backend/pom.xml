@@ -551,6 +551,7 @@
 				<definition.quartz.dataSource.validationQuery>select 1 from INFORMATION_SCHEMA.SYSTEM_USERS</definition.quartz.dataSource.validationQuery>
 				<definition.security.login.callbackUrl>http://localhost:8080/sharetask/authcallback</definition.security.login.callbackUrl>
 				<definition.application.url>http://localhost:8080/sharetask</definition.application.url>
+				<definition.dbunit.DataTypeFactory>org.dbunit.ext.hsqldb.HsqldbDataTypeFactory</definition.dbunit.DataTypeFactory>
 			</properties>
 			<dependencies>
 				<dependency>

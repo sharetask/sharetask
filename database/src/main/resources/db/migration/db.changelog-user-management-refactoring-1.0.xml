@@ -98,4 +98,10 @@
 		<dropTable tableName="USER"/>
 	</changeSet>
 
+	<changeSet id="add phone number: user information" author="mbocek">
+		<addColumn tableName="user_information">
+			<column name="MOBILE_PHONE" type="varchar(20)" />
+		</addColumn>		
+	</changeSet>
+
 </databaseChangeLog>

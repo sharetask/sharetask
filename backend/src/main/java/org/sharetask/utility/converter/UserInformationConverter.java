@@ -51,6 +51,7 @@ public class UserInformationConverter implements CustomConverter {
 		userInfoDTO.setUsername(source.getUsername());
 		userInfoDTO.setName(source.getName());
 		userInfoDTO.setSurName(source.getSurName());
+		userInfoDTO.setMobilePhone(source.getMobilePhone());
 		return userInfoDTO;
 	}
 }

@@ -488,15 +488,6 @@
 			</properties>
 		</profile>
 		<profile>
-			<id>dev-mysql</id>
-			<properties>
-				<definition.database.jdbc.driver>com.mysql.jdbc.Driver</definition.database.jdbc.driver>
-				<definition.database.jdbc.url>jdbc:mysql://localhost:3306/sharetask?useUnicode=true&amp;characterEncoding=UTF-8</definition.database.jdbc.url>
-				<definition.database.jdbc.user>sharetask</definition.database.jdbc.user>
-				<definition.database.jdbc.password>sharetask</definition.database.jdbc.password>
-			</properties>
-		</profile>
-		<profile>
 			<id>integration</id>
 			<properties>
 				<definition.database.path>/tmp/db-integration</definition.database.path>
@@ -504,6 +495,15 @@
 				<definition.database.jdbc.url>jdbc:hsqldb:file:${definition.database.path}/sharetask;shutdown=true</definition.database.jdbc.url>
 				<definition.database.jdbc.user>sa</definition.database.jdbc.user>
 				<definition.database.jdbc.password></definition.database.jdbc.password>
+			</properties>
+		</profile>
+		<profile>
+			<id>dev-mysql</id>
+			<properties>
+				<definition.database.jdbc.driver>com.mysql.jdbc.Driver</definition.database.jdbc.driver>
+				<definition.database.jdbc.url>jdbc:mysql://localhost:3306/sharetask?useUnicode=true&amp;characterEncoding=UTF-8</definition.database.jdbc.url>
+				<definition.database.jdbc.user>sharetask</definition.database.jdbc.user>
+				<definition.database.jdbc.password>sharetask</definition.database.jdbc.password>
 			</properties>
 		</profile>
 		<!-- used only on openshift server - direcly run on openshift paas -->

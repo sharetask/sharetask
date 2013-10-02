@@ -22,13 +22,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
 import org.sharetask.entity.Role;
 
 /**
@@ -38,12 +39,13 @@ import org.sharetask.entity.Role;
 @ToString(exclude = "password")
 public class UserDTO {
 
-	@NotNull
+	@NotBlank
+	@Email
 	@Size(min = 6, max = 255)
 	@Getter @Setter
 	private String username;
 	
-	@NotNull
+	@NotBlank
 	@Size(min = 8, max = 255)
 	@Getter @Setter
 	private String password;
@@ -51,15 +53,19 @@ public class UserDTO {
 	@Getter @Setter
 	private Boolean enabled = Boolean.FALSE;
 
-	@NotNull
+	@NotBlank
 	@Size(min = 1, max = 255)
 	@Getter @Setter
 	private String name;
 	
-	@NotNull
+	@NotBlank
 	@Size(min = 1, max = 255)
 	@Getter @Setter
 	private String surName;
+	
+	@Size(min = 4, max = 20)
+	@Getter @Setter
+	private String mobilePhone;
 	
 	@Getter
 	private final Collection<Role> roles = new ArrayList<Role>();

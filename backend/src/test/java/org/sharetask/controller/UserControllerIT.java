@@ -47,8 +47,10 @@ public class UserControllerIT extends IntegrationTest {
         final HttpPost httpPost = new HttpPost(URL_USER );
         httpPost.addHeader(new BasicHeader("Content-Type", "application/json"));
         final StringEntity httpEntity = new StringEntity("{\"username\":\"it@shareta.sk\"," +
+                									 "\"password\":\"Password\"," +
         		                                     "\"name\":\"Integration\"," +
-        		                                     "\"surName\":\"Test\"}");
+        		                                     "\"surName\":\"Test\", " +
+        		                                     "\"mobilePhone\":\"+420123456789\"}");
         httpPost.setEntity(httpEntity);
 
         //when
@@ -58,6 +60,7 @@ public class UserControllerIT extends IntegrationTest {
         Assert.assertEquals(HttpStatus.OK.value(), response.getStatusLine().getStatusCode());
         final String responseData = EntityUtils.toString(response.getEntity());
         Assert.assertTrue(responseData.contains("\"username\":\"it@shareta.sk\""));
+        Assert.assertTrue(responseData.contains("\"mobilePhone\":\"+420123456789\""));
     }
 
 

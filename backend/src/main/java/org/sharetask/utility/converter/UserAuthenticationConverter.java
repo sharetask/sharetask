@@ -54,6 +54,7 @@ public class UserAuthenticationConverter implements CustomConverter {
 		userDTO.setUsername(source.getUsername());
 		userDTO.setEnabled(source.isEnabled());
 		userDTO.setName(source.getUserInfo().getName());
+		userDTO.setMobilePhone(source.getUserInfo().getMobilePhone());
 		userDTO.setSurName(source.getUserInfo().getSurName());
 		userDTO.setCreatedOn(source.getCreatedOn());
 		userDTO.setUpdatedOn(source.getUpdatedOn());

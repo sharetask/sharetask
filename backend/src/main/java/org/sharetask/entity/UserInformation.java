@@ -70,6 +70,10 @@ public class UserInformation implements Serializable {
 	@Column(name = "SURNAME", nullable = false, length = 255)
 	private String surName;
 	
+	@Getter @Setter
+	@Column(name = "MOBILE_PHONE", nullable = true, length = 20)
+	private String mobilePhone;
+	
 	@Setter
 	@ElementCollection(targetClass = Role.class)
 	@JoinTable(name = "USER_ROLE", joinColumns = @JoinColumn(name = "USER_NAME"))

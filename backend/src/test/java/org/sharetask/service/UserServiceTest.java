@@ -71,6 +71,7 @@ public class UserServiceTest extends ServiceUnitTest {
 		userDTO.setName("Test");
 		userDTO.setPassword("password");
 		userDTO.setSurName("Test Surname");
+		userDTO.setMobilePhone("+420123456789");
 		try {
 			userService.create(userDTO );
 		} catch (final UserAlreadyExistsException e) {
@@ -78,9 +79,10 @@ public class UserServiceTest extends ServiceUnitTest {
 		}
 
 		final org.sharetask.entity.UserAuthentication user = userRepository.findByUsername(name);
-		assertEquals(user.getUserInfo().getName(), userDTO.getName());
-		assertEquals(user.getUserInfo().getSurName(), userDTO.getSurName());
-		assertEquals(user.getUsername(), userDTO.getUsername());
+		assertEquals(userDTO.getName(), user.getUserInfo().getName());
+		assertEquals(userDTO.getSurName(), user.getUserInfo().getSurName());
+		assertEquals(userDTO.getUsername(), user.getUsername());
+		assertEquals(userDTO.getMobilePhone(), user.getUserInfo().getMobilePhone());
 		assertTrue(user.getUserInfo().getRoles().size() == 1);
 	}
 

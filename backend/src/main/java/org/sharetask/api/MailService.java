@@ -23,11 +23,13 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 
 import org.sharetask.api.dto.InvitationDTO;
+import org.springframework.validation.annotation.Validated;
 
 /**
  * @author Michal Bocek
  * @since 1.0.0
  */
+@Validated
 public interface MailService {
 	
 	/**

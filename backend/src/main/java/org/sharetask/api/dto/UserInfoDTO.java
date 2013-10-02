@@ -42,4 +42,8 @@ public class UserInfoDTO {
 	@Size(min = 1, max = 255)
 	@Getter @Setter
 	private String surName;
+
+	@Size(min = 4, max = 20)
+	@Getter @Setter
+	private String mobilePhone;
 }
