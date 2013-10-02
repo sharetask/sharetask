@@ -34,13 +34,13 @@ import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
-import org.dbunit.ext.hsqldb.HsqldbDataTypeFactory;
 import org.dbunit.operation.DatabaseOperation;
 import org.hibernate.internal.SessionImpl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -65,9 +65,12 @@ public class DbUnitTest {
 	@Inject
 	@Qualifier("authenticationManagerStd")
 	private AuthenticationManager authenticationManager;
-	
+
 	protected boolean enableSecurity = true;
-	
+
+	@Value("${dbunit.DataTypeFactory}")
+	private String dialectFactoryClass;
+
 	@Before
 	public void init() throws DatabaseUnitException, SQLException, MalformedURLException {
 		// insert data into database
@@ -93,7 +96,16 @@ public class DbUnitTest {
 		//DatabaseMetaData databaseMetaData = con.getMetaData();
 		final IDatabaseConnection connection = new DatabaseConnection(con);
 		final DatabaseConfig config = connection.getConfig();
-		config.setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new HsqldbDataTypeFactory());
+		try {
+			final Class<?> forName = Class.forName(dialectFactoryClass);
+			config.setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, forName.newInstance());
+		} catch (final ClassNotFoundException e) {
+			throw new RuntimeException(e);
+		} catch (final InstantiationException e) {
+			throw new RuntimeException(e);
+		} catch (final IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
 		return connection;
 	}
 
@@ -102,7 +114,7 @@ public class DbUnitTest {
 		builder.setColumnSensing(true);
 		return builder.build(new File("src/test/resources/dataset.xml"));
 	}
-	
+
 	protected EntityManager getEntityManager() {
 		return entityManager;
 	}

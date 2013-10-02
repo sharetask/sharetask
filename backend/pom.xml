@@ -320,6 +320,7 @@
 
 				<definition.security.login.callbackUrl>http://localhost:8080/sharetask/authcallback</definition.security.login.callbackUrl>
 				<definition.application.url>http://localhost:8080/sharetask</definition.application.url>
+				<definition.dbunit.DataTypeFactory>org.dbunit.ext.hsqldb.HsqldbDataTypeFactory</definition.dbunit.DataTypeFactory>
 				<tomcat.version>7.0.40</tomcat.version>
 			</properties>
 			<dependencies>
@@ -576,6 +577,21 @@
 					<artifactId>mysql-connector-java</artifactId>
 				</dependency>
 			</dependencies>
+		</profile>
+		<profile>
+			<id>dev-mysql</id>
+			<dependencies>
+				<dependency>
+					<groupId>mysql</groupId>
+					<artifactId>mysql-connector-java</artifactId>
+				</dependency>
+			</dependencies>
+			<properties>
+				<definition.hibernate.dialect>org.hibernate.dialect.MySQLInnoDBDialect</definition.hibernate.dialect>
+				<definition.quartz.jobStore.driverClass>org.quartz.impl.jdbcjobstore.StdJDBCDelegate</definition.quartz.jobStore.driverClass>
+				<definition.quartz.dataSource.validationQuery>select 1</definition.quartz.dataSource.validationQuery>
+				<definition.dbunit.DataTypeFactory>org.dbunit.ext.mysql.MySqlDataTypeFactory</definition.dbunit.DataTypeFactory>
+			</properties>
 		</profile>
 		<profile>
 			<id>production-server</id>

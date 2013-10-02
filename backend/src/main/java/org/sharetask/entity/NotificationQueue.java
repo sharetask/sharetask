@@ -58,8 +58,8 @@ import org.sharetask.api.Constants;
 @Table(name = "NOTIFICATION_QUEUE")
 @NoArgsConstructor
 @AllArgsConstructor
-@NamedQueries(value = { 
-		@NamedQuery(name = NotificationQueue.QUERY_NAME_FIND_EMAIL_BY_PRIORITY, query = NotificationQueue.QUERY_FIND_EMAIL_BY_PRIORITY)   
+@NamedQueries(value = {
+		@NamedQuery(name = NotificationQueue.QUERY_NAME_FIND_EMAIL_BY_PRIORITY, query = NotificationQueue.QUERY_FIND_EMAIL_BY_PRIORITY)
 	})
 public class NotificationQueue implements Serializable {
 
@@ -82,7 +82,7 @@ public class NotificationQueue implements Serializable {
 	private NotificationType type;
 
 	@Getter
-	@Column(name = "FROM", nullable = false, length = 255)
+	@Column(name = "[FROM]", nullable = false, length = 255)
 	private String from;
 
 	@Getter
@@ -107,7 +107,7 @@ public class NotificationQueue implements Serializable {
 	@Getter
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "PRIORITY_CODE", nullable = false)
-	private Priority priority;	
+	private Priority priority;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "UPDATED_ON", nullable = false)
