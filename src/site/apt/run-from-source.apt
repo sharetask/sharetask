@@ -8,11 +8,14 @@
 
 Run project from source
 
-* Chekout project 
+	Chekout project 
   
 +-----+
   git clone git://github.com/sharetask/sharetask.git
 +-----+
 
-* mvn clean install; mvn -pl backend jetty:run
+	Run mvn in checked out directory
 
++-----+
+mvn clean install; mvn -pl backend jetty:run
++-----+

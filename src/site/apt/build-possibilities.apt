@@ -1,0 +1,43 @@
+ -----
+ Build possibilities
+ -----
+ Michal Bocek
+ -----
+ 2013-10-03
+ -----
+
+Building project with profiles
+
+* Development builds
+
+	Per default application is build against HSQL db with command: 
+  
++-----+
+  mvn clean install
++-----+
+
+	Default profile which is activated when nothing is specified is <dev> profile. If you would like to build 
+	application and run tests against to mysql you can use combination of profile <dev> and <dev-mysql>. When you use 
+	<dev-mysql> profile then database is located on localhost port 3306 and sharetask schema (user: sharetask, 
+	password: sharetask).    
+
++-----+
+  mvn clean install -Pdev,dev-mysql
++-----+
+
+
+* Integration builds
+
+	There is same pattern like in development build. Integration tests is run against HSQLDB per default via profile <integration>
+	  
++-----+
+  mvn clean install -Pinteration
++-----+
+	
+	If you want to run integration test against locally installed mysql you should use <dev-mysql> profile.
+	
++-----+
+  mvn clean install -Pinteration,dev-mysql
++-----+
+	 
+	  

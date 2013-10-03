@@ -6,7 +6,7 @@
 
 	<custom>
 		<fluidoSkin>
-			<sourceLineNumbersEnabled>true</sourceLineNumbersEnabled>
+			<!-- <sourceLineNumbersEnabled>true</sourceLineNumbersEnabled> -->
 		</fluidoSkin>
 	</custom>
 
@@ -34,6 +34,7 @@
 		<menu name="Overview">
 			<item name="Run from source code" href="./run-from-source.html"/>
 			<item name="Development in fork" href="./development-in-fork.html"/>
+			<item name="Build possibilities" href="./build-possibilities.html"/>
 		</menu>			
 		<menu ref="modules"/>
 		<menu ref="reports"/>
