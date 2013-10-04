@@ -7,9 +7,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="author" content="Michal Bocek" />
+    <meta name="Date-Creation-yyyymmdd" content="20131003" />
     <meta name="Date-Revision-yyyymmdd" content="20131004" />
     <meta http-equiv="Content-Language" content="en" />
-    <title>ShareTask - Project Modules</title>
+    <title>ShareTask - Build possibilities</title>
     <link rel="stylesheet" href="./css/apache-maven-fluido-1.3.0.min.css" />
     <link rel="stylesheet" href="./css/site.css" />
     <link rel="stylesheet" href="./css/print.css" media="print" />
@@ -52,7 +54,7 @@
         ShareTask</a>
         </li>
       <li class="divider ">/</li>
-        <li class="">Project Modules</li>
+        <li class="">Build possibilities</li>
         
                 
                     
@@ -85,12 +87,10 @@
         Development in fork</a>
             </li>
                   
-      <li>
+      <li class="active">
     
-                          <a href="build-possibilities.html" title="Build possibilities">
-          <i class="none"></i>
-        Build possibilities</a>
-            </li>
+            <a href="#"><i class="none"></i>Build possibilities</a>
+          </li>
                               <li class="nav-header">Modules</li>
                                 
       <li>
@@ -121,118 +121,13 @@
         ShareTask: administration</a>
             </li>
                               <li class="nav-header">Project Documentation</li>
-                                                                                                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                                                                                                              
       <li>
     
                           <a href="project-info.html" title="Project Information">
-          <i class="icon-chevron-down"></i>
+          <i class="icon-chevron-right"></i>
         Project Information</a>
-                    <ul class="nav nav-list">
-                      
-      <li>
-    
-                          <a href="distribution-management.html" title="Distribution Management">
-          <i class="none"></i>
-        Distribution Management</a>
-            </li>
-                      
-      <li>
-    
-                          <a href="index.html" title="About">
-          <i class="none"></i>
-        About</a>
-            </li>
-                      
-      <li>
-    
-                          <a href="dependencies.html" title="Dependencies">
-          <i class="none"></i>
-        Dependencies</a>
-            </li>
-                      
-      <li>
-    
-                          <a href="issue-tracking.html" title="Issue Tracking">
-          <i class="none"></i>
-        Issue Tracking</a>
-            </li>
-                      
-      <li>
-    
-                          <a href="plugins.html" title="Project Plugins">
-          <i class="none"></i>
-        Project Plugins</a>
-            </li>
-                      
-      <li>
-    
-                          <a href="integration.html" title="Continuous Integration">
-          <i class="none"></i>
-        Continuous Integration</a>
-            </li>
-                      
-      <li>
-    
-                          <a href="license.html" title="Project License">
-          <i class="none"></i>
-        Project License</a>
-            </li>
-                      
-      <li>
-    
-                          <a href="dependency-management.html" title="Dependency Management">
-          <i class="none"></i>
-        Dependency Management</a>
-            </li>
-                      
-      <li>
-    
-                          <a href="mail-lists.html" title="Mailing Lists">
-          <i class="none"></i>
-        Mailing Lists</a>
-            </li>
-                      
-      <li>
-    
-                          <a href="team-list.html" title="Project Team">
-          <i class="none"></i>
-        Project Team</a>
-            </li>
-                      
-      <li>
-    
-                          <a href="dependency-convergence.html" title="Dependency Convergence">
-          <i class="none"></i>
-        Dependency Convergence</a>
-            </li>
-                      
-      <li>
-    
-                          <a href="source-repository.html" title="Source Repository">
-          <i class="none"></i>
-        Source Repository</a>
-            </li>
-                      
-      <li>
-    
-                          <a href="plugin-management.html" title="Plugin Management">
-          <i class="none"></i>
-        Plugin Management</a>
-            </li>
-                      
-      <li class="active">
-    
-            <a href="#"><i class="none"></i>Project Modules</a>
-          </li>
-                      
-      <li>
-    
-                          <a href="project-summary.html" title="Project Summary">
-          <i class="none"></i>
-        Project Summary</a>
-            </li>
-              </ul>
-        </li>
+                  </li>
             </ul>
                 
                     
@@ -253,7 +148,7 @@
                 
         <div id="bodyColumn"  class="span9" >
                                   
-            <div class="section"><h2>Project Modules<a name="Project_Modules"></a></h2><a name="Project_Modules"></a><p>This project has declared the following modules:</p><table border="0" class="table table-striped"><tr class="a"><th>Name</th><th>Description</th></tr><tr class="b"><td><a href="database/index.html">ShareTask: database</a></td><td>-</td></tr><tr class="a"><td><a href="backend/index.html">ShareTask: backend</a></td><td>-</td></tr><tr class="b"><td><a href="openshift/index.html">ShareTask: openshift</a></td><td>-</td></tr><tr class="a"><td><a href="administration/index.html">ShareTask: administration</a></td><td>-</td></tr></table></div>
+            <div class="section"><h2>Building project with profiles<a name="Building_project_with_profiles"></a></h2><div class="section"><h3>Development builds<a name="Development_builds"></a></h3><p>Per default application is build against HSQL db with command: </p><div class="source"><pre class="prettyprint">  mvn clean install</pre></div><p>Default profile which is activated when nothing is specified is <i>dev</i> profile. If you would like to build application and run tests against to mysql you can use combination of profile <i>dev</i> and <i>dev-mysql</i>. When you use <i>dev-mysql</i> profile then database is located on localhost port 3306 and sharetask schema (user: sharetask, password: sharetask). </p><div class="source"><pre class="prettyprint">  mvn clean install -Pdev,dev-mysql</pre></div></div><div class="section"><h3>Integration builds<a name="Integration_builds"></a></h3><p>There is same pattern like in development build. Integration tests is run against HSQLDB per default via profile <i>integration</i></p><div class="source"><pre class="prettyprint">  mvn clean install -Pinteration</pre></div><p>If you want to run integration test against locally installed mysql you should use <i>dev-mysql</i> profile.</p><div class="source"><pre class="prettyprint">  mvn clean install -Pinteration,dev-mysql</pre></div></div></div>
                   </div>
             </div>
           </div>
