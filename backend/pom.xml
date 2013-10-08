@@ -634,12 +634,6 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aspects</artifactId>
-			<exclusions>
-				<exclusion>
-					<artifactId>aspectjweaver</artifactId>
-					<groupId>org.aspectj</groupId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
@@ -664,10 +658,6 @@
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.aspectj</groupId>
-			<artifactId>aspectjtools</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>cglib</groupId>
