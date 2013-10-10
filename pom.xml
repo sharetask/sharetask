@@ -41,6 +41,16 @@
 			<id>github.sharetask</id>
 			<url>gitsite:git@github.com/sharetask/sharetask.git</url>
 		</site>
+		<repository>
+			<id>deployment</id>
+			<name>Internal Releases</name>
+			<url>https://soso-gateway.dyndns.org/nexus/content/repositories/releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>deployment</id>
+			<name>Internal Releases</name>
+			<url>https://soso-gateway.dyndns.org/nexus/content/repositories/snapshots/</url>
+		</snapshotRepository>
 	</distributionManagement>
 
 	<developers>
