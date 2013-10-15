@@ -123,18 +123,31 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
-					<excludes>
-						<exclude>**/DbUnitTest.java</exclude>
-						<exclude>**/ServiceUnitTest.java</exclude>
-						<exclude>**/IntegrationTest.java</exclude>
-						<exclude>**/*IT.java</exclude>
-					</excludes>
-					<forkMode>once</forkMode>
-					<systemPropertyVariables>
-						<spring.profiles.active>${spring.profile}</spring.profiles.active>
-					</systemPropertyVariables>
-					<!-- reportFormat>xml</reportFormat-->
+					<skip>true</skip>
 				</configuration>
+				<executions>
+					<execution>
+						<id>unit-tests</id>
+						<phase>test</phase>
+						<goals>
+							<goal>test</goal>
+						</goals>
+						<configuration>
+							<skip>false</skip>
+							<excludes>
+								<exclude>**/DbUnitTest.java</exclude>
+								<exclude>**/ServiceUnitTest.java</exclude>
+								<exclude>**/IntegrationTest.java</exclude>
+								<exclude>**/*IT.java</exclude>
+							</excludes>
+							<forkMode>once</forkMode>
+							<systemPropertyVariables>
+								<spring.profiles.active>${spring.profile}</spring.profiles.active>
+							</systemPropertyVariables>
+							<!-- reportFormat>xml</reportFormat-->
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
