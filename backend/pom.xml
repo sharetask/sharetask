@@ -124,6 +124,12 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
 					<skip>true</skip>
+					<properties>
+						<property>
+							<name>listener</name>
+							<value>org.sonar.java.jacoco.JUnitListener</value>
+						</property>
+					</properties>
 				</configuration>
 				<executions>
 					<execution>
@@ -498,6 +504,12 @@
 							</execution>
 						</executions>
 						<configuration>
+							<properties>
+								<property>
+									<name>listener</name>
+									<value>org.sonar.java.jacoco.JUnitListener</value>
+								</property>
+							</properties>
 							<systemPropertyVariables>
 								<user.timezone>GMT</user.timezone>
 							</systemPropertyVariables>
@@ -796,6 +808,10 @@
 		<dependency>
 			<groupId>org.subethamail</groupId>
 			<artifactId>subethasmtp</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.sonar-plugins.java</groupId>
+			<artifactId>sonar-jacoco-listeners</artifactId>
 		</dependency>
 	</dependencies>
 </project>
