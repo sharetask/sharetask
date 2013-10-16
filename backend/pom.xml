@@ -558,7 +558,7 @@
 											    <artifactId>${project.artifactId}</artifactId>
 											    <type>war</type>
 											    <pingURL>http://localhost:8088/sharetask/api/info</pingURL>
-											    <pingTimeout>180000</pingTimeout>
+											    <pingTimeout>300000</pingTimeout>
 											    <properties>
 											        <context>/sharetask</context>
 											    </properties>
