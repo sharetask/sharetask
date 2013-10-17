@@ -34,6 +34,8 @@ import org.sharetask.data.DbUnitTest;
 import org.sharetask.entity.Role;
 import org.sharetask.repository.UserAuthenticationRepository;
 import org.sharetask.security.UserDetailsImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -51,22 +53,24 @@ import org.springframework.security.crypto.codec.Hex;
  */
 public class AuthenticationServiceTest extends DbUnitTest {
 
+	private static Logger log = LoggerFactory.getLogger(AuthenticationServiceTest.class);
+
 	@Inject
 	private UserAuthenticationRepository userRepository;
 
 	@Inject
 	private PasswordEncoder passwordEncoder;
-	
+
 	@Inject
 	private SaltSource saltSource;
-	
+
 	@Resource(name = "authenticationManagerStd")
 	private AuthenticationManager authenticationManager;
 
 	public AuthenticationServiceTest() {
 		enableSecurity = false;
 	}
-	
+
 	@Test
 	public void testPasswordEncoding() throws NoSuchAlgorithmException, NoSuchProviderException {
 		final ArrayList<GrantedAuthority> list = new ArrayList<GrantedAuthority>();
@@ -83,7 +87,7 @@ public class AuthenticationServiceTest extends DbUnitTest {
 	    	fail("Problem with authentication: user/password");
 	    }
 	}
-	
+
 	@Test
 	public void testSaltPasswordEncoder() throws NoSuchAlgorithmException {
 		final String username = "test3@test.com";
@@ -97,9 +101,9 @@ public class AuthenticationServiceTest extends DbUnitTest {
 		final String salt = new String(Hex.encode(digest));
 		final User u = new UserDetailsImpl(username, password, salt, list);
 		final String passwordEncoded = passwordEncoder.encodePassword("password", saltSource.getSalt(u));
-		System.out.println("UserAuthentication name: " + username);
-		System.out.println("Password: " + password);
-		System.out.println("Salt: " + salt);
-		System.out.println("Encoded password: " + passwordEncoded);
+		log.info("UserAuthentication name: {}", username);
+		log.info("Password: {}", password);
+		log.info("Salt: {}", salt);
+		log.info("Encoded password: {}", passwordEncoded);
 	}
 }

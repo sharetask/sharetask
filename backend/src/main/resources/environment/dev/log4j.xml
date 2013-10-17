@@ -68,7 +68,7 @@
 	</logger>
 	
 	<root>
-		<priority value="WARN" />
+		<level value="WARN" />
 		<appender-ref ref="app-warn" />
 	</root>
 </log4j:configuration>
