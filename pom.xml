@@ -244,6 +244,13 @@
 					<artifactId>jacoco-maven-plugin</artifactId>
 					<version>0.6.3.201306030806</version>
 				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<configuration>
+						<deployAtEnd>true</deployAtEnd>
+					</configuration>
+				</plugin>						
 			</plugins>
 		</pluginManagement>
 	</build>
