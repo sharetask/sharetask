@@ -99,7 +99,7 @@
 	</changeSet>
 
 	<changeSet id="add phone number: user information" author="mbocek">
-		<addColumn tableName="user_information">
+		<addColumn tableName="USER_INFORMATION">
 			<column name="MOBILE_PHONE" type="varchar(20)" />
 		</addColumn>		
 	</changeSet>
