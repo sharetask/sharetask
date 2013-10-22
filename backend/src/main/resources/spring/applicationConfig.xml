@@ -16,6 +16,7 @@
 	<!-- ================================================================= -->
 	<!-- Component definition                                              -->
 	<!-- ================================================================= -->
+	<aop:aspectj-autoproxy />
 	<context:spring-configured />
 	<context:annotation-config />
 
@@ -73,7 +74,7 @@
 	    <property name="exitMessage" value="&lt; $[targetClassShortName].$[methodName](...) duration: [$[invocationTime]]ms returning [$[returnValue]]"/>
 	    <property name="loggerName" value="supportTracing" />
 	</bean> 
-	<aop:config proxy-target-class="true">
+	<aop:config>
 		<aop:advisor advice-ref="supportInterceptor" pointcut="execution(public * org.sharetask.service..*ServiceImpl.*(..))" />
 	</aop:config>
 	
@@ -84,7 +85,7 @@
 	    <property name="exceptionMessage" value="E $[targetClassShortName].$[methodName]($[arguments]): $[exception]"/>
 	    <property name="loggerName" value="exceptionLogging" />
 	</bean> 
-	<aop:config proxy-target-class="true">
+	<aop:config>
 		<aop:advisor advice-ref="exceptionInterceptor" pointcut="execution(public * org.sharetask.service..*ServiceImpl.*(..))" />
 	</aop:config>	
 </beans>

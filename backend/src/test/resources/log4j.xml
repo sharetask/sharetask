@@ -40,7 +40,7 @@
 	</logger>
 	
 	<logger name="org.springframework">
-		<level value="INFO" />
+		<level value="DEBUG" />
 		<appender-ref ref="app-test" />
 	</logger>
 	
@@ -50,7 +50,7 @@
 	</logger>
 	
 	<logger name="org.hibernate">
-		<level value="INFO" />
+		<level value="DEBUG" />
 		<appender-ref ref="app-test" />
 	</logger>
 	

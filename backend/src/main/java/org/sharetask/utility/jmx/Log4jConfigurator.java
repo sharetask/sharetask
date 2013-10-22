@@ -39,9 +39,7 @@ public class Log4jConfigurator implements Log4jConfiguratorMXBean {
 	public List<String> getLoggers() {
         final List<String> list = new ArrayList<String>();
 
-        for (@SuppressWarnings("rawtypes") final Enumeration e = LogManager.getCurrentLoggers();
-             e.hasMoreElements(); ) {
-
+        for (final Enumeration e = LogManager.getCurrentLoggers(); e.hasMoreElements();) {
             final Logger log = (Logger) e.nextElement();
             if (log.getLevel() != null) {
                 list.add(log.getName() + " = " + log.getLevel().toString());
