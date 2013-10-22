@@ -242,7 +242,7 @@
 				<plugin>
 					<groupId>org.jacoco</groupId>
 					<artifactId>jacoco-maven-plugin</artifactId>
-					<version>0.6.3.201306030806</version>
+					<version>${jacoco.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -488,9 +488,10 @@
     			<scope>test</scope>
 			</dependency>			
 			<dependency>
-				<groupId>org.codehaus.sonar-plugins.java</groupId>
-				<artifactId>sonar-jacoco-listeners</artifactId>
-				<version>1.4</version>
+				<groupId>org.jacoco</groupId>
+				<artifactId>org.jacoco.agent</artifactId>
+				<classifier>runtime</classifier>
+				<version>${jacoco.version}</version>
 				<scope>test</scope>
 			</dependency>
 		</dependencies>
@@ -570,10 +571,11 @@
 		<hsqldb.version>2.2.9</hsqldb.version>
 		<springframework.version>3.2.1.RELEASE</springframework.version>
 		<springframework-security.version>3.1.3.RELEASE</springframework-security.version>
+		<jacoco.version>0.6.3.201306030806</jacoco.version>
 		<hibernate.version>4.2.2.Final</hibernate.version>
 		<hibernate-validator>4.3.1.Final</hibernate-validator>
 		<aspectjrt.version>1.7.3</aspectjrt.version>
-		<cglib.version>2.2.2</cglib.version>
+		<cglib.version>3.0</cglib.version>
 		<slf4j.version>1.7.2</slf4j.version>
 		<spring-data.version>1.3.0.RELEASE</spring-data.version>
 		<sonar.host.url>https://soso-gateway.dyndns.org/sonar</sonar.host.url>

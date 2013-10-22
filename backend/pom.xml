@@ -124,12 +124,6 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
 					<skip>true</skip>
-					<properties>
-						<property>
-							<name>listener</name>
-							<value>org.sonar.java.jacoco.JUnitListener</value>
-						</property>
-					</properties>
 				</configuration>
 				<executions>
 					<execution>
@@ -147,9 +141,9 @@
 								<exclude>**/*IT.java</exclude>
 							</excludes>
 							<forkMode>once</forkMode>
-							<argLine>${surefireArgLine}</argLine>
 							<systemPropertyVariables>
 								<spring.profiles.active>${spring.profile}</spring.profiles.active>
+								<jacoco-agent.destfile>${project.build.directory}/coverage-reports/jacoco-ut.exec</jacoco-agent.destfile>
 							</systemPropertyVariables>
 							<!-- reportFormat>xml</reportFormat-->
 						</configuration>
@@ -234,25 +228,13 @@
 					<execution>
 						<id>pre-unit-test</id>
 						<goals>
-							<goal>prepare-agent</goal>
+							<goal>instrument</goal>
+							<goal>restore-instrumented-classes</goal>
 						</goals>
 						<configuration>
 							<destFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</destFile>
-							<propertyName>surefireArgLine</propertyName>
-							<classDumpDir>target/jacoco-classes</classDumpDir>
 						</configuration>						
 					</execution>
-					<execution>
-						<id>post-unit-test</id>
-						<phase>test</phase>
-						<goals>
-							<goal>report</goal>
-						</goals>
-						<configuration>
-							<dataFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</dataFile>
-							<outputDirectory>${project.reporting.outputDirectory}/jacoco-ut</outputDirectory>
-						</configuration>
-					</execution>					
 				</executions>
 			</plugin>
 		</plugins>
@@ -522,12 +504,6 @@
 							</execution>
 						</executions>
 						<configuration>
-							<properties>
-								<property>
-									<name>listener</name>
-									<value>org.sonar.java.jacoco.JUnitListener</value>
-								</property>
-							</properties>
 							<systemPropertyVariables>
 								<user.timezone>GMT</user.timezone>
 							</systemPropertyVariables>
@@ -829,8 +805,9 @@
 			<artifactId>subethasmtp</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.codehaus.sonar-plugins.java</groupId>
-			<artifactId>sonar-jacoco-listeners</artifactId>
+			<groupId>org.jacoco</groupId>
+			<artifactId>org.jacoco.agent</artifactId>
+			<classifier>runtime</classifier>
 		</dependency>
 	</dependencies>
 </project>
