@@ -106,7 +106,7 @@
 							
 										<echo>Extract data</echo>
 										<sshexec host="${openshift.host}" username="${openshift.username}" keyfile="${user.home}/.ssh/id_rsa"
-											command="tar -xvvf ${openshift.data.dir}deploy/database-distribution.tar.gz -directory ${openshift.data.dir}deploy" />
+											command="tar xvf ${openshift.data.dir}deploy/database-distribution.tar.gz --directory ${openshift.data.dir}deploy" />
 							
 										<echo>deploy datatbase</echo>
 										<sshexec host="${openshift.host}" username="${openshift.username}" keyfile="${user.home}/.ssh/id_rsa"
