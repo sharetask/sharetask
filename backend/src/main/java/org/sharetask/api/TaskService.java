@@ -99,4 +99,11 @@ public interface TaskService {
 	 * @param taskId
 	 */
 	void delete(@NotNull final Long taskId);
+
+	/**
+	 * Get task for id.
+	 * @param taskId
+	 * @return
+	 */
+	TaskDTO getTask(@NotNull final Long taskId);
 }

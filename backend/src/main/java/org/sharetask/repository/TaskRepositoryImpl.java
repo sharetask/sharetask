@@ -27,6 +27,8 @@ import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
 
 import org.sharetask.entity.Task;
+import org.sharetask.entity.Task.PriorityType;
+import org.sharetask.entity.Task.StateType;
 
 /**
  * @author Michal Bocek
@@ -38,9 +40,38 @@ public class TaskRepositoryImpl implements TaskRepositoryCustom {
 	private EntityManager entityManager;
 	
 	@Override
-	public List<Task> findByDueDate(final Date date) {
-		final TypedQuery<Task> query = entityManager.createNamedQuery(Task.QUERY_NAME_FIND_BY_DUE_DATE, Task.class);
+	public List<Task> findByDueDate(final long workspaceId, final Date date) {
+		final TypedQuery<Task> query = entityManager.createNamedQuery(Task.QUERY_NAME_FIND_BY_DUE_DATE, 
+				Task.class);
 		query.setParameter("dueDate", date, TemporalType.DATE);
+		query.setParameter("workspaceId", workspaceId);
+		return query.getResultList();
+	}
+
+	@Override
+	public List<Task> findByDueDateLessThan(final long workspaceId, final Date date) {
+		final TypedQuery<Task> query = entityManager.createNamedQuery(Task.QUERY_NAME_FIND_BY_DUE_DATE_LESS_THAN, 
+				Task.class);
+		query.setParameter("dueDate", date, TemporalType.DATE);
+		query.setParameter("workspaceId", workspaceId);
+		return query.getResultList();
+	}
+
+	@Override
+	public List<Task> findByPriority(final long workspaceId, final PriorityType priority) {
+		final TypedQuery<Task> query = entityManager.createNamedQuery(Task.QUERY_NAME_FIND_BY_PRIORITY, 
+				Task.class);
+		query.setParameter("priority", priority);
+		query.setParameter("workspaceId", workspaceId);
+		return query.getResultList();
+	}
+
+	@Override
+	public List<Task> findByState(final long workspaceId, final StateType state) {
+		final TypedQuery<Task> query = entityManager.createNamedQuery(Task.QUERY_NAME_FIND_BY_STATE, 
+				Task.class);
+		query.setParameter("state", state);
+		query.setParameter("workspaceId", workspaceId);
 		return query.getResultList();
 	}
 

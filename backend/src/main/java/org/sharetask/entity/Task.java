@@ -60,15 +60,31 @@ import com.google.common.collect.ImmutableList;
 @Entity
 @Table(name = "TASK")
 @NamedQueries(value = { 
-		@NamedQuery(name = Task.QUERY_NAME_FIND_BY_DUE_DATE, query = Task.QUERY_FIND_BY_DUE_DATE)  
+		@NamedQuery(name = Task.QUERY_NAME_FIND_BY_DUE_DATE, query = Task.QUERY_FIND_BY_DUE_DATE),  
+		@NamedQuery(name = Task.QUERY_NAME_FIND_BY_DUE_DATE_LESS_THAN, query = Task.QUERY_FIND_BY_DUE_DATE_LESS_THAN),  
+		@NamedQuery(name = Task.QUERY_NAME_FIND_BY_PRIORITY, query = Task.QUERY_FIND_BY_PRIORITY),  
+		@NamedQuery(name = Task.QUERY_NAME_FIND_BY_STATE, query = Task.QUERY_FIND_BY_STATE)  
 	})
 public class Task extends BaseEntity implements Serializable {
 
 	private static final long serialVersionUID = Constants.VERSION;
 	
-	public static final String QUERY_NAME_FIND_BY_DUE_DATE = "Task.findByDueDate";
-	public static final String QUERY_FIND_BY_DUE_DATE = "SELECT t FROM Task t WHERE t.dueDate = :dueDate";
+	public static final String QUERY_NAME_FIND_BY_DUE_DATE= "Task.findByDueDate";
+	public static final String QUERY_FIND_BY_DUE_DATE = "SELECT t FROM Task t "
+			+ "WHERE t.workspace.id = :workspaceId AND t.dueDate = :dueDate";
 
+	public static final String QUERY_NAME_FIND_BY_DUE_DATE_LESS_THAN = "Task.findByDueDateLessThan";
+	public static final String QUERY_FIND_BY_DUE_DATE_LESS_THAN = "SELECT t FROM Task t "
+			+ "WHERE t.workspace.id = :workspaceId AND t.dueDate < :dueDate";
+	
+	public static final String QUERY_NAME_FIND_BY_PRIORITY = "Task.findByPriority";
+	public static final String QUERY_FIND_BY_PRIORITY = "SELECT t FROM Task t "
+			+ "WHERE t.workspace.id = :workspaceId AND t.priority = :priority";
+	
+	public static final String QUERY_NAME_FIND_BY_STATE = "Task.findByState";
+	public static final String QUERY_FIND_BY_STATE = "SELECT t FROM Task t "
+			+ "WHERE t.workspace.id = :workspaceId AND t.state = :state";
+	
 	public static enum StateType {
 		NEW, FORWARDED, FINISHED;
 	}

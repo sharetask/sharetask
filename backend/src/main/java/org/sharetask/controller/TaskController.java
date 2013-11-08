@@ -51,71 +51,65 @@ public class TaskController {
 	@Inject
 	private TaskService taskService;
 
-	@RequestMapping(method = RequestMethod.POST,
-	                produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
+	@RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody public TaskDTO create(@PathVariable("workspaceId") final Long workspaceId,
 	                                    @RequestBody final TaskDTO task) {
  		return taskService.create(workspaceId, task);
 	}
 
-	@RequestMapping(value = "/{taskId}",
-	                method = RequestMethod.DELETE,
-	                produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
+	@RequestMapping(value = "/{taskId}", method = RequestMethod.DELETE)
 	public void delete(@PathVariable("taskId") final Long taskId) {
 		taskService.delete(taskId);
 	}
 
-	@RequestMapping(value = "/{taskId}/comment",
-	                method = RequestMethod.POST,
-	                produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseStatus(value = HttpStatus.OK)
+	@RequestMapping(value = "/{taskId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public TaskDTO getTask(@PathVariable("taskId") final Long taskId) {
+		return taskService.getTask(taskId);
+	}
+
+	@RequestMapping(value = "/{taskId}/comment", method = RequestMethod.POST, 
+			produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
 	@ResponseBody public TaskDTO addComment(@PathVariable("taskId") final Long taskId,
 	                                        @RequestBody final Comment comment) {
  		return taskService.addComment(taskId, comment.getComment());
 	}
 
-	@RequestMapping(value = "/{taskId}/comment",
-	                method = RequestMethod.GET,
-	                produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/{taskId}/comment", method = RequestMethod.GET, 
+			produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody public List<CommentDTO> getComments(@PathVariable("taskId") final Long taskId) {
 		return taskService.getComments(taskId);
 	}
 
-	@RequestMapping(value = "/{taskId}/event",
-	                method = RequestMethod.GET,
-	                produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/{taskId}/event", method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody public List<EventDTO> getEvents(@PathVariable("taskId") final Long taskId) {
 		return taskService.getEvents(taskId);
 	}
 
-	@RequestMapping(method = RequestMethod.GET,
-	                produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody public List<TaskDTO> findTaskByQueue(@PathVariable("workspaceId") final Long workspaceId,
 	                                                   @RequestParam("taskQueue") final String taskQueue) {
  		return taskService.findByQueue(workspaceId, TaskQueue.valueOf(taskQueue));
 	}
 
-	@RequestMapping(method = RequestMethod.PUT,
-	                produces = MediaType.APPLICATION_JSON_VALUE)
+	
 	@ResponseStatus(value = HttpStatus.OK)
+	@RequestMapping(method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody public TaskDTO update(@RequestBody final TaskDTO task) {
  		return taskService.update(task);
 	}
 
-	@RequestMapping(value = "/{taskId}/complete",
-	                method = RequestMethod.POST,
-	                produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
+	@RequestMapping(value = "/{taskId}/complete", method = RequestMethod.POST)
 	public void complete(@PathVariable("taskId") final Long taskId) {
  		taskService.complete(taskId);
 	}
 
-	@RequestMapping(value = "/{taskId}/forward",
-	                method = RequestMethod.POST,
-	                produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
+	@RequestMapping(value = "/{taskId}/forward", method = RequestMethod.POST)
 	public void forward(@PathVariable("taskId") final Long taskId,
 	                    @RequestBody final User assignee) {
  		taskService.forward(taskId, assignee.getUsername());

@@ -112,16 +112,16 @@ public class TaskServiceImpl implements TaskService {
 				result = taskRepository.findByWorkspaceId(workspaceId);
 				break;
 			case EXPIRED:
-				result = taskRepository.findByDueDateLessThan(new Date());
+				result = taskRepository.findByDueDateLessThan(workspaceId, new Date());
 				break;
 			case HIGH_PRIORITY:
-				result = taskRepository.findByPriority(PriorityType.HIGH);
+				result = taskRepository.findByPriority(workspaceId, PriorityType.HIGH);
 				break;
 			case FINISHED:
-				result = taskRepository.findByState(StateType.FINISHED);
+				result = taskRepository.findByState(workspaceId, StateType.FINISHED);
 				break;
 			case TODAY:
-				result = taskRepository.findByDueDate(new Date());
+				result = taskRepository.findByDueDate(workspaceId, new Date());
 				break;
 			default:
 				result = new ArrayList<Task>();
@@ -201,5 +201,15 @@ public class TaskServiceImpl implements TaskService {
 	@PreAuthorize(Constants.PERMISSION_TASK_ASSIGNEE_OR_CREATOR)
 	public void delete(final Long taskId) {
 		taskRepository.delete(taskId);
+	}
+
+	/* 
+	 * (non-Javadoc)
+	 * @see org.sharetask.api.TaskService#getTask(java.lang.Long)
+	 */
+	@Override
+	public TaskDTO getTask(final Long taskId) {
+		final Task task = taskRepository.read(taskId);
+		return DTOConverter.convert(task, TaskDTO.class);
 	}
 }

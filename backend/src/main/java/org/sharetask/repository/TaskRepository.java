@@ -18,12 +18,9 @@
  */
 package org.sharetask.repository;
 
-import java.util.Date;
 import java.util.List;
 
 import org.sharetask.entity.Task;
-import org.sharetask.entity.Task.PriorityType;
-import org.sharetask.entity.Task.StateType;
 import org.sharetask.repository.base.BaseJpaRepository;
 
 /**
@@ -32,11 +29,5 @@ import org.sharetask.repository.base.BaseJpaRepository;
  */
 public interface TaskRepository extends BaseJpaRepository<Task, Long>, TaskRepositoryCustom {
 
-	List<Task> findByWorkspaceId(Long workspaceId);
-	
-	List<Task> findByDueDateLessThan(Date date);
-
-	List<Task> findByPriority(PriorityType priority);
-	
-	List<Task> findByState(StateType priority);
+	List<Task> findByWorkspaceId(final Long workspaceId);
 }

@@ -22,6 +22,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.sharetask.entity.Task;
+import org.sharetask.entity.Task.PriorityType;
+import org.sharetask.entity.Task.StateType;
 
 /**
  * @author Michal Bocek
@@ -29,5 +31,12 @@ import org.sharetask.entity.Task;
  */
 public interface TaskRepositoryCustom {
 	
-	List<Task> findByDueDate(Date date);
+	List<Task> findByDueDate(final long workspaceId, final Date date);
+
+	List<Task> findByDueDateLessThan(final long workspaceId, final Date date);
+
+	List<Task> findByPriority(final long workspaceId, final PriorityType priority);
+	
+	List<Task> findByState(final long workspaceId, final StateType priority);
+	
 }
