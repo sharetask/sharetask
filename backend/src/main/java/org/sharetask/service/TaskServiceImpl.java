@@ -111,6 +111,9 @@ public class TaskServiceImpl implements TaskService {
 			case ALL:
 				result = taskRepository.findByWorkspaceId(workspaceId);
 				break;
+			case ALL_MY:
+				result = taskRepository.findByUsername(workspaceId, SecurityUtil.getCurrentSignedInUsername());
+				break;
 			case EXPIRED:
 				result = taskRepository.findByDueDateLessThan(workspaceId, new Date());
 				break;

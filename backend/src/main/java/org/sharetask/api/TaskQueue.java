@@ -23,5 +23,5 @@ package org.sharetask.api;
  * @since 1.0.0
  */
 public enum TaskQueue {
-	ALL, TODAY, EXPIRED, HIGH_PRIORITY, FINISHED; 
+	ALL, ALL_MY, TODAY, EXPIRED, HIGH_PRIORITY, FINISHED; 
 }

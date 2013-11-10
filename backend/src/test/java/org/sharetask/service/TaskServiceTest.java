@@ -124,6 +124,15 @@ public class TaskServiceTest extends ServiceUnitTest {
 	@Test
 	public void testFindTaskByQueueAllTasks() {
 		final List<TaskDTO> tasks = taskService.findByQueue(100L, TaskQueue.ALL);
+		assertThat(tasks.size(), equalTo(3));
+	}
+
+	/**
+	 * Test method for {@link org.sharetask.api.TaskService#findByQueue(Long, org.sharetask.api.TaskQueue)}.
+	 */
+	@Test
+	public void testFindTaskByQueueAllMyTasks() {
+		final List<TaskDTO> tasks = taskService.findByQueue(100L, TaskQueue.ALL_MY);
 		assertThat(tasks.size(), equalTo(2));
 	}
 
@@ -133,7 +142,7 @@ public class TaskServiceTest extends ServiceUnitTest {
 	@Test
 	public void testFindTaskByQueueExpiredTasks() {
 		final List<TaskDTO> tasks = taskService.findByQueue(100L, TaskQueue.EXPIRED);
-		assertThat(tasks.size(), equalTo(2));
+		assertThat(tasks.size(), equalTo(3));
 	}
 
 	/**
