@@ -37,7 +37,6 @@ import org.sharetask.data.ServiceUnitTest;
 import org.sharetask.entity.Invitation;
 import org.sharetask.entity.Workspace;
 import org.sharetask.repository.InvitationRepository;
-import org.sharetask.repository.UserAuthenticationRepository;
 import org.sharetask.repository.WorkspaceRepository;
 
 /**
@@ -57,9 +56,6 @@ public class WorkspaceServiceTest extends ServiceUnitTest {
 
 	@Inject
 	private InvitationService invitationService;
-
-	@Inject
-	private UserAuthenticationRepository userRepository;
 
 	/**
 	 * Test method for {@link org.sharetask.api.WorkspaceService#create(org.sharetask.entity.Workspace)}.

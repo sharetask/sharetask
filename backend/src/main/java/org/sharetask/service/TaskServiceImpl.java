@@ -210,9 +210,18 @@ public class TaskServiceImpl implements TaskService {
 	 * (non-Javadoc)
 	 * @see org.sharetask.api.TaskService#getTask(java.lang.Long)
 	 */
+	// TODO: security check???
 	@Override
 	public TaskDTO getTask(final Long taskId) {
 		final Task task = taskRepository.read(taskId);
 		return DTOConverter.convert(task, TaskDTO.class);
 	}
+
+	@Override
+	public List<TaskDTO> getAllMyTasks() {
+		final String username = SecurityUtil.getCurrentSignedInUsername();
+		final List<Task> task = taskRepository.findAllUserTaks(username);
+		return DTOConverter.convertList(task, TaskDTO.class);
+	}
+	
 }

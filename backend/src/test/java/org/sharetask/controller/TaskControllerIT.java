@@ -87,6 +87,21 @@ public class TaskControllerIT extends IntegrationTest {
     }
     
     @Test
+    public void testGetAllMyTask() throws IOException {
+        //given
+        final HttpGet httpGet = new HttpGet(BASE_URL + "/workspace/tasks" + "/?taskQueue=ALL_MY");
+        httpGet.addHeader(new BasicHeader("Content-Type", "application/json"));
+        
+        //when
+        final HttpResponse response = getClient().execute(httpGet);
+ 
+        //then
+        Assert.assertEquals(HttpStatus.OK.value(), response.getStatusLine().getStatusCode());
+        final String responseData = EntityUtils.toString(response.getEntity());
+        Assert.assertTrue(responseData.contains("\"username\":\"dev1@shareta.sk\""));
+    }
+    
+    @Test
     public void testCreateTask() throws IOException {
         //given
         final HttpPost httpPost = new HttpPost(URL_TASK );

@@ -106,4 +106,12 @@ public interface TaskService {
 	 * @return
 	 */
 	TaskDTO getTask(@NotNull final Long taskId);
+	
+	/**
+	 * Get all tasks for currently logged in user.
+	 * @param taskId
+	 * @return
+	 */
+	List<TaskDTO> getAllMyTasks();
+	
 }

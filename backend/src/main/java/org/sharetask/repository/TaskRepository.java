@@ -49,4 +49,7 @@ public interface TaskRepository extends BaseJpaRepository<Task, Long>, TaskRepos
 
 	@Query("SELECT t FROM Task t WHERE t.workspace.id = ?1 AND t.state = ?2")
 	List<Task> findByState(final long workspaceId, final StateType state);
+
+	@Query("SELECT t FROM Task t WHERE t.createdBy.username = ?1 OR t.assignee.username = ?1")
+	List<Task> findAllUserTaks(final String username);
 }

@@ -173,6 +173,15 @@ public class TaskServiceTest extends ServiceUnitTest {
 	}
 
 	/**
+	 * Test method for {@link org.sharetask.api.TaskService#getAllMyTask()}.
+	 */
+	@Test
+	public void testGetAllMyTask() {
+		final List<TaskDTO> tasks = taskService.getAllMyTasks();
+		assertThat(tasks.size(), equalTo(3));
+	}
+
+	/**
 	 * Test method for {@link org.sharetask.api.TaskService#updateTask(TaskDTO)}.
 	 */
 	@Test
