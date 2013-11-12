@@ -214,7 +214,7 @@ public class TaskServiceTest extends ServiceUnitTest {
 		taskService.renew(101L);
 		final Task task = taskRepository.findOne(101L);
 		assertThat(task.getState(), equalTo(StateType.NEW));
-		assertThat(task.getEvents().size(), equalTo(2));
+		assertThat(task.getEvents().size(), equalTo(3));
 	}
 
 	/**
