@@ -207,6 +207,17 @@ public class TaskServiceTest extends ServiceUnitTest {
 	}
 
 	/**
+	 * Test method for {@link org.sharetask.api.TaskService#renew(Long)}.
+	 */
+	@Test
+	public void testRenewTask() {
+		taskService.renew(101L);
+		final Task task = taskRepository.findOne(101L);
+		assertThat(task.getState(), equalTo(StateType.NEW));
+		assertThat(task.getEvents().size(), equalTo(2));
+	}
+
+	/**
 	 * Test method for {@link org.sharetask.api.TaskService#forwardTask(Long, List)}.
 	 */
 	@Test

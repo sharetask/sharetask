@@ -151,4 +151,9 @@ public class Task extends BaseEntity implements Serializable {
 		this.setState(StateType.FINISHED);
 		this.addEvent(new Event(EventType.TASK_FINISHED));
 	}
+
+	public void renew() {
+		this.setState(StateType.NEW);
+		this.addEvent(new Event(EventType.TASK_RENEW));
+	}
 }

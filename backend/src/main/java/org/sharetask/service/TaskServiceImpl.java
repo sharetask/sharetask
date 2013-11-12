@@ -223,5 +223,15 @@ public class TaskServiceImpl implements TaskService {
 		final List<Task> task = taskRepository.findAllUserTaks(username);
 		return DTOConverter.convertList(task, TaskDTO.class);
 	}
-	
+
+	@Override
+	@Transactional
+	@PreAuthorize(Constants.PERMISSION_TASK_CREATOR)
+	public void renew(final Long taskId) {
+		final Task task = taskRepository.read(taskId);
+		if (task.getState() == StateType.FINISHED) {
+			task.renew();
+			taskRepository.save(task);
+		}
+	}
 }

@@ -199,6 +199,7 @@
 		<constructor-arg index="0">
 			<map key-type="java.lang.String" value-type="org.sharetask.security.Permission">
 				<entry key="isTaskAssignee" value-ref="taskAssigneePermission" />
+				<entry key="isTaskCreator" value-ref="taskCreatorPermission" />
 				<entry key="isTaskAssigneeOrCreator" value-ref="taskAssigneeOrCreatorPermission" />
 				<entry key="isWorkspaceMemberOrOwner" value-ref="workspaceMemberOrOwnerPermission" />
 				<entry key="isWorkspaceOwner" value-ref="workspaceOwnerPermission" />
@@ -207,6 +208,10 @@
 	</bean>
 	
 	<bean id="taskAssigneePermission" class="org.sharetask.security.TaskAssigneePermission">
+		<property name="taskRepository" ref="taskRepository"/>
+	</bean>
+	
+	<bean id="taskCreatorPermission" class="org.sharetask.security.TaskCreatorPermission">
 		<property name="taskRepository" ref="taskRepository"/>
 	</bean>
 	

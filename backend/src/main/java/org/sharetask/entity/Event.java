@@ -55,7 +55,7 @@ public class Event extends BaseImmutableEntity implements Serializable {
 	private static final long serialVersionUID = Constants.VERSION;
 
 	public static enum EventType {
-		TASK_CREATED, TASK_COMMENT_ADDED, TASK_FORWARDED, TASK_FINISHED;
+		TASK_CREATED, TASK_COMMENT_ADDED, TASK_FORWARDED, TASK_FINISHED, TASK_RENEW;
 	}
 	
 	@Getter @Setter
@@ -82,8 +82,8 @@ public class Event extends BaseImmutableEntity implements Serializable {
 	
 	public Collection<String> getValues() {
 		Collection<String> result = null;
-		if (this.values != null) {
-			result = Collections.unmodifiableCollection(this.values);
+		if (values != null) {
+			result = Collections.unmodifiableCollection(values);
 		}
 		return result;
 	}

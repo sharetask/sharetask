@@ -123,4 +123,10 @@ public class TaskController {
 	                    @RequestBody final User assignee) {
  		taskService.forward(taskId, assignee.getUsername());
 	}
+	
+	@ResponseStatus(value = HttpStatus.OK)
+	@RequestMapping(value = "/{workspaceId}/task/{taskId}/renew", method = RequestMethod.POST)
+	public void renew(@PathVariable("taskId") final Long taskId) {
+ 		taskService.renew(taskId);
+	}
 }

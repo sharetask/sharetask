@@ -113,5 +113,11 @@ public interface TaskService {
 	 * @return
 	 */
 	List<TaskDTO> getAllMyTasks();
-	
+
+	/**
+	 * Renew task. 
+	 * Task must be in complete state and then will be change to new state. 
+	 * @param taskId
+	 */
+	void renew(@NotNull final Long taskId); 
 }
