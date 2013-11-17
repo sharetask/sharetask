@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.inject.Inject;
-import javax.validation.constraints.NotNull;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -182,7 +181,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public void confirmInvitation(@NotNull final String code) {
+	public void confirmInvitation(final String code) {
 		final InvitationDTO invitation = invitationService.confirmInvitation(code);
 		final UserAuthentication user = userAuthenticationRepository.read(invitation.getEmail());
 		user.setEnabled(true);
