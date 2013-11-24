@@ -101,8 +101,6 @@
 										<echo>Copy data</echo>
 										<scp file="${basedir}/../database/${target.directory}/database-distribution.tar.gz" todir="${openshift.username}@${openshift.host}:${openshift.data.dir}deploy"
 											keyfile="${user.home}/.ssh/id_rsa" />
-										<scp file="${basedir}/../backend/${target.directory}/sharetask-${project.version}.war" todir="${openshift.username}@${openshift.host}:${openshift.data.dir}"
-											keyfile="${user.home}/.ssh/id_rsa" />
 							
 										<echo>Extract data</echo>
 										<sshexec host="${openshift.host}" username="${openshift.username}" keyfile="${user.home}/.ssh/id_rsa"
@@ -139,7 +137,7 @@
 										    </sequential>
 										</macrodef>
 										<echo file="${target.directory}/web/build.info">
-										   build=${BUILD_VERSION}
+										   build=${BUILD_VERSION}-INT
 										</echo>
  										<git command = "add" dir = "${target.directory}/web">
  										    <args>
