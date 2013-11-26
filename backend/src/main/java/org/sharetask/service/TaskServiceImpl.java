@@ -233,7 +233,7 @@ public class TaskServiceImpl implements TaskService {
 			task.renew();
 			taskRepository.save(task);
 		} else {
-			new IllegalStateException("Task ins't in FINISH state!");
+			throw new IllegalStateException("Task ins't in FINISH state!");
 		}
 	}
 }
