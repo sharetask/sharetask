@@ -606,7 +606,7 @@
 				<maven.test.skip>true</maven.test.skip>
 				<definition.hibernate.dialect>org.hibernate.dialect.MySQLInnoDBDialect</definition.hibernate.dialect>
 				<definition.evironment.path>environment/prod</definition.evironment.path>
-				<definition.buildNumber>${BUILD_NUMBER}</definition.buildNumber>
+				<definition.buildNumber>${MINOR_VERSION_NUMBER}</definition.buildNumber>
 				
 				<definition.quartz.jobStore.driverClass>org.quartz.impl.jdbcjobstore.StdJDBCDelegate</definition.quartz.jobStore.driverClass>
 				<definition.quartz.dataSource.validationQuery>select 1</definition.quartz.dataSource.validationQuery>
