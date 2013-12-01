@@ -643,8 +643,8 @@
 		<profile>
 			<id>integration-server</id>
 			<properties>
-				<definition.security.login.callbackUrl>http://integration-sharetask.rhcloud.com/authcallback</definition.security.login.callbackUrl>
-				<definition.application.url>http://integration-sharetask.rhcloud.com</definition.application.url>
+				<definition.security.login.callbackUrl>http://integration.shareta.sk/authcallback</definition.security.login.callbackUrl>
+				<definition.application.url>http://integration.shareta.sk</definition.application.url>
 			</properties>
 		</profile>
 	</profiles>
