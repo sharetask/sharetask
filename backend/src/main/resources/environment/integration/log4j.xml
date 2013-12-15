@@ -18,7 +18,7 @@
 	</appender>
 
 	<appender name="app-main" class="org.apache.log4j.RollingFileAppender">
-		<param name="Append" value="false" />
+		<param name="Append" value="true" />
 		<param name="File" value="${definition.directory.log}/&APPLICATION_NAME;_main.log" />
 		<param name="Threshold" value="DEBUG" />
 		<param name="encoding" value="UTF-8" />
@@ -28,7 +28,7 @@
 	</appender>
 
 	<appender name="app-warn" class="org.apache.log4j.RollingFileAppender">
-		<param name="Append" value="false" />
+		<param name="Append" value="true" />
 		<param name="File" value="${definition.directory.log}/&APPLICATION_NAME;_warn.log" />
 		<param name="Threshold" value="WARN" />
 		<param name="encoding" value="UTF-8" />
