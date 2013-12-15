@@ -137,7 +137,7 @@
 										    </sequential>
 										</macrodef>
 										<echo file="${target.directory}/web/build.info">
-										   build=${MAJOR_VERSION_NUMBER}.${MINOR_VERSION_NUMBER}-INT
+										   build=${MAJOR_VERSION_NUMBER}.${MINOR_VERSION_NUMBER}
 										</echo>
  										<git command = "add" dir = "${target.directory}/web">
  										    <args>
