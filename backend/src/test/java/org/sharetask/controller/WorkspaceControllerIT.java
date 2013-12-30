@@ -96,9 +96,28 @@ public class WorkspaceControllerIT extends IntegrationTest {
         Assert.assertEquals(HttpStatus.OK.value(), response.getStatusLine().getStatusCode());
         final String responseData = EntityUtils.toString(response.getEntity());
         Assert.assertTrue(responseData.contains("\"title\":\"Test Title\""));
+    }    
+    
+    @Test
+    public void testChangeOwnerWorkspace() throws IOException {
+        //given
+    	final HttpPut httpPut = new HttpPut(URL_WORKSPACE);
+        httpPut.addHeader(new BasicHeader("Content-Type", "application/json"));
+        final StringEntity httpEntity = new StringEntity("{\"id\":3," +
+                                                    "\"title\":\"Test Title\"," +
+                                                    "\"owner\":{\"username\":\"dev2@shareta.sk\"}" +
+                                                    "}");
+        httpPut.setEntity(httpEntity);
+        
+        //when
+        final HttpResponse response = getClient().execute(httpPut);
+
+        //then
+        Assert.assertEquals(HttpStatus.OK.value(), response.getStatusLine().getStatusCode());
+        final String responseData = EntityUtils.toString(response.getEntity());
+        Assert.assertTrue(responseData.contains("\"username\":\"dev2@shareta.sk\""));
     }
-    
-    
+
     @Test
     public void testDelete() throws IOException {
         //given
