@@ -74,11 +74,11 @@ public class WorkspaceController {
  		invitationService.inviteWorkspaceMember(workspaceId, user.getUsername());
 	}
 	
-	@RequestMapping(value = "/{workspaceId}/addMember/${invitationCode}", 
-                    method = RequestMethod.POST, 
+	@RequestMapping(value = "/{workspaceId}/addMember", 
+                    method = RequestMethod.GET, 
                     produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
-	public void addMember(@PathVariable("invitationCode") final String invitationCode) {
+	public void addMember(@RequestParam("code") final String invitationCode) {
 		workspaceService.addMember(invitationCode);
 	}
 

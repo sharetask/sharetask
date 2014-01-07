@@ -109,7 +109,7 @@ public class MailServiceImpl implements MailService {
 	}
 
 	@Override
-	public void sendEmail(final String from, final List<String> to, final String subject, final String msq, final int retry) {
+	public void sendEmail(final String from, final List<String> to, final String subject, final String msg, final int retry) {
 		final MimeMessage message = mailSender.createMimeMessage();
 		final MimeMessageHelper helper = new MimeMessageHelper(message);
 
@@ -117,11 +117,12 @@ public class MailServiceImpl implements MailService {
 			helper.setFrom(noreplyMail);
 			helper.setTo(to.toArray(new String[] {}));
 			helper.setSubject(subject);
-			helper.setText(msq, true /* html */);
+			helper.setText(msg, true /* html */);
+			log.debug("Sending mail to:{} content:{}", to, msg);
 			mailSender.send(message);
 		} catch (final MailException ex) {
 			log.error("Problem in sending email notification:", ex);
-			notificationQueueService.storeInvitation(noreplyMail, to, subject, msq, retry + 1);
+			notificationQueueService.storeInvitation(noreplyMail, to, subject, msg, retry + 1);
 		} catch (final MessagingException e) {
 			throw new IllegalStateException("Wrong mail message format: ", e);
 		}
@@ -155,7 +156,9 @@ public class MailServiceImpl implements MailService {
 		model.put("userSurName", invitingUser.getUserInfo().getSurName());
 		final Workspace workspace = workspaceRepository.findOne(invitation.getEntityId());
 		model.put("workspaceName", workspace.getTitle());
-		model.put("confimationLink", applicationUrl + "?code=" + invitation.getInvitationCode());
+		model.put("confimationLink", applicationUrl + "/api/workspace/" + invitation.getEntityId() + "/addMember?code="
+				+ invitation.getInvitationCode());
+		model.put("applicationLink", applicationUrl);
 		return model;
 	}
 }
