@@ -54,4 +54,5 @@
 	<mvc:view-controller path="/register" view-name="web/register"/>
 	<mvc:view-controller path="/webapp" view-name="webapp/index"/>
 	<mvc:view-controller path="/app-info" view-name="webapp/app-info"/>
+	<mvc:view-controller path="/confirmed" view-name="webapp/confirmed"/>
 </beans>

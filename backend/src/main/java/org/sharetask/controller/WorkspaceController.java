@@ -73,14 +73,6 @@ public class WorkspaceController {
 	                   @RequestBody final User user) {
  		invitationService.inviteWorkspaceMember(workspaceId, user.getUsername());
 	}
-	
-	@RequestMapping(value = "/{workspaceId}/addMember/confirm", 
-                    method = RequestMethod.GET, 
-                    produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseStatus(value = HttpStatus.OK)
-	public void addMember(@RequestParam("code") final String invitationCode) {
-		workspaceService.addMember(invitationCode);
-	}
 
 	@RequestMapping(value = "/{workspaceId}/member/{username:.*}", 
 	                method = RequestMethod.DELETE, 

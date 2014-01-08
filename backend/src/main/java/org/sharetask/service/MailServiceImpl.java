@@ -144,7 +144,7 @@ public class MailServiceImpl implements MailService {
 
 	private Map<String, Object> prepareUserRegistration(final InvitationDTO invitation) {
 		final Map<String, Object> model = new HashMap<String, Object>();
-		model.put("confimationLink", applicationUrl + "/api/user/confirm?code=" + invitation.getInvitationCode());
+		model.put("confimationLink", applicationUrl + "/confirm/userRegistration?code=" + invitation.getInvitationCode());
 		model.put("applicationLink", applicationUrl);
 		return model;
 	}
@@ -156,8 +156,7 @@ public class MailServiceImpl implements MailService {
 		model.put("userSurName", invitingUser.getUserInfo().getSurName());
 		final Workspace workspace = workspaceRepository.findOne(invitation.getEntityId());
 		model.put("workspaceName", workspace.getTitle());
-		model.put("confimationLink", applicationUrl + "/api/workspace/" + invitation.getEntityId() + "/addMember/confirm?code="
-				+ invitation.getInvitationCode());
+		model.put("confimationLink", applicationUrl + "/confirm/addWorkspaceMember?code=" + invitation.getInvitationCode());
 		model.put("applicationLink", applicationUrl);
 		return model;
 	}

@@ -87,5 +87,6 @@
 	</bean> 
 	<aop:config>
 		<aop:advisor advice-ref="exceptionInterceptor" pointcut="execution(public * org.sharetask.service..*ServiceImpl.*(..))" />
+		<aop:advisor advice-ref="exceptionInterceptor" pointcut="execution(public void org.sharetask.service..*ServiceImpl.*(..))" />
 	</aop:config>	
 </beans>

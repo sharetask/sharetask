@@ -100,6 +100,8 @@
 				<security:intercept-url pattern="/api/user" method="POST" access="permitAll" />
 				<security:intercept-url pattern="/api/user/logout" access="permitAll" />
 				<security:intercept-url pattern="/app-info" access="hasRole('ROLE_ADMINISTRATOR')" />
+				<security:intercept-url pattern="/confirm/**" access="permitAll" />
+				<security:intercept-url pattern="/confirmed" access="permitAll" />
 				<security:intercept-url pattern="/**" access="hasRole('ROLE_USER')" />			
 			</security:filter-security-metadata-source>
 		</property>
