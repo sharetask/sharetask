@@ -26,7 +26,6 @@
 				<includes>
 					<include>config.properties</include>
 					<include>application.properties</include>
-					<include>environment/**/log4j.xml</include>
 				</includes>
 			</resource>
 			<resource>
@@ -62,7 +61,7 @@
 							<outputDirectory>${basedir}/${target.directory}/classes</outputDirectory>
 							<resources>
 								<resource>
-									<directory>${basedir}/${target.directory}/classes/${definition.evironment.path}</directory>
+									<directory>${basedir}/src/main/resources/${definition.evironment.path}</directory>
 								</resource>
 							</resources>
 						</configuration>
@@ -124,6 +123,9 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
 					<skip>true</skip>
+					<systemPropertyVariables>
+						<definition.directory.log>${basedir}/target</definition.directory.log>
+					</systemPropertyVariables>
 				</configuration>
 				<executions>
 					<execution>
@@ -335,7 +337,6 @@
 				<definition.security.login.callbackUrl>http://localhost:8080/sharetask/authcallback</definition.security.login.callbackUrl>
 				<definition.application.url>http://localhost:8080/sharetask</definition.application.url>
 				<definition.dbunit.DataTypeFactory>org.dbunit.ext.hsqldb.HsqldbDataTypeFactory</definition.dbunit.DataTypeFactory>
-				<definition.directory.log>${basedir}/${target.directory}</definition.directory.log>
 				<tomcat.version>7.0.40</tomcat.version>
 			</properties>
 			<dependencies>
@@ -513,6 +514,7 @@
 						<configuration>
 							<systemPropertyVariables>
 								<user.timezone>GMT</user.timezone>
+								<definition.directory.log>${basedir}/target</definition.directory.log>
 							</systemPropertyVariables>
 						</configuration>						
 					</plugin>
@@ -590,7 +592,6 @@
 				<definition.security.login.callbackUrl>http://localhost:8080/sharetask/authcallback</definition.security.login.callbackUrl>
 				<definition.application.url>http://localhost:8080/sharetask</definition.application.url>
 				<definition.dbunit.DataTypeFactory>org.dbunit.ext.hsqldb.HsqldbDataTypeFactory</definition.dbunit.DataTypeFactory>
-				<definition.directory.log>${basedir}/${target.directory}</definition.directory.log>
 			</properties>
 			<dependencies>
 				<dependency>
