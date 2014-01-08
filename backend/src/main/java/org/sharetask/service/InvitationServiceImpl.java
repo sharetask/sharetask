@@ -56,7 +56,7 @@ public class InvitationServiceImpl implements InvitationService {
 		invitation.setType(InvitationType.USER_REGISTRATION);
 		invitation.setUsername(username);
 		invitation.setCreatedBy(username);
-		invitation.setInvitationCode(HashCodeUtil.getHashCode(System.currentTimeMillis() + username));
+		invitation.setInvitationCode(HashCodeUtil.getShortHashCode(System.currentTimeMillis() + username));
 		final Invitation storedInitation = invitationRepository.save(invitation);
 		//send invitation notification
 		final InvitationDTO invitationDTO = DTOConverter.convert(storedInitation, InvitationDTO.class);
@@ -72,7 +72,7 @@ public class InvitationServiceImpl implements InvitationService {
 		invitation.setUsername(username);
 		invitation.setCreatedBy(SecurityUtil.getCurrentSignedInUsername());
 		invitation.setEntityId(workspaceId);
-		invitation.setInvitationCode(HashCodeUtil.getHashCode(System.currentTimeMillis() + workspaceId + username));
+		invitation.setInvitationCode(HashCodeUtil.getShortHashCode(System.currentTimeMillis() + workspaceId + username));
 		final Invitation storedInitation = invitationRepository.save(invitation);
 		//send invitation notification
 		mailService.sendInvitation(DTOConverter.convert(storedInitation, InvitationDTO.class));

@@ -156,7 +156,7 @@ public class MailServiceImpl implements MailService {
 		model.put("userSurName", invitingUser.getUserInfo().getSurName());
 		final Workspace workspace = workspaceRepository.findOne(invitation.getEntityId());
 		model.put("workspaceName", workspace.getTitle());
-		model.put("confimationLink", applicationUrl + "/api/workspace/" + invitation.getEntityId() + "/addMember?code="
+		model.put("confimationLink", applicationUrl + "/api/workspace/" + invitation.getEntityId() + "/addMember/confirm?code="
 				+ invitation.getInvitationCode());
 		model.put("applicationLink", applicationUrl);
 		return model;

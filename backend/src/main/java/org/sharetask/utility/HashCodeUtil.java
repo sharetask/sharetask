@@ -33,7 +33,18 @@ public class HashCodeUtil {
 	public static String getHashCode(final String data) {
 		try {
 			final MessageDigest mda = MessageDigest.getInstance("SHA-512");
-			final String baseSalt = System.currentTimeMillis() + "dev1@shareta.sk";
+			final String baseSalt = String.valueOf(System.currentTimeMillis());
+			final byte [] digest = mda.digest(baseSalt.getBytes(Charset.forName("UTF-8")));
+			return new String(Hex.encode(digest));
+		} catch (final NoSuchAlgorithmException e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	public static String getShortHashCode(final String data) {
+		try {
+			final MessageDigest mda = MessageDigest.getInstance("SHA-1");
+			final String baseSalt = String.valueOf(System.currentTimeMillis());
 			final byte [] digest = mda.digest(baseSalt.getBytes(Charset.forName("UTF-8")));
 			return new String(Hex.encode(digest));
 		} catch (final NoSuchAlgorithmException e) {
