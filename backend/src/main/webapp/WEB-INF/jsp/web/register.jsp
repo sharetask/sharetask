@@ -37,75 +37,77 @@
 		<title>ShareTa.sk</title>
 		<link rel="shortcut icon" href="<c:url value="/resources-web-${applicationVersion}/favicon.ico" />" />
 		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-web-${applicationVersion}/css/bootswatch.min.css" />">
-		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-webapp-${applicationVersion}/css/font-awesome.min.css" />">
+		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-web-${applicationVersion}/css/font-awesome.min.css" />">
 		<!--[if IE 7]>
-			<link rel="stylesheet" type="text/css" href="<c:url value="/resources-webapp-${applicationVersion}/css/font-awesome-ie7.min.css" />">
+			<link rel="stylesheet" type="text/css" href="<c:url value="/resources-web-${applicationVersion}/css/font-awesome-ie7.min.css" />">
 		<![endif]-->
 		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-web-${applicationVersion}/css/sharetask.css" />">
 	</head>
 	<body ng-cloak>
 		<!-- application menu -->
 		<div id="app-menu">
-			<div class="navbar navbar-inverse">
-				<div class="navbar-inner" style="padding-left:0;">
-					<div class="container" style="width:auto;">
-						<img class="pull-left" src="<c:url value="/resources-web-${applicationVersion}/img/icon-white-small.png" />" style="padding:8px 15px 0 8px;" />
-						<span class="brand">ShareTa.sk</span>
-						<ul class="nav">
-							<li><a href="<c:url value="/" />"><i class="icon-home icon-white"></i> <spring:message code="menu.home" /></a></li>
-							<li></li>
-						</ul>
-						<ul class="nav pull-right">
-							<li id="fat-menu" class="dropdown" ng-show="loggedUser != null">
-								<a id="dropUser" role="button" class="dropdown-toggle cursor-pointer" data-toggle="dropdown"><i class="icon-user icon-white"></i> {{loggedUser.name}} {{loggedUser.surName}} <b class="caret"></b></a>
-								<ul class="dropdown-menu" role="menu" aria-labelledby="dropUser">
-									<li><a role="menuitem" tabindex="-1" href="<c:url value="/webapp" />"><spring:message code="app.button.open" /></a></li>
-									<li class="divider"></li>
-									<li><a class="cursor-pointer" role="menuitem" tabindex="-1" ng-click="logout()"><i class="icon-signout"></i><spring:message code="app.button.logout" /></a></li>
-								</ul>
-							</li>
-							<li ng-show="loggedUser == null" ng-click="showSignInForm = !showSignInForm"><a class="cursor-pointer"><i class="icon-signin"></i> <spring:message code="menu.signin" /></a></li>
-							<li><a href="<c:url value="/register" />"><spring:message code="menu.signup" /></a></li>
-						</ul>
+			<div class="container">
+				<div class="navbar navbar-inverse">
+					<div class="navbar-inner" style="padding-left:0;">
+						<div class="container" style="width:auto;">
+							<img class="pull-left" src="<c:url value="/resources-web-${applicationVersion}/img/icon-white-small.png" />" style="padding:8px 15px 0 8px;" />
+							<span class="brand">ShareTa.sk</span>
+							<ul class="nav">
+								<li><a href="<c:url value="/" />"><i class="icon-home icon-white"></i> <spring:message code="menu.home" /></a></li>
+								<li></li>
+							</ul>
+							<ul class="nav pull-right">
+								<li id="fat-menu" class="dropdown" ng-show="loggedUser != null">
+									<a id="dropUser" role="button" class="dropdown-toggle cursor-pointer" data-toggle="dropdown"><i class="icon-user icon-white"></i> {{loggedUser.name}} {{loggedUser.surName}} <b class="caret"></b></a>
+									<ul class="dropdown-menu" role="menu" aria-labelledby="dropUser">
+										<li><a role="menuitem" tabindex="-1" href="<c:url value="/webapp" />"><spring:message code="app.button.open" /></a></li>
+										<li class="divider"></li>
+										<li><a class="cursor-pointer" role="menuitem" tabindex="-1" ng-click="logout()"><i class="icon-signout"></i><spring:message code="app.button.logout" /></a></li>
+									</ul>
+								</li>
+								<li><a href="<c:url value="/signin" />"><spring:message code="menu.signin" /></a></li>
+								<li class="active"><a href="<c:url value="/register" />"><spring:message code="menu.signup" /></a></li>
+							</ul>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 		<!-- registration form -->
-		<div class="panel-full" ng-controller="RegisterCtrl">
-			<div class="panel-full-inside">
-				<div style="padding:20px 20px 50px 20px;">
-					<form name="formRegistration" novalidate class="css-form">
-						<legend><spring:message code="register.title" /></legend>
-						<div class="alert alert-success" ng-show="newAccountData.result == 1">
-							<a class="close" ng-click="newAccountData.result = 0">&times;</a>
-							<spring:message code="register.msg.success" />
-						</div>
-						<div class="alert alert-error" ng-class="{'hidden':newAccountData.result == -2 || newAccountData.result == 1 || newAccountData.result == 0}">
-							<a class="close" ng-click="newAccountData.result = 0">&times;</a>
-							<spring:message code="register.msg.error" />
-						</div>
-						<div class="alert alert-error" ng-class="{'hidden':newAccountData.result == -1 || newAccountData.result == 1 || newAccountData.result == 0}">
-							<a class="close" ng-click="newAccountData.result = 0">&times;</a>
-							<spring:message code="register.msg.error.exists" />
-						</div>
-						<label><spring:message code="register.name" /></label>
-						<input class="span3" type="text" name="firstname" placeholder="<spring:message code="register.firstname.placeholder" />" ng-model="newAccount.name" /> <input class="span3" type="text" name="lastname" placeholder="<spring:message code="register.lastname.placeholder" />" ng-model="newAccount.surName" /><br />
-						<label><spring:message code="register.email" /></label>
-						<input class="span3" type="text" name="mail" placeholder="<spring:message code="register.email.placeholder" />" ng-model="newAccount.username" required /><br />
-						<label><spring:message code="register.password" /></label>
-						<input class="span3" type="password" name="password" placeholder="<spring:message code="register.password.placeholder" />" ng-model="newAccount.password1" required /><br />
-						<label><spring:message code="register.password.check" /></label>
-						<input class="span3" type="password" name="password" placeholder="<spring:message code="register.password.check.placeholder" />" ng-model="newAccount.password2" required /><br />
-						<br />
-						<button class="btn btn-inverse" ng-click="register()" ng-disabled="formRegistration.$invalid || newAccount.password1 != newAccount.password2 || newAccountData.processing"><spring:message code="register.button.submit" /><span ng-show="newAccountData.processing"> processing...</span></button>
-					</form>
-				</div>
+		
+		<!-- page body -->
+		<div class="panel-body">
+			<div class="container" ng-controller="RegisterCtrl">
+				<form name="formRegistration" novalidate class="css-form">
+					<legend><spring:message code="register.title" /></legend>
+					<div class="alert alert-success" ng-show="newAccountData.result == 1">
+						<a class="close" ng-click="newAccountData.result = 0">&times;</a>
+						<spring:message code="register.msg.success" />
+					</div>
+					<div class="alert alert-error" ng-class="{'hidden':newAccountData.result == -2 || newAccountData.result == 1 || newAccountData.result == 0}">
+						<a class="close" ng-click="newAccountData.result = 0">&times;</a>
+						<spring:message code="register.msg.error" />
+					</div>
+					<div class="alert alert-error" ng-class="{'hidden':newAccountData.result == -1 || newAccountData.result == 1 || newAccountData.result == 0}">
+						<a class="close" ng-click="newAccountData.result = 0">&times;</a>
+						<spring:message code="register.msg.error.exists" />
+					</div>
+					<label><spring:message code="register.name" /></label>
+					<input class="span3" type="text" name="firstname" placeholder="<spring:message code="register.firstname.placeholder" />" ng-model="newAccount.name" /> <input class="span3" type="text" name="lastname" placeholder="<spring:message code="register.lastname.placeholder" />" ng-model="newAccount.surName" /><br />
+					<label><spring:message code="register.email" /></label>
+					<input class="span3" type="text" name="mail" placeholder="<spring:message code="register.email.placeholder" />" ng-model="newAccount.username" required /><br />
+					<label><spring:message code="register.password" /></label>
+					<input class="span3" type="password" name="password" placeholder="<spring:message code="register.password.placeholder" />" ng-model="newAccount.password1" required /><br />
+					<label><spring:message code="register.password.check" /></label>
+					<input class="span3" type="password" name="password" placeholder="<spring:message code="register.password.check.placeholder" />" ng-model="newAccount.password2" required /><br />
+					<br />
+					<button class="btn btn-inverse" ng-click="register()" ng-disabled="formRegistration.$invalid || newAccount.password1 != newAccount.password2 || newAccountData.processing"><spring:message code="register.button.submit" /><span ng-show="newAccountData.processing"> processing...</span></button>
+				</form>
 			</div>
 		</div>
-		<div id="footer">
-			<spring:message code="msg.changeLanguage" />: <a href="<c:url value="/?lang=en" />">english</a>, <a href="<c:url value="/?lang=cs" />">česky</a>
-		</div>
+		<!-- page footer -->
+		<%@include file="inc/footer.jsp" %>
+		
 		<script type="text/javascript" src="<c:url value="/resources-web-${applicationVersion}/scripts/vendor/jquery/jquery-1.9.1.min.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-web-${applicationVersion}/scripts/vendor/jquery/jquery-ui.min.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-web-${applicationVersion}/scripts/vendor/bootstrap/bootstrap.min.js" />"></script>

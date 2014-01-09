@@ -44,7 +44,8 @@
 .row-full .span1 {width:8.33333333333333%;*width:8.33333333333333%;}
 .row-full .span0 {width:0;*width:0;display:none;}
 
-h1,h2,h3,h4,h5,h6 {margin:5px 0;line-height:0;}
+h1,h2,h3,h4,h5,h6 {color:#FF5A00;}
+/*h1,h2,h3,h4,h5,h6 {margin:5px 0;line-height:0;}*/
 h4 {font-size:135%;/*font-weight:bold;*/}
 
 .navbar {margin-bottom:0;}
@@ -104,7 +105,7 @@ a:hover, a:focus {color:#565656;}
 
 body {margin:0;padding:0;-webkit-text-size-adjust:100%;}
 
-#app-menu {height:40px;width:100%;overflow:visible;}
+#app-menu {height:40px;width:100%;background:#FF5A00;overflow:visible;}
 #footer {padding:15px;background:#181818;color:#fff;font-size:90%;}
 
 .panel-full {background:#fff;}
@@ -112,11 +113,16 @@ body {margin:0;padding:0;-webkit-text-size-adjust:100%;}
 
 form {margin:0;padding:0;}
 
-.head {width:100%;height:360px;background:url("../img/bg-cityscapes.jpg") top right no-repeat;background-size:cover;}
+.panel-head {height:250px;background:url("../img/bg-cityscapes.jpg") top right no-repeat;background-size:cover;}
+.panel-body {background:#fff;}
+.panel-body .container {background:#fff;padding:20px 0 70px 0;}
+.panel-body h2 {color:#FF5A00;}
+
+.head {width:100%;height:250px;background:rgba(0,0,0,0.7);}
 .head td {vertical-align:top;}
-.head .login {background:rgba(0,0,0,0.7);padding:20px 15px;color:#fff;}
+.head .login {width:100%;background:rgba(0,0,0,0.7);padding:20px 15px;color:#fff;}
 .head .login h4 {color:#fff;}
-.head .title {text-align:center;padding:30px;}
+.head .title {text-align:center;padding:30px 10px;}
 .head .title strong {color:#fff;background:rgba(0,0,0,0.9);font-size:240%;line-height:180%;font-weight:normal;}
 
 .no-margins {margin:0;}
@@ -129,3 +135,7 @@ form {margin:0;padding:0;}
 .headline-panel  .header {font-size:220%;line-height:180%;font-weight:normal;}
 .headline-panel  .buttons {margin-top:10px;padding-top:5px;border-top:1px solid #ccc;text-align:right;}
 
+.carousel {height:100%;}
+.carousel-inner {height:100%;}
+.carousel .item {padding-top:50px;text-align:center;}
+.carousel .item h1,h2 {color:#fff;}

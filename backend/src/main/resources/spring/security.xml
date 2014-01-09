@@ -87,7 +87,8 @@
 	<bean id="filterSecurityInterceptor" class="org.springframework.security.web.access.intercept.FilterSecurityInterceptor">
 		<property name="securityMetadataSource">
 			<security:filter-security-metadata-source use-expressions="true">
-			<security:intercept-url pattern="/" access="permitAll" />
+				<security:intercept-url pattern="/" access="permitAll" />
+				<security:intercept-url pattern="/signin" access="permitAll" />
 				<security:intercept-url pattern="/register" access="permitAll" />
 				<security:intercept-url pattern="/webapp" access="permitAll" />
 				<security:intercept-url pattern="/resources-webapp-#{applicationProps['application.version']}/**" access="permitAll" />

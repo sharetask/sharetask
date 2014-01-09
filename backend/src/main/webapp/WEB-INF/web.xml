@@ -97,12 +97,12 @@
 
 	<error-page>
 		<error-code>404</error-code>
-		<location>/WEB-INF/jsp/webapp/errors/404-not-found.jsp</location>
+		<location>/WEB-INF/jsp/web/errors/404-not-found.jsp</location>
 	</error-page>
 
 	<error-page>
 		<error-code>403</error-code>
-		<location>/WEB-INF/jsp/webapp/errors/403-access-denied.jsp</location>
+		<location>/WEB-INF/jsp/web/errors/403-access-denied.jsp</location>
 	</error-page>	
 		
 </web-app>

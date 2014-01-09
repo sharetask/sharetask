@@ -42,7 +42,7 @@
 		<meta name="description" content="">
 		<meta name="keywords" content="">
 		<meta name="author" content="">
-		<title>ShareTa.sk</title>
+		<title>Sign in - ShareTa.sk</title>
 		<link rel="shortcut icon" href="<c:url value="/resources-web-${applicationVersion}/favicon.ico" />" />
 		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-web-${applicationVersion}/css/bootswatch.min.css" />">
 		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-web-${applicationVersion}/css/font-awesome.min.css" />">
@@ -61,7 +61,7 @@
 							<img class="pull-left" src="<c:url value="/resources-web-${applicationVersion}/img/icon-white-small.png" />" style="padding:8px 15px 0 8px;" />
 							<span class="brand">ShareTa.sk</span>
 							<ul class="nav">
-								<li class="active"><a href="<c:url value="/" />"><i class="icon-home icon-white"></i> <spring:message code="menu.home" /></a></li>
+								<li><a href="<c:url value="/" />"><i class="icon-home icon-white"></i> <spring:message code="menu.home" /></a></li>
 								<li></li>
 							</ul>
 							<ul class="nav pull-right">
@@ -73,8 +73,7 @@
 										<li><a class="cursor-pointer" role="menuitem" tabindex="-1" ng-click="logout()"><i class="icon-signout"></i><spring:message code="app.button.logout" /></a></li>
 									</ul>
 								</li>
-								<!--<li ng-show="loggedUser == null" ng-click="showSignInForm = !showSignInForm"><a class="cursor-pointer"><i class="icon-signin"></i> <spring:message code="menu.signin" /></a></li>-->
-								<li><a href="<c:url value="/signin" />"><spring:message code="menu.signin" /></a></li>
+								<li class="active"><a href="<c:url value="/signin" />"><spring:message code="menu.signin" /></a></li>
 								<li><a href="<c:url value="/register" />"><spring:message code="menu.signup" /></a></li>
 							</ul>
 						</div>
@@ -85,38 +84,7 @@
 		<!-- slide header -->
 		<div class="panel-head">
 			<div class="container">
-				<table class="head">
-				<tr>
-					<td>
-						<div id="myCarousel" class="carousel slide">
-							<ol class="carousel-indicators">
-								<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-								<li data-target="#myCarousel" data-slide-to="1"></li>
-								<li data-target="#myCarousel" data-slide-to="2"></li>
-								<li data-target="#myCarousel" data-slide-to="3"></li>
-							</ol>
-							<div class="carousel-inner">
-								<div class="item active">
-									<h1>Manage tasks</h1>
-									<h2>Manage all tasks on one place.</h2>
-								</div>
-								<div class="item">
-									<h1>Organize tasks</h1>
-									<h2>Organize tasks to workspaces.</h2>
-								</div>
-								<div class="item">
-									<h1>Share tasks</h1>
-									<h2>Share workspace tasks with your team or family.</h2>
-								</div>
-								<div class="item">
-									<h1>Anywhere & Anytime</h1>
-									<h2>Manage tasks on your PC, tablet or smartphone.</h2>
-								</div>
-							</div>
-						</div>
-					</td>
-				</tr>
-				</table>
+				<%@include file="inc/signin.jsp" %>
 			</div>
 		</div>
 		<!-- page body -->

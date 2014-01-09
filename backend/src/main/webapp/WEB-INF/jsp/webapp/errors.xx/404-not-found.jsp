@@ -1,4 +1,4 @@
-﻿<%--
+﻿<!--
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -15,36 +15,20 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
---%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8" %>
+-->
+<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <!doctype html>
 <html lang="en">
-	<!-- Application version: ${applicationVersion} -->
-	<!-- Application revision: ${applicationRevision} -->
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<meta name="description" content="">
-		<meta name="keywords" content="">
-		<meta name="author" content="">
-		<title>ShareTa.sk</title>
+		<meta charset="utf-8">
+		<title>ShareTa.sk app - not found</title>
 	</head>
 	<body>
-		<div>
-			<c:choose>
-				<c:when test="${param.error.equals('notexists')}">
-					<p>invitation not exists</p>
-				</c:when>
-				<c:when test="${param.error.equals('userNotExists')}">
-					<p>Try to register and then apply invitation</p>
-				</c:when>
-				<c:otherwise>
-					<p>invitation confirmed</p>
-				</c:otherwise>
-			</c:choose>
-		</div>
+		<h1>Resource not found!</h1>
+		<a href="<c:url value="/" />">home page</a>
 	</body>
 </html>
+ 
