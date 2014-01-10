@@ -61,17 +61,30 @@
 		<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/vendor/angular/angular-ui.min.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/vendor/angular/angular-dragdrop.min.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/vendor/angular/ui-bootstrap-tpls-0.3.0.min.js" />"></script>
-		<c:choose>
-			<c:when test="${fn:length(pageContext.request.locale.country) == 0}">
-				<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/vendor/angular/i18n/angular-locale_${fn:toLowerCase(pageContext.request.locale.language)}.js" />"></script>
-			</c:when>
-			<c:otherwise>
-				<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/vendor/angular/i18n/angular-locale_${fn:toLowerCase(pageContext.request.locale.language)}-${fn:toLowerCase(pageContext.request.locale.country)}.js" />"></script>
-			</c:otherwise>
-		</c:choose>
+		<%
+			// get selected locale first from cookie then from request locale
+	        Cookie[] cookies = request.getCookies();
+			String locale = "";
+
+			for(Cookie cookie : cookies) { 
+	            if (cookie.getName().equals("locale")) {
+	                locale = cookie.getValue();
+	                break;
+	            }
+	        }  
+
+	        if (locale.isEmpty()) {
+				locale = request.getLocale().getCountry().length() == 0 ? request.getLocale().getLanguage().toLowerCase()
+						: request.getLocale().getLanguage().toLowerCase() + "-"	+ request.getLocale().getCountry().toLowerCase();
+			}
+	        String language = locale.split("-")[0];
+	        pageContext.setAttribute("locale", locale);
+	        pageContext.setAttribute("language", language);
+		%> 		
+		<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/vendor/angular/i18n/angular-locale_${locale}.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/vendor/angular/angular-google-analytics.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/vendor/localize/localize.js" />"></script>
-		<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/vendor/localize/jquery.ui.datepicker-${fn:toLowerCase(pageContext.request.locale.language)}.js" />"></script>
+		<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/vendor/localize/jquery.ui.datepicker-${language}.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/vendor/md5-min.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/services/services.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/controllers/controllers.js" />"></script>
@@ -94,7 +107,7 @@
 				.run(['$rootScope', 'Logger', function ($rootScope, Logger) {
 					$rootScope.appBaseUrl = '<c:url value="/" />';
 					$rootScope.appVersion = '${applicationVersion}';
-					$rootScope.appLocale = {language: '<c:out value="${pageContext.request.locale.language}" />', country: '<c:out value="${pageContext.request.locale.country}" />'};
+					$rootScope.appLocale = {language: '<c:out value="${language}" />', country: '<c:out value="${locale}" />'};
 					console.log("appLocale: %o", $rootScope.appLocale);
 					Logger.init('${logLevel}');
 				}]);
