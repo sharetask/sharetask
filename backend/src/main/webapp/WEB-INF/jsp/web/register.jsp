@@ -94,14 +94,16 @@
 					</div>
 					<label><spring:message code="register.name" /></label>
 					<input class="span3" type="text" name="firstname" placeholder="<spring:message code="register.firstname.placeholder" />" ng-model="newAccount.name" /> <input class="span3" type="text" name="lastname" placeholder="<spring:message code="register.lastname.placeholder" />" ng-model="newAccount.surName" /><br />
-					<label><spring:message code="register.email" /></label>
+					<label>* <spring:message code="register.email" /></label>
 					<input class="span3" type="text" name="mail" placeholder="<spring:message code="register.email.placeholder" />" ng-model="newAccount.username" required /><br />
-					<label><spring:message code="register.password" /></label>
+					<label>* <spring:message code="register.password" /></label>
 					<input class="span3" type="password" name="password" placeholder="<spring:message code="register.password.placeholder" />" ng-model="newAccount.password1" required /><br />
-					<label><spring:message code="register.password.check" /></label>
+					<label>* <spring:message code="register.password.check" /></label>
 					<input class="span3" type="password" name="password" placeholder="<spring:message code="register.password.check.placeholder" />" ng-model="newAccount.password2" required /><br />
 					<br />
 					<button class="btn btn-inverse" ng-click="register()" ng-disabled="formRegistration.$invalid || newAccount.password1 != newAccount.password2 || newAccountData.processing"><spring:message code="register.button.submit" /><span ng-show="newAccountData.processing"> processing...</span></button>
+					<br /><br />
+					<p><spring:message code="register.mandatory" /></p>
 				</form>
 			</div>
 		</div>
