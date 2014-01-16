@@ -189,7 +189,7 @@
 										</td>
 										<td width="80%">
 											<strong>{{task.title}}</strong><br />
-											<small>{{task.createdBy.name}} {{task.createdBy.surName}}</small>
+											<small>{{task.createdBy.name}} {{task.createdBy.surName}} &raquo; <span class="important">{{task.assignee.name}} {{task.assignee.surName}}</span></small>
 										</td>
 										<td width="20%" style="text-align:right;">
 											<small>{{task.dueDate | myDate:'mediumDate'}}</small><br />
@@ -288,7 +288,10 @@
 						</div>
 						
 						<!-- task author -->
-						<p>{{'_By_' | i18n}} <!--<span popover-title="{{selectedTask.createdBy.name}} {{selectedTask.createdBy.surName}}" popover="I appeared on mouse enter!" popover-trigger="mouseenter" popover-placement="right">{{selectedTask.createdBy.name}} {{selectedTask.createdBy.surName}}</span> -->{{selectedTask.createdBy.name}} {{selectedTask.createdBy.surName}} ({{selectedTask.createdOn | date:'fullDate'}})</p>
+						<p>{{'_By_' | i18n}} {{selectedTask.createdBy.name}} {{selectedTask.createdBy.surName}} ({{selectedTask.createdOn | date:'fullDate'}})</p>
+						
+						<!-- task assignee -->
+						<p>{{'_To_' | i18n}} <span class="important">{{selectedTask.assignee.name}} {{selectedTask.assignee.surName}}</span></p>
 						
 						<!-- task created on, priority, due date -->
 						<!--

@@ -120,6 +120,11 @@
 		"description":""
 	},
 	{
+		"key":"_To_",
+		"value":"komu:",
+		"description":""
+	},
+	{
 	    "key":"_Complete_",
 	    "value":"Hotovo",
 	    "description":""

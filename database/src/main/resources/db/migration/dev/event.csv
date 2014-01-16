@@ -2,3 +2,12 @@ ID,CREATED_BY,CREATED_ON,TYPE,TASK_ID
 1,dev1@shareta.sk,2013-01-30 00:00:00,TASK_CREATED,1
 2,dev1@shareta.sk,2013-02-30 00:00:00,TASK_CREATED,2
 3,dev1@shareta.sk,2013-02-30 00:00:00,TASK_CREATED,3
+4,michael.moore@shareta.sk,2014-01-10 09:34:40,TASK_CREATED,5
+5,michael.moore@shareta.sk,2014-01-10 10:25:35,TASK_CREATED,6
+6,michael.moore@shareta.sk,2014-01-05 11:06:52,TASK_CREATED,7
+7,michael.moore@shareta.sk,2014-01-08 15:46:12,TASK_CREATED,8
+8,michael.moore@shareta.sk,2014-01-08 13:08:46,TASK_CREATED,9
+9,michael.moore@shareta.sk,2014-01-08 13:08:46,TASK_CREATED,10
+10,michael.moore@shareta.sk,2014-01-08 13:08:46,TASK_CREATED,11
+11,michael.moore@shareta.sk,2014-01-08 13:08:46,TASK_CREATED,12
+12,michael.moore@shareta.sk,2014-01-08 13:08:46,TASK_CREATED,13

@@ -95,6 +95,8 @@ a:hover, a:focus {color:#565656;}
 .task-list-item .row-full [class*="span"] {min-height:10px;margin:0;}
 .task-list-item .tag {margin-bottom:0px;}
 
+.important {color:#D94436;}
+
 .calendar {border-top:1px solid #ddd;}
 .calendar-item {border-bottom:1px solid #ddd;}
 

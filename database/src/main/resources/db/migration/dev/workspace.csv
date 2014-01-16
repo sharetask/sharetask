@@ -2,3 +2,6 @@ ID,TITLE,DESCRIPTION,OWNER_USER_NAME,CREATED_BY,CREATED_ON,UPDATED_BY,UPDATED_ON
 1,ABX Agency,Lorem ipsum dolor sit amet consectetur adipiscing elit. Cras feugiat libero purus quis venenatis purus.,dev1@shareta.sk,dev1@shareta.sk,2013-01-30 00:00:00,dev1@shareta.sk,2013-01-30 00:00:00
 2,Cras feugiat,Lorem ipsum dolor sit amet consectetur adipiscing elit. Cras feugiat libero purus quis venenatis purus.,dev1@shareta.sk,dev1@shareta.sk,2013-03-30 00:00:00,dev1@shareta.sk,2013-03-30 00:00:00
 3,Cras feugiat,Lorem ipsum dolor sit amet consectetur adipiscing elit. Cras feugiat libero purus quis venenatis purus.,dev1@shareta.sk,dev1@shareta.sk,2013-03-30 00:00:00,dev1@shareta.sk,2013-03-30 00:00:00
+4,Personal,My personal tasks.,michael.moore@shareta.sk,michael.moore@shareta.sk,2013-03-30 00:00:00,michael.moore@shareta.sk,2013-03-30 00:00:00
+5,Project X,Project X tasks.,michael.moore@shareta.sk,michael.moore@shareta.sk,2013-03-30 00:00:00,michael.moore@shareta.sk,2013-03-30 00:00:00
+6,ABX Agency,ABX Agency tasks.,michael.moore@shareta.sk,michael.moore@shareta.sk,2013-03-30 00:00:00,michael.moore@shareta.sk,2013-03-30 00:00:00

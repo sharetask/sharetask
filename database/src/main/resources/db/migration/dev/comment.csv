@@ -8,3 +8,5 @@ ID,CREATED_BY,CREATED_ON,MESSAGE,TASK_ID
 7,dev1@shareta.sk,2013-03-02 00:00:00,Proin velit sem venenatis ac ullamcorper quis imperdiet id tellus. Donec lobortis arcu non lacinia tempus eros mauris tristique est eu rutrum libero augue laoreet turpis.,2
 8,dev2@shareta.sk,2013-04-22 00:00:00,Vivamus diam nunc malesuada quis interdum non dapibus sed felis. Vivamus ullamcorper consectetur ultrices.,2
 9,dev2@shareta.sk,2013-05-01 00:00:00,Fusce vel augue sem vel pulvinar mauris. Nunc ut arcu sapien. Quisque rhoncus tempor sagittis. Pellentesque in aliquam orci.,2
+10,david.wilson@shareta.sk,2014-01-11 15:46:12,"Hi Michael, price calculation is $230. Is it OK?",8
+11,michael.moore@shareta.sk,2014-01-11 16:38:56,"Thanks David, price is OK. Please make order.",8
