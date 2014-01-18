@@ -62,7 +62,7 @@
 							<span class="brand">ShareTa.sk</span>
 							<ul class="nav">
 								<li class="active"><a href="<c:url value="/" />"><i class="icon-home icon-white"></i> <spring:message code="menu.home" /></a></li>
-								<li></li>
+								<li><a href="<c:url value="/features" />"><i class="icon-check icon-white"></i> <spring:message code="menu.features" /></a></li>
 							</ul>
 							<ul class="nav pull-right">
 								<li id="fat-menu" class="dropdown" ng-show="loggedUser != null">
@@ -73,8 +73,7 @@
 										<li><a class="cursor-pointer" role="menuitem" tabindex="-1" ng-click="logout()"><i class="icon-signout"></i><spring:message code="app.button.logout" /></a></li>
 									</ul>
 								</li>
-								<!--<li ng-show="loggedUser == null" ng-click="showSignInForm = !showSignInForm"><a class="cursor-pointer"><i class="icon-signin"></i> <spring:message code="menu.signin" /></a></li>-->
-								<li><a href="<c:url value="/signin" />"><spring:message code="menu.signin" /></a></li>
+								<li><a href="<c:url value="/signin" />"><i class="icon-signin icon-white"></i> <spring:message code="menu.signin" /></a></li>
 								<li><a href="<c:url value="/register" />"><spring:message code="menu.signup" /></a></li>
 							</ul>
 						</div>

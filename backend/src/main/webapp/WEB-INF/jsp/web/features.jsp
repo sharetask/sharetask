@@ -16,23 +16,15 @@
  * specific language governing permissions and limitations
  * under the License.
 --%>
-<%@page import="org.pac4j.oauth.client.Google2Client"%>
-<%@page import="org.pac4j.oauth.client.FacebookClient"%>
-<%@page import="org.pac4j.core.context.J2EContext"%>
-<%@page import="org.pac4j.core.context.WebContext"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <spring:eval expression="@applicationProps['application.version']" var="applicationVersion" />
 <spring:eval expression="@applicationProps['application.revision']" var="applicationRevision" />
 <spring:eval expression="@applicationProps['google.analytics.account.web']" var="googleAnalyticsAccount" />
-<spring:eval expression="@applicationProps['google.analytics.account.web']" var="googleAnalyticsAccount" />
-<%
-    WebContext context = new J2EContext(request, response); 
-	Google2Client gClient= (Google2Client) application.getAttribute("GoogleClient");
-    String redirectionGoogleUrl = gClient.getRedirectionUrl(context);
-%>
+
 <!doctype html>
 <html lang="en" ng-app="shareTaskWeb">
 	<!-- Application version: ${applicationVersion} -->
@@ -42,7 +34,7 @@
 		<meta name="description" content="">
 		<meta name="keywords" content="">
 		<meta name="author" content="">
-		<title><spring:message code="invitation.title" /> - ShareTa.sk</title>
+		<title><spring:message code="menu.features" /> - ShareTa.sk</title>
 		<link rel="shortcut icon" href="<c:url value="/resources-web-${applicationVersion}/favicon.ico" />" />
 		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-web-${applicationVersion}/css/bootswatch.min.css" />">
 		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-web-${applicationVersion}/css/font-awesome.min.css" />">
@@ -51,7 +43,7 @@
 		<![endif]-->
 		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-web-${applicationVersion}/css/sharetask.css" />">
 	</head>
-	<body ng-controller="IndexCtrl" ng-cloak>
+	<body ng-cloak>
 		<!-- application menu -->
 		<div id="app-menu">
 			<div class="container">
@@ -62,7 +54,7 @@
 							<span class="brand">ShareTa.sk</span>
 							<ul class="nav">
 								<li><a href="<c:url value="/" />"><i class="icon-home icon-white"></i> <spring:message code="menu.home" /></a></li>
-								<li><a href="<c:url value="/features" />"><i class="icon-check icon-white"></i> <spring:message code="menu.features" /></a></li>
+								<li class="active"><a href="<c:url value="/features" />"><i class="icon-check icon-white"></i> <spring:message code="menu.features" /></a></li>
 							</ul>
 							<ul class="nav pull-right">
 								<li id="fat-menu" class="dropdown" ng-show="loggedUser != null">
@@ -73,7 +65,7 @@
 										<li><a class="cursor-pointer" role="menuitem" tabindex="-1" ng-click="logout()"><i class="icon-signout"></i><spring:message code="app.button.logout" /></a></li>
 									</ul>
 								</li>
-								<li class="active"><a href="<c:url value="/signin" />"><i class="icon-signin icon-white"></i> <spring:message code="menu.signin" /></a></li>
+								<li><a href="<c:url value="/signin" />"><i class="icon-signin icon-white"></i> <spring:message code="menu.signin" /></a></li>
 								<li><a href="<c:url value="/register" />"><spring:message code="menu.signup" /></a></li>
 							</ul>
 						</div>
@@ -81,29 +73,8 @@
 				</div>
 			</div>
 		</div>
-		<!-- slide header -->
-		<div class="panel-head">
-			<div class="container">
-				<%@include file="inc/signin.jsp" %>
-			</div>
-		</div>
 		<!-- page body -->
-		<div class="panel-body">
-			<div class="container">
-				<h2><spring:message code="invitation.title" /></h2>
-				<c:choose>
-					<c:when test="${param.error.equals('notexists')}">
-						<spring:message code="invitation.result.notexists" />
-					</c:when>
-					<c:when test="${param.error.equals('userNotExists')}">
-						<spring:message code="invitation.result.userNotExists" />
-					</c:when>
-					<c:otherwise>
-						<spring:message code="invitation.result.ok" />
-					</c:otherwise>
-				</c:choose>
-			</div>
-		</div>
+		<%@include file="inc/features.jsp" %>
 		<!-- page footer -->
 		<%@include file="inc/footer.jsp" %>
 		
@@ -119,7 +90,6 @@
 		<script type="text/javascript">
 			angular.module('shareTaskWeb', ['shareTaskWeb.filters', 'shareTaskWeb.services', 'shareTaskWeb.directives', 'shareTaskWeb.controllers'])
 				.run(['$rootScope', function ($rootScope) {
-					$('.carousel').carousel();
 					$rootScope.appBaseUrl = '<c:url value="/" />';
 					$rootScope.appVersion = '${applicationVersion}';
 					$rootScope.appLocale = {language: '<c:out value="${pageContext.request.locale.language}" />', country: '<c:out value="${pageContext.request.locale.country}" />'};

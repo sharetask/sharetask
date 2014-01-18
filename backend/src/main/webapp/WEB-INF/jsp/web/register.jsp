@@ -34,7 +34,7 @@
 		<meta name="description" content="">
 		<meta name="keywords" content="">
 		<meta name="author" content="">
-		<title>ShareTa.sk</title>
+		<title><spring:message code="menu.signup" /> - ShareTa.sk</title>
 		<link rel="shortcut icon" href="<c:url value="/resources-web-${applicationVersion}/favicon.ico" />" />
 		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-web-${applicationVersion}/css/bootswatch.min.css" />">
 		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-web-${applicationVersion}/css/font-awesome.min.css" />">
@@ -54,7 +54,7 @@
 							<span class="brand">ShareTa.sk</span>
 							<ul class="nav">
 								<li><a href="<c:url value="/" />"><i class="icon-home icon-white"></i> <spring:message code="menu.home" /></a></li>
-								<li></li>
+								<li><a href="<c:url value="/features" />"><i class="icon-check icon-white"></i> <spring:message code="menu.features" /></a></li>
 							</ul>
 							<ul class="nav pull-right">
 								<li id="fat-menu" class="dropdown" ng-show="loggedUser != null">
@@ -65,7 +65,7 @@
 										<li><a class="cursor-pointer" role="menuitem" tabindex="-1" ng-click="logout()"><i class="icon-signout"></i><spring:message code="app.button.logout" /></a></li>
 									</ul>
 								</li>
-								<li><a href="<c:url value="/signin" />"><spring:message code="menu.signin" /></a></li>
+								<li><a href="<c:url value="/signin" />"><i class="icon-signin icon-white"></i> <spring:message code="menu.signin" /></a></li>
 								<li class="active"><a href="<c:url value="/register" />"><spring:message code="menu.signup" /></a></li>
 							</ul>
 						</div>
@@ -78,8 +78,9 @@
 		<!-- page body -->
 		<div class="panel-body">
 			<div class="container" ng-controller="RegisterCtrl">
+				<h1><spring:message code="register.title" /></h1>
+				<br />
 				<form name="formRegistration" novalidate class="css-form">
-					<legend><spring:message code="register.title" /></legend>
 					<div class="alert alert-success" ng-show="newAccountData.result == 1">
 						<a class="close" ng-click="newAccountData.result = 0">&times;</a>
 						<spring:message code="register.msg.success" />

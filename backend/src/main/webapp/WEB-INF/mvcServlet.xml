@@ -50,6 +50,7 @@
 	
 	<!-- 	<mvc:default-servlet-handler /> -->
 	<mvc:view-controller path="/" view-name="web/index"/>
+	<mvc:view-controller path="/features" view-name="web/features"/>
 	<mvc:view-controller path="/signin" view-name="web/signin"/>
 	<mvc:view-controller path="/register" view-name="web/register"/>
 	<mvc:view-controller path="/confirmed" view-name="web/confirmed"/>
