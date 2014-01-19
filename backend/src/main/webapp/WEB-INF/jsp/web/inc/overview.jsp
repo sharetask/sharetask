@@ -1,9 +1,16 @@
 ﻿		<div class="panel-body">
-			<div class="container">
-				<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec vitae arcu. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nunc tincidunt ante vitae massa. Nulla quis diam. Integer tempor. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Duis risus. Etiam commodo dui eget wisi. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</p>
-				<p>Nam quis nulla. Curabitur bibendum justo non orci. Etiam sapien elit, consequat eget, tristique non, venenatis quis, ante. Phasellus rhoncus. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Quisque tincidunt scelerisque libero. Proin in tellus sit amet nibh dignissim sagittis. Duis sapien nunc, commodo et, interdum suscipit, sollicitudin et, dolor. Aenean placerat. Fusce consectetuer risus a nunc.</p>
-				<p>Fusce aliquam vestibulum ipsum. In rutrum. Etiam bibendum elit eget erat. Nam sed tellus id magna elementum tincidunt. Nulla quis diam. Proin pede metus, vulputate nec, fermentum fringilla, vehicula vitae, justo. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Suspendisse nisl. Aliquam erat volutpat. Mauris dictum facilisis augue. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Maecenas ipsum velit, consectetuer eu lobortis ut, dictum at dui. Etiam ligula pede, sagittis quis, interdum ultricies, scelerisque eu.</p>
-				<p>Nulla accumsan, elit sit amet varius semper, nulla mauris mollis quam, tempor suscipit diam nulla vel leo. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Suspendisse sagittis ultrices augue. Nullam eget nisl. Nullam faucibus mi quis velit. Maecenas ipsum velit, consectetuer eu lobortis ut, dictum at dui. Integer lacinia. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos. Maecenas ipsum velit, consectetuer eu lobortis ut, dictum at dui. Nulla non arcu lacinia neque faucibus fringilla. Donec quis nibh at felis congue commodo. Integer pellentesque quam vel velit. Vivamus porttitor turpis ac leo. Praesent dapibus. Vivamus ac leo pretium faucibus.</p>
-				<p>Nulla est. Pellentesque ipsum. Aliquam erat volutpat. Mauris metus. Integer in sapien. Sed elit dui, pellentesque a, faucibus vel, interdum nec, diam. Aliquam id dolor. Integer pellentesque quam vel velit. Integer imperdiet lectus quis justo. Aliquam erat volutpat. Sed vel lectus. Donec odio tempus molestie, porttitor ut, iaculis quis, sem. Integer in sapien. Aliquam erat volutpat. Duis ante orci, molestie vitae vehicula venenatis, tincidunt ac pede.</p>
+			<div class="row">
+				<div class="container large">
+					<div class="span4"><i class="icon-check icon-11x"></i></div>
+					<div class="span8">
+						<h1><spring:message code="index.intro.1" /></h1>
+						<h1><spring:message code="index.intro.2" /></h1>
+						<br />
+						<p>
+							<a class="btn btn-large" href="<c:url value="/features" />"><spring:message code="index.intro.button.features" /></a>
+							<a class="btn btn-large btn-inverse" href="<c:url value="/register" />"><spring:message code="index.intro.button.signup" /></a>
+						</p>
+					</div>
+				</div>
 			</div>
 		</div>
