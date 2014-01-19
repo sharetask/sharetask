@@ -78,7 +78,9 @@
 				<div class="container">
 					<div class="span7">
 						<h2><spring:message code="features.task.forward.title" /></h2>
-						
+						<ul>
+							<li><spring:message code="features.task.forward.1" /></li>
+						</ul>
 					</div>
 					<div class="span5"><img src="<c:url value="/resources-web-${applicationVersion}/img/features/task-forward.png" />" /></div>
 				</div>
@@ -88,7 +90,11 @@
 					<div class="span7"><img src="<c:url value="/resources-web-${applicationVersion}/img/features/task-comments.png" />" /></div>
 					<div class="span5">
 						<h2><spring:message code="features.task.comments.title" /></h2>
-						
+						<ul>
+							<li><spring:message code="features.task.comments.1" /></li>
+							<li><spring:message code="features.task.comments.2" /></li>
+							<li><spring:message code="features.task.comments.3" /></li>
+						</ul>
 					</div>
 				</div>
 			</div>
@@ -96,7 +102,9 @@
 				<div class="container">
 					<div class="span6">
 						<h2><spring:message code="features.task.duedate.title" /></h2>
-						
+						<ul>
+							<li><spring:message code="features.task.duedate.1" /></li>
+						</ul>
 					</div>
 					<div class="span6"><img src="<c:url value="/resources-web-${applicationVersion}/img/features/task-due-date.png" />" /></div>
 				</div>
@@ -106,7 +114,9 @@
 					<div class="span7"><img src="<c:url value="/resources-web-${applicationVersion}/img/features/tasks-batch-operations.png" />" /></div>
 					<div class="span5">
 						<h2><spring:message code="features.task.batch.title" /></h2>
-						
+						<ul>
+							<li><spring:message code="features.task.batch.1" /></li>
+						</ul>
 					</div>
 				</div>
 			</div>
