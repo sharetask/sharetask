@@ -42,7 +42,6 @@
 		}
 	}
 %>
-
 <spring:eval expression="@applicationProps['application.version']" var="applicationVersion" />
 <spring:eval expression="@applicationProps['application.revision']" var="applicationRevision" />
 <spring:eval expression="@applicationProps['log.level']" var="logLevel" />
