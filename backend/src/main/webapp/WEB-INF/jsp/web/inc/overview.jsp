@@ -1,22 +1,27 @@
-﻿<%
+<%
 	// get selected locale first from cookie then from request locale
 	Cookie[] cookies = request.getCookies();
 	String locale = "";
 	String language = "";
-	for(Cookie cookie : cookies) { 
-		if (cookie.getName().equals("locale")) {
-			locale = cookie.getValue();
-			pageContext.setAttribute("locale", locale);
-			pageContext.setAttribute("language", locale);
-			break;
-		}
-	}
-	if (locale.isEmpty()) {
+	if (cookies == null) {
 		pageContext.setAttribute("language", request.getLocale().getLanguage().toLowerCase());
 		pageContext.setAttribute("locale", request.getLocale().getLanguage().toLowerCase());
-		if (request.getLocale().getCountry().length() > 0) {
-			pageContext.setAttribute("country", request.getLocale().getCountry().toLowerCase());
-			pageContext.setAttribute("locale", request.getLocale().getLanguage().toLowerCase() + "-" + request.getLocale().getCountry().toLowerCase());
+	} else {
+		for(Cookie cookie : cookies) { 
+			if (cookie.getName().equals("locale")) {
+				locale = cookie.getValue();
+				pageContext.setAttribute("locale", locale);
+				pageContext.setAttribute("language", locale);
+				break;
+			}
+		}
+		if (locale.isEmpty()) {
+			pageContext.setAttribute("language", request.getLocale().getLanguage().toLowerCase());
+			pageContext.setAttribute("locale", request.getLocale().getLanguage().toLowerCase());
+			if (request.getLocale().getCountry().length() > 0) {
+				pageContext.setAttribute("country", request.getLocale().getCountry().toLowerCase());
+				pageContext.setAttribute("locale", request.getLocale().getLanguage().toLowerCase() + "-" + request.getLocale().getCountry().toLowerCase());
+			}
 		}
 	}
 %>
@@ -49,7 +54,7 @@
 						<h1><spring:message code="index.intro.3" /></h1>
 						<br />
 						<p>
-							<a href="https://play.google.com/store/apps/details?id=sk.shareta.android"><img alt="Nyní na Google Play" src="https://developer.android.com/images/brand/<c:out value="${language}" />_generic_rgb_wo_60.png" /></a>
+							<a href="https://play.google.com/store/apps/details?id=sk.shareta.android"><img alt="Nyn� na Google Play" src="https://developer.android.com/images/brand/<c:out value="${language}" />_generic_rgb_wo_60.png" /></a>
 						</p>
 					</div>
 				</div>
