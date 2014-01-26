@@ -43,6 +43,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		$scope.tags = [];
 		$scope.newTasks = [];
 		$scope.newTaskTitle = '';
+		$scope.checkedTasks = [];
 		$rootScope.currentPage = "tasks";
 		$rootScope.errorConsole = {show: false, msgCode: ''};
 		$rootScope.firstWorkspaceWindow = {show: false};
@@ -482,6 +483,16 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 					ErrorHandling.handle(data, status, script, func);
 				});
 			$scope.setSelectedTask(task.id);
+		};
+		
+		$scope.checkTask = function(task) {
+			Log.debug("Check task (task: %o)", task);
+			task.checked = !task.checked;
+			// get checked tasks
+			$scope.checkedTasks = $.grep($scope.tasks, function(e) {
+				return e.checked == true;
+			});
+			Log.debug("Checked tasks: %s", $scope.checkedTasks.length);
 		};
 		
 		/**

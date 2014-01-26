@@ -63,7 +63,7 @@
 			<div class="panel-task-list" ng-class="{'large':!viewPanelTaskFilter}">
 				<div class="panel-task-list-inner">
 					<!-- task list header -->
-					<div class="header" ng-class="{'large':taskEditMode == 'NEW-TASK'}">
+					<div class="header" ng-class="{'large':taskEditMode == 'NEW-TASK' || checkedTasks.length > 0}">
 						<div class="queue-name">
 							<div class="queue-name-inner">
 								<div class="title pull-left cursor-pointer" ng-click="changeTaskQueue()">{{filter.queue | taskQueueName | i18n}} <small>({{allTasks | queueTasksCount:filter.queue}})</small></div>
@@ -82,14 +82,13 @@
 								</div>
 								<button class="btn btn-inverse pull-right" style="margin-left:5px;" ng-click="setEditMode('NEW-TASK')" stop-event="click"><i class="icon-plus icon-white"></i></button>
 								<button class="btn pull-right" style="margin-left:5px;" ng-click="loadTasks()"><i class="icon-refresh"></i></button>
-								<div class="btn-group pull-right" style="margin-left:5px;">
+								<!--<div class="btn-group pull-right" style="margin-left:5px;">
 									<button class="btn dropdown-toggle" data-toggle="dropdown"><i class="icon-list"></i> <span class="caret"></span></button>
 									<ul class="dropdown-menu">
 										<li ng-click="completeTask(true)"><a>{{'_Complete_' | i18n}}</a></li>
-										<!--<li ng-click=""><a>{{'_Forward_' | i18n}}</a></li>-->
 										<li ng-click="deleteTask(true)"><a>{{'_Delete_' | i18n}}</a></li>
 									</ul>
-								</div>
+								</div>-->
 							</div>
 						</div>
 						<div class="new-task-simple" ng-class="{'hidden':taskEditMode != 'NEW-TASK'}" stop-event="click">
@@ -100,9 +99,15 @@
 								</div>
 							</div>
 						</div>
+						<div ng-class="{'hidden':checkedTasks.length == 0}" stop-event="click">
+							<div class="queue-controls-inner">
+								<button class="btn btn-inverse" ng-click="completeTask(true)"><i class="icon-ok"></i> {{'_Complete_' | i18n}}</button>
+								<button class="btn btn-inverse" ng-click="deleteTask(true)"><i class="icon-remove"></i> {{'_Delete_' | i18n}}</button>
+							</div>
+						</div>
 					</div>
 					<!-- task list -->
-					<div class="task-list" ng-class="{'small':taskEditMode == 'NEW-TASK'}">
+					<div class="task-list" ng-class="{'small':taskEditMode == 'NEW-TASK' || checkedTasks.length > 0}">
 						<div class="task-list-inner">
 							<!-- error message -->
 							<div class="alert alert-error no-margins" ng-class="{'hidden':errorMessageOnTaskList == ''}">
@@ -123,10 +128,10 @@
 											<div class="st-checkbox cursor-pointer" ng-click="task.checked = !task.checked" ng-class="{'selected checked':task.id == selectedTask.id && task.checked, 'checked':task.checked}" stop-event="click"></div>
 										</td>-->
 										<td style="vertical-align:top;padding-right:10px;font-size:25px;" ng-show="!task.checked">
-											<i class="icon-check-empty" ng-show="!task.checked" ng-click="task.checked = !task.checked" stop-event="click"></i>
+											<i class="icon-check-empty" ng-show="!task.checked" ng-click="checkTask(task)" stop-event="click"></i>
 										</td>
 										<td style="vertical-align:top;padding-right:9px;color:#FF5A00;font-size:25px;" ng-show="task.checked">
-											<i class="icon-check-sign" ng-click="task.checked = !task.checked" stop-event="click"></i>
+											<i class="icon-check-sign" ng-click="checkTask(task)" stop-event="click"></i>
 										</td>
 										<td width="80%">
 											<strong>{{task.title}}</strong><br />
@@ -147,8 +152,8 @@
 			<!-- task detail panel -->
 			<div class="panel-task-detail">
 				<div class="panel-task-detail-inner">
-					<div class="panel-task-detail-content" ng-class="{'hidden':selectedTask == null}">
-					
+					<div class="panel-task-detail-content" ng-class="{'hidden':selectedTask == null || checkedTasks.length > 0}">
+						
 						<!-- action buttons -->
 						<div class="task-detail-action" ng-class="{'selected':taskEditMode == 'COMPLETE-TASK' || taskEditMode == 'FORWARD-TASK' || taskEditMode == 'DELETE-TASK'}">
 							<button class="btn btn-inverse" ng-click="setEditMode('COMPLETE-TASK')" ng-class="{'hidden':selectedTask.state == 'FINISHED'}" stop-event="click"><i class="icon-ok"></i> {{'_Complete_' | i18n}}</button>
