@@ -52,7 +52,8 @@ public class TaskController {
 	private TaskService taskService;
 
 	@ResponseStatus(value = HttpStatus.OK)
-	@RequestMapping(value = "/{workspaceId}/task", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/{workspaceId}/task", method = RequestMethod.POST, 
+			produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody public TaskDTO create(@PathVariable("workspaceId") final Long workspaceId,
 	                                    @RequestBody final TaskDTO task) {
  		return taskService.create(workspaceId, task);
@@ -66,14 +67,14 @@ public class TaskController {
 
 	@ResponseStatus(value = HttpStatus.OK)
 	@RequestMapping(value = "/{workspaceId}/task/{taskId}", method = RequestMethod.GET, 
-			produces = MediaType.APPLICATION_JSON_VALUE)
+	                produces = MediaType.APPLICATION_JSON_VALUE)
 	public TaskDTO getTask(@PathVariable("taskId") final Long taskId) {
 		return taskService.getTask(taskId);
 	}
 
-	@RequestMapping(value = "/{workspaceId}/task/{taskId}/comment", method = RequestMethod.POST, 
-			produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
+	@RequestMapping(value = "/{workspaceId}/task/{taskId}/comment", method = RequestMethod.POST,
+			produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody public TaskDTO addComment(@PathVariable("taskId") final Long taskId,
 	                                        @RequestBody final Comment comment) {
  		return taskService.addComment(taskId, comment.getComment());

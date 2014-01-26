@@ -52,47 +52,45 @@ public class WorkspaceController {
 	@Inject
 	private InvitationService invitationService;
 	
-	@RequestMapping(method = RequestMethod.POST, 
-	                produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(method = RequestMethod.POST,
+			consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody public WorkspaceDTO create(@RequestBody final WorkspaceDTO workspace) {
  		return workspaceService.create(workspace);
 	}
 	
-	@RequestMapping(method = RequestMethod.PUT, 
-	                produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(method = RequestMethod.PUT,
+			consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
 	@ResponseBody public WorkspaceDTO update(@RequestBody final WorkspaceDTO workspace) {
 		return workspaceService.update(workspace);
 	}
 
-	@RequestMapping(value = "/{workspaceId}/invite", 
-	                method = RequestMethod.POST, 
-	                produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/{workspaceId}/invite", method = RequestMethod.POST,
+			consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
 	public void invite(@PathVariable("workspaceId") final Long workspaceId, 
 	                   @RequestBody final User user) {
  		invitationService.inviteWorkspaceMember(workspaceId, user.getUsername());
 	}
 
-	@RequestMapping(value = "/{workspaceId}/member/{username:.*}", 
-	                method = RequestMethod.DELETE, 
-	                produces = MediaType.APPLICATION_JSON_VALUE)
+	// delete operation for url with email doesn't work on openshift: don't know why 
+	@RequestMapping(value = "/{workspaceId}/member/delete ", method = RequestMethod.POST,
+			consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
-	public void removeMember(@PathVariable("workspaceId") final Long workspaceId, 
-	                         @PathVariable("username") final String username) {
- 		workspaceService.removeMember(workspaceId, username);
+	public void removeMember(@PathVariable("workspaceId") final Long workspaceId,
+			                 @RequestBody final User user) {
+ 		workspaceService.removeMember(workspaceId, user.getUsername());
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, 
-	                produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody public List<WorkspaceDTO> findWorkspace(@RequestParam("type") final String type) {
 		final WorkspaceQueryType queryType = WorkspaceQueryType.valueOf(type);
  		return workspaceService.findByType(queryType);
 	}
 	
-	@RequestMapping(value = "/{workspaceId}",
-	                method = RequestMethod.DELETE,
-	                produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/{workspaceId}", method = RequestMethod.DELETE,
+			consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
 	public void delete(@PathVariable("workspaceId") final Long workspaceId) {
 		workspaceService.delete(workspaceId);

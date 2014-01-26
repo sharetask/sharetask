@@ -107,20 +107,22 @@ public class UserController {
 		}
 	}
 
-	@RequestMapping(value = "/password", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
+	@RequestMapping(value = "/password", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public void passwordChange(@RequestBody final UserPassword user) {
 		userService.changePassword(user.getPassword());
 	}
 
-	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
+	@RequestMapping(method = RequestMethod.POST,  
+			consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody public UserDTO create(@RequestBody final UserDTO user) {
 		return userService.create(user);
 	}
 
-	@RequestMapping(method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
+	@RequestMapping(method = RequestMethod.PUT, 
+			consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody public UserInfoDTO update(@RequestBody final UserInfoDTO user) {
 		return userService.update(user);
 	}
