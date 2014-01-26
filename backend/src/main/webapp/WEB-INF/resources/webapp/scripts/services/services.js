@@ -60,7 +60,7 @@ shareTaskApp.service('Workspace', ['$rootScope', '$resource', '$http', function(
 	
 	this.getActiveTasks = function(input, success, error) {
 		Log.debug("Getting tasks for workspace (id: %s) from server", input.workspaceId);
-		return $http.get($rootScope.appBaseUrl+"api/workspace/"+input.workspaceId+"/task", {params: {taskQueue: 'ALL'}}).success(success).error(error);
+		return $http.get($rootScope.appBaseUrl+"api/workspace/"+input.workspaceId+"/task", {params: {taskQueue: 'ALL_MY'}}).success(success).error(error);
 	};
 	
 	this.getCompletedTasks = function(input, success, error) {
