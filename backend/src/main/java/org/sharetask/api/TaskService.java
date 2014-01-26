@@ -26,7 +26,6 @@ import javax.validation.constraints.NotNull;
 import org.sharetask.api.dto.CommentDTO;
 import org.sharetask.api.dto.EventDTO;
 import org.sharetask.api.dto.TaskDTO;
-import org.sharetask.repository.TaskRepository;
 import org.springframework.validation.annotation.Validated;
 
 /**
@@ -54,12 +53,12 @@ public interface TaskService {
 	
 	/**
 	 * Find task by specified queue. <br/>
-	 * For {@link TaskQueue#ALL} call {@link TaskRepository#findByWorkspaceId}<br/>
-	 * For {@link TaskQueue#ALL_MY} call {@link TaskRepository#findAllUserTaks}<br/>
-	 * For {@link TaskQueue#EXPIRED} call {@link TaskRepository#findByDueDateLessThan}<br/>
-	 * For {@link TaskQueue#FINISHED} call {@link TaskRepository#findByState}<br/>
-	 * For {@link TaskQueue#HIGH_PRIORITY} call {@link TaskRepository#findByPriority}<br/>
-	 * For {@link TaskQueue#TODAY} call {@link TaskRepository#findByDueDate}<br/>
+	 * For {@link TaskQueue#ALL} call {@link org.sharetask.repository.TaskRepository#findByWorkspaceId}<br/>
+	 * For {@link TaskQueue#ALL_MY} call {@link org.sharetask.repository.TaskRepository#findAllUserTaks}<br/>
+	 * For {@link TaskQueue#EXPIRED} call {@link org.sharetask.repository.TaskRepository#findByDueDateLessThan}<br/>
+	 * For {@link TaskQueue#FINISHED} call {@link org.sharetask.repository.TaskRepository#findByState}<br/>
+	 * For {@link TaskQueue#HIGH_PRIORITY} call {@link org.sharetask.repository.TaskRepository#findByPriority}<br/>
+	 * For {@link TaskQueue#TODAY} call {@link org.sharetask.repository.TaskRepository#findByDueDate}<br/>
 	 * @param workspaceId 
 	 * @param taskQueue
 	 * @return List of tasks

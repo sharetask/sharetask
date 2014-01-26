@@ -48,23 +48,25 @@ public class LogSessionFilter implements Filter {
 
 	}
 
-	/* (non-Javadoc)
-	 * @see javax.servlet.Filter#doFilter(javax.servlet.ServletRequest, javax.servlet.ServletResponse, javax.servlet.FilterChain)
+	/*
+	 * (non-Javadoc)
+	 * @see javax.servlet.Filter#doFilter(javax.servlet.ServletRequest, javax.servlet.ServletResponse,
+	 * javax.servlet.FilterChain)
 	 */
 	@Override
-	public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException,
-			ServletException {
-	    try {
-	    	final HttpServletRequest req = (HttpServletRequest) request;
-	    	String session = null;
-	    	if (req.getSession() != null) {
-	    		session = req.getSession().getId();
-	    	}
-            MDC.put(identifiert, session == null ? NOT_KNOWN : session);
-            chain.doFilter(request, response);
-        } finally {
-            MDC.remove(identifiert);
-        }
+	public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain)
+			throws IOException, ServletException {
+		try {
+			final HttpServletRequest req = (HttpServletRequest) request;
+			String session = null;
+			if (req.getSession() != null) {
+				session = req.getSession().getId();
+			}
+			MDC.put(identifiert, session == null ? NOT_KNOWN : session);
+			chain.doFilter(request, response);
+		} finally {
+			MDC.remove(identifiert);
+		}
 	}
 
 	/* (non-Javado

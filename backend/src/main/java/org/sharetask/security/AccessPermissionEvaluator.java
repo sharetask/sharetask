@@ -68,19 +68,21 @@ public class AccessPermissionEvaluator implements PermissionEvaluator {
 	private boolean checkPermission(final Authentication authentication, final Object targetDomainObject,
 			final String permissionKey) {
 		verifyPermissionIsDefined(permissionKey);
-		final Permission permission = this.permissionNameToPermissionMap.get(permissionKey);
+		final Permission permission = permissionNameToPermissionMap.get(permissionKey);
 		return permission.isAllowed(authentication, targetDomainObject);
 	}
 
 	private void verifyPermissionIsDefined(final String permissionKey) {
-		if (!this.permissionNameToPermissionMap.containsKey(permissionKey)) {
+		if (!permissionNameToPermissionMap.containsKey(permissionKey)) {
 			throw new PermissionNotDefinedException("No permission with key " + permissionKey + " is defined in "
 					+ this.getClass().toString());
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see org.springframework.security.access.PermissionEvaluator#hasPermission(org.springframework.security.core.Authentication, java.io.Serializable, java.lang.String, java.lang.Object)
+	/*
+	 * (non-Javadoc)
+	 * @see org.springframework.security.access.PermissionEvaluator#hasPermission(org.springframework.security.core.
+	 * Authentication, java.io.Serializable, java.lang.String, java.lang.Object)
 	 */
 	@Override
 	public boolean hasPermission(final Authentication authentication, final Serializable targetId,

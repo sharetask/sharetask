@@ -26,6 +26,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
  */
 public class SecurityUtil {
 
+	private SecurityUtil() {
+	}
+	
 	public static String getCurrentSignedInUsername() {
 		return SecurityContextHolder.getContext().getAuthentication().getName();
 	}

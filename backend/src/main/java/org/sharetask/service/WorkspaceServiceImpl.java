@@ -84,10 +84,10 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 	public WorkspaceDTO update(final WorkspaceDTO workspace) {
 		final Workspace workspaceEntity = workspaceRepository.read(workspace.getId());
 		DTOConverter.convert(workspace, workspaceEntity);
-		String newUserName = workspace.getOwner().getUsername();
+		final String newUserName = workspace.getOwner().getUsername();
 		
 		if (!newUserName.equals(workspaceEntity.getOwner().getUsername())) {
-			for (UserInformation userInformation : workspaceEntity.getMembers()) {
+			for (final UserInformation userInformation : workspaceEntity.getMembers()) {
 				if (userInformation.getUsername().equals(newUserName)) {
 					workspaceEntity.setOwner(userInformation);
 				}

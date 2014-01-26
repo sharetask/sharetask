@@ -30,6 +30,9 @@ import org.springframework.security.crypto.codec.Hex;
  */
 public class HashCodeUtil {
 
+	private HashCodeUtil() {
+	}
+	
 	public static String getHashCode(final String data) {
 		try {
 			final MessageDigest mda = MessageDigest.getInstance("SHA-512");

@@ -28,17 +28,17 @@ import java.util.List;
 public interface Log4jConfiguratorMXBean {
 
     /**
-     * list of all the logger names and their levels
+     * list of all the logger names and their levels.
      */
     List<String> getLoggers();
 
     /**
-     * Get the log level for a given logger
+     * Get the log level for a given logger.
      */
     String getLogLevel(final String logger);
 
     /**
-     * Set the log level for a given logger
+     * Set the log level for a given logger.
      */
     void setLogLevel(final String logger, final String level);
 }
