@@ -538,6 +538,28 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		};
 		
 		/**
+		 * Unset active task due date.
+		 * Task data are stored to server.
+		 */
+		$scope.unsetTaskDueDate = function() {
+			$scope.viewTaskDueDatePicker = false;
+			if ($scope.selectedTask == null) {
+				return;
+			}
+			Log.debug("Unset task due date (id: %s)", $scope.selectedTask.id);
+			if ($scope.selectedTask.state == 'FINISHED') {
+				Log.debug("Task (id: %s) already completed", $scope.selectedTask.id);
+				return;
+			}
+			$scope.selectedTask.dueDate = null;
+			$scope.updateTask($scope.selectedTask);
+			//$scope.filterTasks($scope.selectedTask.id);
+			//$scope.tasks = $filter('orderBy')($scope.tasks, $scope.orderTasks);
+			//$scope.setTaskFilterQueue($scope.filter.queue);
+			Analytics.trackEvent('Task', 'setDueDate');
+		};
+		
+		/**
 		 * Add new task.
 		 * User adds task title only. All others attributes are set to default values.
 		 * Task data are stored to server.

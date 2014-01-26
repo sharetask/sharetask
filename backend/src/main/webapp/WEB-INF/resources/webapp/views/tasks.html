@@ -23,64 +23,6 @@
 			<!-- application menu -->
 			<app-menu></app-menu>
 			<help ng-show="showHelp"></help>
-			<!-- workspace menu -->
-			<!--<div id="workspace-menu">
-				<div class="navbar">
-					<div class="navbar-inner" style="padding-left:0;">
-						<div class="container">
-							<ul class="nav">
-								<li class="cursor-pointer" style="background:rgba(255,255,255,0.2);margin-right:15px;"><a ng-click="setView('PANEL-TASK-FILTER')" title="{{'_ShowHideLeftSidebar_' | i18n}}" stop-event="click"><i class="icon-white" ng-class="{'icon-chevron-left':viewPanelTaskFilter, 'icon-chevron-right':!viewPanelTaskFilter}"></i></a></li>
-								<li><span class="brand small">{{'_Workspaces_' | i18n}}</span></li>
-								<li class="cursor-pointer"><a ng-click="setEditMode('NEW-WORKSPACE')" stop-event="click"><i class="icon-plus icon-white"></i></a></li>
-								<li ng-class="{'hidden':taskEditMode != 'NEW-WORKSPACE'}" stop-event="click">
-									<form name="formWorkspaceAdd" novalidate class="css-form">
-										<div class="input-append" style="padding-top:2px;">
-											<input class="span3" type="text" placeholder="{{'_PlaceholderAddWorkspace_' | i18n}}" ng-model="newWorkspaceTitle" required id="inputWorkspaceAdd" />
-											<button class="btn btn-inverse" ng-click="addWorkspace()" ng-disabled="formWorkspaceAdd.$invalid">{{'_Add_' | i18n}}</button>
-										</div>
-									</form>
-								</li>
-								<li class="cursor-pointer active" ng-show="taskEditMode != 'NEW-WORKSPACE'"><a>{{selectedWorkspace.title}}</a></li>
-								<li class="cursor-pointer" ng-repeat="workspace in workspaces" ng-show="taskEditMode != 'NEW-WORKSPACE' && workspace.id != selectedWorkspace.id && $index < 2"><a ng-click="setSelectedWorkspace(workspace)">{{workspace.title}}</a></li>
-								<li id="fat-menu" class="dropdown" ng-show="taskEditMode != 'NEW-WORKSPACE' && workspaces.length > 2">
-									<a id="nextWorkspaces" role="button" class="dropdown-toggle cursor-pointer" data-toggle="dropdown">{{'_NextWorkspaces_' | i18n}} <b class="caret"></b></a>
-									<ul class="dropdown-menu" role="menu" aria-labelledby="nextWorkspaces">
-										<li ng-repeat="workspace in workspaces" ng-class="{'active':workspace.id == selectedWorkspace.id}" ng-show="workspace.id != selectedWorkspace.id && $index >= 2"><a role="menuitem" tabindex="-1" ng-click="setSelectedWorkspace(workspace)">{{workspace.title}}</a></li>
-									</ul>
-								</li>
-							</ul>
-							<ul class="nav pull-right">
-								<div class="input-append" style="padding-top:2px;">
-									<input class="span3" type="text" placeholder="{{'_PlaceholderSearch_' | i18n}}" ng-model="filter.searchString" ui-keypress="{enter:'filterTasks()'}" id="inputSearch" />
-									<button class="btn btn-inverse" ng-click="filterTasks()"><i class="icon-search icon-white"></i></button>
-								</div>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>-->
-			
-			<!--<div class="ng-cloak" ng-show="!selectedWorkspace">
-				<div class="panel-full">
-					<div class="panel-full-inside">
-						<div style="padding:10px 20px;">
-							<legend>{{'_MsgAppWelcome_' | i18n}}</legend>
-							<p>{{'_MsgAddFirstWorkspaceInstructions1_' | i18n}}</p>
-							<p>{{'_MsgAddFirstWorkspaceInstructions2_' | i18n}}</p>
-							<form name="formWorkspaceAdd" novalidate class="css-form">
-								<div class="alert alert-error" ng-class="{'hidden':addWorkspaceData.result == 1 || addWorkspaceData.result == 0}">
-									<a class="close" ng-click="addWorkspaceData.result = 0">&times;</a>
-									<strong>{{'_Error_' | i18n}}</strong> {{'_ResultUserProfileUpdateError_' | i18n}}
-								</div>
-								<input class="span5" type="text" placeholder="{{'_PlaceholderWorkspaceName_' | i18n}}" ng-model="newWorkspaceTitle" required /><br />
-								<button class="btn btn-inverse" ng-click="addWorkspace()" ng-disabled="formWorkspaceAdd.$invalid">{{'_Add_' | i18n}}</button>
-							</form>
-							
-						</div>
-					</div>
-				</div>
-			</div>-->
-			
 			<!-- task filter panel -->
 			<div class="sidebar" ng-class="{'hide2':!viewPanelTaskFilter}">
 				<div class="sidebar-inner">
@@ -148,7 +90,6 @@
 										<li ng-click="deleteTask(true)"><a>{{'_Delete_' | i18n}}</a></li>
 									</ul>
 								</div>
-								<!--<button class="btn pull-right" ng-click="viewCalendar = !viewCalendar"><i class="icon-calendar"></i></button>-->
 							</div>
 						</div>
 						<div class="new-task-simple" ng-class="{'hidden':taskEditMode != 'NEW-TASK'}" stop-event="click">
@@ -174,7 +115,7 @@
 								<small><a class="cursor-pointer" ng-click="loadTasks()">{{'_RefreshTasks_' | i18n}}</a></small>
 							</div>
 							<!-- tasks -->
-							<div class="task-list-item" ng-repeat="task in tasks | filter:filter.searchString | orderBy:orderTasks" ng-class="{'selected':task.id == selectedTask.id}" ng-click="setSelectedTask(task.id)" data-drop="true" jqyoui-droppable="{onDrop:'addTaskTagDragDrop'}" ng-show="!viewCalendar">
+							<div class="task-list-item" ng-repeat="task in tasks | filter:filter.searchString | orderBy:orderTasks" ng-class="{'selected':task.id == selectedTask.id}" ng-click="setSelectedTask(task.id)" data-drop="true" jqyoui-droppable="{onDrop:'addTaskTagDragDrop'}">
 								<div class="task-list-item-inner" ng-class="{'priority-low':task.priority == 'LOW','priority-medium':task.priority == 'MEDIUM','priority-high':task.priority == 'HIGH'}">
 									<table>
 									<tr>
@@ -197,31 +138,8 @@
 										</td>
 									</tr>
 									</table>
-									<!--
-									<div class="row-full">
-										<div class="" style="display:block;float:left;width:30px;min-height:30px;margin-left:0;*margin-left:0;">
-											<div class="st-checkbox cursor-pointer" ng-click="task.checked = !task.checked" ng-class="{'selected checked':task.id == selectedTask.id && task.checked, 'checked':task.checked}" stop-event="click"></div>
-										</div>
-										<div class="span12">
-											<div class="row-full" style="margin-bottom:7px;">
-												<div class="span8 text">
-													<strong>{{task.title}}</strong>
-												</div>
-												<div class="span4" style="text-align:right;"><small>{{task.dueDate | date:'mediumDate'}}</small></div>
-											</div>
-											<div class="row-full">
-												<div class="span5">
-													<div class="tag small" ng-repeat="tag in task.tags"><span class="text" ng-class="{'selected':tag == filter.tag}">{{tag}}</span></div>
-												</div>
-												<div class="span5" style="text-align:right;"><small>{{'_By_' | i18n}} {{task.createdBy.name}} {{task.createdBy.surName}}</small></div>
-												<div class="span2" style="text-align:right;"><i class="icon-comments"></i> {{task.commentsCount}}</div>
-											</div>
-										</div>
-									</div>
-									-->
 								</div>
 							</div>
-							<calendar ng-show="viewCalendar" model="tasks"></calendar>
 						</div>
 					</div>
 				</div>
@@ -293,24 +211,6 @@
 						<!-- task assignee -->
 						<p>{{'_To_' | i18n}} <span class="important">{{selectedTask.assignee.name}} {{selectedTask.assignee.surName}}</span></p>
 						
-						<!-- task created on, priority, due date -->
-						<!--
-						<div style="margin-top:5px;">
-							<span class="slabel">
-								{{'_CreatedOn_' | i18n}}<br /><br />
-								<strong>{{selectedTask.createdOn | date:'mediumDate'}}</strong>
-							</span>
-							<span class="slabel cursor-pointer" ng-click="changeTaskPriority()" ng-class="{'priority-low':selectedTask.priority == 'LOW','priority-medium':selectedTask.priority == 'MEDIUM','priority-high':selectedTask.priority == 'HIGH'}">
-								{{'_Priority_' | i18n}}<br /><br />
-								<strong>{{selectedTask.priority | priorityName | i18n}}</strong>
-							</span>
-							<span class="slabel cursor-pointer" ng-click="setView('TASK-DUE-DATE-PICKER')">
-								{{'_DueDate_' | i18n}}<br /><br />
-								<strong ng-show="selectedTask.dueDate != null">{{selectedTask.dueDate | date:'mediumDate'}}</strong>
-								<strong ng-show="selectedTask.dueDate == null"> - </strong>
-							</span>
-						</div>-->
-						
 						<!-- task priority -->
 						<table class="tab">
 						<tr>
@@ -332,7 +232,10 @@
 						</tr>
 						<tr ng-class="{'hidden':!viewTaskDueDatePicker}">
 							<td></td>
-							<td colspan="2" class="content"><jqui-datepicker model="selectedTask.dueDate" selected="changeTaskDueDate()" options="datePickerOptions"></jqui-datepicker></td>
+							<td colspan="2" class="content">
+								<jqui-datepicker model="selectedTask.dueDate" selected="changeTaskDueDate()" options="datePickerOptions"></jqui-datepicker>
+								<button class="btn" ng-click="unsetTaskDueDate()">{{'_CancelDueDate_' | i18n}}</button>
+							</td>
 						</tr>
 						</table>
 						

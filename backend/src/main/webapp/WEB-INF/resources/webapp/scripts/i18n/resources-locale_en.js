@@ -384,6 +384,11 @@
 	    "value":"Create new workspace",
 	    "description":""
 	},
+	{
+	    "key":"_CancelDueDate_",
+	    "value":"Cancel due date",
+	    "description":""
+	},
 	
 	
 	

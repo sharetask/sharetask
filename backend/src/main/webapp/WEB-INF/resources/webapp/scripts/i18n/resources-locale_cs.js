@@ -385,6 +385,11 @@
 	    "value":"Založit nový projekt",
 	    "description":""
 	},
+	{
+	    "key":"_CancelDueDate_",
+	    "value":"Zrušit termín",
+	    "description":""
+	},
 	
 	
 	
