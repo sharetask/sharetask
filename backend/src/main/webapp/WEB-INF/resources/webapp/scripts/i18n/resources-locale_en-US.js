@@ -139,7 +139,6 @@
 	    "value":"Delete",
 	    "description":""
 	},
-	
 	{
 	    "key":"_CreatedOn_",
 	    "value":"Created on",
@@ -157,7 +156,7 @@
 	},
 	{
 	    "key":"_Low_",
-	    "value":"Want to do",
+	    "value":"Want to",
 	    "description":""
 	},
 	{
@@ -392,9 +391,6 @@
 	
 	
 	
-	
-	
-	
 	{
 	    "key":"_CompleteConfirmationText_",
 	    "value":"Do you really want to complete task?",
@@ -520,7 +516,16 @@
 	    "value":"Count of tasks in this workspace:",
 	    "description":""
 	},
-	
+	{
+	    "key":"_NoEmailSpecified_",
+	    "value":"Please fill in e-mail address.",
+	    "description":""
+	},
+	{
+	    "key":"_InvalidEmailSpecified_",
+	    "value":"Please fill in valid e-mail address.",
+	    "description":""
+	},
 	
 	
 	

@@ -799,11 +799,12 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 				$window.location.href = $rootScope.appBaseUrl;
 			});
 	}])
-	.controller('WorkspacesCtrl', ['$scope', '$location', '$rootScope', '$timeout', '$window', 'localize', 'Workspace', 'User', 'LocalStorage', 'ErrorHandling', function($scope, $location, $rootScope, $timeout, $window, localize, Workspace, User, LocalStorage, ErrorHandling) {
+	.controller('WorkspacesCtrl', ['$scope', '$location', '$rootScope', '$timeout', '$window', 'localize', 'Workspace', 'User', 'LocalStorage', 'ErrorHandling', 'Utils', function($scope, $location, $rootScope, $timeout, $window, localize, Workspace, User, LocalStorage, ErrorHandling, Utils) {
 	
 		$scope.updateWorkspaceData = {processing: false, result: 0};
 		$scope.deleteWorkspaceData = {processing: false, result: 0};
-		$scope.newMember = {processing: false, result: 0};
+		$scope.newMemberData = {processing: false, result: 0};
+		$scope.removeMemberData = {processing: false, result: 0};
 		$scope.addWorkspaceData = {processing: false, result: 0};
 		$scope.selectedWorkspaceTaskCount = 0;
 		$rootScope.currentPage = "workspaces";
@@ -946,17 +947,27 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		 */
 		$scope.inviteMember = function() {
 			Log.debug("Invite new member (member: %o) to workspace (id: %s)", $scope.newMember, $scope.selectedWorkspace.id);
-			$scope.inviteMemberProcessing = true;
+			$scope.newMemberData.processing = true;
+			if (!$scope.newMember || !$scope.newMember.username) {
+				$scope.newMemberData.result = -2;
+				$scope.newMemberData.processing = false;
+				return;
+			}
+			else if (!Utils.validateEmail($scope.newMember.username)) {
+				$scope.newMemberData.result = -3;
+				$scope.newMemberData.processing = false;
+				return;
+			}
 			Workspace.inviteMember({workspaceId: $scope.selectedWorkspace.id, user: $scope.newMember}, function(data, status) {
 					Log.debug("Workspace inviteMember success! data: %o, status: %o", data, status);
-					$scope.newMember.result = 1;
-					$scope.inviteMemberProcessing = false;
+					$scope.newMemberData.result = 1;
+					$scope.newMemberData.processing = false;
 					$scope.newMember.username = '';
 					$scope.setEditMode('');
 				}, function(data, status, script, func) {
 					Log.debug("Workspace inviteMember error!");
-					$scope.newMember.result = -1;
-					$scope.inviteMemberProcessing = false;
+					$scope.newMemberData.result = -1;
+					$scope.newMemberData.processing = false;
 					ErrorHandling.handle(data, status, script, func);
 				});
 		};
@@ -967,7 +978,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		 */
 		$scope.removeMember = function(username) {
 			Log.debug("Remove member (username: %s) from workspace (id: %s)", username, $scope.selectedWorkspace.id);
-			$scope.removeMemberProcessing = true;
+			$scope.removeMemberData.processing = true;
 			Workspace.removeMember({workspaceId: $scope.selectedWorkspace.id, username: username}, function(data, status) {
 					Log.debug("Workspace removeMember success! data: %o, status: %o", data, status);
 					// remove member from local workspace
@@ -976,10 +987,10 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 					});
 					$scope.selectedWorkspace.members = newMembers;
 					Log.debug("new members: %o", $scope.selectedWorkspace.members);
-					$scope.removeMemberProcessing = false;
+					$scope.removeMemberData.processing = false;
 				}, function(data, status, script, func) {
 					Log.debug("Workspace removeMember error!");
-					$scope.removeMemberProcessing = false;
+					$scope.removeMemberData.processing = false;
 					ErrorHandling.handle(data, status, script, func);
 				});
 		};

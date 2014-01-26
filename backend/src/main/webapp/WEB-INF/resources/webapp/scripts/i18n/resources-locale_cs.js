@@ -519,6 +519,16 @@
 	    "value":"Počet úkolů v tomto projektu:",
 	    "description":""
 	},
+	{
+	    "key":"_NoEmailSpecified_",
+	    "value":"Vyplňte prosím e-mailovou adresu.",
+	    "description":""
+	},
+	{
+	    "key":"_InvalidEmailSpecified_",
+	    "value":"Neplatný formát e-mailové adresy.",
+	    "description":""
+	},
 	
 	
 	

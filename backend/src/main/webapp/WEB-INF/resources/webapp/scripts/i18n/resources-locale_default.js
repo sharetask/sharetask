@@ -516,7 +516,16 @@
 	    "value":"Count of tasks in this workspace:",
 	    "description":""
 	},
-	
+	{
+	    "key":"_NoEmailSpecified_",
+	    "value":"Please fill in e-mail address.",
+	    "description":""
+	},
+	{
+	    "key":"_InvalidEmailSpecified_",
+	    "value":"Please fill in valid e-mail address.",
+	    "description":""
+	},
 	
 	
 	
