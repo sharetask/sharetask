@@ -26,6 +26,7 @@ import javax.validation.constraints.NotNull;
 import org.sharetask.api.dto.CommentDTO;
 import org.sharetask.api.dto.EventDTO;
 import org.sharetask.api.dto.TaskDTO;
+import org.sharetask.repository.TaskRepository;
 import org.springframework.validation.annotation.Validated;
 
 /**
@@ -52,10 +53,16 @@ public interface TaskService {
 	@NotNull TaskDTO addComment(@NotNull final Long taskId, @NotNull final String message);
 	
 	/**
-	 * Find task by specified queue.
-	 * @param workspaceId
+	 * Find task by specified queue. <br/>
+	 * For {@link TaskQueue#ALL} call {@link TaskRepository#findByWorkspaceId}<br/>
+	 * For {@link TaskQueue#ALL_MY} call {@link TaskRepository#findAllUserTaks}<br/>
+	 * For {@link TaskQueue#EXPIRED} call {@link TaskRepository#findByDueDateLessThan}<br/>
+	 * For {@link TaskQueue#FINISHED} call {@link TaskRepository#findByState}<br/>
+	 * For {@link TaskQueue#HIGH_PRIORITY} call {@link TaskRepository#findByPriority}<br/>
+	 * For {@link TaskQueue#TODAY} call {@link TaskRepository#findByDueDate}<br/>
+	 * @param workspaceId 
 	 * @param taskQueue
-	 * @return
+	 * @return List of tasks
 	 */
 	@NotNull List<TaskDTO> findByQueue(@NotNull final Long workspaceId, @NotNull final TaskQueue taskQueue);
 	
@@ -74,7 +81,7 @@ public interface TaskService {
 	void complete(@NotNull final Long taskId);
 	
 	/**
-	 * Forward task to specified group.
+	 * Forward task to specified user.
 	 * @param taskId
 	 * @param assignee
 	 */
@@ -109,6 +116,7 @@ public interface TaskService {
 	
 	/**
 	 * Get all tasks for currently logged in user.
+	 * Get all tasks which was created by current logged in user or tasks that was assigned to current logged in user.
 	 * @param taskId
 	 * @return
 	 */
@@ -116,7 +124,7 @@ public interface TaskService {
 
 	/**
 	 * Renew task. 
-	 * Task must be in complete state and then will be change to new state. 
+	 * Task must be in complete state and then can be changed to new state. 
 	 * @param taskId
 	 */
 	void renew(@NotNull final Long taskId); 

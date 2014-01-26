@@ -19,9 +19,34 @@
 package org.sharetask.api;
 
 /**
+ * Task queue definition.
  * @author Michal Bocek
  * @since 1.0.0
  */
 public enum TaskQueue {
-	ALL, ALL_MY, TODAY, EXPIRED, HIGH_PRIORITY, FINISHED; 
+
+	/**
+	 * All tasks.
+	 */
+	ALL, 
+	/**
+	 * All my tasks. 
+	 */
+	ALL_MY, 
+	/**
+	 * All tasks created today.
+	 */
+	TODAY, 
+	/**
+	 * All task after due date. 
+	 */
+	EXPIRED, 
+	/**
+	 * High priority tasks. 
+	 */
+	HIGH_PRIORITY, 
+	/**
+	 * All finished tasks. 
+	 */
+	FINISHED; 
 }
