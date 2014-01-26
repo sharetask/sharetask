@@ -87,7 +87,7 @@
 										</div>
 										<div ng-class="{'hidden':attrEditMode != 'WORKSPACE-INVITE-MEMBER'}" style="margin-bottom:20px;padding:10px;border-bottom:3px solid #999;background:#f8f8f8;">
 											<div class="row-full input-append">
-												<input class="span4" type="text" placeholder="{{'_PlaceholderMembersMail_' | i18n}}" ng-model="newMember.username" required />
+												<input class="span4" type="text" placeholder="{{'_PlaceholderMembersMail_' | i18n}}" ng-model="newMember.username" ui-keypress="{enter:'inviteMember()', esc:'setEditMode(\'\')'}" required />
 												<button class="btn btn-inverse" ng-click="inviteMember()" ng-disabled="!newMember.username.length || inviteMemberProcessing"><span ng-show="!inviteMemberProcessing">{{'_Invite_' | i18n}}</span><span ng-show="inviteMemberProcessing">{{'_Processing_' | i18n}}</span></button>
 											</div>
 										</div>
