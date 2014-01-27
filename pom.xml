@@ -8,7 +8,7 @@
 	<packaging>pom</packaging>
 
 	<name>ShareTask</name>
-	<url>http://sharetask.github.com/sharetask/</url>
+	<url>http://shareta.sk</url>
 
 	<modules>
 		<module>database</module>
@@ -35,6 +35,15 @@
 		<connection>scm:git:git://github.com/sharetask/sharetask.git</connection>
 		<developerConnection>scm:git:git@github.com:sharetask/sharetask.git</developerConnection>
 	</scm>
+
+	<ciManagement>
+		<system>Jenkins</system>
+		<url>https://tools.shareta.sk/ci</url>
+	</ciManagement>
+
+	<inceptionYear>2013</inceptionYear>
+
+	<description>Simple task managemnt tool.</description>
 
 	<distributionManagement>
 		<site>
