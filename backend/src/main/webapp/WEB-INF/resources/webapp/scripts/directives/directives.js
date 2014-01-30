@@ -186,7 +186,7 @@ angular.module('shareTaskApp.directives', []).
 			link: function(scope, element, attrs) {
 				//Log.debug("ErrorConsole - scope: %o, element: %o, attrs: %o", scope, element, attrs);
 			},
-			controller: ['$rootScope', '$scope', '$element', '$attrs', '$transclude', '$location', function($rootScope, $scope, $element, $attrs, $transclude, $location) {
+			controller: ['$rootScope', '$scope', '$element', '$attrs', '$transclude', '$location', '$window', function($rootScope, $scope, $element, $attrs, $transclude, $location, $window) {
 				Log.debug("ErrorConsole - scope: %o, element: %o, attrs: %o", $scope, $element, $attrs);
 				
 				$scope.opts = {backdropFade: true, dialogFade: true};
@@ -196,12 +196,15 @@ angular.module('shareTaskApp.directives', []).
 				};
 				
 				$scope.send = function () {
-					// TODO - send error data to the server
+					Log.debug("ErrorConsole - send");
+					var body = {user: $rootScope.loggedUser.username, currentPage: $rootScope.currentPage, data: $scope.data, status: $scope.status, func: $scope.func};
+					$window.location.href = 'mailto:' + $rootScope.mailSupport + '?subject=ShareTa.sk error ' + '&body=' + angular.toJson(body, true);
 					
 					$rootScope.errorConsole = {show: false, data: '', status: 0, func: {}};
 				};
 				
-				$scope.close = function () {
+				$scope.closeWindow = function () {
+					Log.debug("ErrorConsole - closeWindow");
 					$scope.shouldBeOpenEC = false;
 					$rootScope.errorConsole = {show: false, data: '', status: 0, func: {}};
 				};

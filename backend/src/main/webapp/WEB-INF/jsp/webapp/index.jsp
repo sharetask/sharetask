@@ -44,6 +44,7 @@
 %>
 <spring:eval expression="@applicationProps['application.version']" var="applicationVersion" />
 <spring:eval expression="@applicationProps['application.revision']" var="applicationRevision" />
+<spring:eval expression="@applicationProps['application.mail.support']" var="mailSupport" />
 <spring:eval expression="@applicationProps['log.level']" var="logLevel" />
 <spring:eval expression="@applicationProps['google.analytics.webapp.account']" var="googleAnalyticsAccount" />
 <spring:eval expression="@applicationProps['google.analytics.webapp.track.pages']" var="googleAnalyticsTrackPages" />
@@ -104,6 +105,7 @@
 				.run(['$rootScope', 'Logger', function ($rootScope, Logger) {
 					$rootScope.appBaseUrl = '<c:url value="/" />';
 					$rootScope.appVersion = '${applicationVersion}';
+					$rootScope.mailSupport = '${mailSupport}';
 					$rootScope.appLocale = {language: '<c:out value="${language}" />', country: '<c:out value="${locale}" />'};
 					Logger.init('${logLevel}');
 				}]);
