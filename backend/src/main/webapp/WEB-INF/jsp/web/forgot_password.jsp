@@ -65,8 +65,8 @@
 										<li><a class="cursor-pointer" role="menuitem" tabindex="-1" ng-click="logout()"><i class="icon-signout"></i><spring:message code="app.button.logout" /></a></li>
 									</ul>
 								</li>
-								<li><a href="<c:url value="/signin" />"><i class="icon-signin icon-white"></i> <spring:message code="menu.signin" /></a></li>
-								<li class="active"><a href="<c:url value="/register" />"><spring:message code="menu.signup" /></a></li>
+								<li class="active"><a href="<c:url value="/signin" />"><i class="icon-signin icon-white"></i> <spring:message code="menu.signin" /></a></li>
+								<li><a href="<c:url value="/register" />"><spring:message code="menu.signup" /></a></li>
 							</ul>
 						</div>
 					</div>
@@ -76,32 +76,22 @@
 		
 		<!-- page body -->
 		<div class="panel-body">
-			<div class="container" ng-controller="RegisterCtrl">
-				<h1><spring:message code="register.title" /></h1>
+			<div class="container" ng-controller="ForgotPasswordCtrl">
+				<h1><spring:message code="forgot.password.title" /></h1>
 				<br />
-				<form name="formRegistration" novalidate class="css-form">
-					<div class="alert alert-success" ng-show="newAccountData.result == 1">
-						<a class="close" ng-click="newAccountData.result = 0">&times;</a>
-						<spring:message code="register.msg.success" />
+				<form name="formForgotPassword" novalidate class="css-form">
+					<div class="alert alert-success" ng-show="forgotPasswordData.result == 1">
+						<a class="close" ng-click="forgotPasswordData.result = 0">&times;</a>
+						<spring:message code="forgot.password.msg.success" />
 					</div>
-					<div class="alert alert-error" ng-class="{'hidden':newAccountData.result == -2 || newAccountData.result == 1 || newAccountData.result == 0}">
-						<a class="close" ng-click="newAccountData.result = 0">&times;</a>
-						<spring:message code="register.msg.error" />
+					<div class="alert alert-error" ng-class="{'hidden':forgotPasswordData.result == 1 || forgotPasswordData.result == 0}">
+						<a class="close" ng-click="forgotPasswordData.result = 0">&times;</a>
+						<spring:message code="forgot.password.msg.error" />
 					</div>
-					<div class="alert alert-error" ng-class="{'hidden':newAccountData.result == -1 || newAccountData.result == 1 || newAccountData.result == 0}">
-						<a class="close" ng-click="newAccountData.result = 0">&times;</a>
-						<spring:message code="register.msg.error.exists" />
-					</div>
-					<label><spring:message code="register.name" /></label>
-					<input class="span3" type="text" name="firstname" placeholder="<spring:message code="register.firstname.placeholder" />" ng-model="newAccount.name" /> <input class="span3" type="text" name="lastname" placeholder="<spring:message code="register.lastname.placeholder" />" ng-model="newAccount.surName" /><br />
-					<label>* <spring:message code="register.email" /></label>
-					<input class="span3" type="text" name="mail" placeholder="<spring:message code="register.email.placeholder" />" ng-model="newAccount.username" required /><br />
-					<label>* <spring:message code="register.password" /></label>
-					<input class="span3" type="password" name="password" placeholder="<spring:message code="register.password.placeholder" />" ng-model="newAccount.password1" required /><br />
-					<label>* <spring:message code="register.password.check" /></label>
-					<input class="span3" type="password" name="password" placeholder="<spring:message code="register.password.check.placeholder" />" ng-model="newAccount.password2" required /><br />
+					<label>* <spring:message code="forgot.password.email" /></label>
+					<input class="span4" type="email" name="username" placeholder="<spring:message code="forgot.password.email.placeholder" />" ng-model="username" required /><br />
 					<br />
-					<button class="btn btn-inverse" ng-click="register()" ng-disabled="formRegistration.$invalid || newAccount.password1 != newAccount.password2 || newAccountData.processing"><spring:message code="register.button.submit" /><span ng-show="newAccountData.processing"> processing...</span></button>
+					<button class="btn btn-inverse" ng-click="send()" ng-disabled="formForgotPassword.$invalid || forgotPasswordData.processing"><spring:message code="forgot.password.button.submit" /><span ng-show="forgotPasswordData.processing"> processing...</span></button>
 					<br /><br />
 					<p><spring:message code="mandatory" /></p>
 				</form>

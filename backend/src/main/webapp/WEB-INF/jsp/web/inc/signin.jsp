@@ -32,6 +32,7 @@
 									<input type="password" name="password" placeholder="<spring:message code="login.password.placeholder" />" ng-model="user.password" ui-keypress="{enter:'login()'}" required auto-fillable-field /><br />
 									<button class="btn btn-inverse" ng-click="login()" ng-disabled="formLogin.$invalid || loginData.processing"><spring:message code="login.button.submit" /></button>
 								</form>
+								<p class="pull-right"><small><a href="<c:url value="/forgot_password" />"><spring:message code="forgot.password.title" /></a></small></p>
 							</td>
 						</tr>
 						</table>

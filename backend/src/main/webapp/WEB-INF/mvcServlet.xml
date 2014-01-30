@@ -54,6 +54,7 @@
 	<mvc:view-controller path="/signin" view-name="web/signin"/>
 	<mvc:view-controller path="/register" view-name="web/register"/>
 	<mvc:view-controller path="/confirmed" view-name="web/confirmed"/>
+	<mvc:view-controller path="/forgot_password" view-name="web/forgot_password"/>
 	<mvc:view-controller path="/webapp" view-name="webapp/index"/>
 	<mvc:view-controller path="/denied" view-name="web/errors/403-access-denied"/>
 	<mvc:view-controller path="/app-info" view-name="webapp/app-info"/>

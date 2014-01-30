@@ -86,7 +86,6 @@ angular.module('shareTaskWeb.controllers', [])
 		
 		/**
 		 * Register user.
-		 * User is redirected to tasks page.
 		 */
 		$scope.register = function() {
 			console.log("Register user (username: %s)", $scope.newAccount.username);
@@ -107,6 +106,31 @@ angular.module('shareTaskWeb.controllers', [])
 						$scope.newAccountData.result = -2;
 					}
 				});
+		};
+	}])
+	.controller('ForgotPasswordCtrl', ['$scope', '$location', '$rootScope', '$window', 'User', function($scope, $location, $rootScope, $window, User) {
+		
+		$scope.forgotPasswordData = {processing: false, result: 0};
+		
+		/**
+		 * Send request for generating new password
+		 */
+		$scope.send = function() {
+			console.log("Send request for generating new password for user (username: %s)", $scope.username);
+			// TODO
+			/*
+			$scope.forgotPasswordData.processing = true;
+			User.create({user: $scope.newAccount}, function(data, status) {
+					console.log("User create success! data: %o, status: %o", data, status);
+					$scope.username = '';
+					$scope.forgotPasswordData.result = 1;
+					$scope.forgotPasswordData.processing = false;
+				}, function(data, status) {
+					console.log("User create error! data: %o, status: %o", data, status);
+					$scope.forgotPasswordData.result = -1;
+					$scope.forgotPasswordData.processing = false;
+				});
+			*/
 		};
 	}])
 	;

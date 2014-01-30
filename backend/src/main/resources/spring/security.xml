@@ -104,6 +104,7 @@
 				<security:intercept-url pattern="/app-info" access="hasRole('ROLE_ADMINISTRATOR')" />
 				<security:intercept-url pattern="/confirm/**" access="permitAll" />
 				<security:intercept-url pattern="/confirmed" access="permitAll" />
+				<security:intercept-url pattern="/forgot_password" access="permitAll" />
 				<security:intercept-url pattern="/**" access="hasRole('ROLE_USER')" />			
 			</security:filter-security-metadata-source>
 		</property>
