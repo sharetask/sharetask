@@ -197,8 +197,8 @@ angular.module('shareTaskApp.directives', []).
 				
 				$scope.send = function () {
 					Log.debug("ErrorConsole - send");
-					var body = {user: $rootScope.loggedUser.username, currentPage: $rootScope.currentPage, data: $scope.data, status: $scope.status, func: $scope.func};
-					$window.location.href = 'mailto:' + $rootScope.mailSupport + '?subject=ShareTa.sk error ' + '&body=' + angular.toJson(body, true);
+					var body = {user: $rootScope.loggedUser.username, currentPage: $rootScope.currentPage, data: $scope.data, status: $scope.status, func: $scope.func, date: new Date().toString()};
+					$window.location.href = 'mailto:' + $rootScope.mailSupport + '?subject=ShareTa.sk web application error' + '&body=' + angular.toJson(body, true);
 					
 					$rootScope.errorConsole = {show: false, data: '', status: 0, func: {}};
 				};
