@@ -68,7 +68,7 @@ public class TaskController {
 	@ResponseStatus(value = HttpStatus.OK)
 	@RequestMapping(value = "/{workspaceId}/task/{taskId}", method = RequestMethod.GET, 
 	                produces = MediaType.APPLICATION_JSON_VALUE)
-	public TaskDTO getTask(@PathVariable("taskId") final Long taskId) {
+	@ResponseBody public TaskDTO getTask(@PathVariable("taskId") final Long taskId) {
 		return taskService.getTask(taskId);
 	}
 
