@@ -26,6 +26,7 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 
 import org.sharetask.api.InvitationService;
+import org.sharetask.api.MailService;
 import org.sharetask.api.UserService;
 import org.sharetask.api.dto.InvitationDTO;
 import org.sharetask.api.dto.UserDTO;
@@ -71,6 +72,9 @@ public class UserServiceImpl implements UserService {
 
 	@Inject
 	private InvitationService invitationService;
+
+	@Inject
+	private MailService mailService;
 
 	private static class UserDetailBuilder {
 
@@ -188,4 +192,15 @@ public class UserServiceImpl implements UserService {
 		userAuthenticationRepository.save(user);
 	}
 
+	@Override
+	@Transactional
+	public void resetPassword(final String email) {
+		final String password = SecurityUtil.generatePassword();
+		final UserAuthentication user = userAuthenticationRepository.read(email);
+		final UserDetails userDetails = new UserDetailsImpl(user.getUsername(), "password", user.getSalt(),
+				new ArrayList<GrantedAuthority>());
+		user.setPassword(passwordEncoder.encodePassword(password, saltSource.getSalt(userDetails)));
+		userAuthenticationRepository.save(user);
+		mailService.sendResetPasswordMail(email, password);
+	}
 }

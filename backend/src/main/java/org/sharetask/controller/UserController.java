@@ -28,6 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.sharetask.api.UserService;
 import org.sharetask.api.dto.UserDTO;
 import org.sharetask.api.dto.UserInfoDTO;
+import org.sharetask.controller.json.User;
 import org.sharetask.controller.json.UserPassword;
 import org.sharetask.utility.SecurityUtil;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -130,5 +131,11 @@ public class UserController {
 	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody public UserInfoDTO get() {
 		return userService.read(SecurityUtil.getCurrentSignedInUsername());
+	}
+	
+	@ResponseStatus(value = HttpStatus.OK)
+	@RequestMapping(value = "/password", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public void passwordChange(@RequestBody final User user) {
+		userService.resetPassword(user.getUsername());
 	}
 }

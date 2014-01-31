@@ -41,5 +41,7 @@ public interface UserService extends UserDetailsService {
 	
 	void changePassword(@NotNull final String password);
 	
+	void resetPassword(@NotNull final String email);
+
 	void confirmInvitation(@NotNull final String code);
 }

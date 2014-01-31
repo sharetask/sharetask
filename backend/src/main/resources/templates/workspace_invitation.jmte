@@ -1,5 +1,5 @@
 <html>
-<body>
+<body style="font-family: verdana,helvetica,arial,sans-serif; font-size: 12px;">
 Hello,<br/>
 you are invited to connect to <a href="${applicationLink}">ShareTa.sk</a> task management by ${userName} ${userSurName}. You are invited to be a member of workspace ${workspaceName}. <br/>Y
 ou can join to workspace community by clicking to this <a href="${confimationLink}">link</a>.<br/> 

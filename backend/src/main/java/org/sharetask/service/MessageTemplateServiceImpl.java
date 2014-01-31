@@ -56,6 +56,7 @@ public class MessageTemplateServiceImpl implements TemplateMessageService {
 	{
 		templates.put(TemplateList.WORKSPACE_INVITATION, "templates/workspace_invitation");
 		templates.put(TemplateList.USER_REGISTRATION_INVITATION, "templates/registered_user_invitation");
+		templates.put(TemplateList.USER_PASSWORD_RESET, "templates/user_password_reset");
 	};
 
 	/*
@@ -81,7 +82,7 @@ public class MessageTemplateServiceImpl implements TemplateMessageService {
 			br = null;
 		} catch (final IOException e) {
 			log.error("Cannot load default violation properties.");
-			throw new RuntimeException("Can not load resource file: " + resourceName, e);
+			throw new IllegalStateException("Can not load resource file: " + resourceName, e);
 		} finally {
 			if (br != null) {
 				try {

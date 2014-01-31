@@ -28,7 +28,7 @@ import org.springframework.security.crypto.codec.Hex;
  * @author Michal Bocek
  * @since 1.0.0
  */
-public class HashCodeUtil {
+public final class HashCodeUtil {
 
 	private HashCodeUtil() {
 	}

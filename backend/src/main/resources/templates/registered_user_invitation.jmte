@@ -1,5 +1,5 @@
 <html>
-<body>
+<body style="font-family: verdana,helvetica,arial,sans-serif; font-size: 12px;">
 Hello,<br/>
 you are registered to <a href="${applicationLink}">ShareTa.sk</a>. After click to <a href="${confimationLink}">hyperlink</a> your account will be enabled.<br/><br/>
 

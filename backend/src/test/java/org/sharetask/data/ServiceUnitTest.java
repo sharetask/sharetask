@@ -18,8 +18,8 @@
  */
 package org.sharetask.data;
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.subethamail.wiser.Wiser;
 
 
@@ -29,17 +29,17 @@ import org.subethamail.wiser.Wiser;
  */
 public class ServiceUnitTest extends DbUnitTest {
 
-	private Wiser testSmtp;
+	private static Wiser testSmtp;
 
-    @Before
-    public void testSmtpInit(){
+    @BeforeClass
+    public static void testSmtpInit() {
     	testSmtp = new Wiser();
     	testSmtp.setPort(2500);
         testSmtp.start();
     }
 
-    @After
-    public void cleanup(){
+    @AfterClass
+    public static void cleanup() {
         testSmtp.stop();
     }
 

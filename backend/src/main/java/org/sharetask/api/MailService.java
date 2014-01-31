@@ -26,6 +26,7 @@ import org.sharetask.api.dto.InvitationDTO;
 import org.springframework.validation.annotation.Validated;
 
 /**
+ * Mailing service.
  * @author Michal Bocek
  * @since 1.0.0
  */
@@ -38,6 +39,21 @@ public interface MailService {
 	 */
 	void sendInvitation(@NotNull final InvitationDTO invitation);
 
+	/**
+	 * Send email with retry mechanism.
+	 * @param from
+	 * @param to
+	 * @param subject
+	 * @param msq
+	 * @param retry
+	 */
 	void sendEmail(@NotNull final String from, @NotNull final List<String> to, @NotNull final String subject, 
 			@NotNull final String msq, final int retry);
+	
+	/**
+	 * Send email with information about password reset.
+	 * @param email
+	 * @param password
+	 */
+	void sendResetPasswordMail(@NotNull final String email, @NotNull final String password);
 }

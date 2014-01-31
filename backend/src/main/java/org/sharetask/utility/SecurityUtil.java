@@ -18,18 +18,40 @@
  */
 package org.sharetask.utility;
 
+import java.util.Random;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  * @author Michal Bocek
  * @since 1.0.0
  */
-public class SecurityUtil {
+public final class SecurityUtil {
 
 	private SecurityUtil() {
 	}
 	
+	/**
+	 * Get current logged in user.
+	 * @return
+	 */
 	public static String getCurrentSignedInUsername() {
 		return SecurityContextHolder.getContext().getAuthentication().getName();
+	}
+	
+	/**
+	 * Generate password from alpha numerics characters in total length 8 characters. 
+	 * @return
+	 */
+	public static String generatePassword() {
+		final char[] chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
+		final StringBuilder sb = new StringBuilder();
+		final Random random = new Random();
+
+		for (int i = 0; i < 8; i++) {
+		    final char c = chars[random.nextInt(chars.length)];
+		    sb.append(c);
+		}
+		return sb.toString();
 	}
 }

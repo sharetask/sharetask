@@ -18,8 +18,12 @@
  */
 package org.sharetask.service;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -33,6 +37,7 @@ import org.sharetask.api.dto.UserDTO;
 import org.sharetask.api.dto.UserInfoDTO;
 import org.sharetask.data.ServiceUnitTest;
 import org.sharetask.entity.Role;
+import org.sharetask.entity.UserAuthentication;
 import org.sharetask.repository.UserAuthenticationRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -102,5 +107,14 @@ public class UserServiceTest extends ServiceUnitTest {
 		final UserInfoDTO userInfoDTO = userService.read("dev1@shareta.sk");
 		assertEquals(userInfoDTO.getName(), "John");
 		assertEquals(userInfoDTO.getSurName(), "Developer");
+	}
+	
+	@Test
+	public void testResetPassword() {
+		final UserAuthentication userAuthentication = userRepository.read("dev1@shareta.sk");
+		final String password = userAuthentication.getPassword();
+		userService.resetPassword("dev1@shareta.sk");
+		assertThat("User password should be changed", password,
+				is(not(equalTo(userAuthentication.getPassword()))));
 	}
 }

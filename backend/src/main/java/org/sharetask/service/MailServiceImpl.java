@@ -19,6 +19,8 @@
 package org.sharetask.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -159,5 +161,20 @@ public class MailServiceImpl implements MailService {
 		model.put("confimationLink", applicationUrl + "/confirm/addWorkspaceMember?code=" + invitation.getInvitationCode());
 		model.put("applicationLink", applicationUrl);
 		return model;
+	}
+
+	@Override
+	public void sendResetPasswordMail(final String email, final String password) {
+		final Map<String, Object> model = new HashMap<String, Object>();
+		model.put("date", new Date());
+		model.put("password", password);
+		model.put("applicationLink", applicationUrl);
+		
+		final String mailMessage = templateMessageService.prepareMessage(TemplateList.USER_PASSWORD_RESET, model, null);
+		final String mailSubject = messageSource.getMessage("notification.mail.subject.resetPassword", null,
+				LocaleContextHolder.getLocale());
+
+		final List<String> to = Arrays.asList(new String[] {email});
+		sendEmail(noreplyMail, to, mailSubject, mailMessage, 0);
 	}
 }
