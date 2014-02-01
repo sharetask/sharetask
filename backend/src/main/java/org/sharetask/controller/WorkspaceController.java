@@ -94,5 +94,12 @@ public class WorkspaceController {
 	@ResponseStatus(value = HttpStatus.OK)
 	public void delete(@PathVariable("workspaceId") final Long workspaceId) {
 		workspaceService.delete(workspaceId);
+	}
+	
+	@ResponseStatus(value = HttpStatus.OK)
+	@RequestMapping(value = "/{workspaceId}", method = RequestMethod.GET, 
+	                produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody public WorkspaceDTO getWorkspace(@PathVariable("workspaceId") final Long workspaceId) {
+		return workspaceService.getWorkspace(workspaceId);
 	}	
 }

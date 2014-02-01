@@ -41,7 +41,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Implementati0on of workspace service.
+ * Implementation of workspace service.
  * @author Michal Bocek
  * @since 1.0.0
  */
@@ -203,5 +203,16 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 	@PreAuthorize(Constants.PERIMISSION_WORKSPACE_OWNER)
 	public void delete(final Long workspaceId) {
 		workspaceRepository.delete(workspaceId);
+	}
+
+	/* 
+	 * (non-Javadoc)
+	 * @see org.sharetask.api.WorkspaceService#getWorkspace(java.lang.Long)
+	 */
+	@Override
+	@PreAuthorize(Constants.PERIMISSION_WORKSPACE_MEMBER_OR_OWNER)
+	public WorkspaceDTO getWorkspace(final Long workspaceId) {
+		final Workspace workspace = workspaceRepository.findOne(workspaceId);
+		return DTOConverter.convert(workspace, WorkspaceDTO.class);
 	}
 }

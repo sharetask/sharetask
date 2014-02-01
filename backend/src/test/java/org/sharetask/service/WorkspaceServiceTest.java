@@ -18,6 +18,8 @@
  */
 package org.sharetask.service;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 import java.util.Collection;
@@ -169,5 +171,15 @@ public class WorkspaceServiceTest extends ServiceUnitTest {
 		workspaceService.delete(100L);
 		final Workspace workspace = workspaceRepository.findOne(100L);
 		assertThat(workspace, CoreMatchers.nullValue());
+	}
+	
+	/**
+	 * Test method for {@link org.sharetask.api.WorkspaceService#getWorkspace(Long)}.
+	 */
+	@Test
+	public void testGetWorkspace() {
+		final WorkspaceDTO workspace = workspaceService.getWorkspace(100L);
+		assertThat(workspace, notNullValue());
+		assertThat(workspace.getId(), is(100L));
 	}
 }

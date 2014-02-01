@@ -95,4 +95,11 @@ public interface WorkspaceService {
 	 * @param taskId
 	 */
 	void delete(@NotNull final Long workspaceId);
+
+	/**
+	 * Get workspace by id.
+	 * @param workspaceId
+	 * @return
+	 */
+	WorkspaceDTO getWorkspace(final Long workspaceId);
 }

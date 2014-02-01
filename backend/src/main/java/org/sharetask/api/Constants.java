@@ -26,18 +26,20 @@ public interface Constants {
 
 	long VERSION = 1000000L;
 
-	String PERIMISSION_WORKSPACE_MEMBER_OR_OWNER = "isAuthenticated() and hasRole('ROLE_USER') and " +
-			"hasPermission(#workspaceId, 'isWorkspaceMemberOrOwner')";
+	String PERMISSION_AUTHENTICATED_WITH_USER_ROLE = "isAuthenticated() and hasRole('ROLE_USER')";
+	
+	String PERIMISSION_WORKSPACE_MEMBER_OR_OWNER = PERMISSION_AUTHENTICATED_WITH_USER_ROLE
+			+ " and hasPermission(#workspaceId, 'isWorkspaceMemberOrOwner')";
 
-	String PERIMISSION_WORKSPACE_OWNER = "isAuthenticated() and hasRole('ROLE_USER') and " +
-			"hasPermission(#workspaceId, 'isWorkspaceOwner')";
+	String PERIMISSION_WORKSPACE_OWNER = PERMISSION_AUTHENTICATED_WITH_USER_ROLE
+			+ " and hasPermission(#workspaceId, 'isWorkspaceOwner')";
 
-	String PERMISSION_TASK_ASSIGNEE = "isAuthenticated() and hasRole('ROLE_USER') and " +
-			"hasPermission(#taskId, 'isTaskAssignee')";
+	String PERMISSION_TASK_ASSIGNEE = PERMISSION_AUTHENTICATED_WITH_USER_ROLE 
+			+ " and hasPermission(#taskId, 'isTaskAssignee')";
 
-	String PERMISSION_TASK_CREATOR = "isAuthenticated() and hasRole('ROLE_USER') and " +
-			"hasPermission(#taskId, 'isTaskCreator')";
+	String PERMISSION_TASK_CREATOR = PERMISSION_AUTHENTICATED_WITH_USER_ROLE 
+			+ " and hasPermission(#taskId, 'isTaskCreator')";
 
-	String PERMISSION_TASK_ASSIGNEE_OR_CREATOR = "isAuthenticated() and hasRole('ROLE_USER') and " +
-			"hasPermission(#taskId, 'isTaskAssigneeOrCreator')";
+	String PERMISSION_TASK_ASSIGNEE_OR_CREATOR = PERMISSION_AUTHENTICATED_WITH_USER_ROLE
+			+ " and hasPermission(#taskId, 'isTaskAssigneeOrCreator')";
 }
