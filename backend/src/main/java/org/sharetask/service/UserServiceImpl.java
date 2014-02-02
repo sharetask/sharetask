@@ -196,11 +196,15 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public void resetPassword(final String email) {
 		final String password = SecurityUtil.generatePassword();
-		final UserAuthentication user = userAuthenticationRepository.read(email);
-		final UserDetails userDetails = new UserDetailsImpl(user.getUsername(), "password", user.getSalt(),
-				new ArrayList<GrantedAuthority>());
-		user.setPassword(passwordEncoder.encodePassword(password, saltSource.getSalt(userDetails)));
-		userAuthenticationRepository.save(user);
-		mailService.sendResetPasswordMail(email, password);
+		final UserAuthentication user = userAuthenticationRepository.findOne(email);
+		if (user != null) { 
+			final UserDetails userDetails = new UserDetailsImpl(user.getUsername(), "password", user.getSalt(),
+					new ArrayList<GrantedAuthority>());
+			user.setPassword(passwordEncoder.encodePassword(password, saltSource.getSalt(userDetails)));
+			userAuthenticationRepository.save(user);
+			mailService.sendResetPasswordMail(email, password);
+		} else {
+			log.info("Can not reset password for non existing user: {}", email);
+		}
 	}
 }
