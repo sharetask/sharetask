@@ -55,7 +55,7 @@ h4 {font-size:135%;/*font-weight:bold;*/}
 .navbar-inverse .nav > li.active > a {background:rgba(0,0,0,0.2);font-weight:bold;}
 .navbar .nav > li > a {padding:7px 15px;}
 .navbar .brand {padding:7px 20px;font-size:18px;font-weight:500;}
-.navbar .brand.small {font-size:15px;}
+.navbar .brand small {font-size:12px;}
 #app-menu .navbar .nav > li > a {padding:9px 15px;}
 #app-menu .navbar .brand {padding:9px 20px;font-size:20px;font-weight:500;}
 

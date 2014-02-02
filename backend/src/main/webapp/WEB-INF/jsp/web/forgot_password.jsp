@@ -51,7 +51,7 @@
 					<div class="navbar-inner" style="padding-left:0;">
 						<div class="container" style="width:auto;">
 							<img class="pull-left" src="<c:url value="/resources-web-${applicationVersion}/img/icon-white-small.png" />" style="padding:8px 15px 0 8px;" />
-							<span class="brand">ShareTa.sk</span>
+							<span class="brand">ShareTa.sk <small>[beta]</small></span>
 							<ul class="nav">
 								<li><a href="<c:url value="/" />"><i class="icon-home icon-white"></i> <spring:message code="menu.home" /></a></li>
 								<li><a href="<c:url value="/features" />"><i class="icon-check icon-white"></i> <spring:message code="menu.features" /></a></li>
@@ -78,6 +78,8 @@
 		<div class="panel-body">
 			<div class="container" ng-controller="ForgotPasswordCtrl">
 				<h1><spring:message code="forgot.password.title" /></h1>
+				<br />
+				<p><spring:message code="forgot.password.instructions" /></p>
 				<br />
 				<form name="formForgotPassword" novalidate class="css-form">
 					<div class="alert alert-success" ng-show="forgotPasswordData.result == 1">

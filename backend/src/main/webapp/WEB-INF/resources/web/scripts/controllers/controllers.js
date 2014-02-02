@@ -113,24 +113,21 @@ angular.module('shareTaskWeb.controllers', [])
 		$scope.forgotPasswordData = {processing: false, result: 0};
 		
 		/**
-		 * Send request for generating new password
+		 * Send request for resetting password
 		 */
 		$scope.send = function() {
-			console.log("Send request for generating new password for user (username: %s)", $scope.username);
-			// TODO
-			/*
+			console.log("Send request for resetting password of user (username: %s)", $scope.username);
 			$scope.forgotPasswordData.processing = true;
-			User.create({user: $scope.newAccount}, function(data, status) {
-					console.log("User create success! data: %o, status: %o", data, status);
+			User.resetPassword({username: $scope.username}, function(data, status) {
+					console.log("User resetPassword success! data: %o, status: %o", data, status);
 					$scope.username = '';
 					$scope.forgotPasswordData.result = 1;
 					$scope.forgotPasswordData.processing = false;
 				}, function(data, status) {
-					console.log("User create error! data: %o, status: %o", data, status);
+					console.log("User resetPassword error! data: %o, status: %o", data, status);
 					$scope.forgotPasswordData.result = -1;
 					$scope.forgotPasswordData.processing = false;
 				});
-			*/
 		};
 	}])
 	;

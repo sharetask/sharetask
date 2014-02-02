@@ -48,6 +48,11 @@ shareTaskWeb.service('User', ['$rootScope', '$location', 'LocalStorage', '$resou
 		console.log("Logout user: %s", user);
 		return $http.get($rootScope.appBaseUrl+"api/user/logout").success(success).error(error);
 	};
+	
+	this.resetPassword = function(user, success, error) {
+		console.log("Reset password for user (user: %s)", user.username);
+		return $http.post($rootScope.appBaseUrl+"api/user/password", user).success(success).error(error);
+	};
 }]);
 
 

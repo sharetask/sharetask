@@ -53,9 +53,10 @@
 					<div class="span8">
 						<h1><spring:message code="index.intro.3" /></h1>
 						<br />
-						<p>
+						<h2><spring:message code="index.intro.4" /></h2>
+						<!--<p>
 							<a href="https://play.google.com/store/apps/details?id=sk.shareta.android"><img alt="Nyní na Google Play" src="https://developer.android.com/images/brand/<c:out value="${language}" />_generic_rgb_wo_60.png" /></a>
-						</p>
+						</p>-->
 					</div>
 				</div>
 			</div>

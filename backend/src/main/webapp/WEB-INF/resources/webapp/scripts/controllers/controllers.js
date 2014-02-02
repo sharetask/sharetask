@@ -1066,7 +1066,19 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		$scope.update = function() {
 			Log.debug("Update user's (username: %s) profile to (user: %o)", $scope.loggedUser.username, $scope.loggedUser);
 			$scope.updateUserProfile.processing = true;
-			$scope.loggedUser.password = $scope.loggedUser.newPassword1;
+			if ($scope.loggedUser.newPassword1 && $scope.loggedUser.newPassword1 == $scope.loggedUser.newPassword2) {
+				Log.debug("Change password to: %s", $scope.loggedUser.newPassword1);
+				var userPassword = {username: $scope.loggedUser.username, password: $scope.loggedUser.newPassword1};
+				// change user's password
+				User.changePassword(userPassword, function(data, status) {
+						Log.debug("User changePassword success! data: %o, status: %o", data, status);
+					}, function(data, status, script, func) {
+						Log.debug("User changePassword error!");
+						ErrorHandling.handle(data, status, script, func);
+					});
+			}
+			//$scope.loggedUser.password = $scope.loggedUser.newPassword1;
+			delete($scope.loggedUser.password);
 			delete($scope.loggedUser.newPassword1);
 			delete($scope.loggedUser.newPassword2);
 			// TODO - under construction

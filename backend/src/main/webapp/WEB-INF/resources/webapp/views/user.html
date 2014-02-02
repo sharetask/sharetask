@@ -56,9 +56,9 @@
 												<input class="span5" type="text" placeholder="{{'_PlaceholderMail_' | i18n}}" ng-model="loggedUser.username" readonly="readonly" required /><br />
 												<br />
 												<label>{{'_NewPassword_' | i18n}}</label>
-												<input class="span5" type="text" placeholder="{{'_PlaceholderNewPassword_' | i18n}}" ng-model="loggedUser.newPassword1" /><br />
+												<input class="span5" type="password" placeholder="{{'_PlaceholderNewPassword_' | i18n}}" ng-model="loggedUser.newPassword1" /><br />
 												<label>{{'_NewPasswordCheck_' | i18n}}</label>
-												<input class="span5" type="text" placeholder="{{'_PlaceholderNewPasswordCheck_' | i18n}}" ng-model="loggedUser.newPassword2" /><br />
+												<input class="span5" type="password" placeholder="{{'_PlaceholderNewPasswordCheck_' | i18n}}" ng-model="loggedUser.newPassword2" /><br />
 												<button class="btn btn-inverse" ng-click="update()" ng-disabled="formUserUpdate.$invalid || loggedUser.newPassword1 != loggedUser.newPassword2 || updateUserProfile.processing"><i class="icon-save"></i> {{'_Save_' | i18n}}<span ng-show="updateUserProfile.processing"> {{'_Processing_' | i18n}}</span></button>
 											</form>
 										</div>
