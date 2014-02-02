@@ -103,6 +103,9 @@
 	<error-page>
 		<error-code>403</error-code>
 		<location>/WEB-INF/jsp/web/errors/403-access-denied.jsp</location>
-	</error-page>	
-		
+	</error-page>
+
+	<session-config>
+		<session-timeout>60</session-timeout>
+	</session-config>	
 </web-app>
