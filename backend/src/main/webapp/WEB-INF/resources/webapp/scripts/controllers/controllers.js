@@ -193,7 +193,6 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 			Log.debug("Load all active tasks for workspace (id: %s)", $scope.selectedWorkspace.id);
 			Workspace.getActiveTasks({workspaceId: $scope.selectedWorkspace.id}, function(data, status) {
 					Log.debug("Workspace getActiveTasks success! data: %o, status: %o", data, status);
-					//Logger.debug("Workspace getActiveTasks success! data: %o, status: %o", data, status);
 					$scope.newTasks = [];
 					$scope.allTasks = data;
 					$scope.setTaskFilterQueue($scope.filter.queue);
@@ -585,7 +584,6 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 			Task.create({workspaceId: $scope.selectedWorkspace.id, task: task}, function(data, status) {
 					Log.debug("Task create success! data: %o, status: %o", data, status);
 					$scope.allTasks.push(data);
-					//LocalStorage.store('workspace-' + $scope.selectedWorkspace.id, $scope.allTasks);
 					$scope.filterTasks(data.id);
 					$scope.newTaskTitle = '';
 					$scope.setEditMode('');
@@ -616,7 +614,6 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 					});
 					task[0].assignee = user;
 					$scope.selectedTask.assignee = user;
-					//LocalStorage.store('workspace-' + $scope.selectedWorkspace.id, $scope.allTasks);
 					$scope.filterTasks();
 					$scope.setSelectedTask($scope.tasks[0].id);
 					$scope.setEditMode('');
@@ -644,7 +641,6 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 							return e.id != $scope.selectedTask.id;
 						});
 						$scope.allTasks = tasks;
-						//LocalStorage.store('workspace-' + $scope.selectedWorkspace.id, $scope.allTasks);
 						$scope.filterTasks();
 						if (!jQuery.isEmptyObject($scope.tasks)) {
 							$scope.setSelectedTask($scope.tasks[0].id);
@@ -660,18 +656,17 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 			}
 			else {
 				// delete all checked tasks
-				var checkedTasks = $.grep($scope.tasks, function(e) {
+				var checkedTasks2 = $.grep($scope.tasks, function(e) {
 					return e.checked == true;
 				});
-				angular.forEach(checkedTasks, function(value, key) {
+				angular.forEach(checkedTasks2, function(value, key) {
 					Log.debug("Delete task (id: %s)", value.id);
 					Task.remove({workspaceId: $scope.selectedWorkspace.id, taskId: value.id}, function(data, status) {
 							Log.debug("Task remove success! data: %o, status: %o", data, status);
 							var tasks = $.grep($scope.allTasks, function(e) {
-								return e.id != $scope.selectedTask.id;
+								return e.id != value.id;
 							});
 							$scope.allTasks = tasks;
-							//LocalStorage.store('workspace-' + $scope.selectedWorkspace.id, $scope.allTasks);
 							$scope.filterTasks();
 							if (!jQuery.isEmptyObject($scope.tasks)) {
 								$scope.setSelectedTask($scope.tasks[0].id);
@@ -684,6 +679,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 						});
 					value.checked = false;
 				});
+				$scope.checkedTasks = [];
 				Analytics.trackEvent('Task', 'deleteBulk');
 			}
 		};
@@ -707,10 +703,10 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 						var task = $.grep($scope.tasks, function(e) {
 							return e.id == $scope.selectedTask.id;
 						});
-						task[0].state = 'FINISHED';
+						if (!jQuery.isEmptyObject(task)) {
+							task[0].state = 'FINISHED';
+						}
 						$scope.selectedTask.state = 'FINISHED';
-						//$scope.taskEditMode = '';
-						//LocalStorage.store('workspace-' + $scope.selectedWorkspace.id, $scope.allTasks);
 						$scope.filterTasks();
 						if (!jQuery.isEmptyObject($scope.tasks)) {
 							$scope.setSelectedTask($scope.tasks[0].id);
@@ -725,10 +721,10 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 			}
 			else {
 				// complete all checked tasks
-				var checkedTasks = $.grep($scope.tasks, function(e) {
+				var checkedTasks2 = $.grep($scope.tasks, function(e) {
 					return e.checked == true;
 				});
-				angular.forEach(checkedTasks, function(value, key) {
+				angular.forEach(checkedTasks2, function(value, key) {
 					if (value.state != 'FINISHED') {
 						Log.debug("Complete task (id: %s)", value.id);
 						Task.complete({workspaceId: $scope.selectedWorkspace.id, taskId: value.id}, function(data, status) {
@@ -736,10 +732,11 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 								var task = $.grep($scope.tasks, function(e) {
 									return e.id == value.id;
 								});
-								task[0].state = 'FINISHED';
-								$scope.selectedTask.state = 'FINISHED';
+								Log.debug("task: %o", task);
+								if (!jQuery.isEmptyObject(task)) {
+									task[0].state = 'FINISHED';
+								}
 								$scope.taskEditMode = '';
-								//LocalStorage.store('workspace-' + $scope.selectedWorkspace.id, $scope.allTasks);
 								$scope.filterTasks();
 								if (!jQuery.isEmptyObject($scope.tasks)) {
 									$scope.setSelectedTask($scope.tasks[0].id);
@@ -752,6 +749,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 					}
 					value.checked = false;
 				});
+				$scope.checkedTasks = [];
 				Analytics.trackEvent('Task', 'completeBulk');
 			}
 		};
