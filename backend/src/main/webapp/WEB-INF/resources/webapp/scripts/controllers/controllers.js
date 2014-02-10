@@ -484,6 +484,10 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 			$scope.setSelectedTask(task.id);
 		};
 		
+		/**
+		 * Check task
+		 * @param {object} task - Task.
+		 */
 		$scope.checkTask = function(task) {
 			Log.debug("Check task (task: %o)", task);
 			task.checked = !task.checked;
@@ -600,6 +604,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		/**
 		 * Forward active task to another workspace member.
 		 * Task data are stored to server.
+		 * @param {object} user - User.
 		 */
 		$scope.forwardTask = function(user) {
 			Log.debug("Forward task (id: %s) to user (user: %o)", $scope.selectedTask.id, user);
@@ -809,11 +814,11 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 							Log.debug("There are these new tasks: %o", $scope.newTasks);
 						}, function(data, status, script, func) {
 							Log.debug("Workspace getActiveTasks error!");
-							ErrorHandling.handle(data, status, script, func);
+							//ErrorHandling.handle(data, status, script, func);
 					});
 				}
 	        	$scope.syncTasks();
-			}, 60000);
+			}, 120000);
 	        Log.debug("SyncTasksTimer (timer: %o) started", $scope.syncTasksTimer);
 		};
 		
@@ -830,7 +835,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 				$window.location.href = $rootScope.appBaseUrl;
 			});
 	}])
-	.controller('WorkspacesCtrl', ['$scope', '$location', '$rootScope', '$timeout', '$window', 'localize', 'Workspace', 'User', 'LocalStorage', 'ErrorHandling', 'Utils', function($scope, $location, $rootScope, $timeout, $window, localize, Workspace, User, LocalStorage, ErrorHandling, Utils) {
+	.controller('WorkspacesCtrl', ['$scope', '$location', '$rootScope', '$timeout', '$window', 'localize', 'Workspace', 'User', 'ErrorHandling', 'Utils', function($scope, $location, $rootScope, $timeout, $window, localize, Workspace, User, ErrorHandling, Utils) {
 	
 		$scope.updateWorkspaceData = {processing: false, result: 0};
 		$scope.deleteWorkspaceData = {processing: false, result: 0};
@@ -895,7 +900,6 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 			Log.debug("Add new workspace (workspace: %o)", $scope.newWorkspace);
 			$scope.addWorkspaceData.processing = true;
 			$scope.newWorkspace.owner = {username: $rootScope.loggedUser.username};
-			//var workspace = {title: $scope.newWorkspaceTitle, owner: {username: $rootScope.loggedUser.username}};
 			Log.debug("Workspace: %o", $scope.newWorkspace);
 			Workspace.create({workspace: $scope.newWorkspace}, function(data, status) {
 					Log.debug("Workspace create success! data: %o, status: %o", data, status);
@@ -1037,7 +1041,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 				$window.location.href = $rootScope.appBaseUrl;
 			});
 	}])
-	.controller('UserCtrl', ['$scope', '$location', '$rootScope', '$filter', '$window', 'localize', 'User', 'Gravatar', 'ErrorHandling', 'LocalStorage', function($scope, $location, $rootScope, $filter, $window, localize, User, Gravatar, ErrorHandling, LocalStorage) {
+	.controller('UserCtrl', ['$scope', '$location', '$rootScope', '$filter', '$window', 'localize', 'User', 'Gravatar', 'ErrorHandling', function($scope, $location, $rootScope, $filter, $window, localize, User, Gravatar, ErrorHandling) {
 		$scope.updateUserProfile = {processing: false, result: 0};
 		$rootScope.currentPage = "user";
 		$scope.gravatar = {};
@@ -1048,7 +1052,6 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		 */
 		$scope.getGravatar = function() {
 			var mailHash = hex_md5($scope.loggedUser.username.toLowerCase());
-			//var mailHash = 'f015937e8b44299ca2effd80afca6453';
 			Gravatar.get({hash: mailHash}, function(data, status) {
 					Log.debug("Gravatar get success! data: %o, status: %o", data, status);
 					$scope.gravatar = data;
@@ -1075,17 +1078,14 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 						ErrorHandling.handle(data, status, script, func);
 					});
 			}
-			//$scope.loggedUser.password = $scope.loggedUser.newPassword1;
 			delete($scope.loggedUser.password);
 			delete($scope.loggedUser.newPassword1);
 			delete($scope.loggedUser.newPassword2);
-			// TODO - under construction
 			User.update({user: $scope.loggedUser}, function(data, status) {
 					Log.debug("User update success! data: %o, status: %o", data, status);
 					$scope.updateUserProfile.result = 1;
 					$scope.updateUserProfile.processing = false;
 					$rootScope.loggedUser = data;
-					//LocalStorage.store('logged-user', $rootScope.loggedUser);
 				}, function(data, status, script, func) {
 					Log.debug("User update error!");
 					ErrorHandling.handle(data, status, script, func);
