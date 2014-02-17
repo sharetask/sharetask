@@ -68,6 +68,17 @@
 	</bean>
 	
 	<!-- ================================================================= -->
+	<!-- Service performance interceptor                                   -->
+	<!-- ================================================================= -->
+	<bean id="supportServiceInterceptor" class="org.sharetask.utility.log.PerformanceInterceptor">
+	    <property name="exitMessage" value="$[targetClassShortName].$[methodName](...) duration: [$[invocationTime]]ms"/>
+	    <property name="loggerName" value="supportServiceTracing" />
+	</bean> 
+	<aop:config>
+		<aop:advisor advice-ref="supportServiceInterceptor" pointcut="execution(public * org.sharetask.service..*ServiceImpl.*(..))" />
+	</aop:config>
+	
+	<!-- ================================================================= -->
 	<!-- Support trace interceptor                                         -->
 	<!-- ================================================================= -->
 	<bean id="supportInterceptor" class="org.springframework.aop.interceptor.CustomizableTraceInterceptor">
