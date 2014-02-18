@@ -38,7 +38,7 @@ import org.springframework.http.HttpStatus;
  */
 public class TaskControllerIT extends IntegrationTest {
 
-	private static final String TASK_PATH = "/workspace/1/task";
+	private static final String TASK_PATH = "/workspace/7/task";
     private static final String URL_TASK = BASE_URL + TASK_PATH;
  
     @Test

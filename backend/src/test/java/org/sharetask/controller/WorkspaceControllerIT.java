@@ -66,7 +66,7 @@ public class WorkspaceControllerIT extends IntegrationTest {
     @Test
     public void testInvitation() throws IOException {
         //given
-        final HttpPost httpPost = new HttpPost(URL_WORKSPACE + "/1/invite");
+        final HttpPost httpPost = new HttpPost(URL_WORKSPACE + "/7/invite");
         httpPost.addHeader(new BasicHeader("Content-Type", "application/json"));
         final StringEntity httpEntity = new StringEntity("{\"username\":\"dev3@shareta.sk\"}");
         httpPost.setEntity(httpEntity);
@@ -83,7 +83,7 @@ public class WorkspaceControllerIT extends IntegrationTest {
         //given
     	final HttpPut httpPut = new HttpPut(URL_WORKSPACE);
         httpPut.addHeader(new BasicHeader("Content-Type", "application/json"));
-        final StringEntity httpEntity = new StringEntity("{\"id\":1," +
+        final StringEntity httpEntity = new StringEntity("{\"id\":7," +
                                                     "\"title\":\"Test Title\"," +
                                                     "\"owner\":{\"username\":\"dev1@shareta.sk\"}" +
                                                     "}");
