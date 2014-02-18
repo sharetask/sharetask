@@ -1,7 +1,4 @@
 WORKSPACE_ID,USER_NAME
-1,dev1@shareta.sk
-1,dev2@shareta.sk
-1,dev3@shareta.sk
 2,dev1@shareta.sk
 2,dev2@shareta.sk
 3,dev1@shareta.sk
@@ -14,3 +11,6 @@ WORKSPACE_ID,USER_NAME
 6,michael.moore@shareta.sk
 6,linda.martinez@shareta.sk
 6,david.wilson@shareta.sk
+7,dev1@shareta.sk
+7,dev2@shareta.sk
+7,dev3@shareta.sk

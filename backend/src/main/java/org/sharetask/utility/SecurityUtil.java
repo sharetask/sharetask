@@ -28,6 +28,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
  */
 public final class SecurityUtil {
 
+	private static final int PASSWORD_LENGT = 8;
+
 	private SecurityUtil() {
 	}
 	
@@ -48,7 +50,7 @@ public final class SecurityUtil {
 		final StringBuilder sb = new StringBuilder();
 		final Random random = new Random();
 
-		for (int i = 0; i < 8; i++) {
+		for (int i = 0; i < PASSWORD_LENGT; i++) {
 		    final char c = chars[random.nextInt(chars.length)];
 		    sb.append(c);
 		}

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
+						http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+	<changeSet id="load: users" author="mbocek">
+		<comment>Load initial data</comment>
+		<loadData tableName="USER_AUTHENTICATION" file="db/migration/production/user_authentication.csv">
+			<column name="USER_NAME" type="STRING"/>
+			<column name="ENABLED" type="BOOLEAN"/>
+			<column name="PASSWORD" type="STRING"/>
+			<column name="SALT" type="STRING"/>
+			<column name="CREATED_ON" type="DATE"/>
+			<column name="UPDATED_ON" type="DATE"/>
+		</loadData>
+		<loadData tableName="USER_INFORMATION" file="db/migration/production/user_information.csv">
+			<column name="USER_NAME" type="STRING"/>
+			<column name="NAME" type="STRING"/>
+			<column name="SURNAME" type="STRING"/>
+			<column name="CREATED_ON" type="DATE"/>
+			<column name="UPDATED_ON" type="DATE"/>
+			<column name="MOBILE_PHONE" type="STRING"/>
+		</loadData>
+		<loadData tableName="USER_ROLE" file="db/migration/production/role.csv">
+			<column name="USER_ID" type="STRING"/>
+			<column name="ROLE" type="STRING"/>
+		</loadData>
+		<rollback>
+			<delete tableName="USER"/>
+			<delete tableName="USER_ROLE"/>
+		</rollback>
+	</changeSet>
+
+	<changeSet id="load: workspace" author="mbocek">
+		<comment>Load initial data</comment>
+		<loadData tableName="WORKSPACE" file="db/migration/production/workspace.csv">
+			<column name="ID" type="NUMERIC"/>
+			<column name="TITLE" type="STRING"/>
+			<column name="DESCRIPTION" type="STRING"/>
+			<column name="OWNER_ID" type="STRING"/>
+			<column name="CREATED_BY" type="STRING"/>
+			<column name="CREATED_ON" type="DATE"/>
+			<column name="UPDATED_BY" type="STRING"/>
+			<column name="UPDATED_ON" type="DATE"/>
+		</loadData>
+		<rollback>
+			<delete tableName="WORKSPACE"/>
+		</rollback>
+	</changeSet>
+	
+	<changeSet id="load: workspace_member" author="mbocek">
+		<comment>Load initial data</comment>
+		<loadData tableName="WORKSPACE_MEMBER" file="db/migration/production/workspace_member.csv">
+			<column name="WORKSPACE_ID" type="NUMERIC"/>
+			<column name="USER_ID" type="NUMERIC"/>
+		</loadData>
+		<rollback>
+			<delete tableName="WORKSPACE_MEMBER"/>
+		</rollback>
+	</changeSet>
+</databaseChangeLog>
