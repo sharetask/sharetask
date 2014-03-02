@@ -24,6 +24,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <spring:eval expression="@applicationProps['application.version']" var="applicationVersion" />
 <spring:eval expression="@applicationProps['application.revision']" var="applicationRevision" />
 <spring:eval expression="@applicationProps['google.analytics.account.web']" var="googleAnalyticsAccount" />
@@ -73,8 +74,10 @@
 										<li><a class="cursor-pointer" role="menuitem" tabindex="-1" ng-click="logout()"><i class="icon-signout"></i><spring:message code="app.button.logout" /></a></li>
 									</ul>
 								</li>
-								<li><a href="<c:url value="/signin" />"><i class="icon-signin icon-white"></i> <spring:message code="menu.signin" /></a></li>
-								<li><a href="<c:url value="/register" />"><spring:message code="menu.signup" /></a></li>
+								<sec:authorize access="!hasRole('ROLE_USER')">
+									<li><a href="<c:url value="/signin" />"><i class="icon-signin icon-white"></i> <spring:message code="menu.signin" /></a></li>
+									<li><a href="<c:url value="/register" />"><spring:message code="menu.signup" /></a></li>
+								</sec:authorize>
 							</ul>
 						</div>
 					</div>
