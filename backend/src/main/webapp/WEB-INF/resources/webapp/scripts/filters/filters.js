@@ -187,6 +187,17 @@ angular.module('shareTaskApp.filters', []).
 			return decodeURIComponent(input);
 		};
 	}])
+	.filter('nl2br', [function() {
+		return function(input) {
+			Log.debug("nl2br: %s", input);
+			if (input) {
+				return input.replace(/\n/g, '<br />');
+			}
+			else {
+				return input;
+			}
+		};
+	}])
 	.filter('dateString', [function() {
 		return function(input) {
 			//Log.debug("dateString: %o", input);

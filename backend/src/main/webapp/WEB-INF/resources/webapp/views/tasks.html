@@ -261,13 +261,13 @@
 						
 						<!-- task description -->
 						<div class="editbox border-visible" ng-class="{'hidden':taskEditMode == 'DESCRIPTION'}">
-							<div class="cursor-pointer" ng-click="setEditMode('DESCRIPTION')" ng-show="selectedTask.description != null" stop-event="click">{{selectedTask.description}}</div>
+							<div class="cursor-pointer" ng-click="setEditMode('DESCRIPTION')" ng-show="selectedTask.description != null" stop-event="click" style="white-space:pre-line;">{{selectedTask.description}}</div>
 							<div class="cursor-pointer" ng-click="setEditMode('DESCRIPTION')" ng-show="selectedTask.description == null" stop-event="click">{{'_MsgNoTaskDescription_' | i18n}}</div>
 							<!-- <button class="btn" ng-class="{'hidden':selectedTask.description != '' && selectedTask.description != null}" ng-click="setEditMode('DESCRIPTION')">Add description</button> -->
 						</div>
 						<div ng-class="{'hidden':taskEditMode != 'DESCRIPTION'}" style="margin-top:5px;">
 							<div class="row-full">
-								<textarea class="span12" style="height:80px;margin-bottom:1px;" ng-model="selectedTask.description" placeholder="{{'_PlaceholderAddDescription_' | i18n}}" ui-keypress="{esc:'setEditMode(\'\')'}" id="inputTaskEditDescription">{{selectedTask.description}}</textarea><br />
+								<textarea class="span12" style="height:80px;margin-bottom:1px;" ng-model="selectedTask.description" placeholder="{{'_PlaceholderAddDescription_' | i18n}}" ui-keypress="{esc:'setEditMode(\'\')'}" id="inputTaskEditDescription" stop-event="click">{{selectedTask.description}}</textarea><br />
 								<button class="btn btn-inverse" ng-click="updateTask(selectedTask)">Save changes</button>
 							</div>
 						</div>
