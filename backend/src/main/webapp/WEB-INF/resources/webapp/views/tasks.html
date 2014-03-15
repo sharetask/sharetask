@@ -29,7 +29,7 @@
 					<div class="btn-group">
 						<button class="btn dropdown-toggle" data-toggle="dropdown" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"><i class="icon-caret-down"></i> {{selectedWorkspace.title}}</button>
 						<ul class="dropdown-menu">
-							<li ng-repeat="workspace in workspaces"><a ng-click="setSelectedWorkspace(workspace)">{{workspace.title}}</a></li>
+							<li ng-repeat="workspace in workspaces"><a class="cursor-pointer" ng-click="setSelectedWorkspace(workspace)">{{workspace.title}}</a></li>
 						</ul>
 					</div>
 					<div class="tile" ng-class="{'active':'MY_PENDING'==filter.queue}" ng-click="setTaskFilterQueue('MY_PENDING')">
