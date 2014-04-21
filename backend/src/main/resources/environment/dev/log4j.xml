@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd" [
 	<!ENTITY CONVERSION_PATTERN "&#37;d [&#37;X{session}/&#37;X{uid}] [&#37;t] &#37;-5p &#37;c - &#37;m&#37;n">
-	<!ENTITY CONVERSION_PATTERN_SUPPORT_PERFORMANCE "&#37;d [&#37;X{session}/&#37;X{uid}] &#37;m&#37;n">
 	<!-- <!ENTITY VERSION "${definition.majorVersion}.${definition.minorVersion}.${definition.buildNumber}"> -->
 	<!ENTITY APPLICATION_NAME "sharetask">
 ]>
@@ -33,8 +32,24 @@
 		<param name="File" value="${definition.directory.log}/&APPLICATION_NAME;_support_service.log" />
 		<param name="Threshold" value="TRACE" />
 		<param name="encoding" value="UTF-8" />
+		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+			<param name="FileNamePattern" value="${definition.directory.log}/&APPLICATION_NAME;_support_service.%d.log.gz" />
+		</rollingPolicy>		
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="&CONVERSION_PATTERN_SUPPORT_PERFORMANCE;" />
+			<param name="ConversionPattern" value="&CONVERSION_PATTERN;" />
+		</layout>
+	</appender>
+
+	<appender name="app-support-controller" class="org.apache.log4j.RollingFileAppender">
+		<param name="Append" value="false" />
+		<param name="File" value="${definition.directory.log}/&APPLICATION_NAME;_support_controller.log" />
+		<param name="Threshold" value="TRACE" />
+		<param name="encoding" value="UTF-8" />
+		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+			<param name="FileNamePattern" value="${definition.directory.log}/&APPLICATION_NAME;_support_controller.%d.log.gz" />
+		</rollingPolicy>		
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="&CONVERSION_PATTERN;" />
 		</layout>
 	</appender>
 
@@ -59,13 +74,18 @@
 	</appender>
 
 	<logger name="supportTracing">
-		<level value="TRACE" />
+		<level value="INFO" />
 		<appender-ref ref="app-support" />
 	</logger>
 
 	<logger name="supportServiceTracing">
 		<level value="TRACE" />
 		<appender-ref ref="app-support-service" />
+	</logger>
+
+	<logger name="supportControllerTracing">
+		<level value="TRACE" />
+		<appender-ref ref="app-support-controller" />
 	</logger>
 
 	<logger name="exceptionLogging">

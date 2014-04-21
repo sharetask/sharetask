@@ -66,6 +66,30 @@
 		<property name="statisticsEnabled" value="true" />
 		<property name="sessionFactory" value="#{entityManagerFactory.sessionFactory}" />
 	</bean>
+
+	<!-- ================================================================= -->
+	<!-- Performance monitor on service layer                              -->
+	<!-- ================================================================= -->
+	<bean id="supportServiceInterceptor" class="org.springframework.aop.interceptor.CustomizableTraceInterceptor">
+	    <property name="enterMessage" value="&gt; $[targetClassShortName].$[methodName]($[arguments])"/>
+	    <property name="exitMessage" value="&lt; $[targetClassShortName].$[methodName](...) duration: [$[invocationTime]]ms"/>
+	    <property name="loggerName" value="supportServiceTracing" />
+	</bean> 
+	<aop:config>
+		<aop:advisor advice-ref="supportServiceInterceptor" pointcut="execution(public * org.sharetask.service..*ServiceImpl.*(..))" />
+	</aop:config>
+	
+	<!-- ================================================================= -->
+	<!-- Performance monitor on controller layer                           -->
+	<!-- ================================================================= -->
+	<bean id="supportControllerInterceptor" class="org.springframework.aop.interceptor.CustomizableTraceInterceptor">
+	    <property name="enterMessage" value="&gt; $[targetClassShortName].$[methodName]($[arguments])"/>
+	    <property name="exitMessage" value="&lt; $[targetClassShortName].$[methodName](...) duration: [$[invocationTime]]ms"/>
+	    <property name="loggerName" value="supportControllerTracing" />
+	</bean> 
+	<aop:config proxy-target-class="true">
+		<aop:advisor advice-ref="supportControllerInterceptor" pointcut="execution(public * org.sharetask.controller..*Controller*.*(..))" />
+	</aop:config>
 	
 	<!-- ================================================================= -->
 	<!-- Service performance interceptor                                   -->
