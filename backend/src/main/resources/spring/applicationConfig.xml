@@ -90,30 +90,7 @@
 	<aop:config proxy-target-class="true">
 		<aop:advisor advice-ref="supportControllerInterceptor" pointcut="execution(public * org.sharetask.controller..*Controller*.*(..))" />
 	</aop:config>
-	
-	<!-- ================================================================= -->
-	<!-- Service performance interceptor                                   -->
-	<!-- ================================================================= -->
-	<bean id="supportServiceInterceptor" class="org.sharetask.utility.log.PerformanceInterceptor">
-	    <property name="exitMessage" value="$[targetClassShortName].$[methodName](...) duration: [$[invocationTime]]ms"/>
-	    <property name="loggerName" value="supportServiceTracing" />
-	</bean> 
-	<aop:config>
-		<aop:advisor advice-ref="supportServiceInterceptor" pointcut="execution(public * org.sharetask.service..*ServiceImpl.*(..))" />
-	</aop:config>
-	
-	<!-- ================================================================= -->
-	<!-- Support trace interceptor                                         -->
-	<!-- ================================================================= -->
-	<bean id="supportInterceptor" class="org.springframework.aop.interceptor.CustomizableTraceInterceptor">
-	    <property name="enterMessage" value="&gt; $[targetClassShortName].$[methodName]($[arguments])"/>
-	    <property name="exitMessage" value="&lt; $[targetClassShortName].$[methodName](...) duration: [$[invocationTime]]ms returning [$[returnValue]]"/>
-	    <property name="loggerName" value="supportTracing" />
-	</bean> 
-	<aop:config>
-		<aop:advisor advice-ref="supportInterceptor" pointcut="execution(public * org.sharetask.service..*ServiceImpl.*(..))" />
-	</aop:config>
-	
+		
 	<!-- ================================================================= -->
 	<!-- Exception error interceptor                                       -->
 	<!-- ================================================================= -->
