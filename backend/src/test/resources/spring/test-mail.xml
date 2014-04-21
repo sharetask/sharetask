@@ -11,11 +11,12 @@
 			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
 			http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.2.xsd">
 
-	<beans profile="prod">  
-		<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-			<property name="host" value="${definition.mail.host}"/>
-			<property name="username" value="${definition.mail.username}"/>
-			<property name="password" value="${definition.mail.password}"/>
+
+	<beans profile="integration,dev,default">  
+		<bean id="mailSender" class="org.sharetask.service.DummyJavaMailSenderImpl">
+			<property name="innerSender">
+				<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl" />
+			</property>
 		</bean>
 	</beans>
 </beans>

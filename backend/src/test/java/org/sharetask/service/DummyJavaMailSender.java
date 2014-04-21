@@ -16,11 +16,22 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.sharetask.data;
+package org.sharetask.service;
+
+import java.util.List;
+
+import javax.mail.internet.MimeMessage;
+
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 
 /**
  * @author Michal Bocek
  * @since 1.0.0
  */
-public class ServiceUnitTest extends DbUnitTest {
+public interface DummyJavaMailSender extends JavaMailSender {
+
+	public List<SimpleMailMessage> getSimpleMailMessages();
+
+	public List<MimeMessage> getMimeMessages();
 }

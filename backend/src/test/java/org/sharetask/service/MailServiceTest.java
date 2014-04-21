@@ -22,6 +22,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -29,7 +30,6 @@ import org.sharetask.api.MailService;
 import org.sharetask.api.dto.InvitationDTO;
 import org.sharetask.data.ServiceUnitTest;
 import org.sharetask.entity.Invitation.InvitationType;
-import org.subethamail.wiser.WiserMessage;
 
 /**
  * @author Michal Bocek
@@ -40,6 +40,9 @@ public class MailServiceTest extends ServiceUnitTest {
 	@Inject
 	private MailService mailService;
 
+	@Inject
+	private DummyJavaMailSender mailSender;
+	
 	/**
 	 * Test method for {@link org.sharetask.api.MailService#sendInvitation(org.sharetask.api.dto.InvitationDTO)}.
 	 * @throws MessagingException
@@ -55,8 +58,8 @@ public class MailServiceTest extends ServiceUnitTest {
 		invitationDTO.setInvitationCode("xxxxxxyyyyyyyy");
 		mailService.sendInvitation(invitationDTO);
 
-		final List<WiserMessage> messages = getTestSmtp().getMessages();
+		final List<MimeMessage> messages = mailSender.getMimeMessages();
 		Assert.assertEquals(1, messages.size());
-		Assert.assertEquals("You are added to workspace on shareta.sk", messages.get(0).getMimeMessage().getSubject());
+		Assert.assertEquals("You are added to workspace on shareta.sk", messages.get(0).getSubject());
 	}
 }
