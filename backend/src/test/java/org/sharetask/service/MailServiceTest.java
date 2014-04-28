@@ -30,6 +30,7 @@ import org.sharetask.api.MailService;
 import org.sharetask.api.dto.InvitationDTO;
 import org.sharetask.data.ServiceUnitTest;
 import org.sharetask.entity.Invitation.InvitationType;
+import org.sharetask.service.mail.DummyJavaMailSender;
 
 /**
  * @author Michal Bocek
