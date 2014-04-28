@@ -12,7 +12,7 @@
 			http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.2.xsd">
 
 
-	<beans profile="integration,dev,default">  
+	<beans profile="dev,default">  
 		<bean id="mailSender" class="org.sharetask.service.DummyJavaMailSenderImpl">
 			<property name="innerSender">
 				<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl" />

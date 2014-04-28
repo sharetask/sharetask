@@ -18,4 +18,13 @@
 			<property name="password" value="${definition.mail.password}"/>
 		</bean>
 	</beans>
+	
+	<beans profile="integration">  
+		<bean id="mailSender" class="org.sharetask.service.DummyJavaMailSenderImpl">
+			<property name="innerSender">
+				<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl" />
+			</property>
+		</bean>
+	</beans>
+	
 </beans>
