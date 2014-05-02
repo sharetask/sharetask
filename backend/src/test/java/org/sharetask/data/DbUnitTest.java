@@ -56,7 +56,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "classpath:spring/template.xml", "classpath:spring/mail.xml", "classpath:spring/transaction.xml",
-		"classpath:spring/security.xml", "classpath:spring/applicationConfig.xml", "classpath:spring/test-mail.xml" })
+		"classpath:spring/security.xml", "classpath:spring/applicationConfig.xml" })
 public class DbUnitTest {
 
 	@PersistenceContext(name = "entityManagerFactory")
