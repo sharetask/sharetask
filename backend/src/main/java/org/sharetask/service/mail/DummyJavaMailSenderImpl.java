@@ -25,8 +25,6 @@ import java.util.List;
 
 import javax.mail.internet.MimeMessage;
 
-import lombok.Setter;
-
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.slf4j.Logger;
@@ -39,14 +37,14 @@ import org.springframework.mail.javamail.MimeMessagePreparator;
  * @author Michal Bocek
  * @since 1.0.0
  */
-public class DummyJavaMailSenderImpl implements DummyJavaMailSender {
+public class DummyJavaMailSenderImpl implements DummyJavaMailSender, JavaMailSender {
 
 	private static Logger log = LoggerFactory.getLogger(DummyJavaMailSenderImpl.class);
 	
 	private JavaMailSender innerSender;
 	
-	private List<MimeMessage> mimeMessages = new ArrayList<MimeMessage>();
-	private List<SimpleMailMessage> simpleMailMessages = new ArrayList<SimpleMailMessage>();
+	private final List<MimeMessage> mimeMessages = new ArrayList<MimeMessage>();
+	private final List<SimpleMailMessage> simpleMailMessages = new ArrayList<SimpleMailMessage>();
 
 	/* (non-Javadoc)
 	 * @see org.springframework.mail.MailSender#send(org.springframework.mail.SimpleMailMessage)
@@ -112,6 +110,7 @@ public class DummyJavaMailSenderImpl implements DummyJavaMailSender {
 	 * @see org.springframework.mail.javamail.JavaMailSender#send(org.springframework.mail.javamail.MimeMessagePreparator[])
 	@Override
 	 */
+	@Override
 	public void send(final MimeMessagePreparator[] mimeMessagePreparators) {
 		dumpMimeMessages(mimeMessagePreparators);
 	}
@@ -122,7 +121,7 @@ public class DummyJavaMailSenderImpl implements DummyJavaMailSender {
 		}
 	}
 
-	public void setInnerSender(JavaMailSender innerSender) {
+	public void setInnerSender(final JavaMailSender innerSender) {
 		this.innerSender = innerSender;
 	}
 	
