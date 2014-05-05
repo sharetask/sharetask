@@ -4,11 +4,14 @@ import net.thucydides.core.annotations.Step;
 import net.thucydides.core.steps.ScenarioSteps;
 
 import org.sharetask.pages.SigninPage;
+import org.sharetask.pages.WorkspacePage;
 
 public class LoginSteps extends ScenarioSteps {
 
     SigninPage signinPage;
 
+    WorkspacePage workspacePage;
+    
     @Step
     public void open_loginPage() {
         signinPage.open();
@@ -28,4 +31,10 @@ public class LoginSteps extends ScenarioSteps {
     public void login() {
         signinPage.login();
     }
+    
+    @Step
+    public void should_see_task_list() {
+        workspacePage.checkMessage("Pending Tasks");
+    }
+    
 }

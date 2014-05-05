@@ -21,7 +21,7 @@ public class SigninPage extends PageObject {
     @WhenPageOpens
     public void waitUntilUserNameAppears() {
     	element(username).waitUntilVisible();
-    }	
+    }
 	
     public void enter_username(final String username) {
     	this.username.type(username);

@@ -31,7 +31,7 @@ public class LoginDefinitionSteps {
 
     @Then("User is logged in")
     public void loggedOn() {
-        System.out.println("Test");
+    	login.should_see_task_list();
     }
 
 }
