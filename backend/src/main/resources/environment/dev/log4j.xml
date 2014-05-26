@@ -32,9 +32,6 @@
 		<param name="File" value="${definition.directory.log}/&APPLICATION_NAME;_support_service.log" />
 		<param name="Threshold" value="TRACE" />
 		<param name="encoding" value="UTF-8" />
-		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
-			<param name="FileNamePattern" value="${definition.directory.log}/&APPLICATION_NAME;_support_service.%d.log.gz" />
-		</rollingPolicy>		
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="&CONVERSION_PATTERN;" />
 		</layout>
@@ -45,9 +42,6 @@
 		<param name="File" value="${definition.directory.log}/&APPLICATION_NAME;_support_controller.log" />
 		<param name="Threshold" value="TRACE" />
 		<param name="encoding" value="UTF-8" />
-		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
-			<param name="FileNamePattern" value="${definition.directory.log}/&APPLICATION_NAME;_support_controller.%d.log.gz" />
-		</rollingPolicy>		
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="&CONVERSION_PATTERN;" />
 		</layout>
