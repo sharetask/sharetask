@@ -20,7 +20,16 @@ public class WorkspacePage extends PageObject {
 	@FindBy(xpath = "//div/div[@class=\"navbar-inner\"]/div[@class=\"container\"]/ul/li/ul/li/a[@ng-click=\"logout()\"]")
 	private WebElementFacade logoutButton;
 
-    @WhenPageOpens
+	@FindBy(xpath = "//button[@ng-click=\"setEditMode('NEW-TASK')\"]")
+	private WebElementFacade openAddTaskWindowButton;
+
+	@FindBy(xpath = "//button[@ng-click=\"addTask()\"]")
+	private WebElementFacade submitTaskButton;
+
+	@FindBy(id = "inputTaskAdd")
+	private WebElementFacade taskName;
+	
+	@WhenPageOpens
     public void waitUntilUserNameAppears() {
     	element(message).waitUntilVisible();
     }
@@ -33,4 +42,20 @@ public class WorkspacePage extends PageObject {
     	userButton.click();
     	logoutButton.click();
     }
+    
+    public void open_add_task_dialog() {
+    	openAddTaskWindowButton.click();
+    }
+    
+    public void fill_new_task(final String taskName) {
+    	this.taskName.type(taskName);
+    }
+    
+    public void submit_task() {
+    	submitTaskButton.click();
+    }
+
+	public void check_if_task_Eexists(final String taskName2) {
+		// TODO Auto-generated method stub
+	}
 }

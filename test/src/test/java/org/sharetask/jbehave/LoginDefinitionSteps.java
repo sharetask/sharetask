@@ -34,4 +34,13 @@ public class LoginDefinitionSteps {
     	login.should_see_task_list();
     }
 
+    @Given("Login user $userName with password $password")
+    public void givenLoginUser(@Named("userName") final String userName, @Named("password") final String password) {
+    	login.open_loginPage();
+    	login.enter_username(userName);
+    	login.enter_password(password);
+        login.login();
+    	login.should_see_task_list();
+    }
+    
 }

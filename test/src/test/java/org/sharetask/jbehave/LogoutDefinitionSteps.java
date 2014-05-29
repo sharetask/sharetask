@@ -13,7 +13,7 @@ public class LogoutDefinitionSteps {
     LogoutSteps logout;
 
     @Given("Open workspace page")
-    public void givenLongin() {
+    public void givenLongedIn() {
     	logout.open_workspacePage();
     }
 
@@ -27,4 +27,10 @@ public class LogoutDefinitionSteps {
     	logout.should_see_sign_in_button();
     }
 
+    @Given("Logout user")
+    public void givenLogoutUser() {
+    	logout.open_workspacePage();
+        logout.logout();
+    	logout.should_see_sign_in_button();
+    }
 }
