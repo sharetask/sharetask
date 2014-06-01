@@ -16,31 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
 --%>
+<%@ page import="java.util.Map"%>
+<%@ page import="org.sharetask.utility.RequestUltil"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%
-	// get selected locale first from cookie then from request locale
-	Cookie[] cookies = request.getCookies();
-	String locale = "";
-	String language = "";
-	for(Cookie cookie : cookies) { 
-		if (cookie.getName().equals("locale")) {
-			locale = cookie.getValue();
-			pageContext.setAttribute("locale", locale);
-			pageContext.setAttribute("language", locale);
-			break;
-		}
-	}
-	if (locale.isEmpty()) {
-		pageContext.setAttribute("language", request.getLocale().getLanguage().toLowerCase());
-		pageContext.setAttribute("locale", request.getLocale().getLanguage().toLowerCase());
-		if (request.getLocale().getCountry().length() > 0) {
-			pageContext.setAttribute("country", request.getLocale().getCountry().toLowerCase());
-			pageContext.setAttribute("locale", request.getLocale().getLanguage().toLowerCase() + "-" + request.getLocale().getCountry().toLowerCase());
-		}
-	}
+	Map<String, String> data = RequestUltil.getRequestData(request);
+	pageContext.setAttribute("locale", data.get(RequestUltil.LOCALE));
+	pageContext.setAttribute("country", data.get(RequestUltil.COUNTRY));
+	pageContext.setAttribute("language", data.get(RequestUltil.LANGUAGE));
 %>
 <spring:eval expression="@applicationProps['application.version']" var="applicationVersion" />
 <spring:eval expression="@applicationProps['application.revision']" var="applicationRevision" />
