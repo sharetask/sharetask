@@ -21,7 +21,7 @@
 		<div class="navbar-inner" style="padding-left:0;">
 			<div class="container" style="width:auto;">
 				<img class="pull-left" ng-src="{{'resources-webapp-'+appVersion+'/img/icon-white-small.png'}}" style="padding:8px 15px 0 8px;" />
-				<span class="brand">ShareTa.sk <small>[beta]</small></span>
+				<span class="brand">ShareTa.sk <small>[beta {{appVersion}}]</small></span>
 				<ul class="nav">
 					<li ng-class="{'active':currentPage == 'tasks'}"><a href="#/tasks"><i class="icon-list icon-white"></i> {{'_Tasks_' | i18n}}</a></li>
 					<li ng-class="{'active':currentPage == 'workspaces'}"><a href="#/workspaces"><i class="icon-folder-close icon-white"></i> {{'_Workspaces_' | i18n}}</a></li>
