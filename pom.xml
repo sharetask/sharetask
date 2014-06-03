@@ -53,12 +53,12 @@
 		<repository>
 			<id>deployment</id>
 			<name>Internal Releases</name>
-			<url>https://soso-gateway.dyndns.org/nexus/content/repositories/releases/</url>
+			<url>https://soso-gateway.noip.me/nexus/content/repositories/releases/</url>
 		</repository>
 		<snapshotRepository>
 			<id>deployment</id>
 			<name>Internal Releases</name>
-			<url>https://soso-gateway.dyndns.org/nexus/content/repositories/snapshots/</url>
+			<url>https://soso-gateway.noip.me/nexus/content/repositories/snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
 
@@ -593,7 +593,7 @@
 		<cglib.version>3.0</cglib.version>
 		<slf4j.version>1.7.2</slf4j.version>
 		<spring-data.version>1.3.0.RELEASE</spring-data.version>
-		<sonar.host.url>https://soso-gateway.dyndns.org/sonar</sonar.host.url>
+		<sonar.host.url>https://soso-gateway.noip.me/sonar</sonar.host.url>
 		<target.directory>target</target.directory>
 		
 		<definition.majorVersion>1</definition.majorVersion>
