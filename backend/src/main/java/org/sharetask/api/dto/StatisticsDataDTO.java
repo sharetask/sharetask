@@ -19,7 +19,6 @@
 package org.sharetask.api.dto;
 
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 
 /**
@@ -28,17 +27,44 @@ import lombok.ToString;
  */
 @ToString
 public class StatisticsDataDTO {
-	
-	@Getter @Setter
-	private Integer usersCount;
-	
-	@Getter @Setter
-	private Integer usersLoggedinCount;
-	
-	@Getter @Setter
-	private Integer workspaceCount;
-	
-	@Getter @Setter
-	private Integer tasksCount; 
 
+	@Getter
+	private Long usersCount;
+
+	@Getter
+	private Long workspacesCount;
+
+	@Getter
+	private Long tasksCount;
+
+	public static class Builder {
+		private Long usersCount;
+		private Long workspacesCount;
+		private Long tasksCount;
+
+		public Builder usersCount(Long usersCount) {
+			this.usersCount = usersCount;
+			return this;
+		}
+
+		public Builder workspacesCount(Long workspacesCount) {
+			this.workspacesCount = workspacesCount;
+			return this;
+		}
+
+		public Builder tasksCount(Long tasksCount) {
+			this.tasksCount = tasksCount;
+			return this;
+		}
+
+		public StatisticsDataDTO build() {
+			return new StatisticsDataDTO(this);
+		}
+	}
+
+	private StatisticsDataDTO(Builder builder) {
+		this.usersCount = builder.usersCount;
+		this.workspacesCount = builder.workspacesCount;
+		this.tasksCount = builder.tasksCount;
+	}
 }

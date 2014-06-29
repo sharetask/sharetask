@@ -20,6 +20,7 @@ package org.sharetask.repository;
 
 import org.sharetask.entity.UserInformation;
 import org.sharetask.repository.base.BaseJpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 /**
  * @author Michal Bocek
@@ -33,4 +34,12 @@ public interface UserInformationRepository extends BaseJpaRepository<UserInforma
 	 * @return
 	 */
 	UserInformation findByUsername(final String username);
+	
+	/**
+	 * Gets the total count.
+	 *
+	 * @return the total count
+	 */
+	@Query("SELECT count(ui) FROM UserInformation ui")
+	Long getTotalCount();
 }

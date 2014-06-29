@@ -18,10 +18,14 @@
  */
 package org.sharetask.service;
 
-import lombok.extern.slf4j.Slf4j;
+import javax.inject.Inject;
 
 import org.sharetask.api.StatisticsService;
+import org.sharetask.api.dto.StatisticsDataDTO;
 import org.sharetask.api.dto.StatisticsOverviewDTO;
+import org.sharetask.repository.TaskRepository;
+import org.sharetask.repository.UserInformationRepository;
+import org.sharetask.repository.WorkspaceRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,12 +33,30 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Michal Bocek
  * @since 1.0.0
  */
-@Slf4j
 @Service("statisticsService")
 @Transactional(readOnly = true)
-public class StatisticsServiceImpl implements StatisticsService {@Override
+public class StatisticsServiceImpl implements StatisticsService {
 
+	@Inject
+	private UserInformationRepository userInformationRepository;
+
+	@Inject
+	private WorkspaceRepository workspaceRepository;
+	
+	@Inject
+	private TaskRepository taskRepository;
+	
 	public StatisticsOverviewDTO getOverview() {
-		return null;
+		StatisticsOverviewDTO statisticsOverviewDTO = new StatisticsOverviewDTO();
+		statisticsOverviewDTO.setStatisticsTotal(getStatisticsTotal());
+		return statisticsOverviewDTO;
+	}
+
+	private StatisticsDataDTO getStatisticsTotal() {
+		return new StatisticsDataDTO.Builder()
+				.usersCount(userInformationRepository.getTotalCount())
+				.workspacesCount(workspaceRepository.getTotalCount())
+				.tasksCount(taskRepository.getTotalCount())
+				.build();
 	}
 }

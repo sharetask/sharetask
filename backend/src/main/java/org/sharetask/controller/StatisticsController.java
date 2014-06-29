@@ -18,6 +18,9 @@
  */
 package org.sharetask.controller;
 
+import javax.inject.Inject;
+
+import org.sharetask.api.StatisticsService;
 import org.sharetask.api.dto.StatisticsOverviewDTO;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -33,8 +36,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/api/admin/statistics/overview")
 public class StatisticsController {
 
+	@Inject
+	private StatisticsService statisticsService;
+	
 	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody public StatisticsOverviewDTO getStatisticsOverview() {
- 		return null;
+ 		return statisticsService.getOverview();
 	}
 }

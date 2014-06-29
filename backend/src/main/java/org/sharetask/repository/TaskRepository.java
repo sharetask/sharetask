@@ -93,4 +93,12 @@ public interface TaskRepository extends BaseJpaRepository<Task, Long>, TaskRepos
 	 */
 	@Query("SELECT t FROM Task t WHERE t.createdBy.username = ?1 OR t.assignee.username = ?1")
 	List<Task> findAllUserTaks(final String username);
+
+	/**
+	 * Gets the total count.
+	 *
+	 * @return the total count
+	 */
+	@Query("SELECT count(t) FROM Task t")
+	Long getTotalCount();
 }

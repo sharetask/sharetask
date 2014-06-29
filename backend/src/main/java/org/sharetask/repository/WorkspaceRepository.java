@@ -20,10 +20,19 @@ package org.sharetask.repository;
 
 import org.sharetask.entity.Workspace;
 import org.sharetask.repository.base.BaseJpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 /**
  * @author Michal Bocek
  * @since 1.0.0
  */
 public interface WorkspaceRepository extends BaseJpaRepository<Workspace, Long>, WorkspaceRepositoryCustom {
+
+	/**
+	 * Gets the total count.
+	 *
+	 * @return the total count
+	 */
+	@Query("SELECT count(w) FROM Workspace w")
+	Long getTotalCount();
 }
