@@ -18,6 +18,8 @@
  */
 package org.sharetask.repository;
 
+import java.util.Date;
+
 import org.sharetask.entity.Workspace;
 import org.sharetask.repository.base.BaseJpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -35,4 +37,13 @@ public interface WorkspaceRepository extends BaseJpaRepository<Workspace, Long>,
 	 */
 	@Query("SELECT count(w) FROM Workspace w")
 	Long getTotalCount();
+
+	/**
+	 * Gets the count created after.
+	 *
+	 * @param date the date
+	 * @return the count created after
+	 */
+	@Query("SELECT count(w) FROM Workspace w WHERE w.createdOn > ?1")
+	Long getCountCreatedAfter(Date date);
 }

@@ -101,4 +101,13 @@ public interface TaskRepository extends BaseJpaRepository<Task, Long>, TaskRepos
 	 */
 	@Query("SELECT count(t) FROM Task t")
 	Long getTotalCount();
+
+	/**
+	 * Gets the count created after.
+	 *
+	 * @param date the date
+	 * @return the count created after
+	 */
+	@Query("SELECT count(t) FROM Task t WHERE t.createdOn > ?1")
+	Long getCountCreatedAfter(Date date);
 }

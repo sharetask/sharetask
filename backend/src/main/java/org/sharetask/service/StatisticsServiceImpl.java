@@ -18,8 +18,12 @@
  */
 package org.sharetask.service;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import javax.inject.Inject;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.sharetask.api.StatisticsService;
 import org.sharetask.api.dto.StatisticsDataDTO;
 import org.sharetask.api.dto.StatisticsOverviewDTO;
@@ -49,7 +53,52 @@ public class StatisticsServiceImpl implements StatisticsService {
 	public StatisticsOverviewDTO getOverview() {
 		StatisticsOverviewDTO statisticsOverviewDTO = new StatisticsOverviewDTO();
 		statisticsOverviewDTO.setStatisticsTotal(getStatisticsTotal());
+		statisticsOverviewDTO.setStatisticsPerLastYear(getStatisticsPerLastYear());
+		statisticsOverviewDTO.setStatisticsPerLastWeek(getStatisticsPerLastWeek());
+		statisticsOverviewDTO.setStatisticsPerLastDay(getStatisticsPerLastDay());
+		statisticsOverviewDTO.setStatisticsPerLastHour(getStatisticsPerLastHour());
 		return statisticsOverviewDTO;
+	}
+
+	private StatisticsDataDTO getStatisticsPerLastHour() {
+		Calendar calendar = Calendar.getInstance();
+		Date date = DateUtils.truncate(calendar.getTime(), Calendar.HOUR_OF_DAY);
+		return new StatisticsDataDTO.Builder()
+				.usersCount(userInformationRepository.getCountCreatedAfter(date))
+				.workspacesCount(workspaceRepository.getCountCreatedAfter(date))
+				.tasksCount(taskRepository.getCountCreatedAfter(date))
+				.build();
+	}
+
+	private StatisticsDataDTO getStatisticsPerLastDay() {
+		Calendar calendar = Calendar.getInstance();
+		Date date = DateUtils.truncate(calendar.getTime(), Calendar.DATE);
+		return new StatisticsDataDTO.Builder()
+				.usersCount(userInformationRepository.getCountCreatedAfter(date))
+				.workspacesCount(workspaceRepository.getCountCreatedAfter(date))
+				.tasksCount(taskRepository.getCountCreatedAfter(date))
+				.build();
+	}
+
+	private StatisticsDataDTO getStatisticsPerLastYear() {
+		Calendar calendar = Calendar.getInstance();
+		Date date = DateUtils.truncate(calendar.getTime(), Calendar.YEAR);
+		return new StatisticsDataDTO.Builder()
+				.usersCount(userInformationRepository.getCountCreatedAfter(date))
+				.workspacesCount(workspaceRepository.getCountCreatedAfter(date))
+				.tasksCount(taskRepository.getCountCreatedAfter(date))
+				.build();
+	}
+
+	private StatisticsDataDTO getStatisticsPerLastWeek() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+		Date date = DateUtils.truncate(calendar.getTime(), Calendar.DATE);
+		return new StatisticsDataDTO.Builder()
+				.usersCount(userInformationRepository.getCountCreatedAfter(date))
+				.workspacesCount(workspaceRepository.getCountCreatedAfter(date))
+				.tasksCount(taskRepository.getCountCreatedAfter(date))
+				.build();
 	}
 
 	private StatisticsDataDTO getStatisticsTotal() {
