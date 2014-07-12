@@ -15,6 +15,11 @@
 		"description":""
 	},
 	{
+		"key":"_Statistics_",
+		"value":"Statistika",
+		"description":""
+	},
+	{
 		"key":"_Logout_",
 		"value":"Odhlásit se",
 		"description":""

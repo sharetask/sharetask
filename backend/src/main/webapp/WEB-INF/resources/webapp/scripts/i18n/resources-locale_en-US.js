@@ -15,6 +15,11 @@
 		"description":""
 	},
 	{
+		"key":"_Statistics_",
+		"value":"Statistics",
+		"description":""
+	},
+	{
 		"key":"_Logout_",
 		"value":"Logout",
 		"description":""

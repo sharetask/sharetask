@@ -1,0 +1,67 @@
+<!--
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements. See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership. The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+		<!-- user settings -->
+		<div ng-controller="StatisticsCtrl">
+			<!-- application menu -->
+			<app-menu></app-menu>
+			<help ng-show="showHelp"></help>
+			<!-- user profile -->
+			<div class="panel-full">
+				<div class="panel-full-inside">
+					<table class="table">
+						<tr>
+							<th>&nbsp;</th>
+							<th>{{'_UserCount_' | i18n}}</th>
+							<th>{{'_TaskCount_' | i18n}}</th>
+							<th>{{'_WorkspaceCount_' | i18n}}</th>
+						<tr>
+						<tr>
+							<td>Per hour</td>
+							<td>{{overview.statisticsPerLastHour.usersCount}}</td>
+							<td>{{overview.statisticsPerLastHour.workspacesCount}}</td>
+							<td>{{overview.statisticsPerLastHour.tasksCount}}</td>
+						</tr>
+						<tr>
+							<td>Per day</td>
+							<td>{{overview.statisticsPerLastDay.usersCount}}</td>
+							<td>{{overview.statisticsPerLastDay.workspacesCount}}</td>
+							<td>{{overview.statisticsPerLastDay.tasksCount}}</td>
+						</tr>
+						<tr>
+							<td>Per Week</td>
+							<td>{{overview.statisticsPerLastWeek.usersCount}}</td>
+							<td>{{overview.statisticsPerLastWeek.workspacesCount}}</td>
+							<td>{{overview.statisticsPerLastWeek.tasksCount}}</td>
+						</tr>
+						<tr>
+							<td>Per Year</td>
+							<td>{{overview.statisticsPerLastYear.usersCount}}</td>
+							<td>{{overview.statisticsPerLastYear.workspacesCount}}</td>
+							<td>{{overview.statisticsPerLastYear.tasksCount}}</td>
+						</tr>
+						<tr class="info">
+							<td>Total</td>
+							<td>{{overview.statisticsTotal.usersCount}}</td>
+							<td>{{overview.statisticsTotal.workspacesCount}}</td>
+							<td>{{overview.statisticsTotal.tasksCount}}</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>

@@ -22,6 +22,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%
 	Map<String, String> data = RequestUltil.getRequestData(request);
 	pageContext.setAttribute("locale", data.get(RequestUltil.LOCALE));
@@ -35,6 +36,10 @@
 <spring:eval expression="@applicationProps['google.analytics.webapp.account']" var="googleAnalyticsAccount" />
 <spring:eval expression="@applicationProps['google.analytics.webapp.track.pages']" var="googleAnalyticsTrackPages" />
 <spring:eval expression="@applicationProps['google.analytics.webapp.track.events']" var="googleAnalyticsTrackEvents" />
+<spring:eval expression="false" var="adminRole" />
+<sec:authorize access="hasRole('ROLE_ADMINISTRATOR')">
+	<spring:eval expression="true" var="adminRole" />
+</sec:authorize>
 
 <!doctype html>
 <html lang="en" ng-app="shareTaskApp">
@@ -68,8 +73,8 @@
 		<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/vendor/angular/i18n/angular-locale_${locale}.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/vendor/angular/angular-google-analytics.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/vendor/localize/localize.js" />"></script>
-		<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/vendor/localize/jquery.ui.datepicker-${language}.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/vendor/md5-min.js" />"></script>
+		<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/vendor/localize/jquery.ui.datepicker-${language}.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/services/services.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/controllers/controllers.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/filters/filters.js" />"></script>
@@ -86,12 +91,14 @@
 					$routeProvider.when('/tasks', {templateUrl: '<c:url value="/resources-webapp-${applicationVersion}/views/tasks.html" />'});
 					$routeProvider.when('/workspaces', {templateUrl: '<c:url value="/resources-webapp-${applicationVersion}/views/workspaces.html" />'});
 					$routeProvider.when('/user', {templateUrl: '<c:url value="/resources-webapp-${applicationVersion}/views/user.html" />'});
+					$routeProvider.when('/statistics', {templateUrl: '<c:url value="/resources-webapp-${applicationVersion}/views/statistics.html" />'});
 					$routeProvider.otherwise({redirectTo: '/'});
 				}])
 				.run(['$rootScope', 'Logger', function ($rootScope, Logger) {
 					$rootScope.appBaseUrl = '<c:url value="/" />';
 					$rootScope.appVersion = '${applicationVersion}';
 					$rootScope.mailSupport = '${mailSupport}';
+					$rootScope.adminRole = ${adminRole};
 					$rootScope.appLocale = {language: '<c:out value="${language}" />', country: '<c:out value="${locale}" />'};
 					Logger.init('${logLevel}');
 				}]);

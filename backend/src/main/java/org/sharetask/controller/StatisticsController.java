@@ -33,13 +33,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @since 1.0.0
  */
 @Controller
-@RequestMapping("/api/admin/statistics/overview")
+@RequestMapping("/api/admin/statistics")
 public class StatisticsController {
 
 	@Inject
 	private StatisticsService statisticsService;
 	
-	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/overview", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody public StatisticsOverviewDTO getStatisticsOverview() {
  		return statisticsService.getOverview();
 	}

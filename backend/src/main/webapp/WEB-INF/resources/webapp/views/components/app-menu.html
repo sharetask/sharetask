@@ -35,6 +35,7 @@
 						<a id="dropUser" role="button" class="dropdown-toggle cursor-pointer" data-toggle="dropdown"><i class="icon-user icon-white"></i> {{loggedUser.name}} {{loggedUser.surName}} <b class="caret"></b></a>
 						<ul class="dropdown-menu" role="menu" aria-labelledby="dropUser">
 							<li><a role="menuitem" tabindex="-1" href="#/user"><i class="icon-cog"></i> {{'_MySettings_' | i18n}}</a></li>
+							<li ng-show="adminRole"><a role="menuitem" tabindex="-1" href="#/statistics"><i class="icon-cog"></i> {{'_Statistics_' | i18n}}</a></li>
 							<li class="divider"></li>
 							<li><a class="cursor-pointer" role="menuitem" tabindex="-1" ng-click="logout()"><i class="icon-off"></i> {{'_Logout_' | i18n}}</a></li>
 						</ul>

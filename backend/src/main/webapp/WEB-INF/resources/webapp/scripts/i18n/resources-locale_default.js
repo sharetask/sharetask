@@ -15,6 +15,11 @@
 		"description":""
 	},
 	{
+		"key":"_Statistics_",
+		"value":"Statistics",
+		"description":""
+	},
+	{
 		"key":"_Logout_",
 		"value":"Logout",
 		"description":""
@@ -587,6 +592,21 @@
 	{
 	    "key":"_MsgUnexpectedError_",
 	    "value":"Unexpected error appears during operation. Please send us this error and we attempt fix it as soon as possible. Thank you for your cooperation.",
+	    "description":""
+	},
+	{
+	    "key":"_UserCount_",
+	    "value":"User count",
+	    "description":""
+	},
+	{
+	    "key":"_TaskCount_",
+	    "value":"Task count",
+	    "description":""
+	},
+	{
+	    "key":"_WorkspaceCount_",
+	    "value":"Workspace count",
 	    "description":""
 	},
 	{

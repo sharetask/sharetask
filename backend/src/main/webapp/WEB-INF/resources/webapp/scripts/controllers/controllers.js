@@ -1105,4 +1105,28 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 				$window.location.href = $rootScope.appBaseUrl;
 			});
 	}])
+	.controller('StatisticsCtrl', ['$scope', '$rootScope', 'Statistics', 'User', function($scope, $rootScope, Statistics, User) {
+		
+		$scope.loadStatistics = function() {
+			Statistics.getOverview(function(data, status) {
+				Log.debug("Stistics getOverview success! data: %o, status: %o", data, status);
+				$scope.overview = data;
+			}, function(data, status, script, func) {
+				Log.debug("Statistics getOverview error! data: %o, status: %o", data, status);
+				Log.debug("Unauthenticated access. Redirect to login page.");
+				$window.location.href = $rootScope.appBaseUrl;
+			});
+		};
+			
+		
+		User.getCurrentUser(function(data, status) {
+				Log.debug("User getCurrentUser success! data: %o, status: %o", data, status);
+				$rootScope.loggedUser = data;
+				$scope.locadStatistics();
+			}, function(data, status, script, func) {
+				Log.debug("User getCurrentUser error! data: %o, status: %o", data, status);
+				Log.debug("Unauthenticated access. Redirect to login page.");
+				$window.location.href = $rootScope.appBaseUrl;
+			});
+	}])
 	;

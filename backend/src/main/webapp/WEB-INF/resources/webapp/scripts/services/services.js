@@ -143,6 +143,14 @@ shareTaskApp.service('Task', ['$rootScope', '$resource', '$http', function($root
 	};
 }]);
 
+shareTaskApp.service('Statistics', ['$rootScope', '$resource', '$http', function($rootScope, $resource, $http) {
+	
+	this.getOverview = function(success, error) {
+		Log.debug("Getting statistics overview from server");
+		return $http.get($rootScope.appBaseUrl+"api/admin/statistics/overview", {}).success(success).error(error);
+	};
+}]);
+
 
 shareTaskApp.service('Gravatar', ['$rootScope', '$http', function($rootScope, $http) {
 	
