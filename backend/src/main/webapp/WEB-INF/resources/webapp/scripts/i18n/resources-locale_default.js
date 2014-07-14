@@ -596,17 +596,42 @@
 	},
 	{
 	    "key":"_UserCount_",
-	    "value":"User count",
+	    "value":"Count of users",
 	    "description":""
 	},
 	{
 	    "key":"_TaskCount_",
-	    "value":"Task count",
+	    "value":"Count of tasks",
 	    "description":""
 	},
 	{
 	    "key":"_WorkspaceCount_",
-	    "value":"Workspace count",
+	    "value":"Count of workspaces",
+	    "description":""
+	},
+	{
+	    "key":"_PerHour_",
+	    "value":"Per hour",
+	    "description":""
+	},
+	{
+	    "key":"_PerDay_",
+	    "value":"Per day",
+	    "description":""
+	},
+	{
+	    "key":"_PerWeek_",
+	    "value":"Per week",
+	    "description":""
+	},
+	{
+	    "key":"_PerYear_",
+	    "value":"Per year",
+	    "description":""
+	},
+	{
+	    "key":"_Total_",
+	    "value":"Total",
 	    "description":""
 	},
 	{

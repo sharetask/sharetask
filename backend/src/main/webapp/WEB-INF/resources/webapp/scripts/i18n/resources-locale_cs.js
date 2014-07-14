@@ -599,6 +599,46 @@
 	    "description":""
 	},
 	{
+	    "key":"_UserCount_",
+	    "value":"Počet uživatelú",
+	    "description":""
+	},
+	{
+	    "key":"_TaskCount_",
+	    "value":"Počet úkolú",
+	    "description":""
+	},
+	{
+	    "key":"_WorkspaceCount_",
+	    "value":"Počet workspacú",
+	    "description":""
+	},
+	{
+	    "key":"_PerHour_",
+	    "value":"Za hodinu",
+	    "description":""
+	},
+	{
+	    "key":"_PerDay_",
+	    "value":"da den",
+	    "description":""
+	},
+	{
+	    "key":"_PerWeek_",
+	    "value":"Za týden",
+	    "description":""
+	},
+	{
+	    "key":"_PerYear_",
+	    "value":"Za rok",
+	    "description":""
+	},
+	{
+	    "key":"_Total_",
+	    "value":"Celkem",
+	    "description":""
+	},
+	{
 	    "key":"__",
 	    "value":"",
 	    "description":"Empty string for undefined variables."

@@ -595,6 +595,46 @@
 	    "description":""
 	},
 	{
+	    "key":"_UserCount_",
+	    "value":"Count of users",
+	    "description":""
+	},
+	{
+	    "key":"_TaskCount_",
+	    "value":"Count of tasks",
+	    "description":""
+	},
+	{
+	    "key":"_WorkspaceCount_",
+	    "value":"Count of workspaces",
+	    "description":""
+	},
+	{
+	    "key":"_PerHour_",
+	    "value":"Per hour",
+	    "description":""
+	},
+	{
+	    "key":"_PerDay_",
+	    "value":"Per day",
+	    "description":""
+	},
+	{
+	    "key":"_PerWeek_",
+	    "value":"Per week",
+	    "description":""
+	},
+	{
+	    "key":"_PerYear_",
+	    "value":"Per year",
+	    "description":""
+	},
+	{
+	    "key":"_Total_",
+	    "value":"Total",
+	    "description":""
+	},
+	{
 	    "key":"__",
 	    "value":"",
 	    "description":"Empty string for undefined variables."

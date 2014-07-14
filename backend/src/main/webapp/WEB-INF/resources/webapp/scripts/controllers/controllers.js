@@ -1105,7 +1105,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 				$window.location.href = $rootScope.appBaseUrl;
 			});
 	}])
-	.controller('StatisticsCtrl', ['$scope', '$rootScope', 'Statistics', 'User', function($scope, $rootScope, Statistics, User) {
+	.controller('StatisticsCtrl', ['$scope', '$rootScope', 'localize', 'Statistics', 'User', function($scope, $rootScope, localize, Statistics, User) {
 		
 		$scope.loadStatistics = function() {
 			Statistics.getOverview(function(data, status) {
@@ -1122,7 +1122,7 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 		User.getCurrentUser(function(data, status) {
 				Log.debug("User getCurrentUser success! data: %o, status: %o", data, status);
 				$rootScope.loggedUser = data;
-				$scope.locadStatistics();
+				$scope.loadStatistics();
 			}, function(data, status, script, func) {
 				Log.debug("User getCurrentUser error! data: %o, status: %o", data, status);
 				Log.debug("Unauthenticated access. Redirect to login page.");
