@@ -1,6 +1,7 @@
 ShareTask
 ======
 
+* Project pages [sharetask](http://sharetask.github.io/sharetask/ "sharetask documentation")
 * Checkout from repository.
 * Build application and run it in embeded jetty or tomcat7: 
 
