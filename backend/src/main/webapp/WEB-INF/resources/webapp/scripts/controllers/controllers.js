@@ -19,18 +19,25 @@
 'use strict';
 
 /* Controllers */
-angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 'localization'])
-	.controller('IndexCtrl', ['$scope', '$location', '$rootScope', '$window', 'User', function($scope, $location, $rootScope, $window, User) {
-		
-		User.getCurrentUser(function(data, status) {
-				Log.debug("User getCurrentUser success! data: %o, status: %o", data, status);
-				$location.path("/tasks");
-			}, function(data, status, script, func) {
-				Log.debug("User getCurrentUser error! data: %o, status: %o", data, status);
-				$window.location.href = $rootScope.appBaseUrl;
-			});
-	}])
-	.controller('AppCtrl', ['$scope', '$location', '$rootScope', '$filter', '$timeout', '$window', 'localize', 'Workspace', 'Task', 'User', 'LocalStorage', 'ErrorHandling', 'Logger', 'Analytics', function($scope, $location, $rootScope, $filter, $timeout, $window, localize, Workspace, Task, User, LocalStorage, ErrorHandling, Logger, Analytics) {
+var controllers = angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 'localization']);
+
+/**
+ * Index controller.
+ */
+controllers.controller('IndexCtrl', ['$scope', '$location', '$rootScope', '$window', 'User', function($scope, $location, $rootScope, $window, User) {
+//		User.getCurrentUser(function(data, status) {
+//				Log.debug("User getCurrentUser success! data: %o, status: %o", data, status);
+//				$location.path("/tasks");
+//			}, function(data, status, script, func) {
+//				Log.debug("User getCurrentUser error! data: %o, status: %o", data, status);
+//				$window.location.href = $rootScope.appBaseUrl;
+//			});
+	}]);
+
+/**
+ * Application controller.
+ */
+controllers.controller('AppCtrl', ['$scope', '$location', '$rootScope', '$filter', '$timeout', '$window', 'localize', 'Workspace', 'Task', 'User', 'LocalStorage', 'ErrorHandling', 'Logger', 'Analytics', function($scope, $location, $rootScope, $filter, $timeout, $window, localize, Workspace, Task, User, LocalStorage, ErrorHandling, Logger, Analytics) {
 		
 		$scope.errorMessageOnTaskList = '';
 		$scope.viewPanelTaskFilter = true;
@@ -822,20 +829,16 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 	        Log.debug("SyncTasksTimer (timer: %o) started", $scope.syncTasksTimer);
 		};
 		
-		User.getCurrentUser(function(data, status) {
-				Log.debug("User getCurrentUser success! data: %o, status: %o", data, status);
-				$rootScope.loggedUser = data;
-				// Loading all workspaces from server.
-				$scope.loadWorkspaces();
-				// start sync for tasks
-				$scope.syncTasks();
-			}, function(data, status, script, func) {
-				Log.debug("User getCurrentUser error! data: %o, status: %o", data, status);
-				Log.debug("Unauthenticated access. Redirect to login page.");
-				$window.location.href = $rootScope.appBaseUrl;
-			});
-	}])
-	.controller('WorkspacesCtrl', ['$scope', '$location', '$rootScope', '$timeout', '$window', 'localize', 'Workspace', 'User', 'ErrorHandling', 'Utils', function($scope, $location, $rootScope, $timeout, $window, localize, Workspace, User, ErrorHandling, Utils) {
+		// Loading all workspaces from server.
+		$scope.loadWorkspaces();
+		// start sync for tasks
+		$scope.syncTasks();
+	}]);
+	
+/**
+ * Worksapce controller.
+ */
+controllers.controller('WorkspacesCtrl', ['$scope', '$location', '$rootScope', '$timeout', '$window', 'localize', 'Workspace', 'User', 'ErrorHandling', 'Utils', function($scope, $location, $rootScope, $timeout, $window, localize, Workspace, User, ErrorHandling, Utils) {
 	
 		$scope.updateWorkspaceData = {processing: false, result: 0};
 		$scope.deleteWorkspaceData = {processing: false, result: 0};
@@ -1030,18 +1033,14 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 				});
 		};
 		
-		User.getCurrentUser(function(data, status) {
-				Log.debug("User getCurrentUser success! data: %o, status: %o", data, status);
-				$rootScope.loggedUser = data;
-				// Loading all workspaces from server.
-				$scope.loadWorkspaces();
-			}, function(data, status, script, func) {
-				Log.debug("User getCurrentUser error! data: %o, status: %o", data, status);
-				Log.debug("Unauthenticated access. Redirect to login page.");
-				$window.location.href = $rootScope.appBaseUrl;
-			});
-	}])
-	.controller('UserCtrl', ['$scope', '$location', '$rootScope', '$filter', '$window', 'localize', 'User', 'Gravatar', 'ErrorHandling', function($scope, $location, $rootScope, $filter, $window, localize, User, Gravatar, ErrorHandling) {
+		// Loading all workspaces from server.
+		$scope.loadWorkspaces();
+	}]);
+
+/**
+ * User controller.
+ */
+controllers.controller('UserCtrl', ['$scope', '$location', '$rootScope', '$filter', '$window', 'localize', 'User', 'Gravatar', 'ErrorHandling', function($scope, $location, $rootScope, $filter, $window, localize, User, Gravatar, ErrorHandling) {
 		$scope.updateUserProfile = {processing: false, result: 0};
 		$rootScope.currentPage = "user";
 		$scope.gravatar = {};
@@ -1104,8 +1103,12 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 				Log.debug("Unauthenticated access. Redirect to login page.");
 				$window.location.href = $rootScope.appBaseUrl;
 			});
-	}])
-	.controller('StatisticsCtrl', ['$scope', '$rootScope', 'localize', 'Statistics', 'User', function($scope, $rootScope, localize, Statistics, User) {
+	}]);
+
+/**
+ * Statistics controller.
+ */
+controllers.controller('StatisticsCtrl', ['$scope', '$rootScope', 'localize', 'Statistics', 'User', function($scope, $rootScope, localize, Statistics, User) {
 		
 		$scope.loadStatistics = function() {
 			Statistics.getOverview(function(data, status) {
@@ -1128,5 +1131,30 @@ angular.module('shareTaskApp.controllers', ['ui', 'ngDragDrop', 'ui.bootstrap', 
 				Log.debug("Unauthenticated access. Redirect to login page.");
 				$window.location.href = $rootScope.appBaseUrl;
 			});
-	}])
-	;
+	}]);
+
+/**
+ * Header controller.
+ */
+controllers.controller('HeaderController', [ '$rootScope', '$scope', '$location', 'User', '$log', 
+		function($rootScope, $scope, $location, User, $log) {
+			$scope.isActive = function(viewLocation) {
+				return viewLocation === $location.path();
+			};
+
+			$scope.checkLogin = function() {
+				$log.log("Checking login");
+				User.isLoggedIn(
+						function(data, status) {
+							$log.log("User is loged in! status: %o", status);
+							$rootScope.isLoggedIn = true;
+							User.getCurrentUser(function(data, status) {
+								$rootScope.loggedUser = data;
+							});
+							$location.path('/');
+						}, function(data, status) {
+							$log.log("User isn't loged in! status: %o", status);
+							$rootScope.isLoggedIn = false;
+						});
+			};
+} ]);

@@ -48,9 +48,9 @@ public class TaskAssigneeOrCreatorPermission implements Permission {
 		final Long taskId = (Long) targetDomainObject;
 		final String userName = authentication.getName();
 		final Task task = this.taskRepository.read(taskId);
-		if (task.getAssignee().getUsername().equals(userName)) {
+		if (task.getAssignee() != null && task.getAssignee().getUsername().equals(userName)) {
 			result = true;
-		} else if (task.getCreatedBy().getUsername().equals(userName)) {
+		} else if (task.getCreatedBy() !=null && task.getCreatedBy().getUsername().equals(userName)) {
 			result = true;
 		} else {
 			result = false;

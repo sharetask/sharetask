@@ -53,6 +53,11 @@ shareTaskApp.service('User', ['$rootScope', '$location', '$window', 'LocalStorag
 		Log.debug("Change password for user (user: %o)", input.username);
 		return $http.put($rootScope.appBaseUrl+"api/user/password", input).success(success).error(error);
 	};
+	
+	this.isLoggedIn = function(success, error) {
+		Log.debug("Cheking if user is logged in");
+		return $http.get($rootScope.appBaseUrl + "api/user/login/status").success(success).error(error);
+	};
 }]);
 
 

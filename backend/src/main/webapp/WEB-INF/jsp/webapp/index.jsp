@@ -31,6 +31,7 @@
 %>
 <spring:eval expression="@applicationProps['application.version']" var="applicationVersion" />
 <spring:eval expression="@applicationProps['application.revision']" var="applicationRevision" />
+<spring:eval expression="@applicationProps['application.postfix']" var="applicationPostfix" />
 <spring:eval expression="@applicationProps['application.mail.support']" var="mailSupport" />
 <spring:eval expression="@applicationProps['log.level']" var="logLevel" />
 <spring:eval expression="@applicationProps['google.analytics.webapp.account']" var="googleAnalyticsAccount" />
@@ -42,7 +43,7 @@
 </sec:authorize>
 
 <!doctype html>
-<html lang="en" ng-app="shareTaskApp">
+<html lang="en" data-ng-app="shareTaskApp">
 	<!-- Application version: ${applicationVersion} -->
 	<!-- Application revision: ${applicationRevision} -->
 	<head>
@@ -60,13 +61,44 @@
 		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-webapp-${applicationVersion}/css/jquery.ui.datepicker.css" />">
 		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-webapp-${applicationVersion}/css/sharetask.css" />">
 	</head>
-	<body ng-cloak>
-		<div ng-view></div>
+	<body data-ng-cloak>
+		<div id="app-menu" data-ng-controller="HeaderController" data-ng-init="checkLogin()" data-ng-show="isLoggedIn">
+			<div class="navbar navbar-inverse">
+				<div class="navbar-inner" style="padding-left:0;">
+					<div class="container" style="width:auto;">
+						<img class="pull-left" data-ng-src="{{'resources-webapp-'+appVersion+'/img/icon-white-small.png'}}" style="padding:8px 15px 0 8px;" />
+						<span class="brand">ShareTa.sk <small>[beta {{appVersion}}]</small></span>
+						<ul class="nav">
+							<li data-ng-class="{'active':currentPage == 'tasks'}"><a href="#/tasks"><i class="icon-list icon-white"></i> {{'_Tasks_' | i18n}}</a></li>
+							<li data-ng-class="{'active':currentPage == 'workspaces'}"><a href="#/workspaces"><i class="icon-folder-close icon-white"></i> {{'_Workspaces_' | i18n}}</a></li>
+						</ul>
+						<ul class="nav pull-right">
+							<li data-ng-show="currentPage == 'tasks'">
+								<i class="icon-search"></i>
+								<input type="search" placeholder="{{'_PlaceholderSearch_' | i18n}}" data-ng-model="filter.searchString" id="inputSearch" />
+							</li>
+							<li id="fat-menu" class="dropdown" data-ng-class="{'active':currentPage == 'user'}">
+								<a id="dropUser" role="button" class="dropdown-toggle cursor-pointer" data-toggle="dropdown"><i class="icon-user icon-white"></i> {{loggedUser.name}} {{loggedUser.surName}} <b class="caret"></b></a>
+								<ul class="dropdown-menu" role="menu" aria-labelledby="dropUser">
+									<li><a role="menuitem" tabindex="-1" href="#/user"><i class="icon-cog"></i> {{'_MySettings_' | i18n}}</a></li>
+									<li data-ng-show="adminRole"><a role="menuitem" tabindex="-1" href="#/statistics"><i class="icon-cog"></i> {{'_Statistics_' | i18n}}</a></li>
+									<li class="divider"></li>
+									<li><a class="cursor-pointer" role="menuitem" tabindex="-1" data-ng-click="logout()"><i class="icon-off"></i> {{'_Logout_' | i18n}}</a></li>
+								</ul>
+							</li>
+							<!--<li><a data-ng-click="toggleHelp()"><i class="icon-question"></i></a></li>-->
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>	
+		<div data-ng-view></div>
 		<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/vendor/jquery/jquery-1.9.1.min.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/vendor/jquery/jquery-ui.min.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/vendor/bootstrap/bootstrap.min.js" />"></script>
-		<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/vendor/angular/angular.min.js" />"></script>
-		<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/vendor/angular/angular-resource.min.js" />"></script>
+		<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/vendor/angular/angular.${applicationPostfix}" />"></script>
+		<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/vendor/angular/angular-resource.${applicationPostfix}" />"></script>
+		<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/vendor/angular/angular-route.${applicationPostfix}" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/vendor/angular/angular-ui.min.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/vendor/angular/angular-dragdrop.min.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/vendor/angular/ui-bootstrap-tpls-0.3.0.min.js" />"></script>
@@ -81,18 +113,40 @@
 		<script type="text/javascript" src="<c:url value="/resources-webapp-${applicationVersion}/scripts/directives/directives.js" />"></script>
 		<script type="text/javascript">
 			// Declare app level module which depends on filters, and services
-			angular.module('shareTaskApp', ['angular-google-analytics', 'shareTaskApp.filters', 'shareTaskApp.services', 'shareTaskApp.directives', 'shareTaskApp.controllers'])
-				.config(['$routeProvider', 'AnalyticsProvider', function($routeProvider, AnalyticsProvider) {
+			angular.module('shareTaskApp', ['ngRoute', 'angular-google-analytics', 'shareTaskApp.filters', 'shareTaskApp.services', 'shareTaskApp.directives', 'shareTaskApp.controllers'])
+				.config(['$routeProvider', 'AnalyticsProvider', '$locationProvider', function($routeProvider, AnalyticsProvider, $locationProvider) {
 					// google analytics
 					AnalyticsProvider.setAccount('${googleAnalyticsAccount}');
 					AnalyticsProvider.setTracking('${googleAnalyticsTrackPages}', '${googleAnalyticsTrackEvents}');
 					// routing
-					$routeProvider.when('/', {templateUrl: '<c:url value="/resources-webapp-${applicationVersion}/views/index.html" />'});
+					$routeProvider.when('/', {redirectTo: '/tasks'});
 					$routeProvider.when('/tasks', {templateUrl: '<c:url value="/resources-webapp-${applicationVersion}/views/tasks.html" />'});
 					$routeProvider.when('/workspaces', {templateUrl: '<c:url value="/resources-webapp-${applicationVersion}/views/workspaces.html" />'});
 					$routeProvider.when('/user', {templateUrl: '<c:url value="/resources-webapp-${applicationVersion}/views/user.html" />'});
 					$routeProvider.when('/statistics', {templateUrl: '<c:url value="/resources-webapp-${applicationVersion}/views/statistics.html" />'});
 					$routeProvider.otherwise({redirectTo: '/'});
+				}])
+				.factory('authHttpResponseInterceptor',['$q','$location', '$log', function($q, $location, $log) {
+				    return {
+				        response: function(response){
+				            if (response.status === 401) {
+				            	alert("response: 401");
+				            	$log.log("Response 401");
+				            }
+				            return response || $q.when(response);
+				        },
+				        responseError: function(rejection) {
+				            if (rejection.status === 401) {
+				            	$log.log("Response Error 401", rejection, $location.path());
+				            	window.location.replace('<c:url value="/signin" />');
+				            }
+				            return $q.reject(rejection);
+				        }
+				    };
+				}])
+				.config(['$httpProvider',function($httpProvider) {
+				    //Http Intercpetor to check auth failures for xhr requests
+				    $httpProvider.interceptors.push('authHttpResponseInterceptor');
 				}])
 				.run(['$rootScope', 'Logger', function ($rootScope, Logger) {
 					$rootScope.appBaseUrl = '<c:url value="/" />';
@@ -102,6 +156,6 @@
 					$rootScope.appLocale = {language: '<c:out value="${language}" />', country: '<c:out value="${locale}" />'};
 					Logger.init('${logLevel}');
 				}]);
-		</script>
+		</script>fire
 	</body>
 </html>
