@@ -126,7 +126,7 @@
 					$routeProvider.when('/statistics', {templateUrl: '<c:url value="/resources-webapp-${applicationVersion}/views/statistics.html" />'});
 					$routeProvider.otherwise({redirectTo: '/'});
 				}])
-				.factory('authHttpResponseInterceptor',['$q','$location', '$log', function($q, $location, $log) {
+				.factory('authHttpResponseInterceptor',['$q','$location', '$log', '$window', function($q, $location, $log, $window) {
 				    return {
 				        response: function(response){
 				            if (response.status === 401) {
@@ -138,7 +138,7 @@
 				        responseError: function(rejection) {
 				            if (rejection.status === 401) {
 				            	$log.log("Response Error 401", rejection, $location.path());
-				            	window.location.replace('<c:url value="/signin" />');
+				            	$window.location.replace('<c:url value="/signin" />');
 				            }
 				            return $q.reject(rejection);
 				        }

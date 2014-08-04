@@ -26,6 +26,6 @@ public class WorkspaceSteps extends ScenarioSteps {
 
     @Step
 	public void check_if_task_exists(final String taskName) {
-		workspacePage.check_if_task_Eexists(taskName);
+		workspacePage.check_if_task_exists(taskName);
 	}
 }

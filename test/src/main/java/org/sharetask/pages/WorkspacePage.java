@@ -14,10 +14,10 @@ public class WorkspacePage extends PageObject {
 	@FindBy(xpath = "//div[@class=\"header\"]/div[@class=\"queue-name\"]/div[@class=\"queue-name-inner\"]/div")
 	private WebElementFacade message;
 
-	@FindBy(xpath = "//div/div[@class=\"navbar-inner\"]/div[@class=\"container\"]/ul/li/a[@id=\"dropUser\"]")
+	@FindBy(xpath = "//*[@id=\"dropUser\"]")
 	private WebElementFacade userButton;
 	
-	@FindBy(xpath = "//div/div[@class=\"navbar-inner\"]/div[@class=\"container\"]/ul/li/ul/li/a[@ng-click=\"logout()\"]")
+	@FindBy(xpath = "//a[@data-ng-click=\"logout()\"]")
 	private WebElementFacade logoutButton;
 
 	@FindBy(xpath = "//button[@ng-click=\"setEditMode('NEW-TASK')\"]")
@@ -40,6 +40,7 @@ public class WorkspacePage extends PageObject {
     
     public void logout() {
     	userButton.click();
+    	element(logoutButton).waitUntilVisible();
     	logoutButton.click();
     }
     
@@ -55,7 +56,7 @@ public class WorkspacePage extends PageObject {
     	submitTaskButton.click();
     }
 
-	public void check_if_task_Eexists(final String taskName2) {
+	public void check_if_task_exists(final String taskName2) {
 		// TODO Auto-generated method stub
 	}
 }
