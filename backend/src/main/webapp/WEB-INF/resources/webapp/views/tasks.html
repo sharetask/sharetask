@@ -16,12 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
 -->
-		<div ng-controller="AppCtrl" ng-cloak ng-click="click()">
+		<div ng-controller="AppCtrl" ng-click="click()">
 			<shortcut></shortcut>
 			<error-console show="errorConsole.show" data="errorConsole.data" status="errorConsole.status" func="errorConsole.func"></error-console>
 			<first-workspace-window show="firstWorkspaceWindow.show" user="loggedUser.username"></first-workspace-window>
 			<!-- application menu -->
-			<app-menu></app-menu>
 			<help ng-show="showHelp"></help>
 			<!-- task filter panel -->
 			<div class="sidebar" ng-class="{'hide2':!viewPanelTaskFilter}">

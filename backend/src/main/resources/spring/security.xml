@@ -155,7 +155,8 @@
 		<property name="clients" ref="clients" />
 	</bean>
 	
-	<bean id="loginUrlAuthenticationEntryPoint" class="org.springframework.security.web.authentication.Http403ForbiddenEntryPoint" />
+	<!-- <bean id="loginUrlAuthenticationEntryPoint" class="org.springframework.security.web.authentication.Http403ForbiddenEntryPoint" /> -->
+	<bean id="loginUrlAuthenticationEntryPoint" class="org.sharetask.web.authentication.Http401UnauthenticatedEntryPoint" />
 	
 	<!-- ================================================================= -->
 	<!-- Authentication manager for all calls                              -->

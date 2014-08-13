@@ -336,6 +336,7 @@
 
 				<definition.security.login.callbackUrl>http://localhost:8080/sharetask/authcallback</definition.security.login.callbackUrl>
 				<definition.application.url>http://localhost:8080/sharetask</definition.application.url>
+				<definition.js.postfix>js</definition.js.postfix>
 				<definition.dbunit.DataTypeFactory>org.dbunit.ext.hsqldb.HsqldbDataTypeFactory</definition.dbunit.DataTypeFactory>
 				<tomcat.version>7.0.40</tomcat.version>
 			</properties>
@@ -591,6 +592,7 @@
 				<definition.quartz.dataSource.validationQuery>select 1 from INFORMATION_SCHEMA.SYSTEM_USERS</definition.quartz.dataSource.validationQuery>
 				<definition.security.login.callbackUrl>http://localhost:8080/sharetask/authcallback</definition.security.login.callbackUrl>
 				<definition.application.url>http://localhost:8080/sharetask</definition.application.url>
+				<definition.js.postfix>js</definition.js.postfix>
 				<definition.dbunit.DataTypeFactory>org.dbunit.ext.hsqldb.HsqldbDataTypeFactory</definition.dbunit.DataTypeFactory>
 			</properties>
 			<dependencies>
@@ -639,6 +641,7 @@
 			<properties>
 				<definition.security.login.callbackUrl>http://www.shareta.sk/authcallback</definition.security.login.callbackUrl>
 				<definition.application.url>http://shareta.sk</definition.application.url>
+				<definition.js.postfix>min.js</definition.js.postfix>
 			</properties>
 		</profile>
 		<profile>
@@ -646,6 +649,7 @@
 			<properties>
 				<definition.security.login.callbackUrl>http://integration.shareta.sk/authcallback</definition.security.login.callbackUrl>
 				<definition.application.url>http://integration.shareta.sk</definition.application.url>
+				<definition.js.postfix>min.js</definition.js.postfix>
 			</properties>
 		</profile>
 	</profiles>

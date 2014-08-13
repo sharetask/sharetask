@@ -23,17 +23,7 @@ angular.module('shareTaskWeb.controllers', [])
 	.controller('IndexCtrl', ['$scope', '$location', '$rootScope', '$window', 'User', function($scope, $location, $rootScope, $window, User) {
 		
 		$scope.showSignInForm = false;
-		$rootScope.loggedUser = null;
 		
-		// get current logged user
-		User.getCurrentUser(function(data, status) {
-				console.log("User getCurrentUser success! data: %o, status: %o", data, status);
-				$rootScope.loggedUser = data;
-			}, function(data, status, script, func) {
-				console.log("User getCurrentUser error! data: %o, status: %o", data, status);
-				$rootScope.loggedUser = null;
-			});
-			
 		/**
 		 * Logout user.
 		 */
