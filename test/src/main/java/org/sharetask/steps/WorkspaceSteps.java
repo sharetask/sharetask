@@ -28,4 +28,20 @@ public class WorkspaceSteps extends ScenarioSteps {
 	public void check_if_task_exists(final String taskName) {
 		workspacePage.check_if_task_exists(taskName);
 	}
+    
+    @Step
+    public void fill_comment(final String comment) {
+        workspacePage.fill_new_comment(comment);
+    }
+
+    @Step
+    public void submit_comment() {
+        workspacePage.submit_comment();
+    }
+
+    @Step
+	public void check_if_comment_exists(final String comment) {
+		workspacePage.check_if_comment_exists(comment);
+	}
+    
 }

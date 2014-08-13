@@ -33,4 +33,18 @@ public class WorkspaceDefinitionSteps {
     	workspace.check_if_task_exists(taskName);
     }
 
+    @Given("Fill comment: $comment")
+    public void givenFillComment(@Named("comment") final String comment) {
+    	workspace.fill_comment(comment);
+    }
+
+    @When("Pushing add comment button")
+    public void whenPushingAddCommentButton() {
+        workspace.submit_comment();
+    }
+
+    @Then("Check if new comment with text: $comment exists")
+    public void checkIfCommentExists(@Named("comment") final String comment) {
+    	workspace.check_if_comment_exists(comment);
+    }
 }

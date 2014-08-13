@@ -1,12 +1,21 @@
 package org.sharetask.pages;
 
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.hasItem;
 import static org.junit.Assert.assertThat;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import net.thucydides.core.annotations.DefaultUrl;
 import net.thucydides.core.annotations.WhenPageOpens;
+import net.thucydides.core.annotations.findby.By;
 import net.thucydides.core.annotations.findby.FindBy;
 import net.thucydides.core.pages.PageObject;
 import net.thucydides.core.pages.WebElementFacade;
+
+import org.openqa.selenium.WebElement;
 
 @DefaultUrl("http://localhost:8080/sharetask/webapp#/tasks")
 public class WorkspacePage extends PageObject {
@@ -23,12 +32,21 @@ public class WorkspacePage extends PageObject {
 	@FindBy(xpath = "//button[@ng-click=\"setEditMode('NEW-TASK')\"]")
 	private WebElementFacade openAddTaskWindowButton;
 
+	@FindBy(id = "inputTaskAdd")
+	private WebElementFacade taskNameInput;
+	
 	@FindBy(xpath = "//button[@ng-click=\"addTask()\"]")
 	private WebElementFacade submitTaskButton;
 
-	@FindBy(id = "inputTaskAdd")
-	private WebElementFacade taskName;
+	@FindBy(id = "inputTaskAddComment")
+	private WebElementFacade taskCommentInput;
 	
+	@FindBy(xpath = "//button[@ng-click=\"addTaskComment()\"]")
+	private WebElementFacade submitCommentButton;
+	
+	@FindBy(xpath = "//div[@class=\"task-list-item ng-scope ui-droppable selected\"]/div/table/tbody/tr/td[3]/strong")
+	private WebElementFacade selectedTask;
+
 	@WhenPageOpens
     public void waitUntilUserNameAppears() {
     	element(message).waitUntilVisible();
@@ -49,14 +67,31 @@ public class WorkspacePage extends PageObject {
     }
     
     public void fill_new_task(final String taskName) {
-    	this.taskName.type(taskName);
+    	taskNameInput.type(taskName);
     }
     
     public void submit_task() {
     	submitTaskButton.click();
     }
 
-	public void check_if_task_exists(final String taskName2) {
-		// TODO Auto-generated method stub
+	public void check_if_task_exists(final String taskName) {
+		assertThat("Must exists task with text", selectedTask.getTextValue(), equalTo(taskName));
+	}
+	
+    public void fill_new_comment(final String comment) {
+    	taskCommentInput.type(comment);
+    }
+    
+    public void submit_comment() {
+    	submitCommentButton.click();
+    }
+
+	public void check_if_comment_exists(final String comment) {
+		final List<WebElement> comments = getDriver().findElements(By.xpath("//div[@id=\"comments\"]/table[@class=\"comment ng-scope\"]/tbody/tr/td/div[2]/small"));
+		final List<String> commentStrings = new ArrayList<String>();
+		for (final WebElement commentElement : comments) {
+			commentStrings.add(commentElement.getText());
+		}
+		assertThat("Must exists comment with text", commentStrings, hasItem(comment));
 	}
 }
