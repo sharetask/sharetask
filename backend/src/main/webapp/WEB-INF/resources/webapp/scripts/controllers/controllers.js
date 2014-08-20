@@ -1136,12 +1136,16 @@ controllers.controller('StatisticsCtrl', ['$scope', '$rootScope', 'localize', 'S
 /**
  * Header controller.
  */
-controllers.controller('HeaderController', [ '$rootScope', '$scope', '$location', 'User', '$log', 
-		function($rootScope, $scope, $location, User, $log) {
+controllers.controller('HeaderController', [ '$rootScope', '$scope', '$location', 'User', '$log', '$window', 
+		function($rootScope, $scope, $location, User, $log, $window) {
 			$scope.isActive = function(viewLocation) {
 				return viewLocation === $location.path();
 			};
 
+			$scope.toggleHelp = function() {
+				$rootScope.showHelp = !$rootScope.showHelp;
+			};
+			
 			$scope.checkLogin = function() {
 				$log.log("Checking login");
 				User.isLoggedIn(
@@ -1156,5 +1160,17 @@ controllers.controller('HeaderController', [ '$rootScope', '$scope', '$location'
 							$log.log("User isn't loged in! status: %o", status);
 							$rootScope.isLoggedIn = false;
 						});
+			};
+
+			$scope.logout = function() {
+				Log.debug("Logout user: %s", $rootScope.loggedUser.username);
+				User.logout(function(data, status) {
+					Log.debug("User logout success! data: %o, status: %o", data, status);
+					$rootScope.loggedUser = {};
+					$window.location.href = $rootScope.appBaseUrl;
+				}, function(data, status, script, func) {
+					Log.debug("User logout error! data: %o, status: %o", data, status);
+					ErrorHandling.handle(data, status, script, func);
+				});
 			};
 } ]);
