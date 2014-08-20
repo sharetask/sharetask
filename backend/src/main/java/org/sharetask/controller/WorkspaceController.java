@@ -89,8 +89,7 @@ public class WorkspaceController {
  		return workspaceService.findByType(queryType);
 	}
 	
-	@RequestMapping(value = "/{workspaceId}", method = RequestMethod.DELETE,
-			consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/{workspaceId}", method = RequestMethod.DELETE)
 	@ResponseStatus(value = HttpStatus.OK)
 	public void delete(@PathVariable("workspaceId") final Long workspaceId) {
 		workspaceService.delete(workspaceId);
