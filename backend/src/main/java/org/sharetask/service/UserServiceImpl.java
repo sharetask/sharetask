@@ -127,6 +127,7 @@ public class UserServiceImpl implements UserService {
 		userInfo.setName(userDTO.getName());
 		userInfo.setSurName(userDTO.getSurName());
 		userInfo.setMobilePhone(userDTO.getMobilePhone());
+		userInfo.setLanguage(userDTO.getLanguage());
 
 		if (userAuthenticationRepository.findByUsername(userDTO.getUsername()) != null) {
 			throw new UserAlreadyExistsException();

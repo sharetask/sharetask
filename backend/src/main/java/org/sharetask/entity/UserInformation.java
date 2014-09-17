@@ -73,6 +73,10 @@ public class UserInformation implements Serializable {
 	@Getter @Setter
 	@Column(name = "MOBILE_PHONE", nullable = true, length = 20)
 	private String mobilePhone;
+
+	@Getter @Setter
+	@Column(name = "LANGUAGE", nullable = false, length = 20)
+	private String language;
 	
 	@Setter
 	@ElementCollection(targetClass = Role.class)

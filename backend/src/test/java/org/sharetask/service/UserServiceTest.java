@@ -77,8 +77,9 @@ public class UserServiceTest extends ServiceUnitTest {
 		userDTO.setPassword("password");
 		userDTO.setSurName("Test Surname");
 		userDTO.setMobilePhone("+420123456789");
+		userDTO.setLanguage("en");
 		try {
-			userService.create(userDTO );
+			userService.create(userDTO);
 		} catch (final UserAlreadyExistsException e) {
 			fail("UserAuthentication " + userDTO.getUsername() + " already exists!");
 		}

@@ -46,4 +46,8 @@ public class UserInfoDTO {
 	@Size(min = 4, max = 20)
 	@Getter @Setter
 	private String mobilePhone;
+
+	@Size(min = 2, max = 10)
+	@Getter @Setter
+	private String language;
 }

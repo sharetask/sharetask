@@ -67,6 +67,10 @@ public class UserDTO {
 	@Getter @Setter
 	private String mobilePhone;
 	
+	@Size(min = 2, max = 10)
+	@Getter @Setter
+	private String language;
+
 	@Getter
 	private final Collection<Role> roles = new ArrayList<Role>();
 	
