@@ -94,7 +94,7 @@ public class PerformanceInterceptor extends CustomizableTraceInterceptor {
 			}
 		}
 	}
-
+	@SuppressWarnings("PMD.AvoidCatchingThrowable")
 	@Override
 	protected Object invokeUnderTrace(final MethodInvocation invocation, final Log logger) throws Throwable {
 		final String name = invocation.getMethod().getDeclaringClass().getName() + "." + invocation.getMethod().getName();
