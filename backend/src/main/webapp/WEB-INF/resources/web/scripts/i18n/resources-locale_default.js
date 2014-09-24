@@ -495,6 +495,17 @@
 	    "description":""
 	},
 	{
+	    "key":"_English_",
+	    "value":"English.",
+	    "description":""
+	},
+	{
+	    "key":"_Czech_",
+	    "value":"Czech.",
+	    "description":""
+	},
+	
+	{
 	    "key":"__",
 	    "value":"",
 	    "description":"Empty string for undefined variables."

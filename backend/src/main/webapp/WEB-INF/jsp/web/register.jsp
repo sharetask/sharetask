@@ -96,6 +96,8 @@
 					<input class="span3" type="text" name="firstname" placeholder="<spring:message code="register.firstname.placeholder" />" ng-model="newAccount.name" /> <input class="span3" type="text" name="lastname" placeholder="<spring:message code="register.lastname.placeholder" />" ng-model="newAccount.surName" /><br />
 					<label>* <spring:message code="register.email" /></label>
 					<input class="span3" type="text" name="mail" placeholder="<spring:message code="register.email.placeholder" />" ng-model="newAccount.username" required /><br />
+					<label>* <spring:message code="register.language" /></label>
+					<select class="span3" name="language" ng-model="language" required ng-options="(language.label | i18n) for language in languages"></select><br />
 					<label>* <spring:message code="register.password" /></label>
 					<input class="span3" type="password" name="password" placeholder="<spring:message code="register.password.placeholder" />" ng-model="newAccount.password1" required /><br />
 					<label>* <spring:message code="register.password.check" /></label>
@@ -115,6 +117,7 @@
 		<script type="text/javascript" src="<c:url value="/resources-web-${applicationVersion}/scripts/vendor/bootstrap/bootstrap.min.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-web-${applicationVersion}/scripts/vendor/angular/angular.min.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-web-${applicationVersion}/scripts/vendor/angular/angular-resource.min.js" />"></script>
+		<script type="text/javascript" src="<c:url value="/resources-web-${applicationVersion}/scripts/vendor/localize/localize.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-web-${applicationVersion}/scripts/services/services.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-web-${applicationVersion}/scripts/filters/filters.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-web-${applicationVersion}/scripts/directives/directives.js" />"></script>
