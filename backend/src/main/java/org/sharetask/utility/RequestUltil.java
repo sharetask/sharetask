@@ -31,14 +31,17 @@ import javax.servlet.http.HttpServletRequest;
  */
 public final class RequestUltil {
 	
-	public static String LOCALE = "locale"; 
-	public static String LANGUAGE = "language"; 
-	public static String COUNTRY = "country"; 
+	public static final String LOCALE = "locale"; 
+	public static final String LANGUAGE = "language"; 
+	public static final String COUNTRY = "country"; 
 
+	private RequestUltil() {
+	}
+	
 	public static String getLocale(final HttpServletRequest request) {
 		final Cookie[] cookies = request.getCookies();
 		String result = "";
-		for(final Cookie cookie : cookies) { 
+		for (final Cookie cookie : cookies) {
 			if (cookie.getName().equals("locale")) {
 				result = cookie.getValue();
 				break;
@@ -56,7 +59,7 @@ public final class RequestUltil {
 	public static String getLanguage(final HttpServletRequest request) {
 		final Cookie[] cookies = request.getCookies();
 		String result = "";
-		for(final Cookie cookie : cookies) { 
+		for (final Cookie cookie : cookies) {
 			if (cookie.getName().equals("language")) {
 				result = cookie.getValue();
 				break;
@@ -68,33 +71,35 @@ public final class RequestUltil {
 		return result;
 	}
 	
-	
 	public static Map<String, String> getRequestData(final HttpServletRequest request) {
 		final Map<String, String> result = new HashMap<String, String>();
 		final Cookie[] cookies = request.getCookies();
 		String locale = "";
 		String language = "";
 		String country = "";
-		
-		for(final Cookie cookie : cookies) { 
+
+		for (final Cookie cookie : cookies) {
 			if (cookie.getName().equals("locale")) {
 				locale = cookie.getValue();
 				language = cookie.getValue();
 				break;
 			}
 		}
-		
-	if (locale.isEmpty()) {
-		language = request.getLocale().getLanguage().toLowerCase();
-		locale = request.getLocale().getLanguage().toLowerCase();
-		if (request.getLocale().getCountry().length() > 0) {
-			country = request.getLocale().getCountry().toLowerCase();
-			locale = request.getLocale().getLanguage().toLowerCase() + "-" + request.getLocale().getCountry().toLowerCase();
+
+		if (locale.isEmpty()) {
+			language = request.getLocale().getLanguage().toLowerCase();
+			locale = request.getLocale().getLanguage().toLowerCase();
+			if (request.getLocale().getCountry().length() > 0) {
+				country = request.getLocale().getCountry().toLowerCase();
+				locale = request.getLocale().getLanguage().toLowerCase() + "-"
+						+ request.getLocale().getCountry().toLowerCase();
+			}
 		}
-	}		
+		
 		result.put(LOCALE, locale);
 		result.put(LANGUAGE, language);
 		result.put(COUNTRY, country);
+		
 		return result;
 	}
 }
