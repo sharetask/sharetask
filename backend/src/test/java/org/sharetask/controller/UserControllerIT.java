@@ -50,7 +50,8 @@ public class UserControllerIT extends IntegrationTest {
                 									 "\"password\":\"Password\"," +
         		                                     "\"name\":\"Integration\"," +
         		                                     "\"surName\":\"Test\", " +
-        		                                     "\"mobilePhone\":\"+420123456789\"}");
+        		                                     "\"mobilePhone\":\"+420123456789\", " +
+        		                                     "\"language\":\"en\"}");
         httpPost.setEntity(httpEntity);
 
         //when
@@ -71,7 +72,8 @@ public class UserControllerIT extends IntegrationTest {
         httpPut.addHeader(new BasicHeader("Content-Type", "application/json"));
         final StringEntity httpEntity = new StringEntity("{\"username\":\"dev3@shareta.sk\"," +
         		                                     "\"name\":\"Integration\"," +
-        		                                     "\"surName\":\"Test\"}");
+        		                                     "\"surName\":\"Test\"," + 
+        		                                     "\"language\":\"en\"}");
         httpPut.setEntity(httpEntity);
 
         //when
