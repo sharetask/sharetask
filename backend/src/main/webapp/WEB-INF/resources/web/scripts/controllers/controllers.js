@@ -19,7 +19,7 @@
 'use strict';
 
 /* Controllers */
-angular.module('shareTaskWeb.controllers', [])
+angular.module('shareTaskWeb.controllers', ['localization'])
 	.controller('IndexCtrl', ['$scope', '$location', '$rootScope', '$window', 'User', function($scope, $location, $rootScope, $window, User) {
 		
 		$scope.showSignInForm = false;
@@ -74,11 +74,10 @@ angular.module('shareTaskWeb.controllers', [])
 		
 		$scope.newAccountData = {processing: false, result: 0};
 		$scope.languages= [
-                           {code: 'en', label: 'English'},
-                           {code: 'cs', label: 'Czech'}
+                           {code: 'en', label: '_English_'},
+                           {code: 'cs', label: '_Czech_'}
                            ];
-		$scope.language = $scope.languages[0];
-		
+		$scope.language = $scope.languages[0].code;
 		/**
 		 * Register user.
 		 */
@@ -86,7 +85,7 @@ angular.module('shareTaskWeb.controllers', [])
 			console.log("Register user (username: %s)", $scope.newAccount.username);
 			$scope.newAccountData.processing = true;
 			$scope.newAccount.password = $scope.newAccount.password1;
-			$scope.newAccount.language = $scope.language.code;
+			$scope.newAccount.language = $scope.language;
 			delete($scope.newAccount.password1);
 			delete($scope.newAccount.password2);
 			User.create({user: $scope.newAccount}, function(data, status) {

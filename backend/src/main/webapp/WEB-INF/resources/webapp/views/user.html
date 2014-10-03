@@ -52,6 +52,8 @@
 												<input class="span5" type="text" placeholder="{{'_PlaceholderLastName_' | i18n}}" ng-model="loggedUser.surName" required /><br />
 												<label>{{'_Mail_' | i18n}}</label>
 												<input class="span5" type="text" placeholder="{{'_PlaceholderMail_' | i18n}}" ng-model="loggedUser.username" readonly="readonly" required /><br />
+												<label>{{'_Language_' | i18n}}</label>
+												<select class="span5" name="language" ng-model="loggedUser.language" required ng-options="language.code as (language.label | i18n) for language in languages"></select><br />
 												<br />
 												<label>{{'_NewPassword_' | i18n}}</label>
 												<input class="span5" type="password" placeholder="{{'_PlaceholderNewPassword_' | i18n}}" ng-model="loggedUser.newPassword1" /><br />

@@ -84,7 +84,8 @@ angular.module('localization', [])
                         // set language
                         localize.language = this.fallbackLanguage(lang);
                     }
-                    return 'resources-webapp-' + $rootScope.appVersion + '/scripts/i18n/resources-locale_' + localize.language + '.' + provider.ext;
+                    //return 'resources-webapp-' + $rootScope.appVersion + '/scripts/i18n/resources-locale_' + localize.language + '.' + provider.ext;
+                    return 'resources-webapp-' + $rootScope.appVersion + '/scripts/i18n/resources-locale_' + $rootScope.appLocale.language + '.' + provider.ext;
                 },
 
                 // loads the language resource file from the server
@@ -104,7 +105,7 @@ angular.module('localization', [])
                 getLocalizedString: function(value) {
                     // default the result to an empty string
                     var result = '';
-
+                    
                     // make sure the dictionary has valid data
                     if ((localize.dictionary !== []) && (localize.dictionary.length > 0)) {
                         // use the filter service to only return those entries which match the value
