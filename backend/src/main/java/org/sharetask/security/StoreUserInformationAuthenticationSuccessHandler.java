@@ -51,7 +51,6 @@ public class StoreUserInformationAuthenticationSuccessHandler extends SimpleUrlA
 	private UserInformationRepository userRepository;
 
 	interface AuthGrantedAuthority extends GrantedAuthority {
-
 	};
 
 	@Override
@@ -68,6 +67,7 @@ public class StoreUserInformationAuthenticationSuccessHandler extends SimpleUrlA
 				final UserInformation userInformation = new UserInformation(profile.getEmail());
 				userInformation.setName(profile.getFirstName());
 				userInformation.setSurName(profile.getFamilyName());
+				userInformation.setLanguage("en");
 				final ArrayList<Role> list = new ArrayList<Role>();
 				list.add(Role.ROLE_USER);
 				userInformation.setRoles(list);
