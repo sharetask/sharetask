@@ -1046,6 +1046,11 @@ controllers.controller('UserCtrl', ['$scope', '$location', '$rootScope', '$filte
 		$scope.gravatar = {};
 		var hashFilter = $filter('hash');
 		
+		$scope.languages= [
+                           {code: 'en', label: '_English_'},
+                           {code: 'cs', label: '_Czech_'}
+                           ];
+		
 		/**
 		 * Get Gravatar profile data for user.
 		 */

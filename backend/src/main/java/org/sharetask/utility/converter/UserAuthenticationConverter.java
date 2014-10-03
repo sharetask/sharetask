@@ -58,6 +58,7 @@ public class UserAuthenticationConverter implements CustomConverter {
 		userDTO.setSurName(source.getUserInfo().getSurName());
 		userDTO.setCreatedOn(source.getCreatedOn());
 		userDTO.setUpdatedOn(source.getUpdatedOn());
+		userDTO.setLanguage(source.getUserInfo().getLanguage());
 		return userDTO;
 	}
 
@@ -65,6 +66,8 @@ public class UserAuthenticationConverter implements CustomConverter {
 		final UserAuthentication user = destination == null ? new UserAuthentication() : destination;
 		user.getUserInfo().setName(sourceDTO.getName());
 		user.getUserInfo().setSurName(sourceDTO.getSurName());
+		user.getUserInfo().setMobilePhone(sourceDTO.getMobilePhone());
+		user.getUserInfo().setLanguage(sourceDTO.getLanguage());
 		return user;
 	}
 }

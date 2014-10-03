@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
+						http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+	<changeSet id="add language: user information" author="mbocek">
+		<addColumn tableName="USER_INFORMATION">
+			<column name="LANGUAGE" type="varchar(2)" />
+		</addColumn>
+	</changeSet>
+	
+	<changeSet id="default values for language: user information" author="mbocek">
+		<sql>UPDATE user_information SET language = 'en' WHERE language IS NULL</sql>
+	</changeSet>
+	
+	<changeSet id="mark language as not null: user information" author="mbocek">
+		<addNotNullConstraint  tableName="USER_INFORMATION" columnName="LANGUAGE" />
+	</changeSet>
+	
+	<changeSet id="create: languages" author="mbocek">
+		<createTable tableName="LANGUAGE" remarks="Language entity">
+			<column name="CODE" type="VARCHAR(2)" remarks="ISO 639-1 language code">
+				<constraints nullable="false" primaryKey="true" primaryKeyName="PK_LANGUAGE"/>
+			</column>
+			<column name="LANGUAGE_NAME" type="VARCHAR(255)" remarks="Language name">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+	
+		<modifySql dbms="mysql">
+			<append value="ENGINE=INNODB CHARSET=UTF8 COLLATE utf8_general_ci" />
+		</modifySql>
+	</changeSet>
+
+	<changeSet id="load data: languages" author="mbocek">
+		<sql>insert into LANGUAGE(code, language_name) values ('en','English')</sql>
+		<sql>insert into LANGUAGE(code, language_name) values ('cs','Czech')</sql>
+	</changeSet>
+	
+	<changeSet id="add constraints: languages" author="mbocek">
+		<addForeignKeyConstraint constraintName="FK_USER_INFORMATION_LANGUAGE"
+			baseTableName="USER_INFORMATION" baseColumnNames="LANGUAGE"
+			referencedTableName="LANGUAGE" referencedColumnNames="CODE" />
+	</changeSet>
+	
+</databaseChangeLog>

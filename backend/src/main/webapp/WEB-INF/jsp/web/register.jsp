@@ -17,9 +17,18 @@
  * under the License.
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="org.sharetask.utility.RequestUltil" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
+<%
+	Map<String, String> data = RequestUltil.getRequestData(request);
+	pageContext.setAttribute("locale", data.get(RequestUltil.LOCALE));
+	pageContext.setAttribute("country", data.get(RequestUltil.COUNTRY));
+	pageContext.setAttribute("language", data.get(RequestUltil.LANGUAGE));
+%>
 
 <spring:eval expression="@applicationProps['application.version']" var="applicationVersion" />
 <spring:eval expression="@applicationProps['application.revision']" var="applicationRevision" />
@@ -42,6 +51,14 @@
 			<link rel="stylesheet" type="text/css" href="<c:url value="/resources-web-${applicationVersion}/css/font-awesome-ie7.min.css" />">
 		<![endif]-->
 		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-web-${applicationVersion}/css/sharetask.css" />">
+		<script>
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments);},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m);
+			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+			ga('create', '${googleAnalyticsAccount}', 'shareta.sk');
+			ga('send', 'pageview');
+		</script>
 	</head>
 	<body ng-cloak>
 		<!-- application menu -->
@@ -96,6 +113,8 @@
 					<input class="span3" type="text" name="firstname" placeholder="<spring:message code="register.firstname.placeholder" />" ng-model="newAccount.name" /> <input class="span3" type="text" name="lastname" placeholder="<spring:message code="register.lastname.placeholder" />" ng-model="newAccount.surName" /><br />
 					<label>* <spring:message code="register.email" /></label>
 					<input class="span3" type="text" name="mail" placeholder="<spring:message code="register.email.placeholder" />" ng-model="newAccount.username" required /><br />
+					<label>* <spring:message code="register.language" /></label>
+					<select class="span3" name="language" ng-model="language" required ng-options="language.code as (language.label | i18n) for language in languages"></select><br />
 					<label>* <spring:message code="register.password" /></label>
 					<input class="span3" type="password" name="password" placeholder="<spring:message code="register.password.placeholder" />" ng-model="newAccount.password1" required /><br />
 					<label>* <spring:message code="register.password.check" /></label>
@@ -115,6 +134,7 @@
 		<script type="text/javascript" src="<c:url value="/resources-web-${applicationVersion}/scripts/vendor/bootstrap/bootstrap.min.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-web-${applicationVersion}/scripts/vendor/angular/angular.min.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-web-${applicationVersion}/scripts/vendor/angular/angular-resource.min.js" />"></script>
+		<script type="text/javascript" src="<c:url value="/resources-web-${applicationVersion}/scripts/vendor/localize/localize.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-web-${applicationVersion}/scripts/services/services.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-web-${applicationVersion}/scripts/filters/filters.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/resources-web-${applicationVersion}/scripts/directives/directives.js" />"></script>
@@ -124,16 +144,8 @@
 				.run(['$rootScope', function ($rootScope) {
 					$rootScope.appBaseUrl = '<c:url value="/" />';
 					$rootScope.appVersion = '${applicationVersion}';
-					$rootScope.appLocale = {language: '<c:out value="${pageContext.request.locale.language}" />', country: '<c:out value="${pageContext.request.locale.country}" />'};
+					$rootScope.appLocale = {language: '<c:out value="${language}" />', country: '<c:out value="${locale}" />'};
 				}]);
-		</script>
-		<script>
-			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-			(i[r].q=i[r].q||[]).push(arguments);},i[r].l=1*new Date();a=s.createElement(o),
-			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m);
-			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-			ga('create', '${googleAnalyticsAccount}', 'shareta.sk');
-			ga('send', 'pageview');
 		</script>
 	</body>
 </html>

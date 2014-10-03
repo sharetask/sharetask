@@ -127,6 +127,7 @@ public class UserServiceImpl implements UserService {
 		userInfo.setName(userDTO.getName());
 		userInfo.setSurName(userDTO.getSurName());
 		userInfo.setMobilePhone(userDTO.getMobilePhone());
+		userInfo.setLanguage(userDTO.getLanguage());
 
 		if (userAuthenticationRepository.findByUsername(userDTO.getUsername()) != null) {
 			throw new UserAlreadyExistsException();
@@ -162,6 +163,7 @@ public class UserServiceImpl implements UserService {
 		user.setName(userInfoDTO.getName());
 		user.setSurName(userInfoDTO.getSurName());
 		user.setMobilePhone(userInfoDTO.getMobilePhone());
+		user.setLanguage(userInfoDTO.getLanguage());
 		final UserInformation storedUser = userInformationRepository.save(user);
 		return DTOConverter.convert(storedUser, UserInfoDTO.class);
 	}

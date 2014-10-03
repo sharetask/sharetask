@@ -321,6 +321,11 @@
 		"description":""
 	},
 	{
+		"key":"_Language_",
+		"value":"Jazyk",
+		"description":""
+	},
+	{
 		"key":"_NewPassword_",
 		"value":"Nové heslo",
 		"description":""
@@ -636,6 +641,16 @@
 	{
 	    "key":"_Total_",
 	    "value":"Celkem",
+	    "description":""
+	},
+	{
+	    "key":"_English_",
+	    "value":"Anglicky",
+	    "description":""
+	},
+	{
+	    "key":"_Czech_",
+	    "value":"Česky",
 	    "description":""
 	},
 	{

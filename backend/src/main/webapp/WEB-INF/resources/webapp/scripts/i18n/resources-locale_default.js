@@ -320,6 +320,11 @@
 		"description":""
 	},
 	{
+		"key":"_Language_",
+		"value":"Language",
+		"description":""
+	},
+	{
 		"key":"_NewPassword_",
 		"value":"New password",
 		"description":""
@@ -634,6 +639,17 @@
 	    "value":"Total",
 	    "description":""
 	},
+
+	{
+	    "key":"_English_",
+	    "value":"English",
+	    "description":""
+	},
+	{
+	    "key":"_Czech_",
+	    "value":"Czech",
+	    "description":""
+	},	
 	{
 	    "key":"__",
 	    "value":"",
