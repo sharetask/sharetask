@@ -10,12 +10,8 @@
 		</addColumn>
 	</changeSet>
 	
-	<changeSet id="default values for language: user information" author="mbocek">
-		<sql>UPDATE user_information SET language = 'en' WHERE language IS NULL</sql>
-	</changeSet>
-	
 	<changeSet id="mark language as not null: user information" author="mbocek">
-		<addNotNullConstraint  tableName="USER_INFORMATION" columnName="LANGUAGE" />
+		<addNotNullConstraint  tableName="USER_INFORMATION" columnName="LANGUAGE" defaultNullValue="en" columnDataType="VARCHAR" />
 	</changeSet>
 	
 	<changeSet id="create: languages" author="mbocek">
