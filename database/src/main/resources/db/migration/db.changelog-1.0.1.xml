@@ -15,7 +15,7 @@
 	</changeSet>
 	
 	<changeSet id="mark language as not null: user information" author="mbocek">
-		<addNotNullConstraint  tableName="USER_INFORMATION" columnName="LANGUAGE" />
+		<addNotNullConstraint  tableName="USER_INFORMATION" columnName="LANGUAGE" defaultNullValue="en" columnDataType="VARCHAR" />
 	</changeSet>
 	
 	<changeSet id="create: languages" author="mbocek">
