@@ -6,12 +6,12 @@
 
 	<changeSet id="add language: user information" author="mbocek">
 		<addColumn tableName="USER_INFORMATION">
-			<column name="LANGUAGE" type="varchar(2)" />
+			<column name="LANGUAGE" type="VARCHAR(2)" />
 		</addColumn>
 	</changeSet>
 	
 	<changeSet id="mark language as not null: user information" author="mbocek">
-		<addNotNullConstraint  tableName="USER_INFORMATION" columnName="LANGUAGE" defaultNullValue="en" columnDataType="VARCHAR" />
+		<addNotNullConstraint  tableName="USER_INFORMATION" columnName="LANGUAGE" defaultNullValue="en" columnDataType="VARCHAR(2)" />
 	</changeSet>
 	
 	<changeSet id="create: languages" author="mbocek">
