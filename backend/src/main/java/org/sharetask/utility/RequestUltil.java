@@ -41,33 +41,44 @@ public final class RequestUltil {
 	public static String getLocale(final HttpServletRequest request) {
 		final Cookie[] cookies = request.getCookies();
 		String result = "";
-		for (final Cookie cookie : cookies) {
-			if (cookie.getName().equals("locale")) {
-				result = cookie.getValue();
-				break;
+		
+
+		if (cookies != null) {
+			for (final Cookie cookie : cookies) {
+				if (cookie.getName().equals("locale")) {
+					result = cookie.getValue();
+					break;
+				}
 			}
 		}
+			
 		if (result.isEmpty()) {
 			result = request.getLocale().getLanguage().toLowerCase();
 			if (request.getLocale().getCountry().length() > 0) {
 				result = request.getLocale().getLanguage().toLowerCase() + "-" + request.getLocale().getCountry().toLowerCase();
 			}
 		}
+		
 		return result;
 	}
 
 	public static String getLanguage(final HttpServletRequest request) {
 		final Cookie[] cookies = request.getCookies();
 		String result = "";
-		for (final Cookie cookie : cookies) {
-			if (cookie.getName().equals("language")) {
-				result = cookie.getValue();
-				break;
+
+		if (cookies != null) {
+			for (final Cookie cookie : cookies) {
+				if (cookie.getName().equals("language")) {
+					result = cookie.getValue();
+					break;
+				}
 			}
 		}
+		
 		if (result.isEmpty()) {
 			result = request.getLocale().getLanguage().toLowerCase();
 		}
+		
 		return result;
 	}
 	
@@ -78,11 +89,13 @@ public final class RequestUltil {
 		String language = "";
 		String country = "";
 
-		for (final Cookie cookie : cookies) {
-			if (cookie.getName().equals("locale")) {
-				locale = cookie.getValue();
-				language = cookie.getValue();
-				break;
+		if (cookies != null) {
+			for (final Cookie cookie : cookies) {
+				if (cookie.getName().equals("locale")) {
+					locale = cookie.getValue();
+					language = cookie.getValue();
+					break;
+				}
 			}
 		}
 
