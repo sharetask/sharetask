@@ -20,6 +20,8 @@ package org.sharetask.security;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -28,7 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import lombok.extern.slf4j.Slf4j;
 
-import org.pac4j.oauth.profile.google2.Google2Profile;
+import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.springframework.security.authentication.ClientAuthenticationToken;
 import org.sharetask.entity.Role;
 import org.sharetask.entity.UserInformation;
@@ -50,18 +52,15 @@ public class StoreUserInformationAuthenticationSuccessHandler extends SimpleUrlA
 	@Inject
 	private UserInformationRepository userRepository;
 
-	interface AuthGrantedAuthority extends GrantedAuthority {
-	};
-
 	@Override
 	public void onAuthenticationSuccess(final HttpServletRequest request, final HttpServletResponse response,
-			final Authentication authentication) throws IOException, ServletException {
+			Authentication authentication) throws IOException, ServletException {
 
-		final Authentication principal = SecurityContextHolder.getContext().getAuthentication();
-		if (principal instanceof ClientAuthenticationToken) {
+		if (authentication instanceof ClientAuthenticationToken) {
 			log.debug("Token is pac4j token.");
 
-			final Google2Profile profile = (Google2Profile)((ClientAuthenticationToken)principal).getUserProfile();
+			UsernamePasswordAuthenticationToken authentToken;
+			final CommonProfile profile = (CommonProfile)((ClientAuthenticationToken)authentication).getUserProfile();
 			if (userRepository.findByUsername(profile.getEmail()) == null) {
 				log.debug("User with name: {} doesne exist's. Will be created", profile.getEmail());
 				final UserInformation userInformation = new UserInformation(profile.getEmail());
@@ -72,14 +71,19 @@ public class StoreUserInformationAuthenticationSuccessHandler extends SimpleUrlA
 				list.add(Role.ROLE_USER);
 				userInformation.setRoles(list);
 				userRepository.save(userInformation);
+				List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+				authorities.add(new SimpleGrantedAuthority(Role.ROLE_USER.name()));
+				authentToken = new UsernamePasswordAuthenticationToken(profile.getEmail(), "", authorities);
+			} else {
+				Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+				authentToken = new UsernamePasswordAuthenticationToken(profile.getEmail(), "", authorities);
 			}
-
-			final ArrayList<GrantedAuthority> list = new ArrayList<GrantedAuthority>();
-			list.add(new SimpleGrantedAuthority(Role.ROLE_USER.name()));
-			final Authentication authToken = new UsernamePasswordAuthenticationToken(profile.getEmail(), "", list);
-			SecurityContextHolder.getContext().setAuthentication(authToken);
+			
+			SecurityContextHolder.getContext().setAuthentication(authentToken);
 		}
 
 		super.onAuthenticationSuccess(request, response, authentication);
 	}
+	
+	
 }

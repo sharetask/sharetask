@@ -98,7 +98,7 @@
 	</logger>
 	
 	<logger name="org.pac4j">
-		<level value="INFO" />
+		<level value="DEBUG" />
 		<appender-ref ref="app-main" />
 	</logger>
 	

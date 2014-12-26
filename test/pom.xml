@@ -11,8 +11,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <thucydides.version>0.9.244</thucydides.version>
-        <thucydides.jbehave.version>0.9.244</thucydides.jbehave.version>
+        <thucydides.version>0.9.275</thucydides.version>
+        <thucydides.jbehave.version>0.9.275</thucydides.jbehave.version>
         <webdriver.driver>firefox</webdriver.driver>
     </properties>
 
@@ -46,7 +46,6 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.11</version>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.googlecode.lambdaj</groupId>

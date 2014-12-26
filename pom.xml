@@ -463,12 +463,12 @@
 			<dependency>
 				<groupId>org.pac4j</groupId>
 				<artifactId>pac4j-oauth</artifactId>
-				<version>1.4.1</version>
+				<version>1.6.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.pac4j</groupId>
 				<artifactId>spring-security-pac4j</artifactId>
-				<version>1.2.1</version>
+				<version>1.2.4</version>
 			</dependency>			
 			
 			<dependency>

@@ -117,7 +117,7 @@
 	<!-- ================================================================= -->
 	<!-- Sign in via google account                                        -->
 	<!-- ================================================================= -->
-	<bean id="googleClient" class="org.sharetask.security.Google2Client">
+	<bean id="googleClient" class="org.pac4j.oauth.client.Google2Client">
 		<property name="key" value="96323765852-ltqp2hedmv4dnl6o1d5jjibmudb1jr29.apps.googleusercontent.com" />
 		<property name="secret" value="Wd34gjQUNJxq8HL3caczkc1m" />
 	</bean>
@@ -153,6 +153,11 @@
 	<!-- ================================================================= -->
 	<bean id="clientProvider" class="org.pac4j.springframework.security.authentication.ClientAuthenticationProvider">
 		<property name="clients" ref="clients" />
+		<property name="userDetailsService">
+			<bean class="org.sharetask.security.UserDetailsByNameServiceWrapper">
+				<property name="userDetailsService" ref="userService" />
+			</bean>
+		</property>
 	</bean>
 	
 	<!-- <bean id="loginUrlAuthenticationEntryPoint" class="org.springframework.security.web.authentication.Http403ForbiddenEntryPoint" /> -->
