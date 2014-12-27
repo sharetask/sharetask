@@ -154,8 +154,8 @@
 	<bean id="clientProvider" class="org.pac4j.springframework.security.authentication.ClientAuthenticationProvider">
 		<property name="clients" ref="clients" />
 		<property name="userDetailsService">
-			<bean class="org.sharetask.security.UserDetailsByNameServiceWrapper">
-				<property name="userDetailsService" ref="userService" />
+			<bean class="org.sharetask.security.UserDetailsByNameService">
+				<property name="userInformationRepository" ref="userInformationRepository" />
 			</bean>
 		</property>
 	</bean>
