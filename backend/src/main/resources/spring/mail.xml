@@ -16,6 +16,12 @@
 			<property name="host" value="${definition.mail.host}"/>
 			<property name="username" value="${definition.mail.username}"/>
 			<property name="password" value="${definition.mail.password}"/>
+			
+		    <property name="javaMailProperties">
+		        <props>
+		            <prop key="mail.mime.charset">UTF-8</prop>
+		        </props>
+		    </property>
 		</bean>
 	</beans>
 	
