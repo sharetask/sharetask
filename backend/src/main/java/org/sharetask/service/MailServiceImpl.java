@@ -115,7 +115,7 @@ public class MailServiceImpl implements MailService {
 	@Override
 	public void sendEmail(final String from, final List<String> to, final String subject, final String msg, final int retry) {
 		final MimeMessage message = mailSender.createMimeMessage();
-		final MimeMessageHelper helper = new MimeMessageHelper(message);
+		final MimeMessageHelper helper = new MimeMessageHelper(message, "UTF-8");
 
 		try {
 			helper.setFrom(noreplyMail);
