@@ -1,0 +1,11 @@
+<html>
+<body style="font-family: verdana,helvetica,arial,sans-serif; font-size: 12px;">
+Ahoj,<br/>
+by jsi pozván aby jsi se připojil k aplikaci <a href="${applicationLink}">ShareTa.sk</a>. Pozval tě ${userName} ${userSurName}. Byl jsi pozván aby jsi se stal členem pracovní skupiny ${workspaceName}. <br/>
+Můžete se připojit k této pracovní skupině kliknutím na tento <a href="${confimationLink}">odkaz</a>.<br/> 
+Jestli jse není zaregistrován prosím zaregistruje se.<br/><br/>
+
+S pozdravem,<br/>
+Váš <a href="${applicationLink}">ShareTa.sk</a> team.<br/>
+</body>
+</html>

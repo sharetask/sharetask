@@ -40,6 +40,9 @@ public class InvitationDTO {
 	
 	@Getter @Setter
 	private Long entityId;
+	
+	@Getter @Setter
+	private String language;
 
 	@Getter @Setter
 	private String invitationType;

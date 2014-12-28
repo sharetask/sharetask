@@ -27,7 +27,9 @@ import org.sharetask.api.MailService;
 import org.sharetask.api.dto.InvitationDTO;
 import org.sharetask.entity.Invitation;
 import org.sharetask.entity.Invitation.InvitationType;
+import org.sharetask.entity.UserInformation;
 import org.sharetask.repository.InvitationRepository;
+import org.sharetask.repository.UserInformationRepository;
 import org.sharetask.utility.DTOConverter;
 import org.sharetask.utility.HashCodeUtil;
 import org.sharetask.utility.SecurityUtil;
@@ -48,18 +50,23 @@ public class InvitationServiceImpl implements InvitationService {
 
 	@Inject
 	private InvitationRepository invitationRepository;
+	
+	@Inject
+	private UserInformationRepository userInformationrepository;
 
 	@Override
 	@Transactional
 	public void inviteRegisteredUser(final String username) {
+		final UserInformation user = userInformationrepository.read(username);
 		final Invitation invitation = new Invitation();
 		invitation.setType(InvitationType.USER_REGISTRATION);
 		invitation.setUsername(username);
 		invitation.setCreatedBy(username);
 		invitation.setInvitationCode(HashCodeUtil.getShortHashCode(System.currentTimeMillis() + username));
 		final Invitation storedInitation = invitationRepository.save(invitation);
-		//send invitation notification
 		final InvitationDTO invitationDTO = DTOConverter.convert(storedInitation, InvitationDTO.class);
+		invitationDTO.setLanguage(user.getLanguage());
+		//send invitation notification
 		mailService.sendInvitation(invitationDTO);
 	}
 	
@@ -67,6 +74,7 @@ public class InvitationServiceImpl implements InvitationService {
 	@Transactional
 	@PreAuthorize(Constants.PERIMISSION_WORKSPACE_OWNER)
 	public void inviteWorkspaceMember(final Long workspaceId, final String username) {
+		final UserInformation user = userInformationrepository.read(username);
 		final Invitation invitation = new Invitation();
 		invitation.setType(InvitationType.ADD_WORKSPACE_MEMBER);
 		invitation.setUsername(username);
@@ -74,8 +82,10 @@ public class InvitationServiceImpl implements InvitationService {
 		invitation.setEntityId(workspaceId);
 		invitation.setInvitationCode(HashCodeUtil.getShortHashCode(System.currentTimeMillis() + workspaceId + username));
 		final Invitation storedInitation = invitationRepository.save(invitation);
+		final InvitationDTO invitationDTO = DTOConverter.convert(storedInitation, InvitationDTO.class);
+		invitationDTO.setLanguage(user.getLanguage());
 		//send invitation notification
-		mailService.sendInvitation(DTOConverter.convert(storedInitation, InvitationDTO.class));
+		mailService.sendInvitation(invitationDTO);
 	}
 	
 	@Override

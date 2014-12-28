@@ -34,6 +34,8 @@ public interface NotificationQueueService {
 
 	/**
 	 * Create notification from invitation.
+	 * Store notification to notification queue as raw message. Completely ready for send.
+	 * 
 	 * @param workspace
 	 * @return
 	 */

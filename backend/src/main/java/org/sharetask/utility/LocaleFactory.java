@@ -16,26 +16,30 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.sharetask.service.mail;
+package org.sharetask.utility;
 
-import java.util.List;
+import java.util.Locale;
 
-import javax.mail.internet.MimeMessage;
-
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+import org.sharetask.entity.Language;
 
 /**
  * @author Michal Bocek
  * @since 1.0.0
  */
-public interface DummyJavaMailSender extends JavaMailSender {
-
-	List<SimpleMailMessage> getSimpleMailMessages();
-
-	List<MimeMessage> getMimeMessages();
+public final class LocaleFactory {
 	
-	void clearSimpleMailMessages();
-	
-	void clearMimeMessages();
+	private LocaleFactory() {
+	}
+
+	public static Locale getLocale(String language) {
+		Locale result = Locale.ENGLISH;
+
+		if (Language.EN.getCode().equals(language)) {
+			result = Locale.ENGLISH;
+		} else if (Language.CS.getCode().equals(language)) {
+			result = new Locale(language,"");
+		}
+		
+		return result;
+	}
 }

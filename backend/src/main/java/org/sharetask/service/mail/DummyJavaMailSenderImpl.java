@@ -127,11 +127,21 @@ public class DummyJavaMailSenderImpl implements DummyJavaMailSender, JavaMailSen
 	
 	@Override
 	public List<SimpleMailMessage> getSimpleMailMessages() {
-		return simpleMailMessages;
+		return new ArrayList<SimpleMailMessage>(simpleMailMessages);
 	}
 
 	@Override
 	public List<MimeMessage> getMimeMessages() {
-		return mimeMessages;
+		return new ArrayList<MimeMessage>(mimeMessages);
+	}
+
+	@Override
+	public void clearSimpleMailMessages() {
+		simpleMailMessages.clear();
+	}
+
+	@Override
+	public void clearMimeMessages() {
+		mimeMessages.clear();
 	}
 }

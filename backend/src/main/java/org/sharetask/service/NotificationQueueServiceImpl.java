@@ -47,6 +47,10 @@ public class NotificationQueueServiceImpl implements NotificationQueueService {
 	@Inject
 	private PriorityRepository priorityRepository;
 
+	/* 
+	 * (non-Javadoc)
+	 * @see org.sharetask.api.NotificationQueueService#storeInvitation(java.lang.String, java.util.List, java.lang.String, java.lang.String, int)
+	 */
 	@Override
 	@Transactional
 	public void storeInvitation(final String from, final List<String> to, final String subject, final String msg,

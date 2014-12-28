@@ -1,0 +1,9 @@
+<html>
+<body style="font-family: verdana,helvetica,arial,sans-serif; font-size: 12px;">
+Ahoj,<br/>
+právě si byl zaregistován na <a href="${applicationLink}">ShareTa.sk</a>. Po kliknutí na <a href="${confimationLink}">linku</a> váš účet bude aktivován.<br/><br/>
+
+S pozdravem,<br/>
+Váš <a href="${applicationLink}">ShareTa.sk</a> team.<br/>
+</body>
+</html>

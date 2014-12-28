@@ -41,6 +41,7 @@ import org.sharetask.entity.UserInformation;
 import org.sharetask.entity.Workspace;
 import org.sharetask.repository.UserInformationRepository;
 import org.sharetask.repository.WorkspaceRepository;
+import org.sharetask.utility.LocaleFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -87,19 +88,20 @@ public class MailServiceImpl implements MailService {
 	public void sendInvitation(final InvitationDTO invitation) {
 		final Map<String, Object> model = prepareInvitationMode(invitation);
 		final InvitationType invitationType = InvitationType.valueOf(invitation.getInvitationType());
+		final String language = invitation.getLanguage();
 		String mailMessage;
 		String mailSubject;
 
 		switch (invitationType) {
 			case ADD_WORKSPACE_MEMBER:
-				mailMessage = templateMessageService.prepareMessage(TemplateList.WORKSPACE_INVITATION, model, null);
+				mailMessage = templateMessageService.prepareMessage(TemplateList.WORKSPACE_INVITATION, model, language);
 				mailSubject = messageSource.getMessage("notification.mail.subject.addWorkspaceMember", null,
-						LocaleContextHolder.getLocale());
+						LocaleFactory.getLocale(language));
 				break;
 			case USER_REGISTRATION:
-				mailMessage = templateMessageService.prepareMessage(TemplateList.USER_REGISTRATION_INVITATION, model, null);
+				mailMessage = templateMessageService.prepareMessage(TemplateList.USER_REGISTRATION_INVITATION, model, language);
 				mailSubject = messageSource.getMessage("notification.mail.subject.userRegistration", null,
-						LocaleContextHolder.getLocale());
+						LocaleFactory.getLocale(language));
 				break;
 			default:
 				throw new IllegalStateException("Invitation type for sending email isn't implemented!");
