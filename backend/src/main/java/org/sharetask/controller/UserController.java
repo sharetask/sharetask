@@ -19,6 +19,7 @@
 package org.sharetask.controller;
 
 import javax.inject.Inject;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -30,6 +31,7 @@ import org.sharetask.api.dto.UserDTO;
 import org.sharetask.api.dto.UserInfoDTO;
 import org.sharetask.controller.json.User;
 import org.sharetask.controller.json.UserPassword;
+import org.sharetask.utility.RequestUltil;
 import org.sharetask.utility.SecurityUtil;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -93,6 +95,12 @@ public class UserController {
 			SecurityContextHolder.getContext().setAuthentication(auth);
 			repository.saveContext(SecurityContextHolder.getContext(), request, response);
 			rememberMeServices.loginSuccess(request, response, auth);
+			// language cookie
+			final UserInfoDTO user = userService.read(SecurityUtil.getCurrentSignedInUsername());
+			final Cookie locale = new Cookie(RequestUltil.LOCALE, user.getLanguage());
+			locale.setMaxAge(-1);
+			locale.setPath("/");
+			response.addCookie(locale);
 			response.setStatus(HttpStatus.OK.value());
 		} catch (final BadCredentialsException ex) {
 			response.setStatus(HttpStatus.UNAUTHORIZED.value());

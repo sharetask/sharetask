@@ -74,7 +74,7 @@
 		</script>		
 	</head>
 	<body data-ng-cloak>
-		<div id="app-menu" data-ng-controller="HeaderController" data-ng-init="checkLogin()" data-ng-show="isLoggedIn">
+		<div id="app-menu" data-ng-controller="HeaderController" data-ng-init="checkLogin();" data-ng-show="isLoggedIn">
 			<div class="navbar navbar-inverse">
 				<div class="navbar-inner" style="padding-left:0;">
 					<div class="container" style="width:auto;">

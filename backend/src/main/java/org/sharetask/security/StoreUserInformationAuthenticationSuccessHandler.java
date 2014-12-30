@@ -25,6 +25,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -32,9 +33,11 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.springframework.security.authentication.ClientAuthenticationToken;
+import org.sharetask.entity.Language;
 import org.sharetask.entity.Role;
 import org.sharetask.entity.UserInformation;
 import org.sharetask.repository.UserInformationRepository;
+import org.sharetask.utility.RequestUltil;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -59,6 +62,7 @@ public class StoreUserInformationAuthenticationSuccessHandler extends SimpleUrlA
 		if (authentication instanceof ClientAuthenticationToken) {
 			log.debug("Token is pac4j token.");
 
+			String language = Language.EN.getCode(); 
 			UsernamePasswordAuthenticationToken authentToken;
 			final CommonProfile profile = (CommonProfile)((ClientAuthenticationToken)authentication).getUserProfile();
 			if (userRepository.findByUsername(profile.getEmail()) == null) {
@@ -66,18 +70,25 @@ public class StoreUserInformationAuthenticationSuccessHandler extends SimpleUrlA
 				final UserInformation userInformation = new UserInformation(profile.getEmail());
 				userInformation.setName(profile.getFirstName());
 				userInformation.setSurName(profile.getFamilyName());
-				userInformation.setLanguage("en");
+				userInformation.setLanguage(language);
 				final ArrayList<Role> list = new ArrayList<Role>();
 				list.add(Role.ROLE_USER);
 				userInformation.setRoles(list);
 				userRepository.save(userInformation);
-				List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+				final List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 				authorities.add(new SimpleGrantedAuthority(Role.ROLE_USER.name()));
 				authentToken = new UsernamePasswordAuthenticationToken(profile.getEmail(), "", authorities);
 			} else {
-				Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+				final UserInformation user = userRepository.read(profile.getEmail());
+				language = user.getLanguage();
+				final Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 				authentToken = new UsernamePasswordAuthenticationToken(profile.getEmail(), "", authorities);
 			}
+			// language cookie
+			final Cookie locale = new Cookie(RequestUltil.LOCALE, language);
+			locale.setMaxAge(-1);
+			locale.setPath("/");
+			response.addCookie(locale);
 			
 			SecurityContextHolder.getContext().setAuthentication(authentToken);
 		}

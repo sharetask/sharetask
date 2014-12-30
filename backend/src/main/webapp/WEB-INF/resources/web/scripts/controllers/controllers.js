@@ -20,9 +20,10 @@
 
 /* Controllers */
 angular.module('shareTaskWeb.controllers', ['localization'])
-	.controller('IndexCtrl', ['$scope', '$location', '$rootScope', '$window', 'User', function($scope, $location, $rootScope, $window, User) {
+	.controller('IndexCtrl', ['$scope', '$location', '$rootScope', '$window', 'User', '$route', function($scope, $location, $rootScope, $window, User, $route) {
 		
 		$scope.showSignInForm = false;
+		$route.reload();
 		
 		/**
 		 * Logout user.
@@ -53,6 +54,7 @@ angular.module('shareTaskWeb.controllers', ['localization'])
 					User.get({username: $scope.user.username}, function(data, status) {
 							console.log("User get success! data: %o, status: %o", data, status);
 							$rootScope.loggedUser = data;
+							
 							$window.location.href = $rootScope.appBaseUrl+"webapp#/tasks";
 						}, function(data, status) {
 							console.log("Auth error! data: %o, status: %o", data, status);
