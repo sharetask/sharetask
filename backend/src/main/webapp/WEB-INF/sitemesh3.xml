@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemesh>
+	<mapping path="/" decorator="/WEB-INF/layout/web-main.jsp" />
+	<mapping path="/featuers" decorator="/WEB-INF/layout/web-main.jsp" />
+	<mapping path="/signin" decorator="/WEB-INF/layout/web-main.jsp" />
+	<mapping path="/register" decorator="/WEB-INF/layout/web-main.jsp" />
+	<mapping path="/forgot_password" decorator="/WEB-INF/layout/web-main.jsp" />
+	<mapping path="/app" exclude="true" />
+	<mapping path="/resources*" exclude="true" />
+	<mapping path="/api*" exclude="true" />
+</sitemesh>

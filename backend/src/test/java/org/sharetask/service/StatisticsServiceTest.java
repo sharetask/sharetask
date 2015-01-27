@@ -80,7 +80,7 @@ public class StatisticsServiceTest extends ServiceUnitTest {
 		
 		assertThat(statisticsLastWeek.getTasksCount())
 				.as("Last week count of tasks should be")
-				.isEqualTo(0);
+				.isGreaterThan(0);
 	}
 
 	@Test
@@ -140,7 +140,7 @@ public class StatisticsServiceTest extends ServiceUnitTest {
 		
 		assertThat(statisticsLastDay.getTasksCount())
 				.as("Last day count of tasks should be")
-				.isEqualTo(0);
+				.isGreaterThan(0);
 	}	
 	
 	@Test
