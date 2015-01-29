@@ -17,7 +17,7 @@ import net.thucydides.core.pages.WebElementFacade;
 
 import org.openqa.selenium.WebElement;
 
-@DefaultUrl("http://localhost:8080/sharetask/webapp#/tasks")
+@DefaultUrl("http://localhost:8080/sharetask/app#/tasks")
 public class WorkspacePage extends PageObject {
 
 	@FindBy(xpath = "//div[@class=\"header\"]/div[@class=\"queue-name\"]/div[@class=\"queue-name-inner\"]/div")

@@ -75,6 +75,21 @@
 	</filter-mapping>
 
 	<!-- ================================================================= -->
+	<!-- Sitemesh filter                                                   -->
+	<!-- ================================================================= -->
+	<filter>
+		<filter-name>Sitemesh Decorator Filter</filter-name>
+		<filter-class>org.sitemesh.config.ConfigurableSiteMeshFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>Sitemesh Decorator Filter</filter-name>
+		<url-pattern>/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>ERROR</dispatcher>
+	</filter-mapping>
+
+	<!-- ================================================================= -->
 	<!-- Spring MVC servlet                                                -->
 	<!-- ================================================================= -->
 	<servlet>
@@ -97,12 +112,17 @@
 
 	<error-page>
 		<error-code>404</error-code>
-		<location>/WEB-INF/jsp/web/errors/404-not-found.jsp</location>
+		<location>/WEB-INF/jsp/errors/404-not-found.jsp</location>
 	</error-page>
 
 	<error-page>
 		<error-code>403</error-code>
-		<location>/WEB-INF/jsp/web/errors/403-access-denied.jsp</location>
+		<location>/WEB-INF/jsp/errors/403-access-denied.jsp</location>
+	</error-page>
+
+	<error-page>
+		<error-code>401</error-code>
+		<location>/WEB-INF/jsp/errors/403-access-denied.jsp</location>
 	</error-page>
 
 	<session-config>

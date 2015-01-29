@@ -91,9 +91,8 @@
 				<security:intercept-url pattern="/features" access="permitAll" />
 				<security:intercept-url pattern="/signin" access="permitAll" />
 				<security:intercept-url pattern="/register" access="permitAll" />
-				<security:intercept-url pattern="/webapp" access="permitAll" />
-				<security:intercept-url pattern="/resources-webapp-#{applicationProps['application.version']}/**" access="permitAll" />
-				<security:intercept-url pattern="/resources-web-#{applicationProps['application.version']}/**" access="permitAll" />
+				<security:intercept-url pattern="/app" access="permitAll" />
+				<security:intercept-url pattern="/resources-#{applicationProps['application.version']}/**" access="permitAll" />
 				<security:intercept-url pattern="/api/info" access="permitAll" />
 				<security:intercept-url pattern="/api/user/login/status" access="permitAll" />
 				<security:intercept-url pattern="/api/user/login" access="permitAll" />
@@ -143,7 +142,7 @@
 		<property name="authenticationManager" ref="authenticationManagerPac" />
 		<property name="authenticationSuccessHandler">
 	        <bean class="org.sharetask.security.StoreUserInformationAuthenticationSuccessHandler">
-	            <property name="defaultTargetUrl" value="/webapp" />
+	            <property name="defaultTargetUrl" value="/app" />
 	        </bean>
 	    </property>		
 	</bean>

@@ -90,8 +90,8 @@ public class MailServiceTest extends ServiceUnitTest {
 		final List<MimeMessage> messages = mailSender.getMimeMessages();
 		mailSender.clearMimeMessages();
 		assertThat(messages.size()).as("Count of emails in queue").isEqualTo(1);
-		assertThat(messages.get(0).getSubject()).as("Email subject").isEqualTo("Stal jste se členem projektu na shareta.sk");
-		assertThat((String)messages.get(0).getContent()).as("Email content").contains("by jsi pozván aby jsi se připojil k aplikaci");
+		assertThat(messages.get(0).getSubject()).as("Email subject").isEqualTo("Stal jste se \u010dlenem projektu na shareta.sk");
+		assertThat((String)messages.get(0).getContent()).as("Email content").contains("byl jsi pozv\u00e1n aby jsi se p\u0159ipojil k aplikaci");
 	}
 	
 }

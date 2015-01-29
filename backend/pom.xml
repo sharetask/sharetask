@@ -126,6 +126,7 @@
 					<systemPropertyVariables>
 						<definition.directory.log>${basedir}/target</definition.directory.log>
 					</systemPropertyVariables>
+					<argLine>-Dfile.encoding=UTF-8</argLine>					
 				</configuration>
 				<executions>
 					<execution>
@@ -802,6 +803,10 @@
 		<dependency>
 			<groupId>org.pac4j</groupId>
 			<artifactId>spring-security-pac4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.sitemesh</groupId>
+			<artifactId>sitemesh</artifactId>
 		</dependency>
 
 		<dependency>

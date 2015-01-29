@@ -45,17 +45,16 @@
 	<!-- ================================================================= -->
 	<!-- Resource resolve                                                  -->
 	<!-- ================================================================= -->
-	<mvc:resources mapping="/resources-webapp-#{applicationProps['application.version']}/**" location="/WEB-INF/resources/webapp/" />
-	<mvc:resources mapping="/resources-web-#{applicationProps['application.version']}/**" location="/WEB-INF/resources/web/" />
+	<mvc:resources mapping="/resources-#{applicationProps['application.version']}/**" location="/WEB-INF/resources/" />
 	
 	<!-- 	<mvc:default-servlet-handler /> -->
-	<mvc:view-controller path="/" view-name="web/index"/>
-	<mvc:view-controller path="/features" view-name="web/features"/>
-	<mvc:view-controller path="/signin" view-name="web/signin"/>
-	<mvc:view-controller path="/register" view-name="web/register"/>
-	<mvc:view-controller path="/confirmed" view-name="web/confirmed"/>
-	<mvc:view-controller path="/forgot_password" view-name="web/forgot_password"/>
-	<mvc:view-controller path="/webapp" view-name="webapp/index"/>
-	<mvc:view-controller path="/denied" view-name="web/errors/403-access-denied"/>
-	<mvc:view-controller path="/app-info" view-name="webapp/app-info"/>
+	<mvc:view-controller path="/" view-name="overview"/>
+	<mvc:view-controller path="/features" view-name="features"/>
+	<mvc:view-controller path="/signin" view-name="signin"/>
+	<mvc:view-controller path="/register" view-name="register"/>
+	<mvc:view-controller path="/confirmed" view-name="confirmed"/>
+	<mvc:view-controller path="/forgot_password" view-name="forgot_password"/>
+	<mvc:view-controller path="/app" view-name="app"/>
+	<mvc:view-controller path="/denied" view-name="errors/403-access-denied"/>
+	<mvc:view-controller path="/app-info" view-name="app-info"/>
 </beans>
