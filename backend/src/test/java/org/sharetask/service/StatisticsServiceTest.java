@@ -170,6 +170,6 @@ public class StatisticsServiceTest extends ServiceUnitTest {
 		
 		assertThat(statisticsLastHour.getTasksCount())
 				.as("Last hour count of tasks should be")
-				.isEqualTo(0);
+				.isEqualTo(1);
 	}
 }
