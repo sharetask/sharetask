@@ -125,6 +125,7 @@
 					<skip>true</skip>
 					<systemPropertyVariables>
 						<definition.directory.log>${basedir}/target</definition.directory.log>
+						<user.timezone>GMT</user.timezone>
 					</systemPropertyVariables>
 					<argLine>-Dfile.encoding=UTF-8</argLine>					
 				</configuration>
