@@ -42,7 +42,7 @@
 	<body>
 		<div class="panel-head" data-ng-init="rootScope.currentPage='signin'">
 			<div class="container">
-				<table class="head">
+				<table class="head" role="presentation">
 				<tr>
 					<td class="login" data-ng-controller="AuthCtrl">
 						<table style="width:100%;">
@@ -90,7 +90,7 @@
 				<div class="container large">
 					<div class="span4 center"><i class="icon-check icon-11x"></i></div>
 					<div class="span8">
-						<h1><spring:message code="index.intro.1" /></h1>
+						<h2 class="h1"><spring:message code="index.intro.1" /></h2>
 						<br />
 						<p>
 							<a class="btn btn-large" href="<c:url value="/features" />"><spring:message code="index.intro.button.features" /></a>
@@ -102,7 +102,7 @@
 			<div class="row odd">
 				<div class="container">
 					<div class="span7">
-						<h1><spring:message code="index.intro.2" /></h1>
+						<h2 class="h1"><spring:message code="index.intro.2" /></h2>
 					</div>
 					<div class="span5 center"><i class="icon-desktop icon-11x"></i></div>
 				</div>
@@ -111,7 +111,7 @@
 				<div class="container">
 					<div class="span4 center"><i class="icon-mobile-phone icon-15x"></i></div>
 					<div class="span8">
-						<h1><spring:message code="index.intro.3" /></h1>
+						<h2 class="h1"><spring:message code="index.intro.3" /></h2>
 						<br />
 						<h2><spring:message code="index.intro.4" /></h2>
 					</div>

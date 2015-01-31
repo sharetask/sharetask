@@ -48,7 +48,8 @@ h1,h2 {color:#FF5A00;}
 h3,h4,h5,h6 {color:#333;}
 /*h1,h2,h3,h4,h5,h6 {margin:5px 0;line-height:0;}*/
 h4 {font-size:135%;/*font-weight:bold;*/}
-h1{font-size:33.5px}
+h1 {font-size:33.5px}
+.h1 {font-size:33.5px}
 
 .navbar {margin-bottom:0;}
 .navbar .nav > li > a:hover {background:rgba(255,255,255,0.4);color:#fff;}

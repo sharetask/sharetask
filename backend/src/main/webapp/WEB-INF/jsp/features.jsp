@@ -39,12 +39,12 @@
 			</div>
 			<div class="row odd">
 				<div class="container">
-					<div class="span12"><img src="<c:url value="/resources-${applicationVersion}/img/features/tasks.png" />" /></div>
+					<div class="span12"><img src="<c:url value="/resources-${applicationVersion}/img/features/tasks.png" />" alt="" /></div>
 				</div>
 			</div>
 			<div class="row">
 				<div class="container">
-					<div class="span3"><img src="<c:url value="/resources-${applicationVersion}/img/features/select-workspace.png" />" /></div>
+					<div class="span3"><img src="<c:url value="/resources-${applicationVersion}/img/features/select-workspace.png" />" alt="" /></div>
 					<div class="span9">
 						<h2><spring:message code="features.workspace.organize.title" /></h2>
 						<ul>
@@ -65,12 +65,12 @@
 							<li><spring:message code="features.workspace.manage.4" /></li>
 						</ul>
 					</div>
-					<div class="span6"><img src="<c:url value="/resources-${applicationVersion}/img/features/manage-workspace-members.png" />" /></div>
+					<div class="span6"><img src="<c:url value="/resources-${applicationVersion}/img/features/manage-workspace-members.png" />" alt="" /></div>
 				</div>
 			</div>
 			<div class="row">
 				<div class="container">
-					<div class="span3"><img src="<c:url value="/resources-${applicationVersion}/img/features/task-queues.png" />" /></div>
+					<div class="span3"><img src="<c:url value="/resources-${applicationVersion}/img/features/task-queues.png" />" alt="" /></div>
 					<div class="span9">
 						<h2><spring:message code="features.task.queues.title" /></h2>
 						<ul>
@@ -90,12 +90,12 @@
 							<li><spring:message code="features.task.add-labels.2" /></li>
 						</ul>
 					</div>
-					<div class="span5"><img src="<c:url value="/resources-${applicationVersion}/img/features/task-add-label.png" />" /></div>
+					<div class="span5"><img src="<c:url value="/resources-${applicationVersion}/img/features/task-add-label.png" />" alt=""/></div>
 				</div>
 			</div>
 			<div class="row">
 				<div class="container">
-					<div class="span7"><img src="<c:url value="/resources-${applicationVersion}/img/features/task-labels.png" />" /></div>
+					<div class="span7"><img src="<c:url value="/resources-${applicationVersion}/img/features/task-labels.png" />" alt=""/></div>
 					<div class="span5">
 						<h2><spring:message code="features.task.filter-labels.title" /></h2>
 						<ul>
@@ -112,12 +112,12 @@
 							<li><spring:message code="features.task.forward.1" /></li>
 						</ul>
 					</div>
-					<div class="span5"><img src="<c:url value="/resources-${applicationVersion}/img/features/task-forward.png" />" /></div>
+					<div class="span5"><img src="<c:url value="/resources-${applicationVersion}/img/features/task-forward.png" />" alt="" /></div>
 				</div>
 			</div>
 			<div class="row">
 				<div class="container">
-					<div class="span7"><img src="<c:url value="/resources-${applicationVersion}/img/features/task-comments.png" />" /></div>
+					<div class="span7"><img src="<c:url value="/resources-${applicationVersion}/img/features/task-comments.png" />" alt="" /></div>
 					<div class="span5">
 						<h2><spring:message code="features.task.comments.title" /></h2>
 						<ul>
@@ -136,12 +136,12 @@
 							<li><spring:message code="features.task.duedate.1" /></li>
 						</ul>
 					</div>
-					<div class="span6"><img src="<c:url value="/resources-${applicationVersion}/img/features/task-due-date.png" />" /></div>
+					<div class="span6"><img src="<c:url value="/resources-${applicationVersion}/img/features/task-due-date.png" />" alt="" /></div>
 				</div>
 			</div>
 			<div class="row">
 				<div class="container">
-					<div class="span7"><img src="<c:url value="/resources-${applicationVersion}/img/features/tasks-batch-operations.png" />" /></div>
+					<div class="span7"><img src="<c:url value="/resources-${applicationVersion}/img/features/tasks-batch-operations.png" />" alt="" /></div>
 					<div class="span5">
 						<h2><spring:message code="features.task.batch.title" /></h2>
 						<ul>

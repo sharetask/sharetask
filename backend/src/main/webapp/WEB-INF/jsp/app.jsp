@@ -78,7 +78,7 @@
 			<div class="navbar navbar-inverse">
 				<div class="navbar-inner" style="padding-left:0;">
 					<div class="container" style="width:auto;">
-						<img class="pull-left" data-ng-src="{{'resources-'+appVersion+'/img/icon-white-small.png'}}" style="padding:8px 15px 0 8px;" />
+						<img class="pull-left" data-ng-src="{{'resources-'+appVersion+'/img/icon-white-small.png'}}" style="padding:8px 15px 0 8px;" alt="" />
 						<span class="brand">ShareTa.sk <small>[beta {{appVersion}}]</small></span>
 						<ul class="nav">
 							<li data-ng-class="{'active':currentPage == 'tasks'}"><a href="#/tasks"><i class="icon-list icon-white"></i> {{'_Tasks_' | i18n}}</a></li>
