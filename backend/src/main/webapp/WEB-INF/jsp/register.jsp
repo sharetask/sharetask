@@ -46,16 +46,16 @@
 						<a class="close" data-ng-click="newAccountData.result = 0">&times;</a>
 						<spring:message code="register.msg.error.exists" />
 					</div>
-					<label><spring:message code="register.name" /></label>
-					<input class="span3" type="text" name="firstname" placeholder="<spring:message code="register.firstname.placeholder" />" data-ng-model="newAccount.name" /> <input class="span3" type="text" name="lastname" placeholder="<spring:message code="register.lastname.placeholder" />" data-ng-model="newAccount.surName" /><br />
-					<label>* <spring:message code="register.email" /></label>
-					<input class="span3" type="text" name="mail" placeholder="<spring:message code="register.email.placeholder" />" data-ng-model="newAccount.username" required /><br />
-					<label>* <spring:message code="register.language" /></label>
-					<select class="span3" name="language" data-ng-model="language" required data-ng-options="language.code as (language.label | i18n) for language in languages"></select><br />
-					<label>* <spring:message code="register.password" /></label>
-					<input class="span3" type="password" name="password" placeholder="<spring:message code="register.password.placeholder" />" data-ng-model="newAccount.password1" required /><br />
-					<label>* <spring:message code="register.password.check" /></label>
-					<input class="span3" type="password" name="password" placeholder="<spring:message code="register.password.check.placeholder" />" data-ng-model="newAccount.password2" required /><br />
+					<label for="firstname"><spring:message code="register.name" /></label>
+					<input class="span3" type="text" id="firstname" name="firstname" placeholder="<spring:message code="register.firstname.placeholder" />" data-ng-model="newAccount.name" /> <input class="span3" type="text" name="lastname" placeholder="<spring:message code="register.lastname.placeholder" />" data-ng-model="newAccount.surName" /><br />
+					<label for="mail">* <spring:message code="register.email" /></label>
+					<input class="span3" type="text" id="mail" name="mail" placeholder="<spring:message code="register.email.placeholder" />" data-ng-model="newAccount.username" required /><br />
+					<label for="language">* <spring:message code="register.language" /></label>
+					<select class="span3" id="language" name="language" data-ng-model="language" data-ng-options="language.code as (language.label | i18n) for language in languages"></select><br />
+					<label for="password">* <spring:message code="register.password" /></label>
+					<input class="span3" type="password" id="password" name="password" placeholder="<spring:message code="register.password.placeholder" />" data-ng-model="newAccount.password1" required /><br />
+					<label for="password2">* <spring:message code="register.password.check" /></label>
+					<input class="span3" type="password" id="password2" name="password" placeholder="<spring:message code="register.password.check.placeholder" />" data-ng-model="newAccount.password2" required /><br />
 					<br />
 					<button class="btn btn-inverse" data-ng-click="register()" data-ng-disabled="formRegistration.$invalid || newAccount.password1 != newAccount.password2 || newAccountData.processing"><spring:message code="register.button.submit" /><span data-ng-show="newAccountData.processing"> processing...</span></button>
 					<br /><br />

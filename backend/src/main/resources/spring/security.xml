@@ -91,6 +91,7 @@
 				<security:intercept-url pattern="/features" access="permitAll" />
 				<security:intercept-url pattern="/signin" access="permitAll" />
 				<security:intercept-url pattern="/register" access="permitAll" />
+				<security:intercept-url pattern="/sitemap.xml" access="permitAll" />
 				<security:intercept-url pattern="/app" access="permitAll" />
 				<security:intercept-url pattern="/resources-#{applicationProps['application.version']}/**" access="permitAll" />
 				<security:intercept-url pattern="/api/info" access="permitAll" />

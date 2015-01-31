@@ -28,7 +28,7 @@
 	<body>
 		<div class="panel-head" data-ng-init="rootScope.currentPage='home'">
 			<div class="container">
-				<table class="head">
+				<table class="head" role="presentation">
 				<tr>
 					<td>
 						<div id="myCarousel" class="carousel slide">
@@ -40,19 +40,19 @@
 							</ol>
 							<div class="carousel-inner">
 								<div class="item active">
-									<h1>Manage tasks</h1>
+									<h2 class="h1">Manage tasks</h2>
 									<h2>Manage all tasks on one place.</h2>
 								</div>
 								<div class="item">
-									<h1>Organize tasks</h1>
+									<h2 class="h1">Organize tasks</h2>
 									<h2>Organize tasks to workspaces.</h2>
 								</div>
 								<div class="item">
-									<h1>Share tasks</h1>
+									<h2 class="h1">Share tasks</h2>
 									<h2>Share workspace tasks with your team or family.</h2>
 								</div>
 								<div class="item">
-									<h1>Anywhere & Anytime</h1>
+									<h2 class="h1">Anywhere & Anytime</h2>
 									<h2>Manage tasks on your PC, tablet or smartphone.</h2>
 								</div>
 							</div>
@@ -67,7 +67,7 @@
 				<div class="container large">
 					<div class="span4 center"><i class="icon-check icon-11x"></i></div>
 					<div class="span8">
-						<h1><spring:message code="index.intro.1" /></h1>
+						<h2 class="h1"><spring:message code="index.intro.1" /></h2>
 						<br />
 						<p>
 							<a class="btn btn-large" href="<c:url value="/features" />"><spring:message code="index.intro.button.features" /></a>
@@ -79,7 +79,7 @@
 			<div class="row odd">
 				<div class="container">
 					<div class="span7">
-						<h1><spring:message code="index.intro.2" /></h1>
+						<h2 class="h1"><spring:message code="index.intro.2" /></h2>
 					</div>
 					<div class="span5 center"><i class="icon-desktop icon-11x"></i></div>
 				</div>
@@ -88,7 +88,7 @@
 				<div class="container">
 					<div class="span4 center"><i class="icon-mobile-phone icon-15x"></i></div>
 					<div class="span8">
-						<h1><spring:message code="index.intro.3" /></h1>
+						<h2 class="h1"><spring:message code="index.intro.3" /></h2>
 						<br />
 						<h2><spring:message code="index.intro.4" /></h2>
 					</div>

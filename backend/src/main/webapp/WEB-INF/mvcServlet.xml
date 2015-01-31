@@ -57,4 +57,5 @@
 	<mvc:view-controller path="/app" view-name="app"/>
 	<mvc:view-controller path="/denied" view-name="errors/403-access-denied"/>
 	<mvc:view-controller path="/app-info" view-name="app-info"/>
+	<mvc:view-controller path="/sitemap.xml" view-name="sitemap"/>
 </beans>
