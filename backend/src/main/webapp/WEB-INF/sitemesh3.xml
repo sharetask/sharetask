@@ -6,6 +6,7 @@
 	<mapping path="/register" decorator="/WEB-INF/layout/web-main.jsp" />
 	<mapping path="/forgot_password" decorator="/WEB-INF/layout/web-main.jsp" />
 	<mapping path="/sitemap.xml" exclude="true" />
+	<mapping path="/robots.txt" exclude="true" />
 	<mapping path="/app" exclude="true" />
 	<mapping path="/resources*" exclude="true" />
 	<mapping path="/api*" exclude="true" />
