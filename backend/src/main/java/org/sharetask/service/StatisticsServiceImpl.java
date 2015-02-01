@@ -92,7 +92,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 
 	private StatisticsDataDTO getStatisticsPerLastWeek() {
 		Calendar calendar = Calendar.getInstance();
-		calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+		calendar.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek());
 		Date date = DateUtils.truncate(calendar.getTime(), Calendar.DATE);
 		return new StatisticsDataDTO.Builder()
 				.usersCount(userInformationRepository.getCountCreatedAfter(date))
