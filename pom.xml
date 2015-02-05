@@ -613,11 +613,7 @@
 		<jackson.version>2.5.0</jackson.version>		
 		<springframework-security.version>3.2.5.RELEASE</springframework-security.version>
 		<jacoco.version>0.6.3.201306030806</jacoco.version>
-<<<<<<< HEAD
 		<hibernate.version>4.3.7.Final</hibernate.version>
-=======
-		<hibernate.version>4.3.8.Final</hibernate.version>
->>>>>>> 9a7048fac1ab2d76f2d04c80085346737818dee1
 		<hibernate-validator.version>4.3.2.Final</hibernate-validator.version>
 		<aspectjrt.version>1.7.3</aspectjrt.version>
 		<apache.log4j.version>1.2.17</apache.log4j.version>
