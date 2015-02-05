@@ -412,7 +412,7 @@
         	<dependency>
 				<groupId>com.google.guava</groupId>
 				<artifactId>guava</artifactId>
-				<version>14.0.1</version>
+				<version>${guava.version}</version>
 			</dependency>
             			
 			<dependency>
@@ -626,6 +626,7 @@
 		<httpclient.version>4.4</httpclient.version>
 		<lombok.version>1.16.0</lombok.version>
 		<powermock.version>1.6.1</powermock.version>
+		<guava.version>18.0</guava.version>
 		<sonar.host.url>https://tools.shareta.sk/sonar</sonar.host.url>
 		<target.directory>target</target.directory>
 		
