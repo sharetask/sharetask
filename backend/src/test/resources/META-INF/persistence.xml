@@ -4,7 +4,7 @@
 	version="2.0">
 
 	<persistence-unit name="MyTaskPersistenceUnit-test" transaction-type="RESOURCE_LOCAL">
-		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		<mapping-file>META-INF/orm.xml</mapping-file>
 	</persistence-unit>
 </persistence>
