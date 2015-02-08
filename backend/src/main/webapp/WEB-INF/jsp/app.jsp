@@ -81,7 +81,7 @@
 						<img class="pull-left" data-ng-src="{{'resources-'+appVersion+'/img/icon-white-small.png'}}" style="padding:8px 15px 0 8px;" alt="" />
 						<span class="brand">ShareTa.sk <small>[beta {{appVersion}}]</small></span>
 						<ul class="nav">
-							<li data-ng-class="{'active':currentPage == 'tasks'}"><a href="#/tasks"><i class="icon-list icon-white"></i><span data-i18n="_Tasks_">{{'_Tasks_' | i18n}}</span></a></li>
+							<li data-ng-class="{'active':currentPage == 'tasks'}"><a href="#/tasks"><i class="icon-list icon-white"></i> {{'_Tasks_' | i18n}}</a></li>
 							<li data-ng-class="{'active':currentPage == 'workspaces'}"><a href="#/workspaces"><i class="icon-folder-close icon-white"></i> {{'_Workspaces_' | i18n}}</a></li>
 						</ul>
 						<ul class="nav pull-right">
