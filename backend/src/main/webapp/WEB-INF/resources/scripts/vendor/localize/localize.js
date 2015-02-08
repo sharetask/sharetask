@@ -12,7 +12,7 @@ angular.module('localization', [])
     // localization service responsible for retrieving resource files from the server and
     // managing the translation dictionary
     .provider('localize', function localizeProvider() {
-        
+
         this.languages = ['en-US'];
         this.defaultLanguage = 'en-US';
         this.ext = 'js';
@@ -69,7 +69,10 @@ angular.module('localization', [])
                     localize.url = value;
                     localize.initLocalizedResources();
                 },
-
+                // builds the url for locating an image
+                buildImgUrl: function(imageUrl) {
+                    return $http({ method: "GET", url: imageUrl, cache: false });
+                },
                 // builds the url for locating the resource file
                 buildUrl: function() {
                     if(!localize.language){
@@ -104,7 +107,7 @@ angular.module('localization', [])
                 getLocalizedString: function(value) {
                     // default the result to an empty string
                     var result = '';
-                    
+
                     // make sure the dictionary has valid data
                     if ((localize.dictionary !== []) && (localize.dictionary.length > 0)) {
                         // use the filter service to only return those entries which match the value
@@ -132,9 +135,11 @@ angular.module('localization', [])
     // simple translation filter
     // usage {{ TOKEN | i18n }}
     .filter('i18n', ['localize', function (localize) {
-        return function (input) {
+        function i18n(input) {
             return localize.getLocalizedString(input);
         };
+    	i18n.$stateful = true;
+    	return i18n;
     }])
     // translation directive that can handle dynamic strings
     // updates the text value of the attached element
@@ -212,4 +217,22 @@ angular.module('localization', [])
         };
 
         return i18NAttrDirective;
-    }]);
+    }]) 
+    // translation directive that handles the localization of images.
+    // usage <img data-i18n-img-src="IMAGE" />
+    .directive('i18nImgSrc', [
+        'localize', function(localize) {
+            var i18NImageDirective = {
+                restrict: 'A',
+                link: function(scope, element, attrs) {
+                    var i18Nsrc = attrs.i18nImgSrc;
+                    var imagePath = '/i18N/images/' + localize.language + '/';
+                    var imageUrl = imagePath + i18Nsrc;
+                    localize.buildImgUrl(imageUrl).success(function() {
+                        element[0].src = imageUrl;
+                    }).error(function() { element[0].src = '/i18N/images/default/' + i18Nsrc; });
+                }
+            };
+            return i18NImageDirective;
+        }
+    ]);
