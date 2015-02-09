@@ -477,7 +477,7 @@
 			<dependency>
 				<groupId>joda-time</groupId>
 				<artifactId>joda-time</artifactId>
-				<version>2.2</version>
+				<version>${jodatime.version}</version>
 			</dependency>
 			
 			<dependency>
@@ -610,7 +610,7 @@
 		<aspectj-maven-plugin.version>1.5</aspectj-maven-plugin.version>
 		<hsqldb.version>2.3.2</hsqldb.version>
 		<springframework.version>4.1.4.RELEASE</springframework.version>
-		<jackson.version>2.5.0</jackson.version>		
+		<jackson.version>2.5.1</jackson.version>		
 		<springframework-security.version>3.2.5.RELEASE</springframework-security.version>
 		<jacoco.version>0.6.3.201306030806</jacoco.version>
 		<hibernate.version>4.3.7.Final</hibernate.version>
@@ -627,6 +627,7 @@
 		<lombok.version>1.16.0</lombok.version>
 		<powermock.version>1.6.1</powermock.version>
 		<guava.version>18.0</guava.version>
+		<jodatime.version>2.7</jodatime.version>
 		<sonar.host.url>https://tools.shareta.sk/sonar</sonar.host.url>
 		<target.directory>target</target.directory>
 		
