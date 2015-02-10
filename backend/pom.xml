@@ -176,7 +176,7 @@
 			<!-- can be launched with the Maven goal jetty:run and stopped with jetty:stop -->
 			<!-- ========================================================================= -->
 			<plugin>
-				<groupId>org.mortbay.jetty</groupId>
+				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
 				<configuration>
 					<stopPort>9966</stopPort>
