@@ -23,7 +23,7 @@
 <!doctype html>
 <html>
 	<head>
-		<title>ShareTa.sk</title>
+		<title><spring:message code="index.title" /></title>
 	</head>
 	<body>
 		<div class="panel-head" data-ng-init="rootScope.currentPage='home'">
@@ -40,20 +40,20 @@
 							</ol>
 							<div class="carousel-inner">
 								<div class="item active">
-									<h2 class="h1">Manage tasks</h2>
-									<h2>Manage all tasks on one place.</h2>
+									<h2 class="h1"><spring:message code="index.banner.1" /></h2>
+									<h2><spring:message code="index.banner.1.message" /></h2>
 								</div>
 								<div class="item">
-									<h2 class="h1">Organize tasks</h2>
-									<h2>Organize tasks to workspaces.</h2>
+									<h2 class="h1"><spring:message code="index.banner.2" /></h2>
+									<h2><spring:message code="index.banner.2.message" /></h2>
 								</div>
 								<div class="item">
-									<h2 class="h1">Share tasks</h2>
-									<h2>Share workspace tasks with your team or family.</h2>
+									<h2 class="h1"><spring:message code="index.banner.3" /></h2>
+									<h2><spring:message code="index.banner.3.message" /></h2>
 								</div>
 								<div class="item">
-									<h2 class="h1">Anywhere & Anytime</h2>
-									<h2>Manage tasks on your PC, tablet or smartphone.</h2>
+									<h2 class="h1"><spring:message code="index.banner.4" /></h2>
+									<h2><spring:message code="index.banner.4.message" /></h2>
 								</div>
 							</div>
 						</div>
@@ -67,7 +67,7 @@
 				<div class="container large">
 					<div class="span4 center"><i class="icon-check icon-11x"></i></div>
 					<div class="span8">
-						<h2 class="h1"><spring:message code="index.intro.1" /></h2>
+						<h1><spring:message code="index.intro.1" /></h2>
 						<br />
 						<p>
 							<a class="btn btn-large" href="<c:url value="/features" />"><spring:message code="index.intro.button.features" /></a>
@@ -80,6 +80,7 @@
 				<div class="container">
 					<div class="span7">
 						<h2 class="h1"><spring:message code="index.intro.2" /></h2>
+						<p class="subtext"><spring:message code="index.intro.2.message" /></p>
 					</div>
 					<div class="span5 center"><i class="icon-desktop icon-11x"></i></div>
 				</div>
@@ -89,6 +90,7 @@
 					<div class="span4 center"><i class="icon-mobile-phone icon-15x"></i></div>
 					<div class="span8">
 						<h2 class="h1"><spring:message code="index.intro.3" /></h2>
+						<p class="subtext"><spring:message code="index.intro.3.message" /></p>
 						<br />
 						<h2><spring:message code="index.intro.4" /></h2>
 					</div>

@@ -42,9 +42,9 @@
 	<!-- Application revision: ${applicationRevision} -->
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<meta name="description" content="">
-		<meta name="keywords" content="">
-		<meta name="author" content="">
+		<meta name="description" content="<spring:message code="web.page.description" />">
+		<meta name="keywords" content="<spring:message code="web.page.keywords" />">
+		<meta name="author" content="Shareta.sk team">
 		<title><sitemesh:write property="title"/></title>
 		<link rel="shortcut icon" href="<c:url value="/resources-${applicationVersion}/favicon.ico" />" />
 		<link rel="stylesheet" type="text/css" href="<c:url value="/resources-${applicationVersion}/css/bootswatch.min.css" />">
