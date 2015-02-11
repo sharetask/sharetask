@@ -90,7 +90,7 @@
 				<div class="container large">
 					<div class="span4 center"><i class="icon-check icon-11x"></i></div>
 					<div class="span8">
-						<h2 class="h1"><spring:message code="index.intro.1" /></h2>
+						<h1><spring:message code="index.intro.1" /></h2>
 						<br />
 						<p>
 							<a class="btn btn-large" href="<c:url value="/features" />"><spring:message code="index.intro.button.features" /></a>
@@ -103,6 +103,7 @@
 				<div class="container">
 					<div class="span7">
 						<h2 class="h1"><spring:message code="index.intro.2" /></h2>
+						<p class="subtext"><spring:message code="index.intro.2.message" /></p>
 					</div>
 					<div class="span5 center"><i class="icon-desktop icon-11x"></i></div>
 				</div>
@@ -112,6 +113,7 @@
 					<div class="span4 center"><i class="icon-mobile-phone icon-15x"></i></div>
 					<div class="span8">
 						<h2 class="h1"><spring:message code="index.intro.3" /></h2>
+						<p class="subtext"><spring:message code="index.intro.3.message" /></p>
 						<br />
 						<h2><spring:message code="index.intro.4" /></h2>
 					</div>
