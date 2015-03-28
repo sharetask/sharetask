@@ -139,11 +139,13 @@ public class DummyJavaMailSenderImpl implements DummyJavaMailSender, JavaMailSen
 	public void clearSimpleMailMessages() {
 		log.info("Clearing internal collection of simple mail messages");
 		simpleMailMessages.clear();
+		log.info("Size of internal messages: {}",  simpleMailMessages.size());
 	}
 
 	@Override
 	public void clearMimeMessages() {
 		log.info("Clearing internal collection of mime messages");
 		mimeMessages.clear();
+		log.info("Size of internal messages: {}",  mimeMessages.size());
 	}
 }
