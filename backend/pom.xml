@@ -528,17 +528,18 @@
 						<configuration>
 							<container>
 								<containerId>tomcat7x</containerId>
-								<type>installed</type>
-								<home>${catalina.home}</home>
-								<!-- <log>cargo.log</log> -->
+								<zipUrlInstaller>
+									<url>http://archive.apache.org/dist/tomcat/tomcat-7/v${tomcat7.version}/bin/apache-tomcat-${tomcat7.version}.tar.gz</url>
+									<downloadDir>${java.io.tmpdir}/cargoinstalls</downloadDir>
+									<extractDir>${java.io.tmpdir}/cargoinstalls/tomcat7</extractDir>
+								</zipUrlInstaller>
+    							<!-- <log>cargo.log</log> -->
 								<systemProperties>
 									<spring.profiles.active>${spring.profile}</spring.profiles.active>
 									<user.timezone>GMT</user.timezone>
 									<definition.directory.log>${basedir}/target</definition.directory.log>
 								</systemProperties>
 							</container>
-							<type>existing</type>
-							<home>${catalina.home}</home>
 							<configuration>
 								<properties>
 									<cargo.servlet.port>8088</cargo.servlet.port>
@@ -556,8 +557,6 @@
 								</goals>
 								<configuration>
 									<deployer>
-										<!-- You have to again specify that the type for the deployer -->
-										<type>installed</type>
 										<deployables>
 											<!-- This deployable specifies the webapp you want to deploy -->
 											<deployable>

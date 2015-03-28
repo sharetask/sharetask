@@ -630,6 +630,7 @@
 		<jodatime.version>2.7</jodatime.version>
 		<sonar.host.url>https://tools.shareta.sk/sonar</sonar.host.url>
 		<target.directory>target</target.directory>
+		<tomcat7.version>7.0.40</tomcat7.version>
 		
 		<definition.majorVersion>1</definition.majorVersion>
 		<definition.minorVersion>0</definition.minorVersion>
