@@ -27,6 +27,7 @@ import javax.inject.Inject;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.sharetask.api.MailService;
 import org.sharetask.api.dto.InvitationDTO;
@@ -47,6 +48,11 @@ public class MailServiceTest extends ServiceUnitTest {
 	@Inject
 	private DummyJavaMailSender mailSender;
 	
+	@Before
+	public void setup() {
+		mailSender.clearMimeMessages();
+	}
+	
 	/**
 	 * Test method for {@link org.sharetask.api.MailService#sendInvitation(org.sharetask.api.dto.InvitationDTO)}.
 	 * @throws MessagingException
@@ -64,7 +70,6 @@ public class MailServiceTest extends ServiceUnitTest {
 		mailService.sendInvitation(invitationDTO);
 
 		final List<MimeMessage> messages = mailSender.getMimeMessages();
-		mailSender.clearMimeMessages();
 		assertThat(messages.size()).as("Count of emails in queue").isEqualTo(1);
 		assertThat(messages.get(0).getSubject()).as("Email subject").isEqualTo("You are added to workspace on shareta.sk");
 		assertThat((String)messages.get(0).getContent()).as("Email content").contains("you are invited to connect to");
@@ -88,10 +93,8 @@ public class MailServiceTest extends ServiceUnitTest {
 		mailService.sendInvitation(invitationDTO);
 
 		final List<MimeMessage> messages = mailSender.getMimeMessages();
-		mailSender.clearMimeMessages();
 		assertThat(messages.size()).as("Count of emails in queue").isEqualTo(1);
 		assertThat(messages.get(0).getSubject()).as("Email subject").isEqualTo("Stal jste se \u010dlenem projektu na shareta.sk");
 		assertThat((String)messages.get(0).getContent()).as("Email content").contains("byl jsi pozv\u00e1n aby jsi se p\u0159ipojil k aplikaci");
 	}
-	
 }
